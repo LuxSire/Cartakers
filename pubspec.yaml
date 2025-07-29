@@ -1,0 +1,156 @@
+name: xm_frontend
+description: "XM Frontend "
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
+version: 1.0.0+11
+
+environment:
+  sdk: ^3.7.0
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  flutter_launcher_icons: ^0.14.3
+  flutter_dotenv: ^5.2.1
+  provider: ^6.0.3
+  shared_preferences: ^2.3.0
+  flutter_svg: ^2.0.10+1
+  cached_network_image: ^3.3.1
+  pin_code_fields: ^8.0.1
+  flutter_switch: ^0.3.2
+  http: ^1.2.2
+  http_parser: ^4.1.2
+  dio: ^5.7.0
+  mime: ^2.0.0
+  bcrypt: ^1.1.3
+  intl_phone_field: ^3.2.0
+  overlay_support: ^2.1.0
+  data_table_2: ^2.5.18
+  get: ^4.7.2
+  iconsax: ^0.0.8
+  url_launcher: ^6.2.6
+  shimmer: ^3.0.0
+  connectivity_plus: ^6.0.3
+  get_storage: ^2.1.1
+  flutter_dropzone: ^4.2.1
+  universal_html: ^2.2.4
+  clipboard: ^0.1.3
+  fl_chart: ^0.67.0
+  video_player: ^2.9.5
+  file_picker: ^10.0.0
+  path: ^1.8.0
+  path_provider: ^2.1.5
+  multi_select_flutter: ^4.1.3
+  intl: ^0.19.0
+  pdfx: ^2.9.0
+  html: ^0.15.0
+  permission_handler: ^11.1.0 # for android
+  open_file: ^3.5.10
+  webview_flutter: ^4.11.0
+  flutter_webview_plugin: ^0.4.0  # For Desktop & Web support
+  photo_view: ^0.15.0
+  crypto: ^3.0.6
+  timeline_tile: ^2.0.0
+  table_calendar: ^3.0.8
+  html_unescape: ^2.0.0
+
+
+
+
+
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/app_icon.png"
+  remove_alpha_ios: true
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^5.0.0
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter: 
+  uses-material-design: true
+  assets: 
+    - assets/
+    - assets/logos/
+    - assets/images/
+    - assets/videos/
+    - assets/images/content/
+    - assets/images/animations/
+    - assets/translations/fr.json
+    - assets/translations/it.json
+    - assets/translations/de.json
+    - assets/translations/en.json
+    - .env.dev
+    - .env.prod
+
+  fonts: 
+    - family: Lato
+      fonts: 
+        - asset: assets/fonts/LatoBold.ttf
+          weight: 700
+        - asset: assets/fonts/LatoRegular.ttf
+          weight: 400
+        - asset: assets/fonts/LatoLight.ttf
+          weight: 300
+        - asset: assets/fonts/LatoSemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/LatoMedium.ttf
+          weight: 500
+    - family: DM Sans
+      fonts: 
+        - asset: assets/fonts/DMSansBlack.ttf
+          weight: 900
+        - asset: assets/fonts/DMSansMedium.ttf
+          weight: 500
+        - asset: assets/fonts/DMSansBold.ttf
+          weight: 700
+        - asset: assets/fonts/DMSansSemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/DMSansRegular.ttf
+          weight: 400
+    - family: Poppins
+      fonts: 
+        - asset: assets/fonts/PoppinsSemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/PoppinsMedium.ttf
+          weight: 500
+    - family: Inter
+      fonts: 
+        - asset: assets/fonts/InterSemiBold.ttf
+          weight: 600

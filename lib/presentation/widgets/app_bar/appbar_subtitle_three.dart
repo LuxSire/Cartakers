@@ -1,0 +1,30 @@
+import 'package:flutter/material.dart';
+
+class AppbarSubtitleThree extends StatelessWidget {
+  const AppbarSubtitleThree(
+      {super.key, required this.text, this.onTap, this.margin});
+
+  final String text;
+
+  final Function? onTap;
+
+  final EdgeInsetsGeometry? margin;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: margin ?? EdgeInsets.zero,
+      child: GestureDetector(
+        onTap: () {
+          onTap?.call();
+        },
+        child: Text(
+          text,
+          style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+        ),
+      ),
+    );
+  }
+}

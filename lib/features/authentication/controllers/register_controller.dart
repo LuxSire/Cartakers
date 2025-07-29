@@ -1,0 +1,184 @@
+import 'dart:math';
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:xm_frontend/app/localization/app_localization.dart';
+import 'package:xm_frontend/app/utils/helpers.dart';
+import 'package:xm_frontend/app/utils/user_preferences.dart';
+import 'package:xm_frontend/data/models/agent_invitation_model.dart';
+import 'package:xm_frontend/data/models/user_pref_model.dart';
+import 'package:xm_frontend/data/repositories/user/user_repository.dart';
+import 'package:xm_frontend/routes/routes.dart';
+
+import '../../../../data/repositories/authentication/authentication_repository.dart';
+import '../../../../utils/constants/image_strings.dart';
+import '../../../../utils/helpers/network_manager.dart';
+import '../../../../utils/popups/full_screen_loader.dart';
+import '../../../../utils/popups/loaders.dart';
+import '../../../utils/constants/enums.dart';
+import '../../../utils/constants/text_strings.dart';
+import '../../personalization/controllers/user_controller.dart';
+import '../../personalization/models/user_model.dart';
+
+/// Controller for handling login functionality
+class RegisterController extends GetxController {
+  static RegisterController get instance => Get.find();
+
+  /// Whether the password should be hidden
+  final hidePassword = true.obs;
+  final hideConfirmPassword = true.obs;
+
+  /// Local storage instance for remembering ....
+  final localStorage = GetStorage();
+
+  /// Text editing controller for the firtsName field
+  final firstName = TextEditingController();
+  final lastName = TextEditingController();
+  final email = TextEditingController();
+  final phoneNumber = TextEditingController();
+  final password = TextEditingController();
+  final confirmPassword = TextEditingController();
+
+  final agencyName = ''.obs;
+  final buildingAddress = ''.obs;
+  final agentId = 0.obs;
+
+  final invitationId = 0.obs;
+
+  /// Form key for the register form
+  final registerFormKey = GlobalKey<FormState>();
+
+  @override
+  void onInit() {
+    // Retrieve stored email and password if "Remember Me" is selected
+    super.onInit();
+  }
+
+  /// Init Data
+  void init(AgentInvitationModel agentModel) {
+    debugPrint(agentModel.agencyName);
+    firstName.text = agentModel.agentFirstName;
+    lastName.text = agentModel.agentLastName;
+    email.text = agentModel.agentEmail;
+    phoneNumber.text = agentModel.agentPhoneNumber;
+    agencyName.value = agentModel.agencyName;
+    buildingAddress.value = agentModel.buildingAddress;
+    agentId.value = agentModel.agentId;
+    invitationId.value = agentModel.id;
+  }
+
+  /// Handles email and password sign-in process
+  Future<void> registerAdmin() async {
+    try {
+      // Start Loading
+      TFullScreenLoader.openLoadingDialog(
+        AppLocalization.of(
+          Get.context!,
+        ).translate('invitation_screen.lbl_validating_your_code'),
+        TImages.buildingsIllustration,
+      );
+
+      // Check Internet Connectivity
+      final isConnected = await NetworkManager.instance.isConnected();
+      if (!isConnected) {
+        TFullScreenLoader.stopLoading();
+        return;
+      }
+
+      // Form Validation
+      if (!registerFormKey.currentState!.validate()) {
+        TFullScreenLoader.stopLoading();
+        return;
+      }
+
+      // password needs to be hashed before sending to the backend
+      String plainPassword = password.text;
+      String hashedPassword = Helpers.hashPassword(plainPassword);
+
+      // Login user using Email & Password Authentication
+      final registerResponse = await AuthenticationRepository.instance
+          .registerAdmin(
+            email.text.trim().toLowerCase(),
+            hashedPassword,
+            firstName.text,
+            lastName.text,
+            agentId.value.toString(),
+          );
+
+      // Remove Loader
+      TFullScreenLoader.stopLoading();
+
+      if (registerResponse.isNotEmpty) {
+        // Store User Details
+
+        try {
+          UserPrefModel user = UserPrefModel(
+            id: agentId.value.toString(),
+            displayName: '${firstName.text} ${lastName.text}',
+            hasLoggedIn: false,
+            hasRegistered: true,
+            email: email.text,
+            agencyId: 0, //
+            roleId: 0, //
+            roleName: '',
+            isAutoLogin: false,
+          );
+
+          // update flags
+          final userController = UserController.instance;
+
+          await userController.userRepository.updateUserInvitationStatus(
+            invitationId.value,
+            2, // 2 accepted invitation
+          );
+          await userController.userRepository.updateUserStatus(
+            agentId.value,
+            2, // 2 Active
+          );
+
+          await UserPreferences.saveUser(user);
+        } catch (e) {
+          debugPrint('Error saving user: $e');
+        }
+        debugPrint('registerResponse: : $registerResponse');
+
+        TLoaders.successSnackBar(
+          title: AppLocalization.of(
+            Get.context!,
+          ).translate('general_msgs.msg_success'),
+          message: AppLocalization.of(
+            Get.context!,
+          ).translate('register_screen.success_msg_registration_success'),
+        );
+
+        Get.toNamed(Routes.login);
+      } else {
+        TLoaders.errorSnackBar(
+          title: AppLocalization.of(
+            Get.context!,
+          ).translate('invitation_screen.err_msg_dialog_title_failed_token'),
+          message: AppLocalization.of(
+            Get.context!,
+          ).translate('invitation_screen.err_msg_dialog_content_failed_token'),
+        );
+      }
+    } catch (e) {
+      TFullScreenLoader.stopLoading();
+      TLoaders.errorSnackBar(title: 'Oh Snap', message: e.toString());
+    }
+  }
+
+  Future<UserModel> fetchUserInformation() async {
+    // Fetch user details and assign to UserController
+    final controller = UserController.instance;
+    UserModel user;
+    if (controller.user.value.id == null || controller.user.value.id!.isEmpty) {
+      user = await UserController.instance.fetchUserDetails();
+    } else {
+      user = controller.user.value;
+    }
+
+    return user;
+  }
+}
