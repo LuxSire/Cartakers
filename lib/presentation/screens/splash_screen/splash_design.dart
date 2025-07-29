@@ -57,13 +57,13 @@ class _SplashDesignState extends State<SplashDesign> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Image.asset(
-                  'assets/images/tenant10_building_logo_trans.png',
+                  'assets/images/splash_logo_trans.png',
                   width: 100,
                   height: 100,
                 ),
                 const SizedBox(height: 20),
                 const Text(
-                  "Tenants10",
+                  "XM Dashboard",
                   style: TextStyle(
                     fontSize: 32,
                     color: Colors.white,

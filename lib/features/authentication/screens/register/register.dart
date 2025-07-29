@@ -10,11 +10,11 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final agent = Get.arguments;
+    final company = Get.arguments;
     return TSiteTemplate(
       useLayout: false,
-      desktop: RegisterScreenDesktopTablet(agentModel: agent),
-      mobile: RegisterScreenMobile(agentModel: agent),
+      desktop: RegisterScreenDesktopTablet(companyModel: company),
+      mobile: RegisterScreenMobile(companyModel: company),
     );
   }
 }

@@ -11,7 +11,7 @@ class ThemeService with ChangeNotifier {
   bool get isDarkMode => _isDarkMode;
 
   ThemeData get lightTheme => ThemeData(
-    tabBarTheme: const TabBarTheme(
+    tabBarTheme: const TabBarThemeData(
       indicator: BoxDecoration(
         border: Border(
           bottom: BorderSide(
@@ -78,7 +78,7 @@ class ThemeService with ChangeNotifier {
   );
 
   ThemeData get darkTheme => ThemeData(
-    tabBarTheme: const TabBarTheme(
+    tabBarTheme: const TabBarThemeData(
       indicator: BoxDecoration(
         border: Border(
           bottom: BorderSide(

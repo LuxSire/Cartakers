@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/data/models/agent_invitation_model.dart';
+import 'package:xm_frontend/data/models/company_invitation_model.dart';
 import 'package:xm_frontend/features/authentication/controllers/register_controller.dart';
 import 'package:xm_frontend/routes/routes.dart';
 
@@ -10,14 +10,14 @@ import '../../../../../../utils/constants/sizes.dart';
 import '../../../../../../utils/validators/validation.dart';
 
 class TRegisterForm extends StatelessWidget {
-  const TRegisterForm({super.key, required this.agentModel});
+  const TRegisterForm({super.key, required this.companyModel});
 
-  final AgentInvitationModel agentModel;
+  final CompanyInvitationModel companyModel;
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(RegisterController());
-    controller.init(agentModel);
+    controller.init(companyModel);
     return Form(
       key: controller.registerFormKey,
       child: Padding(

@@ -28,7 +28,7 @@ class TInvitationHeader extends StatelessWidget {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: 'Tenants10 ',
+                      text: 'XM',
                       style: Theme.of(
                         context,
                       ).textTheme.headlineSmall?.copyWith(
@@ -37,7 +37,7 @@ class TInvitationHeader extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: '\u00A0For Admins',
+                      text: '\u00A0Dashboard',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.w600,
                         fontStyle: FontStyle.italic,

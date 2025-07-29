@@ -192,7 +192,7 @@ class LoginController extends GetxController {
       final resetCode = Helpers.generateRandomNumber();
 
       // first check if email exists
-      final responseUser = await userService.getAgentByEmail(email);
+      final responseUser = await userService.getCompanyByEmail(email);
 
       if ((responseUser['id'] ?? 0) > 0) {
       } else {

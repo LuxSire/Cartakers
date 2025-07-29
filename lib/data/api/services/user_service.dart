@@ -17,11 +17,11 @@ import 'package:path/path.dart' as path;
 class UserService extends BaseService {
   // validateTenantInvitationToken
 
-  Future<Map<String, dynamic>> validateTenantInvitationToken(
+  Future<Map<String, dynamic>> validateUserInvitationToken(
     String token,
   ) async {
     try {
-      final response = await post(ApiEndpoints.validateTenantInvitationToken, {
+      final response = await post(ApiEndpoints.validateUserInvitationToken, {
         'token': token,
       });
 
@@ -45,11 +45,11 @@ class UserService extends BaseService {
     }
   }
 
-  Future<Map<String, dynamic>> validateAgentInvitationToken(
+  Future<Map<String, dynamic>> validateCompanyInvitationToken(
     String token,
   ) async {
     try {
-      final response = await post(ApiEndpoints.validateAgentInvitationToken, {
+      final response = await post(ApiEndpoints.validateCompanyInvitationToken, {
         'token': token,
       });
 
@@ -73,13 +73,13 @@ class UserService extends BaseService {
     }
   }
 
-  // registerTenant
+  // registerUser
 
-  Future<Map<String, dynamic>> registerTenant(
+  Future<Map<String, dynamic>> registerUser(
     Map<String, dynamic> registrationData,
   ) async {
     try {
-      final response = await post(ApiEndpoints.registerTenant, {
+      final response = await post(ApiEndpoints.registerUser, {
         'tenant': registrationData,
       });
 
@@ -100,16 +100,16 @@ class UserService extends BaseService {
 
       throw Exception('Unexpected response format');
     } catch (error) {
-      throw Exception('Failed to register tenant: $error');
+      throw Exception('Failed to register user: $error');
     }
   }
 
-  Future<Map<String, dynamic>> registerAgent(
+  Future<Map<String, dynamic>> registerCompany(
     Map<String, dynamic> registrationData,
   ) async {
     try {
-      final response = await post(ApiEndpoints.registerAgent, {
-        'agent': registrationData,
+      final response = await post(ApiEndpoints.registerCompany, {
+        'company': registrationData,
       });
 
       // debugPrint('User Service: registerTenant: $response');
@@ -123,25 +123,25 @@ class UserService extends BaseService {
             return {}; // Return an empty object if no data is provided
           }
         } else {
-          throw Exception(response['message'] ?? 'Failed to register agent');
+          throw Exception(response['message'] ?? 'Failed to register company');
         }
       }
 
       throw Exception('Unexpected response format');
     } catch (error) {
-      throw Exception('Failed to register agent: $error');
+      throw Exception('Failed to register company: $error');
     }
   }
 
-  // get tenant by email
+  // get user by email
 
-  Future<Map<String, dynamic>> getTenantByEmail(String email) async {
+  Future<Map<String, dynamic>> getUserByEmail(String email) async {
     try {
-      final response = await post(ApiEndpoints.getTenantByEmail, {
+      final response = await post(ApiEndpoints.getUserByEmail, {
         'email': email,
       });
 
-      debugPrint('User Service: getTenantByEmail: $response');
+      debugPrint('User Service: getUserByEmail: $response');
 
       if (response is Map<String, dynamic> && response.containsKey('success')) {
         if (response['success'] == true) {
@@ -154,23 +154,23 @@ class UserService extends BaseService {
             return {}; // Return an empty object if data is missing
           }
         } else {
-          throw Exception(response['message'] ?? 'Tenant not found');
+          throw Exception(response['message'] ?? 'User not found');
         }
       }
 
       throw Exception('Unexpected response format');
     } catch (error) {
-      throw Exception('Failed to get tenant by email: $error');
+      throw Exception('Failed to get user by email: $error');
     }
   }
 
-  Future<Map<String, dynamic>> getAgentByEmail(String email) async {
+  Future<Map<String, dynamic>> getCompanyByEmail(String email) async {
     try {
-      final response = await post(ApiEndpoints.getAgentByEmail, {
+      final response = await post(ApiEndpoints.getCompanyByEmail, {
         'email': email,
       });
 
-      debugPrint('User Service: getAgentByEmail: $response');
+      debugPrint('User Service: getCompanyByEmail: $response');
 
       if (response is Map<String, dynamic> && response.containsKey('success')) {
         if (response['success'] == true) {
@@ -185,7 +185,7 @@ class UserService extends BaseService {
         } else {
           //  throw Exception(response['message'] ?? 'Agent not found');
 
-          debugPrint('Agent not found: ' + response['message']);
+          debugPrint('Company not found: ' + response['message']);
 
           return {};
         }
@@ -200,11 +200,11 @@ class UserService extends BaseService {
     }
   }
 
-  Future<Map<String, dynamic>> getAgentById(int id) async {
+  Future<Map<String, dynamic>> getCompanyById(int id) async {
     try {
-      final response = await post(ApiEndpoints.getAgentById, {'id': id});
+      final response = await post(ApiEndpoints.getCompanyById, {'id': id});
 
-      debugPrint('User Service: getAgentById: $response');
+      debugPrint('User Service: getCompanyById : $response');
 
       if (response is Map<String, dynamic> && response.containsKey('success')) {
         if (response['success'] == true) {
@@ -219,7 +219,7 @@ class UserService extends BaseService {
         } else {
           //  throw Exception(response['message'] ?? 'Agent not found');
 
-          debugPrint('Agent not found: ' + response['message']);
+          debugPrint('Company not found: ' + response['message']);
 
           return {};
         }
@@ -228,15 +228,15 @@ class UserService extends BaseService {
       return {};
     } catch (error) {
       //throw Exception('Failed to get tenant by email: $error');
-      debugPrint('Failed to get agent by id: $error');
+      debugPrint('Failed to get company by id: $error');
 
       return {};
     }
   }
 
-  Future<Map<String, dynamic>> getTenantById(int id) async {
+  Future<Map<String, dynamic>> getUserById(int id) async {
     try {
-      final response = await post(ApiEndpoints.getTenantById, {'id': id});
+      final response = await post(ApiEndpoints.getUserById, {'id': id});
 
       //  debugPrint('User Service: getTenantByEmail: $response');
 
@@ -251,13 +251,13 @@ class UserService extends BaseService {
             return {}; // Return an empty object if data is missing
           }
         } else {
-          throw Exception(response['message'] ?? 'Tenant not found');
+          throw Exception(response['message'] ?? 'User not found');
         }
       }
 
       throw Exception('Unexpected response format');
     } catch (error) {
-      throw Exception('Failed to get tenant by email: $error');
+      throw Exception('Failed to get user by email: $error');
     }
   }
 

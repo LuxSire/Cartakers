@@ -4,12 +4,12 @@ class ApiEndpoints {
       'api/firebase/send-push-notification';
   static const String userProfile = 'api/user/profile';
   static const String properties = 'api/properties';
-  static const String validateTenantInvitationToken =
-      'api/users/validate-tenant-invitation-token';
-  static const String registerTenant = 'api/users/register-tenant';
-  static const String loginTenant = 'api/users/login-tenant';
-  static const String getTenantByEmail = 'api/users/get-tenant-by-email';
-  static const String getTenantById = 'api/users/get-tenant-by-id';
+  static const String validateUserInvitationToken =
+      'api/users/validate-user-invitation-token';
+  static const String registerUser = 'api/users/register-user';
+  static const String loginUser = 'api/users/login-user';
+  static const String getUserByEmail = 'api/users/get-user-by-email';
+  static const String getUserById = 'api/users/get-user-by-id';
 
   static const String getBuildingsLastAnnouncement =
       'api/buildings/get-building-last-announcement';
@@ -113,11 +113,11 @@ class ApiEndpoints {
       'api/users/delete-tenant-building-post-comment';
 
   ///////////// Agency Endpoints //////////////
-  static const String validateAgentInvitationToken =
-      'api/users/validate-agent-invitation-token';
-  static const String registerAgent = 'api/users/register-agent';
-  static const String getAgentByEmail = 'api/users/get-agent-by-email';
-  static const String getAgentById = 'api/users/get-agent-by-id';
+  static const String validateCompanyInvitationToken =
+      'api/users/validate-company-invitation-token';
+  static const String registerCompany = 'api/users/register-company';
+  static const String getCompanyByEmail = 'api/users/get-company-by-email';
+  static const String getCompanyById = 'api/users/get-company-by-id';
   static const String getBuildingsByAgencyId =
       'api/buildings/get-buildings-by-agency-id';
   static const String updateBuildingDetails =

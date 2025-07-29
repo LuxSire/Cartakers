@@ -34,7 +34,7 @@ class AuthenticationRepository extends GetxController {
     final userId = await UserPreferences.getUserId(); // ID only
     if (userId != null) {
       try {
-        final response = await _userService.getAgentById(int.parse(userId));
+        final response = await _userService.getCompanyById(int.parse(userId));
         _currentUser.value = UserModel.fromJson(response);
       } catch (e) {
         debugPrint('Failed to fetch user: $e');
@@ -46,7 +46,7 @@ class AuthenticationRepository extends GetxController {
   /// LOGIN with email and password
   Future<bool> loginWithEmailAndPassword(String email, String password) async {
     try {
-      final response = await _userService.getAgentByEmail(
+      final response = await _userService.getCompanyByEmail(
         email.trim().toLowerCase(),
       );
 
@@ -101,7 +101,7 @@ class AuthenticationRepository extends GetxController {
 
   Future<Map<String, dynamic>> validateInvitationCode(String code) async {
     try {
-      return await _userService.validateAgentInvitationToken(code);
+      return await _userService.validateUserInvitationToken(code);
     } catch (e) {
       return {};
     }
@@ -127,15 +127,15 @@ class AuthenticationRepository extends GetxController {
     String hashedPassword,
     String firstName,
     String lastName,
-    String agentid,
+    String companyid,
   ) async {
     try {
-      return await _userService.registerAgent({
+      return await _userService.registerCompany({
         'email': email,
         'password': hashedPassword,
         'first_name': firstName,
         'last_name': lastName,
-        'agent_id': agentid,
+        'company_id': companyid,
       });
     } catch (e) {
       return {};

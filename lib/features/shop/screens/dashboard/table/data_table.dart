@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xm_frontend/utils/constants/sizes.dart';
 
-import '../../../../../../common/widgets/data_table/paginated_data_table.dart';
+import '../../../../../common/widgets/data_table/paginated_data_table.dart';
 import '../../../../../../utils/device/device_utility.dart';
 import 'table_source.dart';
 

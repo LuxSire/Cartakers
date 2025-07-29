@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/data/models/agent_invitation_model.dart';
+import 'package:xm_frontend/data/models/company_invitation_model.dart';
 import 'package:xm_frontend/data/repositories/user/user_repository.dart';
 import 'package:xm_frontend/routes/routes.dart';
 
@@ -76,16 +76,16 @@ class InvitationController extends GetxController {
 
         Get.toNamed(
           Routes.registerAdmin,
-          arguments: AgentInvitationModel(
+          arguments: CompanyInvitationModel(
             id: userDetails['id'] ?? 0,
-            agencyName: userDetails['agency_name'],
-            agentEmail: userDetails['email'],
-            buildingAddress: userDetails['building_address'] ?? '',
-            agentId: userDetails['agent_id'],
-            agentFirstName: userDetails['first_name'] ?? '',
-            agentLastName: userDetails['last_name'] ?? '',
-            agentPhoneNumber: userDetails['phone_number'] ?? '',
-            agentCountryCode: userDetails['country_code'] ?? '',
+            companyName: userDetails['company_name'],
+            email: userDetails['email'],
+            companyId: userDetails['company_id'],
+            FirstName: userDetails['first_name'] ?? '',
+            LastName: userDetails['last_name'] ?? '',
+            PhoneNumber: userDetails['phone'] ?? '',
+            Country: userDetails['country'] ?? '',
+            address: userDetails['address'] ?? '',
           ),
         );
       } else {

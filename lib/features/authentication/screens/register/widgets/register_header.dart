@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/data/models/agent_invitation_model.dart';
+import 'package:xm_frontend/data/models/company_invitation_model.dart';
 import 'package:xm_frontend/features/authentication/controllers/register_controller.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 
@@ -9,14 +9,14 @@ import '../../../../../../utils/constants/image_strings.dart';
 import '../../../../../../utils/constants/sizes.dart';
 
 class TRegisterHeader extends StatelessWidget {
-  const TRegisterHeader({super.key, required this.agentModel});
+  const TRegisterHeader({super.key, required this.companyModel});
 
-  final AgentInvitationModel agentModel;
+  final CompanyInvitationModel companyModel;
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(RegisterController());
-    controller.init(agentModel);
+    controller.init(companyModel);
 
     return SizedBox(
       width: double.infinity,
@@ -35,7 +35,7 @@ class TRegisterHeader extends StatelessWidget {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: 'Tenants10 ',
+                      text: 'XM',
                       style: Theme.of(
                         context,
                       ).textTheme.headlineSmall?.copyWith(
@@ -44,7 +44,7 @@ class TRegisterHeader extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: '\u00A0For Admins',
+                      text: '\u00A0Dashboard',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.w600,
                         fontStyle: FontStyle.italic,
@@ -100,7 +100,7 @@ class TRegisterHeader extends StatelessWidget {
                   child: Row(
                     children: [
                       Text(
-                        controller.agencyName.value,
+                        controller.companyName.value,
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -109,7 +109,7 @@ class TRegisterHeader extends StatelessWidget {
                       Expanded(
                         child: Text(
                           overflow: TextOverflow.ellipsis,
-                          controller.buildingAddress.value,
+                          controller.address.value,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ),

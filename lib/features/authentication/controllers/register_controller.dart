@@ -6,7 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/app/utils/helpers.dart';
 import 'package:xm_frontend/app/utils/user_preferences.dart';
-import 'package:xm_frontend/data/models/agent_invitation_model.dart';
+import 'package:xm_frontend/data/models/company_invitation_model.dart';
 import 'package:xm_frontend/data/models/user_pref_model.dart';
 import 'package:xm_frontend/data/repositories/user/user_repository.dart';
 import 'package:xm_frontend/routes/routes.dart';
@@ -40,9 +40,9 @@ class RegisterController extends GetxController {
   final password = TextEditingController();
   final confirmPassword = TextEditingController();
 
-  final agencyName = ''.obs;
-  final buildingAddress = ''.obs;
-  final agentId = 0.obs;
+  final companyName = ''.obs;
+  final address = ''.obs;
+  final companyId = 0.obs;
 
   final invitationId = 0.obs;
 
@@ -56,16 +56,16 @@ class RegisterController extends GetxController {
   }
 
   /// Init Data
-  void init(AgentInvitationModel agentModel) {
-    debugPrint(agentModel.agencyName);
-    firstName.text = agentModel.agentFirstName;
-    lastName.text = agentModel.agentLastName;
-    email.text = agentModel.agentEmail;
-    phoneNumber.text = agentModel.agentPhoneNumber;
-    agencyName.value = agentModel.agencyName;
-    buildingAddress.value = agentModel.buildingAddress;
-    agentId.value = agentModel.agentId;
-    invitationId.value = agentModel.id;
+  void init(CompanyInvitationModel companyModel) {
+    debugPrint(companyModel.companyName);
+    firstName.text = companyModel.FirstName;
+    lastName.text = companyModel.LastName;
+    email.text = companyModel.email;
+    phoneNumber.text = companyModel.PhoneNumber;
+    companyName.value = companyModel.companyName;
+    companyId.value = companyModel.companyId;
+    invitationId.value = companyModel.id;
+    address.value = companyModel.address;
   }
 
   /// Handles email and password sign-in process
@@ -103,7 +103,7 @@ class RegisterController extends GetxController {
             hashedPassword,
             firstName.text,
             lastName.text,
-            agentId.value.toString(),
+            companyId.value.toString(),
           );
 
       // Remove Loader
@@ -114,7 +114,7 @@ class RegisterController extends GetxController {
 
         try {
           UserPrefModel user = UserPrefModel(
-            id: agentId.value.toString(),
+            id: companyId.value.toString(),
             displayName: '${firstName.text} ${lastName.text}',
             hasLoggedIn: false,
             hasRegistered: true,
@@ -133,7 +133,7 @@ class RegisterController extends GetxController {
             2, // 2 accepted invitation
           );
           await userController.userRepository.updateUserStatus(
-            agentId.value,
+            companyId.value,
             2, // 2 Active
           );
 

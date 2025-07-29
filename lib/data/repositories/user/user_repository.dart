@@ -106,7 +106,7 @@ class UserRepository extends GetxController {
       return UserModel.empty();
     }
 
-    final response = await _userService.getAgentById(
+    final response = await _userService.getCompanyById(
       int.parse(userId.toString()),
     );
 
@@ -121,7 +121,7 @@ class UserRepository extends GetxController {
 
   Future<UserModel> fetchUserDetailsById(int userId) async {
     //debugPrint('User ID from  UserRepository: $userId');
-    final response = await _userService.getAgentById(
+    final response = await _userService.getCompanyById(
       int.parse(userId.toString()),
     );
 

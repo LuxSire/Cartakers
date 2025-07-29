@@ -2,7 +2,6 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/utils/theme/widget_themes/checkbox_theme.dart';
 
 import '../../../utils/constants/colors.dart';
 import '../../../utils/constants/image_strings.dart';
@@ -43,7 +42,7 @@ class TPaginatedDataTable extends StatelessWidget {
       height: tableHeight,
       child: Theme(
         data: Theme.of(context).copyWith(
-          cardTheme: const CardTheme(color: Colors.white, elevation: 0),
+          cardTheme: const CardThemeData(color: Colors.white, elevation: 0),
           checkboxTheme: CheckboxThemeData(
             fillColor: MaterialStateProperty.all(TColors.primary),
             checkColor: MaterialStateProperty.all(Colors.white),
