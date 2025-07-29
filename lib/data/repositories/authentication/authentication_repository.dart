@@ -43,7 +43,7 @@ class AuthenticationRepository extends GetxController {
     }
   }
 
-  /// LOGIN
+  /// LOGIN with email and password
   Future<bool> loginWithEmailAndPassword(String email, String password) async {
     try {
       final response = await _userService.getAgentByEmail(
