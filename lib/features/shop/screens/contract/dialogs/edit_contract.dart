@@ -6,7 +6,7 @@ import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/data/models/contract_model.dart';
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
 import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
-import 'package:xm_frontend/features/shop/screens/tenant/dialogs/create_tenant.dart';
+import 'package:xm_frontend/features/shop/screens/user/dialogs/create_user.dart';
 import 'package:xm_frontend/routes/routes.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';
@@ -236,7 +236,7 @@ class EditContractDialog extends StatelessWidget {
                         dialogHeight: 500,
                         dialogWidth: 600, // Optional for desktop
                         items:
-                            controller.tenants
+                            controller.users
                                 .map(
                                   (t) => MultiSelectItem<UserModel>(
                                     t,
@@ -244,9 +244,9 @@ class EditContractDialog extends StatelessWidget {
                                   ),
                                 )
                                 .toList(),
-                        initialValue: controller.selectedTenants,
+                        initialValue: controller.selectedUsers,
                         onConfirm: (values) {
-                          controller.selectedTenants.value = values;
+                          controller.selectedUsers.value = values;
                         },
                         chipDisplay: MultiSelectChipDisplay(
                           chipColor: TColors.primary.withOpacity(0.1),
@@ -255,7 +255,7 @@ class EditContractDialog extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           items:
-                              controller.selectedTenants
+                              controller.selectedUsers
                                   .map(
                                     (t) => MultiSelectItem<UserModel>(
                                       t,
@@ -335,10 +335,10 @@ class EditContractDialog extends StatelessWidget {
                               context: context,
                               barrierDismissible: false,
                               builder: (BuildContext context) {
-                                return CreateTenantDialog(
-                                  displayBuildings: false,
-                                  buildingId:
-                                      controller.contractModel.value.buildingId,
+                                return CreateUserDialog(
+                                  displayObjects: false,
+                                  objectId:
+                                      controller.contractModel.value.objectId,
                                 );
                               },
                             );
@@ -355,7 +355,7 @@ class EditContractDialog extends StatelessWidget {
                           label: Text(
                             AppLocalization.of(
                               context,
-                            ).translate('tenants_screen.lbl_create_new_tenant'),
+                            ).translate('users_screen.lbl_create_new_user'),
                           ),
                         ),
                       ),

@@ -18,13 +18,13 @@ class BookingTableHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final agencyId = AuthenticationRepository.instance.currentUser?.agencyId;
+    final companyId = AuthenticationRepository.instance.currentUser?.companyId;
     final controller = Get.put(
       BookingController(
-        sourceType: BookingSourceType.agency,
-        id: int.parse(agencyId!),
+        sourceType: BookingSourceType.company,
+        id: int.parse(companyId!),
       ),
-      tag: 'agency_bookings',
+      tag: 'company_bookings',
     );
     final isDesktop = TDeviceUtils.isDesktopScreen(context);
     final width = MediaQuery.of(context).size.width;

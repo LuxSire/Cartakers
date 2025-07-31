@@ -7,11 +7,11 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/data/abstract/base_data_table_controller.dart';
-import 'package:xm_frontend/data/models/building_model.dart';
+import 'package:xm_frontend/data/models/object_model.dart';
 import 'package:xm_frontend/data/models/contract_model.dart';
 import 'package:xm_frontend/data/models/unit_model.dart';
 import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
-import 'package:xm_frontend/data/repositories/building/building_repository.dart';
+import 'package:xm_frontend/data/repositories/object/object_repository.dart';
 
 import 'package:xm_frontend/data/repositories/contract/contract_repository.dart';
 import 'package:xm_frontend/data/repositories/unit/unit_repository.dart';
@@ -19,7 +19,7 @@ import 'package:xm_frontend/data/repositories/user/user_repository.dart';
 import 'package:xm_frontend/features/personalization/controllers/settings_controller.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
-import 'package:xm_frontend/features/shop/controllers/building/building_unit_detail_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/object/object_unit_detail_controller.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 import 'package:xm_frontend/utils/helpers/helper_functions.dart';
 import 'package:xm_frontend/utils/helpers/network_manager.dart';
@@ -30,8 +30,8 @@ class ContractController extends TBaseController<ContractModel> {
   static ContractController get instance => Get.find();
 
   final _contractRepository = Get.put(ContractRepository());
-  final _unitReposotory = Get.put(UnitRepository());
-  final _buildingRepository = Get.put(BuildingRepository());
+  final _unitRepository = Get.put(UnitRepository());
+  final _objectRepository = Get.put(ObjectRepository());
 
   final formKey = GlobalKey<FormState>();
 
@@ -42,8 +42,8 @@ class ContractController extends TBaseController<ContractModel> {
   final contractReferenceController = TextEditingController();
   final startDateController = TextEditingController();
   final endDateController = TextEditingController();
-  final tenants = <UserModel>[].obs;
-  final selectedTenants = <UserModel>[].obs;
+  final users = <UserModel>[].obs;
+  final selectedUsers = <UserModel>[].obs;
   final RxInt selectedStatus = 3.obs; // default to Pending
 
   RxBool filtersApplied = false.obs; // Track if filters are applied
@@ -55,16 +55,16 @@ class ContractController extends TBaseController<ContractModel> {
 
   var searchQueryValue = "".obs;
 
-  RxBool loadingTenants = true.obs;
+  RxBool loadingUsers = true.obs;
 
-  // This will be used to filter tenants by name or email
-  var filteredTenants = <UserModel>[].obs;
+  // This will be used to filter users by name or email
+  var filteredUsers = <UserModel>[].obs;
   RxList<UnitModel> unitsList = <UnitModel>[].obs;
-  RxList<BuildingModel> buildingsList = <BuildingModel>[].obs;
+  RxList<ObjectModel> objectsList = <ObjectModel>[].obs;
 
   // this is for when creating a new contract from all contracts table
   RxInt selectedUnitId = 0.obs;
-  RxInt selectedBuildingId = 0.obs;
+  RxInt selectedObjectId = 0.obs;
 
   RxList<ContractModel> allContracts = <ContractModel>[].obs;
   RxList<ContractModel> filteredContracts = <ContractModel>[].obs;
@@ -73,7 +73,7 @@ class ContractController extends TBaseController<ContractModel> {
   Rx<DateTime?> endDate = Rx<DateTime?>(null);
 
   RxInt selectedStatusId = (-1).obs; // -1 means all statuses
-  RxInt selectedBuildingFilterId = 0.obs; // 0 = All
+  RxInt selectedObjectFilterId = 0.obs; // 0 = All
 
   final userController = Get.find<UserController>();
 
@@ -82,28 +82,28 @@ class ContractController extends TBaseController<ContractModel> {
     // Retrieve stored email and password if "Remember Me" is selected
     super.onInit();
     //
-    loadTenants();
-    loadAllBuildings();
-    loadContarcts();
+    loadUsers();
+    loadAllObjects();
+    loadContracts();
   }
 
-  Future<void> loadContarcts() async {
+  Future<void> loadContracts() async {
     loading.value = true;
     try {
       final contracts =
-          await _contractRepository.getAllAgencyBuildingsContracts();
+          await _contractRepository.getAllCompanyObjectsContracts();
 
       final updatedUser = await userController.fetchUserDetails();
 
-      final userBuildingRestrictions = updatedUser.buildingPermissionIds ?? [];
+      final userObjectRestrictions = updatedUser.objectPermissionIds ?? [];
 
-      debugPrint('User building restrictions: $userBuildingRestrictions');
+      debugPrint('User object restrictions: $userObjectRestrictions');
 
       final filteredContractsData =
           contracts
               .where(
-                (contract) => userBuildingRestrictions.contains(
-                  int.parse(contract.buildingId.toString()),
+                (contract) => userObjectRestrictions.contains(
+                  int.parse(contract.objectId.toString()),
                 ),
               )
               .toList();
@@ -123,9 +123,9 @@ class ContractController extends TBaseController<ContractModel> {
   }
 
   // Load tenants and update state
-  void loadTenants() async {
+  void loadUsers() async {
     try {
-      loadingTenants.value = true; // Start loading
+      loadingUsers.value = true; // Start loading
       // Simulate a delay or actual data fetching logic
       await Future.delayed(Duration(seconds: 1)); // Mock async fetch
 
@@ -133,13 +133,13 @@ class ContractController extends TBaseController<ContractModel> {
       debugPrint('Contract ID: ${contractModel.value.id}');
 
       // Assuming contractModel is already populated
-      filteredTenants.value = contractModel.value.tenants ?? [];
+      filteredUsers.value = contractModel.value.users ?? [];
 
-      debugPrint('Filtered Tenants: ${filteredTenants.length}');
+      debugPrint('Filtered Users: ${filteredUsers.length}');
 
-      loadingTenants.value = false; // Mark loading as done
+      loadingUsers.value = false; // Mark loading as done
     } catch (e) {
-      loadingTenants.value = false;
+      loadingUsers.value = false;
       TLoaders.errorSnackBar(
         title: AppLocalization.of(
           Get.context!,
@@ -149,16 +149,16 @@ class ContractController extends TBaseController<ContractModel> {
     }
   }
 
-  void loadAllBuildingUnits(int buildingId) async {
+  void loadAllObjectUnits(int objectId) async {
     try {
-      final result = await _buildingRepository.fetchBuildingUnits(
-        buildingId.toString(),
+      final result = await _objectRepository.fetchObjectUnits(
+        objectId.toString(),
       );
 
       unitsList.assignAll(result);
 
-      debugPrint('Building Units: ${unitsList.length}');
-      debugPrint('Building ID: $buildingId');
+      debugPrint('Object Units: ${unitsList.length}');
+      debugPrint('Object ID: $objectId');
     } catch (e) {
       TLoaders.errorSnackBar(
         title: AppLocalization.of(
@@ -171,25 +171,25 @@ class ContractController extends TBaseController<ContractModel> {
     }
   }
 
-  void loadAllBuildings() async {
+  void loadAllObjects() async {
     try {
-      final result = await _buildingRepository.getAllBuildings();
+      final result = await _objectRepository.getAllObjects();
       final updatedUser = await userController.fetchUserDetails();
 
-      final userBuildingRestrictions = updatedUser.buildingPermissionIds ?? [];
+      final userObjectRestrictions = updatedUser.objectPermissionIds ?? [];
 
       // debugPrint('User building restrictions: $userBuildingRestrictions');
 
-      final filteredBuildings =
+      final filteredObjects =
           result
               .where(
-                (building) => userBuildingRestrictions.contains(
-                  int.parse(building.id.toString()),
+                (object) => userObjectRestrictions.contains(
+                  int.parse(object.id.toString()),
                 ),
               )
               .toList();
 
-      buildingsList.assignAll(filteredBuildings);
+      objectsList.assignAll(filteredObjects);
     } catch (e) {
       TLoaders.errorSnackBar(
         title: AppLocalization.of(
@@ -215,11 +215,11 @@ class ContractController extends TBaseController<ContractModel> {
     );
 
     // Fetch assigned tenants
-    final assignedTenants = await UserRepository.instance
-        .fetchTenantsByContractId(int.parse(contractModel.value.id!));
-    contractModel.value.tenants = assignedTenants;
+    final assignedUsers = await UserRepository.instance
+        .fetchUsersByContractId(int.parse(contractModel.value.id!));
+    contractModel.value.users = assignedUsers;
 
-    contractModel.value.tenantCount = assignedTenants.length;
+    contractModel.value.userCount = assignedUsers.length;
 
     // Pre-fill form
     contractReferenceController.text = contractModel.value.contractCode ?? '';
@@ -243,19 +243,19 @@ class ContractController extends TBaseController<ContractModel> {
     selectedStatus.value = contractModel.value.statusId!;
 
     // Load unassigned + merge
-    final unassigned = await _contractRepository.getAllNonContractTenants(
-      contractModel.value.buildingId!,
+    final unassigned = await _contractRepository.getAllNonContractUsers(
+      contractModel.value.objectId!,
     );
 
-    final mergedTenants = [
+    final mergedUsers = [
       ...unassigned,
-      ...assignedTenants.where((a) => !unassigned.any((u) => u.id == a.id)),
+      ...assignedUsers.where((a) => !unassigned.any((u) => u.id == a.id)),
     ];
-    tenants.assignAll(mergedTenants);
+    users.assignAll(mergedUsers);
 
-    // Pre-select assigned tenants
-    selectedTenants.value =
-        tenants.where((t) => assignedTenants.any((a) => a.id == t.id)).toList();
+    // Pre-select assigned users
+    selectedUsers.value =
+        users.where((t) => assignedUsers.any((a) => a.id == t.id)).toList();
   }
 
   String statusIdToLocalizedText(BuildContext context, int statusId) {
@@ -378,34 +378,34 @@ class ContractController extends TBaseController<ContractModel> {
     }
   }
 
-  Future<void> loadNonContractTenants(int bId) async {
+  Future<void> loadNonContractUsers(int oId) async {
     try {
       loading.value = true;
 
-      int? buildingId;
+      int? objectId;
 
       try {
-        // Attempt to get the building ID from the current unit
-        buildingId =
-            BuildingUnitDetailController.instance.unit.value.buildingId;
+        // Attempt to get the object ID from the current unit
+        objectId =
+            ObjectUnitDetailController.instance.unit.value.objectId;
       } catch (e) {
-        buildingId = 0; // Fallback to 0 if not available
+        objectId = 0; // Fallback to 0 if not available
       }
 
-      if (buildingId == null || buildingId == 0) {
-        // If buildingId is still 0, use the provided bId
-        buildingId = bId;
+      if (objectId == null || objectId == 0) {
+        // If objectId is still 0, use the provided oId
+        objectId = oId;
       }
 
-      if (bId != 0) {
-        buildingId = bId;
+      if (oId != 0) {
+        objectId = oId;
       }
 
-      final result = await _contractRepository.getAllNonContractTenants(
-        int.parse(buildingId.toString()),
+      final result = await _contractRepository.getAllNonContractUsers(
+        int.parse(objectId.toString()),
       );
 
-      tenants.assignAll(result);
+      users.assignAll(result);
     } catch (e) {
       TLoaders.errorSnackBar(
         title: AppLocalization.of(
@@ -418,18 +418,18 @@ class ContractController extends TBaseController<ContractModel> {
     }
   }
 
-  Future<void> loadSelectedBuildingNonContractTenants(int buildingId) async {
+  Future<void> loadselectedObjectNonContractUsers(int objectId) async {
     try {
       loading.value = true;
 
       debugPrint(
-        'loadSelectedBuildingNonContractTenants Building ID: $buildingId',
+        'loadselectedObjectNonContractUsers Object ID: $objectId',
       );
-      final result = await _contractRepository.getAllNonContractTenants(
-        int.parse(buildingId.toString()),
+      final result = await _contractRepository.getAllNonContractUsers(
+        int.parse(objectId.toString()),
       );
 
-      tenants.assignAll(result);
+      users.assignAll(result);
     } catch (e) {
       TLoaders.errorSnackBar(
         title: AppLocalization.of(
@@ -442,43 +442,43 @@ class ContractController extends TBaseController<ContractModel> {
     }
   }
 
-  Future<void> loadNonContractTenantsMerged(ContractModel contract) async {
+  Future<void> loadNonContractUsersMerged(ContractModel contract) async {
     try {
       loading.value = true;
 
-      final buildingId =
-          BuildingUnitDetailController.instance.unit.value.buildingId;
+      final objectId =
+          ObjectUnitDetailController.instance.unit.value.objectId;
 
-      debugPrint('loadNonContractTenants Building ID: $buildingId');
+      debugPrint('loadNonContractUsers Object ID: $objectId');
 
-      // Load unassigned tenants
-      final unassigned = await _contractRepository.getAllNonContractTenants(
-        int.parse(buildingId.toString()),
+      // Load unassigned users
+      final unassigned = await _contractRepository.getAllNonContractUsers(
+        int.parse(objectId.toString()),
       );
 
-      // Merge with assigned tenants from the contract
-      final assigned = contract.tenants ?? [];
+      // Merge with assigned users from the contract
+      final assigned = contract.users ?? [];
 
-      debugPrint('assigned Tenants: ${assigned.length}');
+      debugPrint('assigned Users: ${assigned.length}');
 
-      // Add assigned tenants only if not already in unassigned list
+      // Add assigned users only if not already in unassigned list
       final merged = [
         ...unassigned,
         ...assigned.where(
-          (assignedTenant) =>
+          (assignedUser) =>
               !unassigned.any(
-                (t) => t.id.toString() == assignedTenant.id.toString(),
+                (t) => t.id.toString() == assignedUser.id.toString(),
               ),
         ),
       ];
 
-      tenants.assignAll(merged);
+      users.assignAll(merged);
 
-      debugPrint('Merged Tenants: ${tenants.length}');
+      debugPrint('Merged Users: ${users.length}');
 
-      // Now preselect the assigned tenants
-      selectedTenants.value =
-          tenants
+      // Now preselect the assigned users
+      selectedUsers.value =
+          users
               .where(
                 (t) => assigned.any((a) => a.id.toString() == t.id.toString()),
               )
@@ -515,9 +515,9 @@ class ContractController extends TBaseController<ContractModel> {
         return;
       }
       debugPrint('Selected Status: ${selectedStatus.value}');
-      debugPrint('Selected Tenants: ${selectedTenants.length}');
+      debugPrint('Selected Users: ${selectedUsers.length}');
       debugPrint('Selected Unit ID: ${selectedUnitId.value}');
-      debugPrint('Selected Building ID: ${selectedBuildingId.value}');
+      debugPrint('Selected Object ID: ${selectedObjectId.value}');
 
       // Map Data
       contractModel.value.contractCode =
@@ -532,10 +532,10 @@ class ContractController extends TBaseController<ContractModel> {
       }
 
       contractModel.value.statusId = 3;
-      contractModel.value.tenants = selectedTenants;
-      contractModel.value.tenantCount = selectedTenants.length;
-      contractModel.value.tenantNames = selectedTenants
-          .map((tenant) => tenant.displayName)
+      contractModel.value.users = selectedUsers;
+      contractModel.value.userCount = selectedUsers.length;
+      contractModel.value.userNames = selectedUsers
+          .map((user) => user.displayName)
           .join(', ');
 
       if (selectedUnitId.value != 0) {
@@ -544,16 +544,15 @@ class ContractController extends TBaseController<ContractModel> {
                 .value; // Use selected unit ID from All contracts table
       } else {
         contractModel.value.unitId = int.parse(
-          BuildingUnitDetailController.instance.unit.value.id!,
+          ObjectUnitDetailController.instance.unit.value.id!,
         );
       }
 
-      if (selectedBuildingId.value != 0) {
-        contractModel.value.buildingId = selectedBuildingId.value;
+      if (selectedObjectId.value != 0) {
+        contractModel.value.objectId = selectedObjectId.value;
       } else {
-        contractModel.value.buildingId = int.parse(
-          BuildingUnitDetailController.instance.unit.value.buildingId
-              .toString(),
+        contractModel.value.objectId = int.parse(
+          ObjectUnitDetailController.instance.unit.value.id!,
         );
       }
 
@@ -609,7 +608,7 @@ class ContractController extends TBaseController<ContractModel> {
 
   Future<void> submitContractFromUnitAssign(
     int assignedUnitId,
-    int buildingId,
+    int objectId,
   ) async {
     // the parameter is used when creating a new contract from assigned unit
     try {
@@ -624,15 +623,15 @@ class ContractController extends TBaseController<ContractModel> {
       }
 
       selectedUnitId.value = assignedUnitId;
-      selectedBuildingId.value = buildingId;
+      selectedObjectId.value = objectId;
 
       debugPrint('Selected Status: ${selectedStatus.value}');
-      debugPrint('Selected Tenants: ${selectedTenants.length}');
+      debugPrint('Selected Users: ${selectedUsers.length}');
       debugPrint(
         'Selected Unit ID  submitContractFromUnitAssign: ${selectedUnitId.value}',
       );
 
-      debugPrint('Selected Building ID: ${selectedBuildingId.value}');
+      debugPrint('Selected Object ID: ${selectedObjectId.value}');
 
       // Map Data
       contractModel.value.contractCode =
@@ -647,21 +646,20 @@ class ContractController extends TBaseController<ContractModel> {
       }
 
       contractModel.value.statusId = 3;
-      contractModel.value.tenants = selectedTenants;
-      contractModel.value.tenantCount = selectedTenants.length;
-      contractModel.value.tenantNames = selectedTenants
-          .map((tenant) => tenant.displayName)
+      contractModel.value.users = selectedUsers;
+      contractModel.value.userCount = selectedUsers.length;
+      contractModel.value.userNames = selectedUsers
+          .map((user) => user.displayName)
           .join(', ');
 
-      contractModel.value.buildingId = selectedBuildingId.value;
+      contractModel.value.objectId = selectedObjectId.value;
 
       if (selectedUnitId.value != 0) {
         contractModel.value.unitId =
-            selectedUnitId
-                .value; // Use selected unit ID from All contracts table
+            selectedUnitId.value; // Use selected unit ID from All contracts table
       } else {
         contractModel.value.unitId = int.parse(
-          BuildingUnitDetailController.instance.unit.value.id!,
+          ObjectUnitDetailController.instance.unit.value.id!,
         );
       }
 
@@ -734,8 +732,8 @@ class ContractController extends TBaseController<ContractModel> {
         return;
       }
 
-      // Check if any tenant is selected and statusId is not 3 (pending)
-      if (selectedTenants.isEmpty && selectedStatus.value != 3) {
+      // Check if any user is selected and statusId is not 3 (pending)
+      if (selectedUsers.isEmpty && selectedStatus.value != 3) {
         TLoaders.errorSnackBar(
           title: AppLocalization.of(
             Get.context!,
@@ -833,9 +831,9 @@ class ContractController extends TBaseController<ContractModel> {
               parsedStartDate?.toIso8601String() ||
           contract.endDate?.toIso8601String() !=
               parsedEndDate?.toIso8601String() ||
-          contract.tenantCount != selectedTenants.length ||
+          contract.userCount != selectedUsers.length ||
           contract.statusId != selectedStatus ||
-          contract.tenants != selectedTenants) {
+          contract.users != selectedUsers) {
         isContractUpdated = true;
 
         // Map Data
@@ -867,10 +865,10 @@ class ContractController extends TBaseController<ContractModel> {
         }
 
         contractModel.value.statusId = selectedStatus.value;
-        contractModel.value.tenants = selectedTenants;
-        contractModel.value.tenantCount = selectedTenants.length;
-        contractModel.value.tenantNames = selectedTenants
-            .map((tenant) => tenant.displayName)
+        contractModel.value.users = selectedUsers;
+        contractModel.value.userCount = selectedUsers.length;
+        contractModel.value.userNames = selectedUsers
+            .map((user) => user.displayName)
             .join(', ');
 
         // Call Repository to Update
@@ -878,7 +876,7 @@ class ContractController extends TBaseController<ContractModel> {
             .updateContractDetails(contractModel.value);
 
         if (updateUnitStatus && isContractUpdatedSuccessfully) {
-          await _unitReposotory.updateUnitStatus(
+          await _unitRepository.updateUnitStatus(
             int.parse(contract.unitId.toString()),
             newUnitStatus,
           );
@@ -971,7 +969,7 @@ class ContractController extends TBaseController<ContractModel> {
           .updateContractDetails(contractModel.value);
 
       if (updateUnitStatus && isContractUpdatedSuccessfully) {
-        await _unitReposotory.updateUnitStatus(
+        await _unitRepository.updateUnitStatus(
           int.parse(contract.unitId.toString()),
           newUnitStatus,
         );
@@ -1041,7 +1039,7 @@ class ContractController extends TBaseController<ContractModel> {
           'Unit ID: ${int.parse(contractModel.value.unitId.toString())}',
         );
         // update unit status
-        await _unitReposotory.updateUnitStatus(
+        await _unitRepository.updateUnitStatus(
           int.parse(contract.unitId.toString()),
           1, // set to available
         );
@@ -1088,7 +1086,7 @@ class ContractController extends TBaseController<ContractModel> {
     }
   }
 
-  Future<bool> removeTenantFromContract(int contractId, int tenantId) async {
+  Future<bool> removeUserFromContract(int contractId, int userId) async {
     try {
       // Start Loading
       loading.value = true;
@@ -1101,9 +1099,9 @@ class ContractController extends TBaseController<ContractModel> {
       }
       bool isRemoved = false;
 
-      isRemoved = await _contractRepository.removeTenantFromContract(
+      isRemoved = await _contractRepository.removeUserFromContract(
         contractId,
-        tenantId,
+        userId,
       );
 
       // Remove Loader
@@ -1134,7 +1132,7 @@ class ContractController extends TBaseController<ContractModel> {
       update();
       return true;
     } catch (e) {
-      debugPrint('Error from catch removeTenantFromContract: $e');
+      debugPrint('Error from catch removeUserFromContract: $e');
       loading.value = false;
       TFullScreenLoader.stopLoading();
       TLoaders.errorSnackBar(
@@ -1147,12 +1145,12 @@ class ContractController extends TBaseController<ContractModel> {
     }
   }
 
-  Future<bool> updateTenantContractPrimary(int contractId, int tenantId) async {
+  Future<bool> updateUserContractPrimary(int contractId, int userId) async {
     try {
       // Start Loading
       loading.value = true;
 
-      debugPrint('updateTenantContractPrimary: $contractId, $tenantId');
+      debugPrint('updateUserContractPrimary: $contractId, $userId');
 
       // Check Internet Connectivity
       final isConnected = await NetworkManager.instance.isConnected();
@@ -1162,9 +1160,9 @@ class ContractController extends TBaseController<ContractModel> {
       }
       bool isUpdated = false;
 
-      isUpdated = await _contractRepository.updateTenantContractPrimary(
+      isUpdated = await _contractRepository.updateUserContractPrimary(
         contractId,
-        tenantId,
+        userId,
       );
 
       // Remove Loader
@@ -1195,7 +1193,7 @@ class ContractController extends TBaseController<ContractModel> {
       update();
       return true;
     } catch (e) {
-      debugPrint('Error from catch updateTenantContractPrimary: $e');
+      debugPrint('Error from catch updateUserContractPrimary: $e');
       loading.value = false;
       TFullScreenLoader.stopLoading();
       TLoaders.errorSnackBar(
@@ -1212,14 +1210,14 @@ class ContractController extends TBaseController<ContractModel> {
     searchQueryValue.value = query;
 
     if (query.isEmpty) {
-      filteredTenants.value = contractModel.value.tenants ?? [];
+      filteredUsers.value = contractModel.value.users ?? [];
     } else {
-      filteredTenants.value =
-          contractModel.value.tenants?.where((tenant) {
-            return tenant.displayName.toLowerCase().contains(
+      filteredUsers.value =
+          contractModel.value.users?.where((user) {
+            return user.displayName.toLowerCase().contains(
                   query.toLowerCase(),
                 ) ||
-                tenant.email.toLowerCase().contains(query.toLowerCase());
+                user.email.toLowerCase().contains(query.toLowerCase());
           }).toList() ??
           [];
     }
@@ -1439,18 +1437,18 @@ class ContractController extends TBaseController<ContractModel> {
 
   void applyFilters(
     int statusId,
-    int buildingId,
+    int objectId,
     DateTime? start,
     DateTime? end,
   ) {
     selectedStatusId.value = statusId;
 
-    selectedBuildingFilterId.value = buildingId;
+    selectedObjectFilterId.value = objectId;
     startDate.value = start;
     endDate.value = end;
 
     debugPrint(
-      'applyFilters: statusId=$statusId, buildingId=$buildingId, start=$start, end=$end',
+      'applyFilters: statusId=$statusId, objectId=$objectId, start=$start, end=$end',
     );
 
     filterItemsWithSearch(searchTextController.text);
@@ -1458,7 +1456,7 @@ class ContractController extends TBaseController<ContractModel> {
 
   void clearFilters() {
     selectedStatusId.value = -1;
-    selectedBuildingFilterId.value = 0;
+    selectedObjectFilterId.value = 0;
     startDate.value = null;
     endDate.value = null;
     searchTextController.clear();
@@ -1477,7 +1475,7 @@ class ContractController extends TBaseController<ContractModel> {
     contractReferenceController.clear();
     startDateController.clear();
     endDateController.clear();
-    selectedTenants.clear();
+    selectedUsers.clear();
     selectedStatus.value = 3; // Default to pending
   }
 
@@ -1485,9 +1483,9 @@ class ContractController extends TBaseController<ContractModel> {
     contractReferenceController.clear();
     startDateController.clear();
     endDateController.clear();
-    selectedTenants.clear();
+    selectedUsers.clear();
     selectedStatus.value = 3;
-    selectedBuildingId.value = 0;
+    selectedObjectId.value = 0;
   }
 
   Map<int, String> getTranslatedContractStatuses() {
@@ -1513,9 +1511,9 @@ class ContractController extends TBaseController<ContractModel> {
               (item.statusId != null &&
                   item.statusId == selectedStatusId.value);
 
-          final matchesBuilding =
-              selectedBuildingFilterId.value == 0 ||
-              item.buildingId == selectedBuildingFilterId.value;
+          final matchesObject =
+              selectedObjectFilterId.value == 0 ||
+              item.objectId == selectedObjectFilterId.value;
 
           final matchesStartDate =
               startDate.value == null ||
@@ -1532,7 +1530,7 @@ class ContractController extends TBaseController<ContractModel> {
 
           return matchesSearch &&
               matchesStatus &&
-              matchesBuilding &&
+              matchesObject &&
               matchesStartDate &&
               matchesEndDate;
         }).toList();
@@ -1549,7 +1547,7 @@ class ContractController extends TBaseController<ContractModel> {
           selectedStatusId.value = -1;
           applyFilters(
             selectedStatusId.value,
-            selectedBuildingFilterId.value,
+            selectedObjectFilterId.value,
             startDate.value,
             endDate.value,
           );
@@ -1557,17 +1555,17 @@ class ContractController extends TBaseController<ContractModel> {
       });
     }
 
-    if (selectedBuildingFilterId.value != 0) {
-      final selectedBuilding = buildingsList.firstWhereOrNull(
-        (b) => int.parse(b.id!) == selectedBuildingFilterId.value,
+    if (selectedObjectFilterId.value != 0) {
+      final selectedObject = objectsList.firstWhereOrNull(
+        (b) => int.parse(b.id!) == selectedObjectFilterId.value,
       );
-      if (selectedBuilding != null) {
+      if (selectedObject != null) {
         filters.add({
-          selectedBuilding.name.toString(): () {
-            selectedBuildingFilterId.value = 0;
+          selectedObject.name.toString(): () {
+            selectedObjectFilterId.value = 0;
             applyFilters(
               selectedStatusId.value,
-              selectedBuildingFilterId.value,
+              selectedObjectFilterId.value,
               startDate.value,
               endDate.value,
             );
@@ -1583,7 +1581,7 @@ class ContractController extends TBaseController<ContractModel> {
               startDate.value = null;
               applyFilters(
                 selectedStatusId.value,
-                selectedBuildingFilterId.value,
+                selectedObjectFilterId.value,
                 startDate.value,
                 endDate.value,
               );
@@ -1598,7 +1596,7 @@ class ContractController extends TBaseController<ContractModel> {
               endDate.value = null;
               applyFilters(
                 selectedStatusId.value,
-                selectedBuildingFilterId.value,
+                selectedObjectFilterId.value,
                 startDate.value,
                 endDate.value,
               );
@@ -1613,19 +1611,19 @@ class ContractController extends TBaseController<ContractModel> {
   Future<List<ContractModel>> fetchItems() async {
     // return await _contractRepository.getAllBuildingContracts();
 
-    final result = await _contractRepository.getAllAgencyBuildingsContracts();
+    final result = await _contractRepository.getAllCompanyObjectsContracts();
 
     final updatedUser = await userController.fetchUserDetails();
 
-    final userBuildingRestrictions = updatedUser.buildingPermissionIds ?? [];
+    final userObjectRestrictions = updatedUser.objectPermissionIds ?? [];
 
-    debugPrint('User building restrictions: $userBuildingRestrictions');
+    debugPrint('User object restrictions: $userObjectRestrictions');
 
     final filteredContractsData =
         result
             .where(
-              (contract) => userBuildingRestrictions.contains(
-                int.parse(contract.buildingId.toString()),
+              (contract) => userObjectRestrictions.contains(
+                int.parse(contract.objectId.toString()),
               ),
             )
             .toList();
@@ -1641,11 +1639,11 @@ class ContractController extends TBaseController<ContractModel> {
     );
   }
 
-  void sortByBuilding(int sortColumnIndex, bool ascending) {
+  void sortByObject(int sortColumnIndex, bool ascending) {
     sortByProperty(
       sortColumnIndex,
       ascending,
-      (ContractModel b) => b.buildingName.toString().toLowerCase(),
+      (ContractModel b) => b.objectName.toString().toLowerCase(),
     );
   }
 
@@ -1683,7 +1681,7 @@ class ContractController extends TBaseController<ContractModel> {
 
   @override
   bool containsSearchQuery(ContractModel item, String query) {
-    return item.tenantNames!.toLowerCase().contains(query.toLowerCase()) ||
+    return item.userNames!.toLowerCase().contains(query.toLowerCase()) ||
         item.contractCode!.toLowerCase().contains(query.toLowerCase()) ||
         item.unitNumber.toString().toLowerCase().contains(query.toLowerCase());
   }

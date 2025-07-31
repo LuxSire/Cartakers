@@ -160,7 +160,7 @@ class BookingsFilterDialog extends StatelessWidget {
                       // Apply the filters
                       controller.applyFilters(
                         controller.selectedStatusId.value,
-                        controller.selectedBuildingFilterId.value,
+                        controller.selectedObjectFilterId.value,
                         controller.startDate.value,
                         controller.endDate.value,
                       );

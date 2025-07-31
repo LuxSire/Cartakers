@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/data/models/building_model.dart';
+import 'package:xm_frontend/data/models/object_model.dart';
 import 'package:xm_frontend/data/models/contract_model.dart';
 import 'package:xm_frontend/data/models/message_model.dart';
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
@@ -225,7 +225,7 @@ abstract class TBaseController<T> extends GetxController {
 
       final result = await deleteItem(item);
 
-      bool isBuilding = item is BuildingModel;
+      bool isBuilding = item is ObjectModel;
 
       if (result == false) {
         TFullScreenLoader.stopLoading();

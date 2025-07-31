@@ -5,7 +5,7 @@ import 'package:xm_frontend/utils/formatters/formatter.dart';
 
 class UnitModel {
   final String? id;
-  final int? buildingId;
+  final int? objectId;
   final String? unitNumber;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -15,18 +15,18 @@ class UnitModel {
   String? statusText; // Make it mutable
   String? pieceId;
   String? pieceName;
-  int? tenantCount;
+  int? userCount;
   String? contractCode;
   int? currentContractId;
-  String? tenantNames;
+  String? userNames;
 
-  String? buildingName; // building name
+  String? objectName; // building name
 
   List<ContractModel>? contracts; // tenats
 
   UnitModel({
     this.id,
-    this.buildingId,
+    this.objectId,
     this.unitNumber,
     this.createdAt,
     this.floorNumber,
@@ -35,18 +35,18 @@ class UnitModel {
     this.pieceId,
     this.pieceName,
     this.updatedAt,
-    this.tenantCount,
+    this.userCount,
     this.contractCode,
     this.currentContractId,
-    this.tenantNames,
-    this.buildingName,
+    this.userNames,
+    this.objectName ,
   });
 
   // Convert JSON response to UnitModel
   factory UnitModel.fromJson(Map<String, dynamic> json) {
     return UnitModel(
       id: json['id']?.toString() ?? '',
-      buildingId: json['building_id'] ?? 0,
+      objectId: json['object_id'] ?? 0,
       unitNumber: json['unit_number']?.toString() ?? '',
       createdAt:
           json['created_at'] != null
@@ -61,11 +61,11 @@ class UnitModel {
           json['updated_at'] != null
               ? DateTime.parse(json['updated_at'])
               : DateTime.now(),
-      tenantCount: json['tenant_count'] ?? 0,
+      userCount: json['user_count'] ?? 0,
       contractCode: json['contract_code'] ?? '',
       currentContractId: json['current_contract_id'] ?? 0,
-      tenantNames: json['tenant_names'] ?? '',
-      buildingName: json['building_name'] ?? '',
+      userNames: json['user_names'] ?? '',
+      objectName: json['object_name'] ?? '',
     );
   }
 
@@ -73,7 +73,7 @@ class UnitModel {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'building_id': buildingId,
+      'object_id': objectId,
       'unit_number': unitNumber,
       'created_at': createdAt?.toIso8601String(),
       'floor_number': floorNumber,
@@ -82,11 +82,11 @@ class UnitModel {
       'piece_id': pieceId,
       'piece_name': pieceName,
       'updated_at': updatedAt?.toIso8601String(),
-      'tenant_count': tenantCount,
+      'user_count': userCount,
       'contract_code': contractCode,
       'current_contract_id': currentContractId,
-      'tenant_names': tenantNames,
-      'building_name': buildingName,
+      'user_names': userNames,
+      'object_name': objectName,
     };
   }
 

@@ -4,19 +4,19 @@ import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/data/models/booking_model.dart';
 import 'package:xm_frontend/data/models/request_model.dart';
 import 'package:xm_frontend/data/models/unit_model.dart';
-import 'package:xm_frontend/data/repositories/agency/agency_repository.dart';
+import 'package:xm_frontend/data/repositories/company/company_repository.dart';
 import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
-import 'package:xm_frontend/data/repositories/building/building_repository.dart';
+import 'package:xm_frontend/data/repositories/object/object_repository.dart';
 import 'package:xm_frontend/data/repositories/contract/contract_repository.dart';
 import 'package:xm_frontend/data/repositories/user/user_repository.dart';
 import 'package:xm_frontend/features/personalization/controllers/settings_controller.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
 import 'package:xm_frontend/features/shop/controllers/booking/booking_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/building/building_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/building/building_unit_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/object/object_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/object/object_unit_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/request/request_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/tenant/tenant_controller.dart';
+//import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 
 import '../../../../data/abstract/base_data_table_controller.dart';
 import '../../../../utils/constants/enums.dart';
@@ -27,15 +27,15 @@ class DashboardController extends GetxController {
 
   final RxList<double> weeklySales = <double>[].obs;
 
-  var totalAgencyBuildings = 0.obs;
-  var totalBuildingsTenants = 0.obs;
-  var totalBuildingsContracts = 0.obs;
-  var totalBuildingsPendingRequests = 0.obs;
-  var totalBuildingsBookings = 0.obs;
-  var totalBuildingsRequests = 0.obs;
-  var totalBuildingsOpenedTasks = 0.obs;
-  var totalBuildingsVacantUnits = 0.obs;
-  var totalBuildingsMessages = 0.obs;
+  var totalCompanyObjects = 0.obs;
+  var totalObjectUsers = 0.obs;
+  var totalObjectsContracts = 0.obs;
+  var totalObjectsPendingRequests = 0.obs;
+  var totalObjectsBookings = 0.obs;
+  var totalObjectsRequests = 0.obs;
+  var totalObjectsOpenedTasks = 0.obs;
+  var totalObjectsVacantUnits = 0.obs;
+  var totalObjectsMessages = 0.obs;
 
   Rx<UserModel> userRetrived = UserModel.empty().obs;
 
@@ -56,27 +56,44 @@ class DashboardController extends GetxController {
 
     userRetrived.value = userController.user.value;
 
-    await fetchTotalBuildings();
-    await fetchTotalTenants();
+    await fetchTotalObjects();
+    await fetchTotalUsers();
     await fetchTotalPendingRequests();
     await fetchTotalVacantUnits();
     await fetchTotalContracts();
     await fetchTotalBookings();
-    await fetchTotalBuildingsMessages();
+    await fetchTotalObjectsMessages();
+    await fetchTotalObjectUsers();
   }
 
-  Future<void> fetchTotalBuildingsMessages() async {
-    final result = await AgencyRepository.instance.fetchAllAgencyMessages();
+Future<void> fetchTotalObjectUsers() async {
+  final result = await UserRepository.instance.getAllCompanyObjectUsers();
 
-    // Get allowed building IDs for the user
+  // Make sure user is loaded and not empty
+  final user = userRetrived.value;
+  final objectPermissionIds = user.objectPermissionIds ?? [];
+
+  final filteredUsers = result.where(
+    (user) => objectPermissionIds.contains(
+      int.parse(user.objectId.toString()),
+    ),
+  ).toList();
+
+  totalObjectUsers.value = filteredUsers.length;
+}
+
+  Future<void> fetchTotalObjectsMessages() async {
+    final result = await CompanyRepository.instance.fetchAllCompanyMessages();
+
+    // Get allowed object IDs for the user
     final user = userRetrived.value;
 
-    final userBuildingRestrictions = user.buildingPermissionIds ?? [];
+    final userObjectRestrictions = user.objectPermissionIds ?? [];
 
     final filteredMessages =
         result.where((message) {
-          final buildingIds = message.buildingIds ?? [];
-          return buildingIds.any((id) => userBuildingRestrictions.contains(id));
+          final objectIds = message.objectIds ?? [];
+          return objectIds.any((id) => userObjectRestrictions.contains(id));
         }).toList();
 
     // debugPrint('User Building Restrictions: $userBuildingRestrictions');
@@ -85,148 +102,148 @@ class DashboardController extends GetxController {
     //       debugPrint('Message ID: ${msg.id}, buildingIds: ${msg.buildingIds}'),
     // );
 
-    totalBuildingsMessages.value = filteredMessages.length;
+    totalObjectsMessages.value = filteredMessages.length;
   }
 
-  Future<void> fetchTotalBuildings() async {
-    final result = await BuildingRepository.instance.getAllBuildings();
+  Future<void> fetchTotalObjects() async {
+    final result = await ObjectRepository.instance.getAllObjects();
 
     // Make sure user is loaded and not empty
     final user = userRetrived.value;
     //   debugPrint('Current User: ${user.toJson()}');
-    final buildingPermissionIds = user.buildingPermissionIds ?? [];
+    final objectPermissionIds = user.objectPermissionIds ?? [];
 
-    //debugPrint('User Building Restrictions: $buildingPermissionIds');
+    //debugPrint('User Object Restrictions: $objectPermissionIds');
 
-    final filteredBuildings =
+    final filteredObjects =
         result
             .where(
-              (building) => buildingPermissionIds.contains(
-                int.parse(building.id.toString()),
+              (object) => objectPermissionIds.contains(
+                int.parse(object.id.toString()),
               ),
             )
             .toList();
 
-    totalAgencyBuildings.value = filteredBuildings.length;
+    totalCompanyObjects.value = filteredObjects.length;
   }
 
-  Future<void> fetchTotalTenants() async {
-    final result = await UserRepository.instance.getAllAgencyBuildingTenants();
+  Future<void> fetchTotalUsers() async {
+    final result = await UserRepository.instance.getAllCompanyObjectUsers();
 
     // Make sure user is loaded and not empty
     final user = userRetrived.value;
     //   debugPrint('Current User: ${user.toJson()}');
-    final buildingPermissionIds = user.buildingPermissionIds ?? [];
+    final objectPermissionIds = user.objectPermissionIds ?? [];
 
-    //debugPrint('User Building Restrictions: $buildingPermissionIds');
+    //debugPrint('User Object Restrictions: $objectPermissionIds');
 
-    final filteredTenants =
+    final filteredUsers =
         result
             .where(
-              (tenant) => buildingPermissionIds.contains(
-                int.parse(tenant.buildingId.toString()),
+              (user) => objectPermissionIds.contains(
+                int.parse(user.id.toString()),
               ),
             )
             .toList();
 
-    totalBuildingsTenants.value = filteredTenants.length;
+    totalCompanyObjects.value = filteredUsers.length;
   }
 
   Future<void> fetchTotalBookings() async {
     final result =
-        await BuildingRepository.instance.fetchBuildingsBookingsByAgencyId();
+        await ObjectRepository.instance.fetchObjectsBookingsByCompanyId();
 
     // Make sure user is loaded and not empty
     final user = userRetrived.value;
     //   debugPrint('Current User: ${user.toJson()}');
-    final buildingPermissionIds = user.buildingPermissionIds ?? [];
+    final objectPermissionIds = user.objectPermissionIds ?? [];
 
     //debugPrint('User Building Restrictions: $buildingPermissionIds');
 
     final filteredBookings =
         result
             .where(
-              (booking) => buildingPermissionIds.contains(
-                int.parse(booking.buildingId.toString()),
+              (booking) => objectPermissionIds.contains(
+                int.parse(booking.objectId.toString()),
               ),
             )
             .toList();
 
-    totalBuildingsBookings.value = filteredBookings.length;
+    totalObjectsBookings.value = filteredBookings.length;
   }
 
   Future<void> fetchTotalContracts() async {
     final controller = Get.put(ContractRepository());
 
-    final result = await controller.getAllAgencyBuildingsContracts();
+    final result = await controller.getAllCompanyObjectsContracts();
 
     // Make sure user is loaded and not empty
     final user = userRetrived.value;
     //   debugPrint('Current User: ${user.toJson()}');
-    final buildingPermissionIds = user.buildingPermissionIds ?? [];
+    final objectPermissionIds = user.objectPermissionIds ?? [];
 
     //debugPrint('User Building Restrictions: $buildingPermissionIds');
 
     final filteredContracts =
         result
             .where(
-              (contract) => buildingPermissionIds.contains(
-                int.parse(contract.buildingId.toString()),
+              (contract) => objectPermissionIds.contains(
+                int.parse(contract.objectId.toString()),
               ),
             )
             .toList();
 
-    totalBuildingsContracts.value = filteredContracts.length;
+    totalObjectsContracts.value = filteredContracts.length;
   }
 
   Future<void> fetchTotalPendingRequests() async {
     final requests =
-        await BuildingRepository.instance.fetchBuildingsRequestsByAgencyId();
+        await ObjectRepository.instance.fetchObjectsRequestsByCompanyId();
 
     // Make sure user is loaded and not empty
     final user = userRetrived.value;
     //   debugPrint('Current User: ${user.toJson()}');
-    final buildingPermissionIds = user.buildingPermissionIds ?? [];
+    final objectPermissionIds = user.objectPermissionIds ?? [];
 
     //debugPrint('User Building Restrictions: $buildingPermissionIds');
 
     final filteredRequests =
         requests
             .where(
-              (request) => buildingPermissionIds.contains(
-                int.parse(request.buildingId.toString()),
+              (request) => objectPermissionIds.contains(
+                int.parse(request.objectId.toString()),
               ),
             )
             .toList();
 
-    totalBuildingsRequests.value = filteredRequests.length;
-    totalBuildingsPendingRequests.value =
+    totalObjectsRequests.value = filteredRequests.length;
+    totalObjectsPendingRequests.value =
         filteredRequests.where((r) => r.status == 1).length;
   }
 
   Future<void> fetchTotalVacantUnits() async {
-    final agencyId = AuthenticationRepository.instance.currentUser!.agencyId;
-    final units = await BuildingRepository.instance.fetchAgencyBuildingsUnits(
-      agencyId.toString(),
+    final companyId = AuthenticationRepository.instance.currentUser!.companyId;
+    final units = await ObjectRepository.instance.fetchCompanyObjectsUnits(
+      companyId.toString(),
     );
 
     // Make sure user is loaded and not empty
     final user = userRetrived.value;
     //   debugPrint('Current User: ${user.toJson()}');
-    final buildingPermissionIds = user.buildingPermissionIds ?? [];
+    final objectPermissionIds = user.objectPermissionIds ?? [];
 
     //debugPrint('User Building Restrictions: $buildingPermissionIds');
 
     final filteredUnits =
         units
             .where(
-              (unit) => buildingPermissionIds.contains(
-                int.parse(unit.buildingId.toString()),
+              (unit) => objectPermissionIds.contains(
+                int.parse(unit.objectId.toString()),
               ),
             )
             .toList();
 
-    totalBuildingsVacantUnits.value =
+    totalObjectsVacantUnits.value =
         filteredUnits.where((u) => u.statusId == 1).length;
   }
 }

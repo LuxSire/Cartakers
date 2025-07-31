@@ -35,14 +35,14 @@ class BookingCard extends StatelessWidget {
     //   BookingController.building(buildingId: buildingId),
     // );
 
-    final agencyId = AuthenticationRepository.instance.currentUser!.agencyId;
+    final companyId = AuthenticationRepository.instance.currentUser!.companyId;
 
     final controllerBooking = Get.put(
       BookingController(
-        sourceType: BookingSourceType.agency,
-        id: int.parse(agencyId),
+        sourceType: BookingSourceType.company,
+        id: int.parse(companyId),
       ),
-      tag: 'agency_bookings',
+      tag: 'company_bookings',
     );
 
     //controllerBooking.loadData();

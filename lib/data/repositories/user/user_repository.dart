@@ -5,10 +5,10 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
-import 'package:xm_frontend/data/api/services/building_service.dart';
+import 'package:xm_frontend/data/api/services/object_service.dart';
 import 'package:xm_frontend/data/api/services/user_service.dart';
 import 'package:xm_frontend/data/models/booking_model.dart';
-import 'package:xm_frontend/data/models/building_model.dart';
+import 'package:xm_frontend/data/models/object_model.dart';
 import 'package:xm_frontend/data/models/docs_model.dart';
 import 'package:xm_frontend/data/models/request_log_model.dart';
 import 'package:xm_frontend/data/models/request_model.dart';
@@ -33,19 +33,19 @@ class UserRepository extends GetxController {
     return [];
   }
 
-  Future<List<UserModel>> getAllBuildingTenants(String buildingId) async {
+  Future<List<UserModel>> getAllObjectUsers(String objectId) async {
     try {
-      if (buildingId == null || buildingId.isEmpty) {
-        debugPrint('Agency ID not found.');
+      if (objectId == null || objectId.isEmpty) {
+        debugPrint('Object ID not found.');
         return [];
       }
 
-      final response = await _userService.getTenantsByBuildingId(
-        int.parse(buildingId),
+      final response = await _userService.getUsersByObjectId(
+        int.parse(objectId),
       );
 
       return response
-          .map((tenantData) => UserModel.fromJson(tenantData))
+          .map((userData) => UserModel.fromJson(userData))
           .toList();
     } catch (e) {
       debugPrint('Error fetching tenants: $e');
@@ -53,39 +53,39 @@ class UserRepository extends GetxController {
     }
   }
 
-  Future<List<UserModel>> getAllAgencyBuildingTenants() async {
+  Future<List<UserModel>> getAllCompanyObjectUsers() async {
     try {
-      final agencyId = AuthenticationRepository.instance.currentUser!.agencyId;
+      final companyId = AuthenticationRepository.instance.currentUser!.companyId;
 
-      if (agencyId == null || agencyId.isEmpty) {
-        debugPrint('Agency ID not found.');
+      if (companyId == null || companyId.isEmpty) {
+        debugPrint('Company ID not found.');
         return [];
       }
 
-      final response = await _userService.getTenantsByAgencyId(
-        int.parse(agencyId),
+      final response = await _userService.getUsersByCompanyId(
+        int.parse(companyId),
       );
 
       return response
-          .map((tenantData) => UserModel.fromJson(tenantData))
+          .map((userData) => UserModel.fromJson(userData))
           .toList();
     } catch (e) {
-      debugPrint('Error fetching tenants: $e');
+      debugPrint('Error fetching users: $e');
       return [];
     }
   }
 
-  Future<List<UserModel>> getAllAgencyUsers() async {
+  Future<List<UserModel>> getAllCompanyUsers() async {
     try {
-      final agencyId = AuthenticationRepository.instance.currentUser!.agencyId;
+      final companyId = AuthenticationRepository.instance.currentUser!.companyId;
 
-      if (agencyId == null || agencyId.isEmpty) {
-        debugPrint('Agency ID not found.');
+      if (companyId == null || companyId.isEmpty) {
+        debugPrint('Company ID not found.');
         return [];
       }
 
-      final response = await _userService.getUsersByAgencyId(
-        int.parse(agencyId),
+      final response = await _userService.getUsersByCompanyId(
+        int.parse(companyId),
       );
 
       return response.map((userData) => UserModel.fromJson(userData)).toList();
@@ -139,31 +139,29 @@ class UserRepository extends GetxController {
     return [];
   }
 
-  Future<List<UserModel>> fetchTenantsByContractId(int contractId) async {
+  Future<List<UserModel>> fetchUsersByContractId(int contractId) async {
     try {
       final List<Map<String, dynamic>> responseList = await _userService
-          .getTenantsByContractId(contractId);
+          .getUsersByContractId(contractId);
 
       if (responseList.isEmpty) return [];
 
-      //   debugPrint('Response from fetchTenantsByContractId: $responseList');
-      //   debugPrint('Response from fetchTenantsByContractId: ${responseList.length}');
 
-      debugPrint('Response from fetchTenantsByContractId: $responseList');
+      debugPrint('Response from fetchUsersByContractId: $responseList');
 
       return responseList
           .map((bookingData) => UserModel.fromJson(bookingData))
           .toList();
     } catch (e) {
-      debugPrint('Error in fetchTenantsByContractId: $e');
+      debugPrint('Error in fetchUsersByContractId: $e');
       return [];
     }
   }
 
-  Future<List<DocsModel>> fetchTenantDocsByContractId(int contractId) async {
+  Future<List<DocsModel>> fetchUserDocsByContractId(int contractId) async {
     try {
       final List<Map<String, dynamic>> responseList = await _userService
-          .getTenantBuildingDocs(contractId);
+          .getUserObjectDocs(contractId);
 
       if (responseList.isEmpty) return [];
 
@@ -171,53 +169,36 @@ class UserRepository extends GetxController {
           .map((docData) => DocsModel.fromJson(docData))
           .toList();
     } catch (e) {
-      debugPrint('Error in fetchTenantDocsByContractId: $e');
+      debugPrint('Error in fetchUserDocsByContractId: $e');
       return [];
     }
   }
 
-  Future<List<BookingModel>> fetchTenantBookingsByContractId(
-    int contractId,
-  ) async {
+
+  Future<List<BookingModel>> fetchUserBookingsByUserId(int userId) async {
     try {
       final List<Map<String, dynamic>> responseList = await _userService
-          .getTenantBuildingAllBookings(contractId);
+          .getUserObjectAllBookingsByUserId(userId);
 
       if (responseList.isEmpty) return [];
+
+      debugPrint('Response from fetchUserBookingsByUserId: $responseList');
 
       return responseList
           .map((bookingData) => BookingModel.fromJson(bookingData))
           .toList();
     } catch (e) {
-      debugPrint('Error in fetchTenantBookingsByContractId: $e');
+      debugPrint('Error in fetchUserBookingsByUserId: $e');
       return [];
     }
   }
 
-  Future<List<BookingModel>> fetchTenantBookingsByTenantId(int tenantId) async {
-    try {
-      final List<Map<String, dynamic>> responseList = await _userService
-          .getTenantBuildingAllBookingsByTenantId(tenantId);
-
-      if (responseList.isEmpty) return [];
-
-      debugPrint('Response from fetchTenantBookingsByTenantId: $responseList');
-
-      return responseList
-          .map((bookingData) => BookingModel.fromJson(bookingData))
-          .toList();
-    } catch (e) {
-      debugPrint('Error in fetchTenantBookingsByTenantId: $e');
-      return [];
-    }
-  }
-
-  Future<List<RequestModel>> fetchTenantRequestsByContractId(
+  Future<List<RequestModel>> fetchUserRequestsByContractId(
     int contractId,
   ) async {
     try {
       final List<Map<String, dynamic>> responseList = await _userService
-          .getTenantBuildingAllRequests(contractId);
+          .getUserObjectAllRequests(contractId);
 
       if (responseList.isEmpty) return [];
 
@@ -225,15 +206,15 @@ class UserRepository extends GetxController {
           .map((requestData) => RequestModel.fromJson(requestData))
           .toList();
     } catch (e) {
-      debugPrint('Error in fetchTenantRequestsByContractId: $e');
+      debugPrint('Error in fetchUserRequestsByContractId: $e');
       return [];
     }
   }
 
-  Future<List<RequestModel>> fetchTenantRequestsByTenantId(int tenantId) async {
+  Future<List<RequestModel>> fetchUserRequestsByUserId(int userId) async {
     try {
       final List<Map<String, dynamic>> responseList = await _userService
-          .getTenantBuildingAllRequestsByTenantId(tenantId);
+          .getUserObjectAllRequestsByUserId(userId);
 
       if (responseList.isEmpty) return [];
 
@@ -241,12 +222,12 @@ class UserRepository extends GetxController {
           .map((requestData) => RequestModel.fromJson(requestData))
           .toList();
     } catch (e) {
-      debugPrint('Error in fetchTenantRequestsByTenantId: $e');
+      debugPrint('Error in fetchUserRequestsByUserId: $e');
       return [];
     }
   }
 
-  Future<bool> createTenantRequestNotificationByContractId(
+  Future<bool> createUserRequestNotificationByContractId(
     int contractId,
     int requestId,
     int statusId,
@@ -257,7 +238,7 @@ class UserRepository extends GetxController {
           'Your request ($ticketNumber) has been updated to: ${THelperFunctions.getStatusText(statusId).toUpperCase()}.';
 
       final result = await _userService
-          .createTenantContractNotificationAndSendPush(
+          .createUserContractNotificationAndSendPush(
             contractId,
             2, // request
             message,
@@ -266,7 +247,7 @@ class UserRepository extends GetxController {
 
       if (result['success'] == false) {
         debugPrint(
-          'Error creating tenant request notification: ${result['message']}',
+          'Error creating user request notification: ${result['message']}',
         );
         return false;
       }
@@ -278,25 +259,25 @@ class UserRepository extends GetxController {
     }
   }
 
-  /// getTenantBuildingDocs
+  /// getUserObjectDocs
 
-  Future<int> quickTenantInsert(
+  Future<int> quickUserInsert(
     String firstName,
     String lastName,
     String email,
-    int buildingId,
+    int objectId,
     int createdById,
   ) async {
     try {
-      final response = await _userService.createQuickNewTenant(
+      final response = await _userService.createQuickNewUser(
         firstName,
         lastName,
         email,
-        buildingId,
+        objectId,
         createdById,
       );
 
-      debugPrint('Response from quickTenantInsert: $response');
+      debugPrint('Response from quickUserInsert: $response');
 
       return response['status'];
     } catch (e) {
@@ -304,21 +285,21 @@ class UserRepository extends GetxController {
     }
   }
 
-  Future<bool> quickTenantUpdate(
+  Future<bool> quickUserUpdate(
     String firstName,
     String lastName,
-    int buildingId,
-    int tenantId,
+    int objectId,
+    int userId,
   ) async {
     try {
-      final response = await _userService.updateQuickTenant(
+      final response = await _userService.updateQuickUser(
         firstName,
         lastName,
-        buildingId,
-        tenantId,
+        objectId,
+        userId,
       );
       if (response['success'] == false) {
-        debugPrint('Error updating tenant quick : ${response['message']}');
+        debugPrint('Error updating user quick : ${response['message']}');
         return false;
       }
 
@@ -328,14 +309,14 @@ class UserRepository extends GetxController {
     }
   }
 
-  Future<bool> updateTenantRequestStatus(
+  Future<bool> updateUserRequestStatus(
     int requestId,
     int statusId,
     String comment,
   ) async {
     try {
       // first update the fields
-      final result = await _userService.updateTenantRequestStatus(
+      final result = await _userService.updateUserRequestStatus(
         requestId,
         statusId,
       );
@@ -348,7 +329,7 @@ class UserRepository extends GetxController {
       }
 
       // then update the comment
-      final commentResult = await _userService.createTenantBuildingRequestLog(
+      final commentResult = await _userService.createUserObjectRequestLog(
         requestId,
         statusId,
         comment,
@@ -358,16 +339,16 @@ class UserRepository extends GetxController {
 
       if (commentResult['success'] == false) {
         debugPrint(
-          'Error updating tenant request comment : ${commentResult['message']}',
+          'Error updating user request comment : ${commentResult['message']}',
         );
         return false;
       }
       // If both updates are successful, return true
-      debugPrint('Tenant request status and comment updated successfully');
+      debugPrint('User request status and comment updated successfully');
 
       return true;
     } catch (e) {
-      debugPrint('Error updating tenant request status: $e');
+      debugPrint('Error updating user request status: $e');
       return false;
     }
   }
@@ -393,7 +374,7 @@ class UserRepository extends GetxController {
 
       if (controller.hasImageChanged.value) {
         final directoryName =
-            "agencies/${updatedUser.agencyId}/users/${updatedUser.id}";
+            "companies/${updatedUser.companyId}/users/${updatedUser.id}";
 
         try {
           late Map<String, dynamic> imageResponse;
@@ -405,7 +386,7 @@ class UserRepository extends GetxController {
 
             final bytes = controller.memoryBytes.value!;
             final filename = "user_${updatedUser.id}_$timestamp.jpg";
-            imageResponse = await BuildingService().uploadAzureImage(
+            imageResponse = await ObjectService().uploadAzureImage(
               bytes: bytes,
               filename: filename,
               id: int.parse(updatedUser.id!),
@@ -418,7 +399,7 @@ class UserRepository extends GetxController {
               controller.memoryBytes.value!,
               'user_${updatedUser.id}_$timestamp.jpg',
             );
-            imageResponse = await BuildingService().uploadAzureImage(
+            imageResponse = await ObjectService().uploadAzureImage(
               file: temp,
               filename: p.basename(temp.path),
               id: int.parse(updatedUser.id!),
@@ -479,34 +460,34 @@ class UserRepository extends GetxController {
   Future<void> updateSingleField(Map<String, dynamic> json) async {}
 
   /// Delete User Data
-  Future<bool> deleteTenantById(int id, int buildingId) async {
+  Future<bool> deleteUserById(int id, [int? objectId]) async {
     try {
-      final response = await _userService.deleteTenantBuildingTenant(
+      final response = await _userService.deleteUserObjectUser(
         id,
-        buildingId,
+        objectId,
       );
 
       if (response['success'] != true) {
-        throw Exception('Failed to delete tenant: ${response['message']}');
+        throw Exception('Failed to delete user: ${response['message']}');
       }
 
       return true;
     } catch (e) {
-      debugPrint('Error deleting tenant: $e');
+      debugPrint('Error deleting user: $e');
       return false;
       //rethrow;
     }
   }
 
-  Future<bool> updateTenantBookingStatus(int bookingId, int statusId) async {
+  Future<bool> updateUserBookingStatus(int bookingId, int statusId) async {
     try {
-      final response = await _userService.updateTenantBuildingBookingStatus(
+      final response = await _userService.updateUserObjectBookingStatus(
         bookingId,
         statusId,
       );
       if (response['success'] == false) {
         debugPrint(
-          'Error updating tenant booking status : ${response['message']}',
+          'Error updating user booking status : ${response['message']}',
         );
         return false;
       }
@@ -517,8 +498,8 @@ class UserRepository extends GetxController {
     }
   }
 
-  Future<bool> createTenantBooking(
-    int tenantId,
+  Future<bool> createUserBooking(
+    int userId,
     int amenityId,
     DateTime bookingDate,
     String startTime,
@@ -526,8 +507,8 @@ class UserRepository extends GetxController {
     int contractId,
   ) async {
     try {
-      final result = await _userService.createTenantBuildingBooking(
-        tenantId,
+      final result = await _userService.createUserObjectBooking(
+        userId,
         amenityId,
         bookingDate,
         startTime,
@@ -536,13 +517,13 @@ class UserRepository extends GetxController {
       );
 
       if (result['success'] == false) {
-        debugPrint('Error creating tenant booking: ${result['message']}');
+        debugPrint('Error creating user booking: ${result['message']}');
         return false;
       }
 
       return true;
     } catch (e) {
-      debugPrint('Error creating tenant request notification: $e');
+      debugPrint('Error creating user request notification: $e');
       return false;
     }
   }
@@ -568,7 +549,7 @@ class UserRepository extends GetxController {
     String email,
     int roleId,
     int roleExtId,
-    int agencyId,
+    int companyId,
   ) async {
     try {
       final response = await _userService.createNewUser(
@@ -577,7 +558,7 @@ class UserRepository extends GetxController {
         email,
         roleId,
         roleExtId,
-        agencyId,
+        companyId,
       );
 
       // debugPrint('Response from createNewUser: $response');
@@ -591,14 +572,14 @@ class UserRepository extends GetxController {
     }
   }
 
-  Future<bool> assignUserToBuildingsBatch(
+  Future<bool> assignUserToObjectsBatch(
     int userId,
-    List<int> buildingIds,
+    List<int> objectIds,
   ) async {
     try {
-      final response = await _userService.assignUserToBuildingsBatch(
+      final response = await _userService.assignUserToObjectsBatch(
         userId,
-        buildingIds,
+        objectIds,
       );
 
       if (response['success'] == false) {
@@ -612,53 +593,37 @@ class UserRepository extends GetxController {
     }
   }
 
-  Future<List<BuildingModel>> getUserAssignedBuildings(int userId) async {
+  Future<List<ObjectModel>> getUserAssignedObjects(int userId) async {
     try {
       final List<Map<String, dynamic>> responseList = await _userService
-          .getUserAssignedBuildings(userId);
+          .getUserAssignedObjects(userId);
 
       if (responseList.isEmpty) return [];
 
       return responseList
-          .map((requestData) => BuildingModel.fromJson(requestData))
+          .map((requestData) => ObjectModel.fromJson(requestData))
           .toList();
     } catch (e) {
-      debugPrint('Error in getUserAssignedBuildings: $e');
+      debugPrint('Error in getUserAssignedObjects: $e');
       return [];
     }
   }
 
-  Future<bool> deleteAllUserAssignedBuildings(int userId) async {
+  Future<bool> deleteAllUserAssignedObjects(int userId) async {
     try {
-      final response = await _userService.deleteAllUserAssignedBuildings(
+      final response = await _userService.deleteAllUserAssignedObjects(
         userId,
       );
 
       if (response['success'] != true) {
         throw Exception(
-          'Failed to delete all user assigned buildings: ${response['message']}',
+          'Failed to delete all user assigned objects: ${response['message']}',
         );
       }
 
       return true;
     } catch (e) {
-      debugPrint('Error deleting all user assigned buildings: $e');
-      return false;
-      //rethrow;
-    }
-  }
-
-  Future<bool> deleteUserById(int id) async {
-    try {
-      final response = await _userService.deleteUserById(id);
-
-      if (response['success'] != true) {
-        throw Exception('Failed to delete user: ${response['message']}');
-      }
-
-      return true;
-    } catch (e) {
-      debugPrint('Error deleting user: $e');
+      debugPrint('Error deleting all user assigned objects: $e');
       return false;
       //rethrow;
     }
@@ -698,16 +663,14 @@ class UserRepository extends GetxController {
     }
   }
 
-  Future<String> createTenantInviationCode(
+  Future<String> createUserInvitationCode(
     String email,
-    int userId,
-    int contractId,
+    int userId
   ) async {
     try {
-      final response = await _userService.createTenantInvitationCode(
+      final response = await _userService.createUserInvitationCode(
         email,
-        userId,
-        contractId,
+        userId 
       );
 
       return response['data'][0]['token'] ?? '';
@@ -753,7 +716,7 @@ class UserRepository extends GetxController {
     }
   }
 
-  Future<bool> sendTenantInviationCodeEmail(
+  Future<bool> sendUserInvitationCodeEmail(
     String greetings,
     String bodyText,
     String invitationCodeText,
@@ -765,7 +728,7 @@ class UserRepository extends GetxController {
     String email,
   ) async {
     try {
-      final response = await _userService.sendTenantInvitationEmail(
+      final response = await _userService.sendUserInvitationEmail(
         greetings,
         bodyText,
         invitationCodeText,
@@ -779,7 +742,7 @@ class UserRepository extends GetxController {
 
       if (response['success'] != true) {
         debugPrint(
-          'Error sending tenant invitation email: ${response['message']}',
+          'Error sending user invitation email: ${response['message']}',
         );
         return false;
       }
@@ -823,19 +786,19 @@ class UserRepository extends GetxController {
     }
   }
 
-  Future<bool> updateTenantBuildingStatus(
-    int tenantId,
+  Future<bool> updateUserObjectStatus(
+    int userId,
     int statusId,
-    int buildingId,
+    int objectId,
   ) async {
     try {
-      final response = await _userService.updateTenantBuildingStatus(
-        tenantId,
+      final response = await _userService.updateUserObjectStatus(
+        userId,
         statusId,
-        buildingId,
+        objectId,
       );
       if (response['success'] == false) {
-        debugPrint('Error updating tenant status : ${response['message']}');
+        debugPrint('Error updating user status : ${response['message']}');
         return false;
       }
 

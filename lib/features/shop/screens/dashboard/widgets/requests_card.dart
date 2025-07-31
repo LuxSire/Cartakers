@@ -21,14 +21,14 @@ class RequestsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final agencyId = AuthenticationRepository.instance.currentUser?.agencyId;
+    final companyId = AuthenticationRepository.instance.currentUser?.companyId;
 
     final controllerRequest = Get.put(
       RequestController(
-        sourceType: RequestSourceType.agency,
-        id: int.parse(agencyId!),
+        sourceType: RequestSourceType.company,
+        id: int.parse(companyId!),
       ),
-      tag: 'agency_requests',
+      tag: 'company_requests',
     );
     controllerRequest.loadData();
 
@@ -95,7 +95,7 @@ class RequestsCard extends StatelessWidget {
                       ),
                       const SizedBox(height: TSizes.xs),
                       Text(
-                        request.buildingName!,
+                        request.objectName!,
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(
                           color: TColors.txt666666,
                         ),

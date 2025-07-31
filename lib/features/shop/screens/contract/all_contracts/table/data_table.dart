@@ -55,7 +55,7 @@ class ContractsTable extends StatelessWidget {
             ),
             onSort:
                 (columnIndex, ascending) =>
-                    controller.sortByBuilding(columnIndex, ascending),
+                    controller.sortByObject(columnIndex, ascending),
           ),
 
           DataColumn2(

@@ -13,14 +13,14 @@ class BookingsTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final agencyId = AuthenticationRepository.instance.currentUser?.agencyId;
+    final companyId = AuthenticationRepository.instance.currentUser?.companyId;
 
     final controller = Get.put(
       BookingController(
-        sourceType: BookingSourceType.agency,
-        id: int.parse(agencyId!),
+        sourceType: BookingSourceType.company,
+        id: int.parse(companyId!),
       ),
-      tag: 'agency_bookings',
+      tag: 'company_bookings',
     );
 
     return Obx(() {
@@ -45,7 +45,7 @@ class BookingsTable extends StatelessWidget {
             label: Text(
               AppLocalization.of(
                 context,
-              ).translate('tenants_screen.lbl_tenant_name'),
+              ).translate('users_screen.lbl_tenant_name'),
             ),
             onSort:
                 (columnIndex, ascending) => controller.sortByPropertyName(
@@ -59,13 +59,13 @@ class BookingsTable extends StatelessWidget {
             label: Text(
               AppLocalization.of(
                 context,
-              ).translate('buildings_screen.lbl_building_name'),
+              ).translate('objects_screen.lbl_object_name'),
             ),
             onSort:
                 (columnIndex, ascending) => controller.sortByPropertyName(
                   columnIndex,
                   ascending,
-                  (b) => b.buildingName?.toLowerCase() ?? '',
+                  (b) => b.objectName?.toLowerCase() ?? '',
                 ),
           ),
 
@@ -143,7 +143,7 @@ class BookingsTable extends StatelessWidget {
             label: Text(
               AppLocalization.of(
                 context,
-              ).translate('tenants_screen.lbl_actions'),
+              ).translate('users_screen.lbl_actions'),
             ),
           ),
         ],

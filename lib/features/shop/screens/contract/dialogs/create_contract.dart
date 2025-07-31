@@ -7,7 +7,7 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
 import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
-import 'package:xm_frontend/features/shop/screens/tenant/dialogs/create_tenant.dart';
+import 'package:xm_frontend/features/shop/screens/user/dialogs/create_user.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 import 'package:xm_frontend/utils/popups/loaders.dart';
 
@@ -18,27 +18,27 @@ import '../../../../../../utils/validators/validation.dart';
 class CreateContractDialog extends StatelessWidget {
   const CreateContractDialog({
     super.key,
-    required this.displayUniits,
+    required this.displayUnits,
     this.unitId,
-    required this.buildingId,
+    required this.objectId,
   });
 
-  final bool? displayUniits;
+  final bool? displayUnits;
   // for when create a contract from assign screen
   final int? unitId;
-  final int buildingId;
+  final int objectId;
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ContractController());
     controller.contractReferenceController.clear();
     controller.startDateController.clear();
-    controller.selectedTenants.value = [];
-    controller.tenants.value = [];
+    controller.selectedUsers.value = [];
+    controller.users.value = [];
     controller.selectedUnitId.value = 0;
-    controller.selectedBuildingId.value = 0;
-    controller.loadSelectedBuildingNonContractTenants(buildingId);
-    controller.loadAllBuildings();
+    controller.selectedObjectId.value = 0;
+    controller.loadselectedObjectNonContractUsers(objectId);
+    controller.loadAllObjects();
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -111,7 +111,7 @@ class CreateContractDialog extends StatelessWidget {
               const SizedBox(height: TSizes.spaceBtwInputFields),
 
               // display units, add drop down
-              if (displayUniits == true) ...[
+              if (displayUnits == true) ...[
                 Obx(() {
                   return DropdownButtonHideUnderline(
                     child: ButtonTheme(
@@ -119,14 +119,14 @@ class CreateContractDialog extends StatelessWidget {
                       child: DropdownButtonFormField<int>(
                         isExpanded: true,
                         value:
-                            controller.selectedBuildingId.value != 0
-                                ? controller.selectedBuildingId.value
+                            controller.selectedObjectId.value != 0
+                                ? controller.selectedObjectId.value
                                 : null,
                         onChanged: (value) {
                           if (value != null) {
-                            controller.selectedBuildingId.value = value;
-                            controller.loadAllBuildingUnits(value);
-                            controller.loadNonContractTenants(value);
+                            controller.selectedObjectId.value = value;
+                            controller.loadAllObjectUnits(value);
+                            controller.loadNonContractUsers(value);
                             controller.selectedUnitId.value =
                                 0; // Reset unit selection
                           }
@@ -134,7 +134,7 @@ class CreateContractDialog extends StatelessWidget {
                         validator: (value) {
                           if (value == null || value == 0) {
                             return AppLocalization.of(context).translate(
-                              'contract_screen.msg_building_required',
+                              'contract_screen.msg_object_required',
                             );
                           }
                           return null;
@@ -142,7 +142,7 @@ class CreateContractDialog extends StatelessWidget {
                         decoration: InputDecoration(
                           labelText: AppLocalization.of(
                             context,
-                          ).translate('contract_screen.lbl_select_building'),
+                          ).translate('contract_screen.lbl_select_object'),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12.0),
                           ),
@@ -160,10 +160,10 @@ class CreateContractDialog extends StatelessWidget {
                               ),
                             ),
                           ),
-                          ...controller.buildingsList.map(
-                            (building) => DropdownMenuItem<int>(
-                              value: int.parse(building.id!),
-                              child: Text(building.name!),
+                          ...controller.objectsList.map(
+                            (object) => DropdownMenuItem<int>(
+                              value: int.parse(object.id!),
+                              child: Text(object.name!),
                             ),
                           ),
                         ],
@@ -267,7 +267,7 @@ class CreateContractDialog extends StatelessWidget {
                     dialogWidth: 600, // Optional for desktop
 
                     items:
-                        controller.tenants
+                        controller.users
                             .map(
                               (t) => MultiSelectItem<UserModel>(
                                 t,
@@ -275,9 +275,9 @@ class CreateContractDialog extends StatelessWidget {
                               ),
                             )
                             .toList(),
-                    initialValue: controller.selectedTenants,
+                    initialValue: controller.selectedUsers,
                     onConfirm: (values) {
-                      controller.selectedTenants.value = values;
+                      controller.selectedUsers.value = values;
                     },
                     chipDisplay: MultiSelectChipDisplay(
                       chipColor: TColors.primary.withOpacity(0.1),
@@ -286,7 +286,7 @@ class CreateContractDialog extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       items:
-                          controller.selectedTenants
+                          controller.selectedUsers
                               .map(
                                 (t) => MultiSelectItem<UserModel>(
                                   t,
@@ -323,7 +323,7 @@ class CreateContractDialog extends StatelessWidget {
                                 if (unitId != null) {
                                   controller.submitContractFromUnitAssign(
                                     unitId!,
-                                    buildingId ?? 0,
+                                    objectId ?? 0,
                                   );
                                 } else {
                                   controller.submitContract();
@@ -343,11 +343,11 @@ class CreateContractDialog extends StatelessWidget {
                   Expanded(
                     child: TextButton.icon(
                       onPressed: () async {
-                        bool useSelectedBuilding = false;
+                        bool useSelectedObject = false;
 
-                        if (displayUniits == true) {
-                          useSelectedBuilding = true;
-                          if (controller.selectedBuildingId.value == 0) {
+                        if (displayUnits == true) {
+                          useSelectedObject = true;
+                          if (controller.selectedObjectId.value == 0) {
                             TLoaders.errorSnackBar(
                               title: AppLocalization.of(
                                 Get.context!,
@@ -355,7 +355,7 @@ class CreateContractDialog extends StatelessWidget {
                               message: AppLocalization.of(
                                 Get.context!,
                               ).translate(
-                                'contract_screen.lbl_please_select_a_building',
+                                'contract_screen.lbl_please_select_a_object',
                               ),
                             );
 
@@ -367,12 +367,12 @@ class CreateContractDialog extends StatelessWidget {
                           context: context,
                           barrierDismissible: false,
                           builder: (BuildContext context) {
-                            return CreateTenantDialog(
-                              displayBuildings: false,
-                              buildingId:
-                                  useSelectedBuilding
-                                      ? controller.selectedBuildingId.value
-                                      : buildingId,
+                            return CreateUserDialog(
+                              displayObjects: false,
+                              objectId:
+                                  useSelectedObject
+                                      ? controller.selectedObjectId.value
+                                      : objectId,
                             );
                           },
                         );
@@ -381,11 +381,11 @@ class CreateContractDialog extends StatelessWidget {
 
                         debugPrint('CreateTenantDialog result: $result');
                         if (result!) {
-                          debugPrint('CreateTenantDialog result 2: $result');
-                          controller.loadNonContractTenants(
-                            useSelectedBuilding
-                                ? controller.selectedBuildingId.value
-                                : buildingId,
+                          debugPrint('CreateUserDialog result 2: $result');
+                          controller.loadNonContractUsers(
+                            useSelectedObject
+                                ? controller.selectedObjectId.value
+                                : objectId,
                           ); //
                         }
                       },
@@ -394,7 +394,7 @@ class CreateContractDialog extends StatelessWidget {
                       label: Text(
                         AppLocalization.of(
                           context,
-                        ).translate('tenants_screen.lbl_create_new_tenant'),
+                        ).translate('users_screen.lbl_create_new_user'),
                       ),
                     ),
                   ),

@@ -6,9 +6,9 @@ import 'package:xm_frontend/data/abstract/base_data_table_controller.dart';
 import 'package:xm_frontend/data/models/amenity_unit_model.dart';
 import 'package:xm_frontend/data/models/booking_model.dart';
 import 'package:xm_frontend/data/models/booking_timeslot_model.dart';
-import 'package:xm_frontend/data/models/building_model.dart';
+import 'package:xm_frontend/data/models/object_model.dart';
 import 'package:xm_frontend/data/models/category_model.dart';
-import 'package:xm_frontend/data/repositories/building/building_repository.dart';
+import 'package:xm_frontend/data/repositories/object/object_repository.dart';
 import 'package:xm_frontend/data/repositories/user/user_repository.dart';
 import 'package:xm_frontend/features/personalization/controllers/settings_controller.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
@@ -17,7 +17,7 @@ import 'package:xm_frontend/features/shop/screens/booking/dialogs/view_toggle_wi
 import 'package:xm_frontend/utils/helpers/helper_functions.dart';
 import 'package:xm_frontend/utils/popups/loaders.dart';
 
-enum BookingSourceType { contract, tenant, building, agency }
+enum BookingSourceType { user, company }
 
 class BookingController extends TBaseController<BookingModel> {
   // Store the original list of bookings (unchanged)
@@ -26,7 +26,7 @@ class BookingController extends TBaseController<BookingModel> {
 
   RxList<BookingModel> allRecentBookings = <BookingModel>[].obs;
 
-  final _buildingRepository = Get.put(BuildingRepository());
+  final _objectRepository = Get.put(ObjectRepository());
 
   Rx<DateTime?> startDate = Rx<DateTime?>(null);
   Rx<DateTime?> endDate = Rx<DateTime?>(null);
@@ -38,8 +38,8 @@ class BookingController extends TBaseController<BookingModel> {
   RxInt selectedStatusId = (-1).obs; // -1 means All
   final paginatedPage = 0.obs;
 
-  RxList<BuildingModel> buildingsList = <BuildingModel>[].obs;
-  RxInt selectedBuildingFilterId = 0.obs; // 0 = All
+  RxList<ObjectModel> objectsList = <ObjectModel>[].obs;
+  RxInt selectedObjectFilterId = 0.obs; // 0 = All
 
   Rx<DateTime> focusedDay = DateTime.now().obs;
   Rx<DateTime?> selectedDay = Rx<DateTime?>(null);
@@ -71,11 +71,11 @@ class BookingController extends TBaseController<BookingModel> {
   RxnInt createCategoryId = RxnInt();
 
   // 2) buildings (you already have buildingsList)
-  RxnInt createBuildingId = RxnInt();
+  RxnInt createObjectId = RxnInt();
 
-  // 3) tenants
-  RxList<UserModel> createTenants = <UserModel>[].obs;
-  RxnInt createTenantId = RxnInt();
+  // 3) users
+  RxList<UserModel> createUsers = <UserModel>[].obs;
+  RxnInt createUserId = RxnInt();
 
   // 4) amenity-units
   RxList<AmenityUnitModel> createUnits = <AmenityUnitModel>[].obs;
@@ -89,7 +89,7 @@ class BookingController extends TBaseController<BookingModel> {
   RxnString createSlotTime = RxnString();
   RxnString createEndSlotTime = RxnString();
 
-  RxnInt tenantContractId = RxnInt();
+  RxnInt userContractId = RxnInt();
 
   final userController = Get.find<UserController>();
 
@@ -101,29 +101,29 @@ class BookingController extends TBaseController<BookingModel> {
     loadData(); // Load data when the controller is initialized
     loadCreateCategories();
 
-    loadAllBuildings(); // Load all buildings when the controller is initialized
+    loadAllObjects(); // Load all objects when the controller is initialized
   }
 
-  void loadAllBuildings() async {
+  void loadAllObjects() async {
     try {
-      final result = await _buildingRepository.getAllBuildings();
+      final result = await _objectRepository.getAllObjects();
 
       final updatedUser = await userController.fetchUserDetails();
 
-      final userBuildingRestrictions = updatedUser.buildingPermissionIds ?? [];
+      final userObjectRestrictions = updatedUser.objectPermissionIds ?? [];
 
       // debugPrint('User building restrictions: $userBuildingRestrictions');
 
-      final filteredBuildings =
+      final filteredObjects =
           result
               .where(
-                (building) => userBuildingRestrictions.contains(
-                  int.parse(building.id.toString()),
+                (object) => userObjectRestrictions.contains(
+                  int.parse(object.id.toString()),
                 ),
               )
               .toList();
 
-      buildingsList.assignAll(filteredBuildings);
+      objectsList.assignAll(filteredObjects);
     } catch (e) {
       //   Get.snackbar('Error', 'Failed to load buildings: $e');
     } finally {
@@ -132,7 +132,7 @@ class BookingController extends TBaseController<BookingModel> {
   }
 
   Future<void> loadCreateCategories() async {
-    final cats = await _buildingRepository.getAllAgencyAmenityCategories();
+    final cats = await _objectRepository.getAllCompanyAmenityCategories();
     createCategories.assignAll(cats);
   }
 
@@ -146,9 +146,9 @@ class BookingController extends TBaseController<BookingModel> {
     createCategoryId.value = catId;
 
     // 2. Drop everything that depends on category
-    createBuildingId.value = null;
-    createTenants.clear();
-    createTenantId.value = null;
+    createObjectId.value = null;
+    createUsers.clear();
+    createUserId.value = null;
     createUnits.clear();
     createUnitId.value = null;
     createBookingDate.value = null;
@@ -157,7 +157,7 @@ class BookingController extends TBaseController<BookingModel> {
     createEndSlotTime.value = null;
 
     if (catId != null) {
-      loadAllBuildings();
+      loadAllObjects();
       // tenants & units will only load once both building & tenant are set
     }
   }
@@ -168,13 +168,13 @@ class BookingController extends TBaseController<BookingModel> {
   //   _loadCreateUnits();
   // }
 
-  void onCreateBuildingChanged(int? bldId) {
+  void onCreateObjectChanged(int? oId) {
     // 1. Update the building
-    createBuildingId.value = bldId;
+    createObjectId.value = oId;
 
     // 2. Clear everything downstream of building
-    createTenantId.value = null;
-    createTenants.clear();
+    createUserId.value = null;
+    createUsers.clear();
     createUnitId.value = null;
     createUnits.clear();
     createBookingDate.value = null;
@@ -182,19 +182,19 @@ class BookingController extends TBaseController<BookingModel> {
     createSlotTime.value = null;
     createEndSlotTime.value = null;
 
-    // 3. Load tenants for that building (category is already set above)
-    if (bldId != null) {
-      _loadCreateTenants(bldId);
+    // 3. Load users for that building (category is already set above)
+    if (oId != null) {
+      _loadCreateUsers(oId);
     }
   }
 
-  Future<void> _loadCreateTenants(int? buildingId) async {
-    createTenants.clear();
-    if (buildingId == null) return;
-    final all = await UserRepository.instance.getAllBuildingTenants(
-      buildingId.toString(),
+  Future<void> _loadCreateUsers(int? objectId) async {
+    createUsers.clear();
+    if (objectId == null) return;
+    final all = await UserRepository.instance.getAllObjectUsers(
+      objectId.toString(),
     );
-    createTenants.assignAll(all.where((t) => t.contractStatus == 1));
+    createUsers.assignAll(all.where((t) => t.contractStatus == 1));
   }
 
   // void onCreateTenantChanged(int? tId) {
@@ -202,9 +202,9 @@ class BookingController extends TBaseController<BookingModel> {
   //   _loadCreateUnits();
   // }
 
-  void onCreateTenantChanged(int? tId) {
+  void onCreateUserChanged(int? uId) {
     // 1. Update the tenant
-    createTenantId.value = tId;
+    createUserId.value = uId;
 
     // 2. Clear downstream of tenant
     createUnitId.value = null;
@@ -220,11 +220,11 @@ class BookingController extends TBaseController<BookingModel> {
 
   Future<void> _loadCreateUnits() async {
     final cat = createCategoryId.value;
-    final bld = createBuildingId.value;
-    final tnt = createTenantId.value;
+    final bld = createObjectId.value;
+    final tnt = createUserId.value;
 
     debugPrint(
-      'Loading units for category: $cat, building: $bld, tenant: $tnt',
+      'Loading units for category: $cat, object: $bld, tenant: $tnt',
     );
 
     // if any of the three are null, clear & bail
@@ -234,27 +234,18 @@ class BookingController extends TBaseController<BookingModel> {
       return;
     }
 
-    // get zone id from createTenants list
+    // get zone id from createUsers list
 
-    final tenant = createTenants.firstWhereOrNull(
+    final user = createUsers.firstWhereOrNull(
       (t) => int.parse(t.id!) == tnt,
     );
 
-    tenantContractId.value = tenant?.tenantContractId;
+    userContractId.value = user?.userContractId;
 
     debugPrint(
-      'Tenant zoneId: ${tenant?.zoneId}, category: $cat, building: $bld',
+      'User zoneId: ${user?.zoneId}, category: $cat, building: $bld',
     );
 
-    try {
-      final units = await _buildingRepository
-          .getTenantBuildingAvailableAmenityUnitsV2(bld, tenant!.zoneId!, cat);
-      createUnits.assignAll(units);
-    } catch (e) {
-      // either the repo threw because it used firstWhere
-      // and found nothing, or some other error — just clear
-      createUnits.clear();
-    }
 
     // reset any previously-selected unit & slot
     createUnitId.value = null;
@@ -295,8 +286,8 @@ class BookingController extends TBaseController<BookingModel> {
     DateTime dateTime = DateTime.parse(formattedDate);
 
     if (unitId != null && dateTime != null) {
-      final ss = await BuildingRepository.instance
-          .getBuildingAmenityUnitAvailability(unitId, dateTime, 0);
+      final ss = await ObjectRepository.instance
+          .getObjectAmenityUnitAvailability(unitId, dateTime, 0);
       createSlots.assignAll(ss);
     }
   }
@@ -323,13 +314,13 @@ class BookingController extends TBaseController<BookingModel> {
 
     DateTime date = DateTime.parse(formattedSQL);
 
-    bookingCreated = await UserRepository.instance.createTenantBooking(
-      createTenantId.value!,
+    bookingCreated = await UserRepository.instance.createUserBooking(
+      createUserId.value!,
       createUnitId.value!,
       date,
       createSlotTime.value!,
       createEndSlotTime.value!,
-      tenantContractId.value!,
+      userContractId.value!,
     );
 
     createLoading.value = false;
@@ -406,28 +397,21 @@ class BookingController extends TBaseController<BookingModel> {
       List<BookingModel> bookings;
 
       switch (sourceType) {
-        case BookingSourceType.contract:
+
+        case BookingSourceType.user:
           bookings = await UserRepository.instance
-              .fetchTenantBookingsByContractId(id!);
+              .fetchUserBookingsByUserId(id!);
           break;
-        case BookingSourceType.tenant:
-          bookings = await UserRepository.instance
-              .fetchTenantBookingsByTenantId(id!);
-          break;
-        case BookingSourceType.building:
-          bookings = await BuildingRepository.instance
-              .fetchBuildingRecentBookingsByBuildingId(id!);
-          break;
-        case BookingSourceType.agency:
+        case BookingSourceType.company:
           bookings =
-              await BuildingRepository.instance
-                  .fetchBuildingsBookingsByAgencyId();
+              await ObjectRepository.instance
+                  .fetchObjectsBookingsByCompanyId();
           break;
       }
 
       final updatedUser = await userController.fetchUserDetails();
 
-      final userBuildingRestrictions = updatedUser.buildingPermissionIds ?? [];
+      final userBuildingRestrictions = updatedUser.objectPermissionIds ?? [];
 
       // debugPrint('User building restrictions: $userBuildingRestrictions');
 
@@ -435,7 +419,7 @@ class BookingController extends TBaseController<BookingModel> {
           bookings
               .where(
                 (booking) => userBuildingRestrictions.contains(
-                  int.parse(booking.buildingId.toString()),
+                  int.parse(booking.objectId.toString()),
                 ),
               )
               .toList();
@@ -467,24 +451,6 @@ class BookingController extends TBaseController<BookingModel> {
     }
   }
 
-  Future<void> loadBuildingRecentBookingswssssss() async {
-    try {
-      final buildingId =
-          SettingsController
-              .instance
-              .settings
-              .value
-              .selectedBuildingId; // replace with selected building id
-      List<BookingModel> bookings = await _buildingRepository
-          .fetchBuildingRecentBookingsByBuildingId(int.parse(buildingId));
-
-      allRecentBookings.assignAll(bookings);
-
-      debugPrint("All recent bookings: ${allRecentBookings.length}");
-    } catch (e) {
-      debugPrint("Error loading data: $e");
-    }
-  }
 
   // Method to filter bookings based on search query and filters
   void filterBookings(String query) {
@@ -499,10 +465,6 @@ class BookingController extends TBaseController<BookingModel> {
           final matchesEndDate =
               endDate.value == null ||
               booking.date?.isBefore(endDate.value!) == true;
-          final matchesBuilding =
-              selectedBuildingFilterId.value == 0 ||
-              booking.buildingId == selectedBuildingFilterId.value;
-
           final catId = booking.categoryId;
 
           debugPrint(
@@ -516,8 +478,7 @@ class BookingController extends TBaseController<BookingModel> {
               matchesStatus &&
               matchesStartDate &&
               matchesEndDate &&
-              matchesBuilding &&
-              matchesCategory;
+             matchesCategory;
         }).toList();
 
     //  Set this as the new source for pagination
@@ -557,7 +518,7 @@ class BookingController extends TBaseController<BookingModel> {
     DateTime? end,
   ) {
     selectedStatusId.value = statusId;
-    selectedBuildingFilterId.value = buildinId;
+    selectedObjectFilterId.value = buildinId;
     startDate.value = start;
     endDate.value = end;
     filterBookings(searchController.text);
@@ -571,7 +532,7 @@ class BookingController extends TBaseController<BookingModel> {
   void clearFilters() {
     //  selectedStatus.value = 'All';
     selectedStatusId.value = -1; // Reset to 'All'
-    selectedBuildingFilterId.value = 0; // Reset to 'All'
+    selectedObjectFilterId.value = 0; // Reset to 'All'
     startDate.value = null;
     endDate.value = null;
     searchController.clear();
@@ -597,7 +558,7 @@ class BookingController extends TBaseController<BookingModel> {
           selectedStatusId.value = -1;
           applyFilters(
             selectedStatusId.value,
-            selectedBuildingFilterId.value,
+            selectedObjectFilterId.value,
             startDate.value,
             endDate.value,
           );
@@ -605,17 +566,17 @@ class BookingController extends TBaseController<BookingModel> {
       });
     }
 
-    if (selectedBuildingFilterId.value != 0) {
-      final selectedBuilding = buildingsList.firstWhereOrNull(
-        (b) => int.parse(b.id!) == selectedBuildingFilterId.value,
+    if (selectedObjectFilterId.value != 0) {
+      final selectedObject = objectsList.firstWhereOrNull(
+        (o) => int.parse(o.id!) == selectedObjectFilterId.value,
       );
-      if (selectedBuilding != null) {
+      if (selectedObject != null) {
         filters.add({
-          selectedBuilding.name.toString(): () {
-            selectedBuildingFilterId.value = 0;
+          selectedObject.name.toString(): () {
+            selectedObjectFilterId.value = 0;
             applyFilters(
               selectedStatusId.value,
-              selectedBuildingFilterId.value,
+              selectedObjectFilterId.value,
               startDate.value,
               endDate.value,
             );
@@ -631,7 +592,7 @@ class BookingController extends TBaseController<BookingModel> {
               startDate.value = null;
               applyFilters(
                 selectedStatusId.value,
-                selectedBuildingFilterId.value,
+                selectedObjectFilterId.value,
                 startDate.value,
                 endDate.value,
               );
@@ -646,7 +607,7 @@ class BookingController extends TBaseController<BookingModel> {
               endDate.value = null;
               applyFilters(
                 selectedStatusId.value,
-                selectedBuildingFilterId.value,
+                selectedObjectFilterId.value,
                 startDate.value,
                 endDate.value,
               );
@@ -666,7 +627,7 @@ class BookingController extends TBaseController<BookingModel> {
   }
 
   Future<bool> updateBookingStatus(BookingModel item, int status) async {
-    return await UserRepository.instance.updateTenantBookingStatus(
+    return await UserRepository.instance.updateUserBookingStatus(
       int.parse(item.id!),
       status,
     );
@@ -676,7 +637,7 @@ class BookingController extends TBaseController<BookingModel> {
   bool containsSearchQuery(BookingModel item, String query) {
     return item.createdByName!.toLowerCase().contains(query.toLowerCase()) ||
         item.title!.toLowerCase().contains(query.toLowerCase()) ||
-        item.buildingName!.toLowerCase().contains(query.toLowerCase());
+        item.objectName!.toLowerCase().contains(query.toLowerCase());
   }
 
   @override
@@ -688,19 +649,19 @@ class BookingController extends TBaseController<BookingModel> {
   @override
   Future<List<BookingModel>> fetchItems() async {
     final result =
-        await BuildingRepository.instance.fetchBuildingsBookingsByAgencyId();
+        await ObjectRepository.instance.fetchObjectsBookingsByCompanyId();
 
     final updatedUser = await userController.fetchUserDetails();
 
-    final userBuildingRestrictions = updatedUser.buildingPermissionIds ?? [];
+    final userObjectRestrictions = updatedUser.objectPermissionIds ?? [];
 
     // debugPrint('User building restrictions: $userBuildingRestrictions');
 
     final filteredBookings =
         result
             .where(
-              (booking) => userBuildingRestrictions.contains(
-                int.parse(booking.buildingId.toString()),
+              (booking) => userObjectRestrictions.contains(
+                int.parse(booking.objectId.toString()),
               ),
             )
             .toList();

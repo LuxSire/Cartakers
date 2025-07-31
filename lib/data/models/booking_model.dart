@@ -18,8 +18,8 @@ class BookingModel {
   int? amenityUnitId;
   String? createdByName;
   String createdByUserProfileImageUrl;
-  String? buildingName;
-  int? buildingId;
+  String? objectName;
+  int? objectId;
   String? categoryName;
   int? categoryId;
 
@@ -36,8 +36,8 @@ class BookingModel {
     this.amenityUnitId,
     this.createdByName,
     this.createdByUserProfileImageUrl = '',
-    this.buildingName,
-    this.buildingId,
+    this.objectName,
+    this.objectId,
     this.categoryName,
     this.categoryId,
   });
@@ -74,14 +74,14 @@ class BookingModel {
           ).translate('general_msgs.msg_unknown'), // Default to "Unknown"
       createdByUserProfileImageUrl:
           json['created_by_profile_image_url'] ?? '', // Default to "Unknown"
-      buildingName:
-          json['building_name'] ??
+      objectName:
+          json['object_name'] ??
           AppLocalization.of(
             Get.context!,
           ).translate('general_msgs.msg_unknown'), // Default to "Unknown"
-      buildingId:
-          json['building_id'] != null
-              ? int.tryParse(json['building_id'].toString()) ?? 0
+      objectId:
+          json['object_id'] != null
+              ? int.tryParse(json['object_id'].toString()) ?? 0
               : 0, // Default to 0 if null or invalid
 
       categoryName:

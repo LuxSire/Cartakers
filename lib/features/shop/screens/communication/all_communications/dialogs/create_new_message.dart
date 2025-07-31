@@ -13,7 +13,7 @@ class CreateMessageDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = CommunicationController.instance;
     controller.clearMessageForm();
-    controller.selectBuilding(-1);
+    controller.selectObject(-1);
     controller.toggleChannel('push'); // Default to push notification
 
     return Dialog(
@@ -70,12 +70,12 @@ class CreateMessageDialog extends StatelessWidget {
                       child: ButtonTheme(
                         alignedDropdown: true,
                         child: DropdownButtonFormField<int>(
-                          value: controller.selectedBuildingId.value,
+                          value: controller.selectedObjectId.value,
                           isExpanded: true,
-                          onChanged: (v) => controller.selectBuilding(v ?? -1),
+                          onChanged: (v) => controller.selectObject(v ?? -1),
                           decoration: InputDecoration(
                             labelText: AppLocalization.of(context).translate(
-                              'communication_screen.lbl_select_building',
+                              'communication_screen.lbl_select_object',
                             ),
                             filled: true,
                             fillColor: TColors.grey.withOpacity(0.1),
@@ -93,11 +93,11 @@ class CreateMessageDialog extends StatelessWidget {
                               value: -1,
                               child: Text(
                                 AppLocalization.of(context).translate(
-                                  'communication_screen.lbl_all_buildings',
+                                  'communication_screen.lbl_all_objects',
                                 ),
                               ),
                             ),
-                            ...controller.buildingsList.map(
+                            ...controller.objectsList.map(
                               (b) => DropdownMenuItem(
                                 value: int.parse(b.id!),
                                 child: Text(b.name ?? ''),
@@ -118,7 +118,7 @@ class CreateMessageDialog extends StatelessWidget {
                   const SizedBox(height: TSizes.xs),
                   Expanded(
                     child: Obx(() {
-                      final contracts = controller.contractsByBuilding;
+                      final contracts = controller.contractsByObject;
                       if (contracts.isEmpty) {
                         return Center(
                           child: Text(
@@ -148,9 +148,9 @@ class CreateMessageDialog extends StatelessWidget {
                           ...contracts.map((c) {
                             final id = int.parse(c.id!);
                             return CheckboxListTile(
-                              title: Text(c.tenantNames ?? ''),
+                              title: Text(c.userNames ?? ''),
                               subtitle:
-                                  c.tenantNames != null
+                                  c.userNames != null
                                       ? Text(c.contractCode!)
                                       : null,
                               value: controller.selectedContractIds.contains(

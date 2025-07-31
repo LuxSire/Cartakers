@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/features/shop/controllers/communication/communication_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/request/request_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/tenant/tenant_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 
 class MessagesFilterDialog extends StatelessWidget {
@@ -18,7 +18,7 @@ class MessagesFilterDialog extends StatelessWidget {
 
     final RxInt tempStatusId = controller.selectedStatusId.value.obs;
     final RxInt tempBuildingFilterId =
-        controller.selectedBuildingFilterId.value.obs;
+        controller.selectedObjectFilterId.value.obs;
     final Rx<DateTime?> tempStartDate = controller.startDate.value.obs;
     final Rx<DateTime?> tempEndDate = controller.endDate.value.obs;
 
@@ -120,7 +120,7 @@ class MessagesFilterDialog extends StatelessWidget {
                         ),
                       ),
                     ] +
-                    controller.buildingsList
+                    controller.objectsList
                         .map(
                           (b) => DropdownMenuItem<int>(
                             value: int.parse(b.id!),

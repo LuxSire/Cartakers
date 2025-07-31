@@ -209,7 +209,7 @@ class RequestsFilterDialog extends StatelessWidget {
                       controller.applyFilters(
                         controller.selectedStatusId.value,
                         controller.selectedRequestTypeId.value,
-                        controller.selectedBuildingFilterId.value,
+                        controller.selectedObjectFilterId.value,
                         controller.startDate.value,
                         controller.endDate.value,
                       );

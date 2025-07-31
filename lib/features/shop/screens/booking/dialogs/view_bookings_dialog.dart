@@ -21,7 +21,7 @@ class ViewBookingsDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<BookingController>(tag: 'agency_bookings');
+    final controller = Get.find<BookingController>(tag: 'company_bookings');
 
     final theme = Theme.of(context);
 
@@ -246,7 +246,7 @@ class ViewBookingsDialog extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              booking.buildingName ?? '',
+                              booking.objectName ?? '',
                               style: const TextStyle(fontSize: 12),
                             ),
                             const SizedBox(height: 4),

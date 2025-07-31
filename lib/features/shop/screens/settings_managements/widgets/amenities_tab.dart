@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:xm_frontend/features/shop/screens/tenant/all_tenants/widgets/table_header.dart';
+import 'package:xm_frontend/features/shop/screens/user/all_users/widgets/table_header.dart';
 
 import 'package:xm_frontend/utils/constants/sizes.dart';
 
@@ -13,7 +13,7 @@ class AmenitiesTab extends StatelessWidget {
       child: ListView(
         children: [
           // Table Header
-          TenantTableHeader(),
+          UserTableHeader(),
           SizedBox(height: TSizes.spaceBtwItems),
         ],
       ),

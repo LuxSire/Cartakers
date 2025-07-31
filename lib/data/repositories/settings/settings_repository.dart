@@ -16,12 +16,12 @@ class SettingsRepository extends GetxController {
   /// Function to fetch setting details based on setting ID.
   Future<SettingsModel> getSettings() async {
     return SettingsModel(
-      appName: 'Tenants10',
+      appName: 'XM Dashboard',
       agencyName: 'Apleona Real Estate AG',
-      selectedBuildingId: '1', // replace with selected building id
+      selectedObjectId: '1', // replace with selected building id
     );
   }
-
+  
   /// Function to update setting data in Firestore.
   Future<void> updateSettingDetails(SettingsModel updatedSetting) async {}
 

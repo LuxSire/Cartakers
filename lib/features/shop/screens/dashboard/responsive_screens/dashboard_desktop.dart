@@ -5,12 +5,12 @@ import 'package:xm_frontend/app.dart';
 import 'package:xm_frontend/app/app_controller.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/common/widgets/texts/page_heading.dart';
-import 'package:xm_frontend/features/shop/controllers/building/building_controller.dart';
-import 'package:xm_frontend/features/shop/screens/building/all_buildings/dialogs/create_building.dart';
+import 'package:xm_frontend/features/shop/controllers/object/object_controller.dart';
+import 'package:xm_frontend/features/shop/screens/object/all_objects/dialogs/create_object.dart';
 import 'package:xm_frontend/features/shop/screens/dashboard/widgets/a_dashboard_card.dart';
 import 'package:xm_frontend/features/shop/screens/dashboard/widgets/booking_card.dart';
 import 'package:xm_frontend/features/shop/screens/dashboard/widgets/booking_card.dart';
-import 'package:xm_frontend/features/shop/screens/dashboard/widgets/building_card.dart';
+import 'package:xm_frontend/features/shop/screens/dashboard/widgets/object_card.dart';
 import 'package:xm_frontend/features/shop/screens/dashboard/widgets/requests_card.dart';
 import 'package:xm_frontend/features/shop/screens/dashboard/widgets/vacant_card.dart';
 import 'package:xm_frontend/routes/routes.dart';
@@ -54,18 +54,18 @@ class DashboardDesktopScreen extends StatelessWidget {
                   Expanded(
                     child: Obx(
                       () => ADashboardCard(
-                        onTap: () => Get.toNamed(Routes.buildingsUnits),
+                        onTap: () => Get.toNamed(Routes.objectsUnits),
 
                         headingIcon: Iconsax.building,
                         headingIconColor: TColors.alterColor,
                         headingIconBgColor: TColors.alterColor.withOpacity(0.1),
-                        stats: controller.totalAgencyBuildings.value,
+                        stats: controller.totalCompanyObjects.value,
                         context: context,
                         title: AppLocalization.of(
                           context,
-                        ).translate('dashboard_screen.lbl_buildings'),
+                        ).translate('dashboard_screen.lbl_objects'),
                         subTitle:
-                            controller.totalAgencyBuildings.value.toString(),
+                            controller.totalCompanyObjects.value.toString(),
                       ),
                     ),
                   ),
@@ -73,18 +73,18 @@ class DashboardDesktopScreen extends StatelessWidget {
                   Expanded(
                     child: Obx(
                       () => ADashboardCard(
-                        onTap: () => Get.toNamed(Routes.tenantsContracts),
+                        onTap: () => Get.toNamed(Routes.usersContracts),
 
                         headingIcon: Iconsax.profile_2user,
                         headingIconColor: Colors.green,
                         headingIconBgColor: Colors.green.withOpacity(0.1),
-                        stats: controller.totalBuildingsTenants.value,
+                        stats: controller.totalObjectUsers.value,
                         context: context,
                         title: AppLocalization.of(
                           context,
-                        ).translate('sidebar.lbl_tenants_and_contracts'),
+                        ).translate('sidebar.lbl_users_and_contracts'),
                         subTitle:
-                            ' ${controller.totalBuildingsTenants.value.toString()}/${controller.totalBuildingsContracts.value.toString()}',
+                            ' ${controller.totalObjectUsers.value.toString()}/${controller.totalObjectUsers.value.toString()}',
                       ),
                     ),
                   ),
@@ -104,13 +104,13 @@ class DashboardDesktopScreen extends StatelessWidget {
                         headingIcon: Iconsax.calendar_search,
                         headingIconColor: Colors.amber,
                         headingIconBgColor: Colors.amber.withOpacity(0.1),
-                        stats: controller.totalBuildingsPendingRequests.value,
+                        stats: controller.totalObjectsPendingRequests.value,
                         context: context,
                         title: AppLocalization.of(
                           context,
                         ).translate('sidebar.lbl_bookings_and_requests'),
                         subTitle:
-                            ' ${controller.totalBuildingsBookings.value.toString()}/${controller.totalBuildingsRequests.value.toString()}',
+                            ' ${controller.totalObjectsBookings.value.toString()}/${controller.totalObjectsRequests.value.toString()}',
                       ),
                     ),
                   ),
@@ -129,8 +129,8 @@ class DashboardDesktopScreen extends StatelessWidget {
                           context,
                         ).translate('sidebar.lbl_communication'),
                         subTitle:
-                            controller.totalBuildingsMessages.value.toString(),
-                        stats: controller.totalBuildingsMessages.value,
+                            controller.totalObjectsMessages.value.toString(),
+                        stats: controller.totalObjectsMessages.value,
                       ),
                     ),
                   ),
@@ -203,7 +203,7 @@ class DashboardDesktopScreen extends StatelessWidget {
                                       ),
                                       Text(
                                         AppLocalization.of(context).translate(
-                                          'dashboard_screen.lbl_buildings',
+                                          'dashboard_screen.lbl_objects',
                                         ),
                                         style:
                                             Theme.of(
@@ -218,13 +218,13 @@ class DashboardDesktopScreen extends StatelessWidget {
                                         context: context,
                                         barrierDismissible: false,
                                         builder:
-                                            (_) => const CreateBuildingDialog(),
+                                            (_) => const CreateObjectDialog(),
                                       );
                                       if (result == true) {
-                                        final buildingController =
-                                            Get.find<BuildingController>();
+                                        final objectController =
+                                            Get.find<ObjectController>();
 
-                                        buildingController.refreshData();
+                                        objectController.refreshData();
                                         controller
                                             .initDashboardTotals(); // Refresh totals after creating a new building
                                       }
@@ -235,7 +235,7 @@ class DashboardDesktopScreen extends StatelessWidget {
                                     ),
                                     label: Text(
                                       AppLocalization.of(context).translate(
-                                        'buildings_screen.lbl_create_new_building',
+                                        'objects_screen.lbl_create_new_object',
                                       ),
                                       style: const TextStyle(
                                         color: TColors.alterColor,
@@ -245,7 +245,7 @@ class DashboardDesktopScreen extends StatelessWidget {
                                 ],
                               ),
                               const SizedBox(height: TSizes.spaceBtwSections),
-                              const BuildingCard(),
+                              const ObjectCard(),
                             ],
                           ),
                         ),
@@ -268,7 +268,7 @@ class DashboardDesktopScreen extends StatelessWidget {
 
                                   Obx(
                                     () => Text(
-                                      "${AppLocalization.of(context).translate('dashboard_screen.lbl_vacant_units')} (${controller.totalBuildingsVacantUnits})",
+                                      "${AppLocalization.of(context).translate('dashboard_screen.lbl_vacant_units')} (${controller.totalObjectsVacantUnits.value})",
                                       style:
                                           Theme.of(
                                             context,
@@ -307,7 +307,7 @@ class DashboardDesktopScreen extends StatelessWidget {
 
                                   Obx(
                                     () => Text(
-                                      '${AppLocalization.of(context).translate('dashboard_screen.lbl_pending_requests')} (${controller.totalBuildingsPendingRequests.value})',
+                                      '${AppLocalization.of(context).translate('dashboard_screen.lbl_pending_requests')} (${controller.totalObjectsPendingRequests.value})',
                                       style:
                                           Theme.of(
                                             context,

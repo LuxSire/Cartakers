@@ -86,7 +86,7 @@ class TSidebar extends StatelessWidget {
                                   AuthenticationRepository
                                       .instance
                                       .currentUser!
-                                      .agencyName,
+                                      .companyName,
                                   style: Theme.of(context).textTheme.bodySmall,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -115,18 +115,18 @@ class TSidebar extends StatelessWidget {
                             ).translate('sidebar.lbl_dashboard'),
                           ),
                           TMenuItem(
-                            route: Routes.buildingsUnits,
+                            route: Routes.objectsUnits,
                             icon: Iconsax.building,
                             itemName: AppLocalization.of(
                               context,
-                            ).translate('buildings_screen.lbl_buildings'),
+                            ).translate('objects_screen.lbl_objects'),
                           ),
                           TMenuItem(
-                            route: Routes.tenantsContracts,
+                            route: Routes.usersContracts,
                             icon: Iconsax.profile_2user,
                             itemName: AppLocalization.of(
                               context,
-                            ).translate('sidebar.lbl_tenants_and_contracts'),
+                            ).translate('sidebar.lbl_users_and_contracts'),
                           ),
                           TMenuItem(
                             route: Routes.bookingsRequests,
@@ -138,7 +138,7 @@ class TSidebar extends StatelessWidget {
 
                           // TMenuItem(
                           //   route: Routes.tasks,
-                          //   icon: Iconsax.clipboard_text,
+                          //   icon: Iconsax.clipboard_text,  
                           //   itemName: AppLocalization.of(
                           //     context,
                           //   ).translate('sidebar.lbl_tasks'),

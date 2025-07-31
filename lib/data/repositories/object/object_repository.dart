@@ -1,0 +1,634 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
+import 'package:path/path.dart' as path;
+import 'package:xm_frontend/data/api/services/object_service.dart';
+import 'package:xm_frontend/data/models/amenity_unit_model.dart';
+import 'package:xm_frontend/data/models/amenity_zone_model.dart';
+import 'package:xm_frontend/data/models/booking_model.dart';
+import 'package:xm_frontend/data/models/booking_timeslot_model.dart';
+import 'package:xm_frontend/data/models/object_model.dart';
+import 'package:xm_frontend/data/models/category_model.dart';
+import 'package:xm_frontend/data/models/contract_model.dart';
+import 'package:xm_frontend/data/models/organization_model.dart';
+import 'package:xm_frontend/data/models/request_log_model.dart';
+import 'package:xm_frontend/data/models/request_model.dart';
+import 'package:xm_frontend/data/models/request_type_model.dart';
+import 'package:xm_frontend/data/models/unit_model.dart';
+import 'package:xm_frontend/data/models/unit_room_model.dart';
+import 'package:xm_frontend/data/models/unit_zone_assigment_model.dart';
+import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
+import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
+
+/// Repository class for user-related operations.
+class ObjectRepository extends GetxController {
+  static ObjectRepository get instance => Get.find();
+
+  final _objectService = ObjectService();
+
+  var totalBuildingTenants = 0.obs;
+
+  /// Function to fetch all buildings from mysql.
+  Future<List<ObjectModel>> getAllObjects() async {
+    try {
+      // Assuming you already have access to the companyId from somewhere (e.g. logged-in user)
+      final companyId = UserController.instance.user.value.companyId;
+
+      if (companyId == null || companyId.isEmpty) {
+        debugPrint('Company ID not found.');
+        return [];
+      }
+
+      final response = await _objectService.getObjectsByCompanyId(
+        int.parse(companyId),
+      );
+
+      // get the user building restrictions
+
+      totalBuildingTenants.value = response.length;
+
+      return response
+          .map((buildingData) => ObjectModel.fromJson(buildingData))
+          .toList();
+    } catch (e) {
+      debugPrint('Error fetching buildings: $e');
+      return [];
+    }
+  }
+
+  Future<List<OrganizationModel>> getAllMaintenanceServicers() async {
+    try {
+      // Assuming you already have access to the agencyId from somewhere (e.g. logged-in user)
+      final companyId = UserController.instance.user.value.companyId;
+
+      if (companyId == null || companyId.isEmpty) {
+        debugPrint('Company ID not found.');
+        return [];
+      }
+
+      final response = await _objectService.getMaintenanceServicers(
+        int.parse(companyId),
+      );
+
+      return response.map((data) => OrganizationModel.fromJson(data)).toList();
+    } catch (e) {
+      debugPrint('Error fetching all maintenance servicers: $e');
+      return [];
+    }
+  }
+
+  /// Function to fetch user details based on user ID.
+  Future<ObjectModel> fetchObjectDetails(String id) async {
+    return ObjectModel.empty();
+  }
+
+  Future<List<UnitModel>> fetchObjectUnits(String objectId) async {
+    //   debugPrint('Building ID: $buildingId');
+
+    try {
+      if (objectId == null || objectId.isEmpty) {
+        debugPrint('Object ID not found.');
+        return [];
+      }
+
+      final response = await _objectService.getObjectUnitsById(
+        int.parse(objectId),
+      );
+
+      return response.map((unitData) => UnitModel.fromJson(unitData)).toList();
+    } catch (e) {
+      debugPrint('Error fetching object units: $e');
+      return [];
+    }
+  }
+
+  Future<List<AmenityZoneModel>> getZonesForObject(String objectId) async {
+    try {
+      if (objectId == null || objectId.isEmpty) {
+        debugPrint('Object ID not found.');
+        return [];
+      }
+
+      final response = await _objectService.getZonesForObject(
+        int.parse(objectId),
+      );
+
+      return response
+          .map((zoneData) => AmenityZoneModel.fromJson(zoneData))
+          .toList();
+    } catch (e) {
+      debugPrint('Error fetching building units: $e');
+      return [];
+    }
+  }
+
+
+
+  /// Function to update user data in mysql.
+  Future<bool> updateObjectDetails(ObjectModel updatedObject) async {
+    // display debugPrint of the updated object
+    debugPrint('Updated Object: ${updatedObject.toJson()}');
+
+    // get editcontroller instance
+    final controller = Get.put(EditObjectController());
+
+    debugPrint(controller.hasImageChanged.value.toString());
+
+    try {
+      if (updatedObject.id == null || updatedObject.id!.isEmpty) {
+        debugPrint('Object ID not found.');
+        return false;
+      }
+
+      // first check if image has changed or been updated
+
+      String imageUrl = updatedObject.imgUrl ?? '';
+
+      // if (controller.hasImageChanged.value == true) {
+      //   try {
+      //     final directoryName =
+      //         "agencies/${updatedObject.agencyId}/buildings/${updatedObject.id}"; // Set the directory for storage
+
+      //     final tempFile = await writeBytesToTempFile(
+      //       controller.memoryBytes.value!,
+      //       "building_${updatedBuilding.id}.jpg",
+      //     );
+
+      //     final imageResponse = await _buildingService.uploadAzureImage(
+      //       file: tempFile,
+      //       buildingId: int.parse(updatedBuilding.id!),
+      //       containerName: "media",
+      //       directoryName: directoryName,
+      //     );
+
+      //     if (imageResponse['success'] == false) {
+      //       debugPrint("Failed to upload image: ${imageResponse['message']}");
+      //     } else {
+      //       final imageData = jsonDecode(imageResponse['data']);
+      //       userImageUrl = imageData['url'];
+      //       debugPrint("Image URL: $userImageUrl");
+      //       updatedBuilding.imgUrl = userImageUrl;
+      //     }
+      //   } catch (error) {
+      //     debugPrint("Error uploading image: $error");
+      //   }
+      // }
+
+      if (controller.hasImageChanged.value) {
+        final directoryName =
+            "agencies/${updatedObject.companyId}/buildings/${updatedObject.id}";
+
+        try {
+          late Map<String, dynamic> imageResponse;
+          final timestamp = DateTime.now().millisecondsSinceEpoch;
+          if (kIsWeb) {
+            // WEB: upload directly from bytes
+            // get datetime to add to filename
+            //${DateTime.now().millisecondsSinceEpoch}
+
+            final bytes = controller.memoryBytes.value!;
+            final filename = "object_${updatedObject.id}_$timestamp.jpg";
+            imageResponse = await _objectService.uploadAzureImage(
+              bytes: bytes,
+              filename: filename,
+              id: int.parse(updatedObject.id!),
+              containerName: "media",
+              directoryName: directoryName,
+            );
+          } else {
+            // MOBILE/DESKTOP: write to temp file then upload
+            final temp = await writeBytesToTempFile(
+              controller.memoryBytes.value!,
+              'object_${updatedObject.id}_$timestamp.jpg',
+            );
+            imageResponse = await _objectService.uploadAzureImage(
+              file: temp,
+              filename: p.basename(temp.path),
+              id: int.parse(updatedObject.id!),
+              containerName: 'media',
+              directoryName: directoryName,
+            );
+          }
+
+          if (imageResponse['success'] != true) {
+            debugPrint("Failed to upload image: ${imageResponse['message']}");
+          } else {
+            final data = jsonDecode(imageResponse['data']);
+            final userImageUrl = data['url'] as String;
+            debugPrint("Image URL: $userImageUrl");
+            updatedObject.imgUrl = userImageUrl;
+          }
+        } catch (error) {
+          debugPrint("Error uploading image: $error");
+        }
+      }
+
+      // Update the building details
+
+      debugPrint('User Image URL before updating: $imageUrl');
+
+      final result = await _objectService.updateObjectDetails(
+        int.parse(updatedObject.id!),
+        updatedObject.name!,
+        updatedObject.street!,
+        updatedObject.objectNumber!,
+        updatedObject.zipCode!,
+        updatedObject.location!,
+        updatedObject.imgUrl ?? '',
+      );
+
+      if (result['success'] == false) {
+        debugPrint('Error updating object: ${result['message']}');
+        return false;
+      }
+
+      debugPrint('Update Object Result: $result');
+
+      return true;
+    } catch (e) {
+      debugPrint('Error updating object: $e');
+      return false;
+    }
+  }
+
+  Future<File> writeBytesToTempFile(Uint8List bytes, String filename) async {
+    final tempDir = await getTemporaryDirectory();
+    final filePath = path.join(tempDir.path, filename);
+    final file = File(filePath);
+    await file.writeAsBytes(bytes);
+    return file;
+  }
+
+  /// Update any field in specific Users Collection
+  Future<void> updateSingleField(Map<String, dynamic> json) async {}
+
+  /// Delete  Data
+  Future<bool> deleteObject(int id) async {
+    try {
+      final response = await _objectService.deleteObjectById(id);
+
+      if (response['success'] != true) {
+        throw Exception('Failed to delete object: ${response['message']}');
+      }
+
+      return true;
+    } catch (e) {
+      debugPrint('Error deleting object: $e');
+      return false;
+      //rethrow;
+    }
+  }
+
+  Future<bool> deleteObjectDirectory(String container, directory) async {
+    try {
+      final response = await _objectService.deleteObjectDirectory(
+        container,
+        directory,
+      );
+
+      if (response['status'] != 200) {
+        throw Exception(
+          'Failed to delete user directory: ${response['message']}',
+        );
+      }
+
+      return true;
+    } catch (e) {
+      debugPrint('Error deleting user directory: $e');
+      return false;
+      //rethrow;
+    }
+  }
+
+  Future<bool> assignUnitsToZone({
+    required int zoneId,
+    required List<int> unitIds,
+  }) async {
+    try {
+      final response = await _objectService.assignUnitsToZone(
+        zoneId: zoneId,
+        unitIds: unitIds,
+      );
+
+      if (response['success'] == false) {
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      debugPrint("Error in assignUnitsToZone: $error");
+      return false;
+    }
+  }
+
+  Future<bool> assignUnitsBatch(List<Map<String, dynamic>> assignments) async {
+    try {
+      final response = await _objectService.assignUnitsBatch(assignments);
+
+      if (response['success'] == false) {
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      debugPrint("Error in assignUnitsBatch: $error");
+      return false;
+    }
+  }
+
+  Future<bool> createAmenityZone(int buildingId, String amenityZoneName) async {
+    try {
+      final response = await _objectService.createAmenityZone(
+        buildingId,
+        amenityZoneName,
+      );
+
+      if (response['success'] == false) {
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      debugPrint("Error in createAmenityZone: $error");
+      return false;
+    }
+  }
+
+  Future<List<RequestLog>> fetchRequestLogsByRequestId(int requestId) async {
+    try {
+      final List<Map<String, dynamic>> responseList = await _objectService
+          .getObjectRequestLogs(requestId);
+
+      if (responseList.isEmpty) return [];
+
+      return responseList
+          .map((requestData) => RequestLog.fromJson(requestData))
+          .toList();
+    } catch (e) {
+      debugPrint('Error in fetchRequestLogsByRequestId: $e');
+      return [];
+    }
+  }
+
+  Future<List<RequestTypeModel>> fetchRequestTypes(int buildingId) async {
+    try {
+      final List<Map<String, dynamic>> responseList = await _objectService
+          .getObjectRequestTypes(
+            buildingId,
+          ); // replace with selected building id
+
+      if (responseList.isEmpty) return [];
+
+      return responseList
+          .map((requestData) => RequestTypeModel.fromJson(requestData))
+          .toList();
+    } catch (e) {
+      debugPrint('Error in fetchRequestTypes: $e');
+      return [];
+    }
+  }
+
+  Future<List<BookingModel>> fetchObjectRecentBookingsByObjectId(
+    int objectId,
+  ) async {
+    try {
+      final List<Map<String, dynamic>> responseList = await _objectService
+          .getObjectRecentBookings(
+            objectId,
+          ); // replace with selected building id
+
+      if (responseList.isEmpty) return [];
+
+      return responseList
+          .map((bookingData) => BookingModel.fromJson(bookingData))
+          .toList();
+    } catch (e) {
+      debugPrint('Error in fetchObjectRecentBookingsByObjectId: $e');
+      return [];
+    }
+  }
+
+  Future<List<RequestModel>> fetchObjectRequestsByObjectId(
+    int objectId,
+  ) async {
+    try {
+      final List<Map<String, dynamic>> responseList = await _objectService
+          .getObjectAllRequests(objectId);
+
+      if (responseList.isEmpty) return [];
+
+      return responseList
+          .map((requestData) => RequestModel.fromJson(requestData))
+          .toList();
+    } catch (e) {
+      debugPrint('Error in fetchObjectRequestsByObjectId: $e');
+      return [];
+    }
+  }
+
+  Future<List<RequestModel>> fetchObjectsRequestsByCompanyId() async {
+    final companyId = AuthenticationRepository.instance.currentUser!.companyId;
+
+    try {
+      final List<Map<String, dynamic>> responseList = await _objectService
+          .getCompanyObjectsAllRequests(int.parse(companyId));
+
+      if (responseList.isEmpty) return [];
+
+      debugPrint('Response List: $responseList');
+
+      return responseList
+          .map((requestData) => RequestModel.fromJson(requestData))
+          .toList();
+    } catch (e) {
+      debugPrint('Error in fetchObjectsRequestsByCompanyId: $e');
+      return [];
+    }
+  }
+
+  Future<List<BookingModel>> fetchObjectsBookingsByCompanyId() async {
+    try {
+      final companyId = AuthenticationRepository.instance.currentUser!.companyId;
+
+      final List<Map<String, dynamic>> responseList = await _objectService
+          .getCompanyObjectsAllBookings(int.parse(companyId));
+
+      if (responseList.isEmpty) return [];
+
+      return responseList
+          .map((bookingData) => BookingModel.fromJson(bookingData))
+          .toList();
+    } catch (e) {
+      debugPrint('Error in fetchBuildingsBookingsByCompanyId: $e');
+      return [];
+    }
+  }
+
+  Future<bool> createObject(
+    String objectName,
+    String street,
+    String objectNumber,
+    String zipCode,
+    String location,
+
+    int totalUnits,
+    int totalFloors,
+  ) async {
+    final companyId = AuthenticationRepository.instance.currentUser!.companyId;
+    try {
+      final response = await _objectService.createObject(
+        int.parse(companyId),
+        objectName,
+        street,
+        objectNumber,
+        zipCode,
+        location,
+        totalUnits,
+        totalFloors,
+      );
+
+      debugPrint('Create Object Response: $response');
+
+      if (response['success'] == false) {
+        return false;
+      }
+
+      final objectId = response['data'][0]['objectId'];
+
+      final users =
+          await UserController.instance.fetchUsersAndTranslateFields();
+      // filter only admins
+      final adminUsers = users.where((user) => user.roleExtId == 1).toList();
+
+      // add to building permissions
+      final user = UserController.instance.user.value;
+
+      // remove the user from the list of admins
+      final filteredAdmins =
+          adminUsers.where((admin) => admin.id != user.id).toList();
+      // assign the user to the object permission
+      await assignUserToObjectPermission(objectId, int.parse(user.id!));
+
+      // also assign to all admins
+      for (final admin in filteredAdmins) {
+        await assignUserToObjectPermission(objectId, int.parse(admin.id!));
+      }
+
+      return true;
+    } catch (error) {
+      debugPrint("Error in creatObject: $error");
+      return false;
+    }
+  }
+
+  Future<List<UnitModel>> fetchCompanyObjectsUnits(String companyId) async {
+    //   debugPrint('Building ID: $buildingId');
+
+    try {
+      if (companyId == null || companyId.isEmpty) {
+        debugPrint('Company ID not found. fetchCompanyObjectsUnits');
+        return [];
+      }
+
+      final response = await _objectService.getCompanyObjectsUnitsById(
+        int.parse(companyId),
+      );
+
+      return response.map((unitData) => UnitModel.fromJson(unitData)).toList();
+    } catch (e) {
+      debugPrint('Error fetching company object units: $e');
+      return [];
+    }
+  }
+
+
+  Future<bool> updateUnitRoom(int unitId, int roomId) async {
+    try {
+      final result = await _objectService.updateObjectUnitRoom(
+        unitId,
+        roomId, // pieceId is the room ID
+      );
+
+      if (result['success'] == false) {
+        debugPrint('Error updating unit room : ${result['message']}');
+        return false;
+      }
+
+      return true;
+    } catch (e) {
+      debugPrint('Error updating building unit room: $e');
+      return false;
+    }
+  }
+
+  Future<List<CategoryModel>> getAllCompanyAmenityCategories() async {
+    try {
+      final companyId = UserController.instance.user.value.companyId;
+
+      if (companyId == null || companyId.isEmpty) {
+        debugPrint('Company ID not found.');
+        return [];
+      }
+
+      final response = await _objectService.getAllCompanyAmenityCategories(
+        int.parse(companyId),
+      );
+
+      return response.map((data) => CategoryModel.fromJson(data)).toList();
+    } catch (e) {
+      debugPrint('Error fetching company amenity categories: $e');
+      return [];
+    }
+  }
+
+
+  Future<List<BookingTimeslotModel>> getObjectAmenityUnitAvailability(
+    int amenityUnitId,
+    DateTime bookingDate,
+    int excludeBookingId,
+  ) async {
+    try {
+      final List<Map<String, dynamic>> responseList = await _objectService
+          .getObjectAmenityUnitTimeSlots(
+            amenityUnitId,
+            bookingDate,
+            excludeBookingId,
+          );
+
+      if (responseList.isEmpty) return [];
+
+      return responseList
+          .map((data) => BookingTimeslotModel.fromJson(data))
+          .toList();
+    } catch (e) {
+      debugPrint('Error in getObjectAmenityUnitAvailability: $e');
+      return [];
+    }
+  }
+
+  Future<bool> assignUserToObjectPermission(
+    int objectId,
+    int userId,
+  ) async {
+    try {
+      final response = await _objectService.assignUserToObjectPermission(
+        objectId,
+        userId,
+      );
+
+      if (response['success'] == false) {
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      debugPrint("Error in assignUnitsToZone: $error");
+      return false;
+    }
+  }
+}

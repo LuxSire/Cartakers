@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:xm_frontend/app/app_controller.dart';
-import 'package:xm_frontend/data/repositories/agency/agency_repository.dart';
+import 'package:xm_frontend/data/repositories/company/company_repository.dart';
 import 'package:xm_frontend/features/personalization/controllers/settings_controller.dart';
 import 'package:xm_frontend/utils/helpers/network_manager.dart';
 
@@ -33,7 +33,7 @@ Future<void> main() async {
   // Register Dependencies
   Get.put(AppController());
   Get.put(AuthenticationRepository());
-  Get.put(AgencyRepository());
+  Get.put(CompanyRepository());
   Get.put(UserController());
   Get.put(SettingsController());
   Get.put(DashboardController());

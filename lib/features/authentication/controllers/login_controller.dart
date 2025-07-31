@@ -193,7 +193,7 @@ class LoginController extends GetxController {
 
       // first check if email exists
       final responseUser = await userService.getCompanyByEmail(email);
-
+      debugPrint('responseUser: $responseUser');
       if ((responseUser['id'] ?? 0) > 0) {
       } else {
         TLoaders.errorSnackBar(

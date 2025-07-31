@@ -13,7 +13,7 @@ import 'package:xm_frontend/features/shop/controllers/communication/communicatio
 import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/request/request_controller.dart';
 import 'package:xm_frontend/features/shop/screens/contract/dialogs/view_request_timeline.dart';
-import 'package:xm_frontend/features/shop/screens/tenant/dialogs/create_tenant.dart';
+import 'package:xm_frontend/features/shop/screens/user/dialogs/create_user.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 import 'package:xm_frontend/utils/constants/enums.dart';
 import 'package:xm_frontend/utils/constants/image_strings.dart';

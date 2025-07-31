@@ -5,20 +5,21 @@ import 'package:xm_frontend/features/authentication/screens/invitation/invitatio
 import 'package:xm_frontend/features/authentication/screens/login/login.dart';
 import 'package:xm_frontend/features/authentication/screens/register/register.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/building/building_unit_detail_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/building/edit_building_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/object/object_unit_detail_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/tenant/tenant_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/object/object_unit_detail_controller.dart';
+//import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 import 'package:xm_frontend/features/shop/screens/bookings_requests/bookings_requests.dart';
-import 'package:xm_frontend/features/shop/screens/building/all_buildings/buildings.dart';
-import 'package:xm_frontend/features/shop/screens/building/edit_building/edit_building.dart';
-import 'package:xm_frontend/features/shop/screens/building/unit_detail/unit_detail.dart';
+import 'package:xm_frontend/features/shop/screens/object/all_objects/objects.dart';
+import 'package:xm_frontend/features/shop/screens/object/edit_object/edit_object.dart';
+import 'package:xm_frontend/features/shop/screens/object/unit_detail/unit_detail.dart';
 import 'package:xm_frontend/features/shop/screens/communication/all_communications/communications.dart';
 import 'package:xm_frontend/features/shop/screens/contract/contract_detail.dart';
 import 'package:xm_frontend/features/shop/screens/dashboard/dashboard.dart';
 import 'package:xm_frontend/features/shop/screens/settings_managements/settings_management.dart';
-import 'package:xm_frontend/features/shop/screens/tenant/tenant_detail.dart';
-import 'package:xm_frontend/features/shop/screens/tenants_contracts/tenants_contracts.dart';
+import 'package:xm_frontend/features/shop/screens/user/user_detail.dart';
+import 'package:xm_frontend/features/shop/screens/users_contracts/users_contracts.dart';
 import 'package:xm_frontend/presentation/screens/splash_screen/splash_screen.dart';
 
 import 'package:xm_frontend/routes/routes.dart';
@@ -44,21 +45,21 @@ class AppRoute {
       middlewares: [RouteMiddleware()],
     ),
 
-    // buildings & units
+    // objects & units
     GetPage(
-      name: Routes.buildingsUnits,
-      page: () => BuildingsScreen(),
+      name: Routes.objectsUnits,
+      page: () => ObjectsScreen(),
       middlewares: [RouteMiddleware()],
     ),
 
     GetPage(
-      name: Routes.editBuilding,
-      page: () => EditBuildingScreen(),
+      name: Routes.editObject,
+      page: () => EditObjectScreen(),
       binding: BindingsBuilder(() {
         Get.delete<
-          EditBuildingController
+          EditObjectController
         >(); //  ensures previous instance is removed
-        Get.put(EditBuildingController()); // fresh instance every time
+        Get.put(EditObjectController()); // fresh instance every time
       }),
       middlewares: [RouteMiddleware()],
     ),
@@ -68,9 +69,9 @@ class AppRoute {
       page: () => UnitDetailScreen(),
       binding: BindingsBuilder(() {
         Get.delete<
-          BuildingUnitDetailController
+          ObjectUnitDetailController
         >(); //  ensures previous instance is removed
-        Get.put(BuildingUnitDetailController()); // fresh instance every time
+        Get.put(ObjectUnitDetailController()); // fresh instance every time
       }),
       middlewares: [RouteMiddleware()],
     ),
@@ -88,18 +89,18 @@ class AppRoute {
     ),
 
     GetPage(
-      name: Routes.tenantDetails,
-      page: () => TenantDetailScreen(),
+      name: Routes.userDetails,
+      page: () => UserDetailScreen(),
       binding: BindingsBuilder(() {
         // Get.delete<TenantController>(); //  ensures previous instance is removed
-        Get.put(TenantController()); // fresh instance every time
+        Get.put(UserController()); // fresh instance every time
       }),
       middlewares: [RouteMiddleware()],
     ),
 
     GetPage(
-      name: Routes.tenantsContracts,
-      page: () => TenantsContractsScreen(),
+      name: Routes.usersContracts,
+      page: () => UsersContractsScreen(),
 
       middlewares: [RouteMiddleware()],
     ),

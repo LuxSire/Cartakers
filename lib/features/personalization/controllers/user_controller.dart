@@ -6,10 +6,10 @@ import 'package:get/get.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/data/abstract/base_data_table_controller.dart';
 import 'package:xm_frontend/data/api/translation_api.dart';
-import 'package:xm_frontend/data/models/building_model.dart';
+import 'package:xm_frontend/data/models/object_model.dart';
 import 'package:xm_frontend/data/models/user_role_model.dart';
 import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
-import 'package:xm_frontend/data/repositories/building/building_repository.dart';
+import 'package:xm_frontend/data/repositories/object/object_repository.dart';
 import 'package:xm_frontend/utils/helpers/helper_functions.dart';
 
 import '../../../data/repositories/user/user_repository.dart';
@@ -47,12 +47,12 @@ class UserController extends TBaseController<UserModel> {
 
   // Dependencies
   final userRepository = Get.put(UserRepository());
-  final _buildingRepository = Get.put(BuildingRepository());
+  final _objectRepository = Get.put(ObjectRepository());
 
-  RxList<BuildingModel> buildingsList = <BuildingModel>[].obs;
+  RxList<ObjectModel> objectsList = <ObjectModel>[].obs;
   RxList<UserRoleModel> userRolesList = <UserRoleModel>[].obs;
 
-  var selectedBuildingIds = <int>[].obs;
+  var selectedObjectIds = <int>[].obs;
 
   final selectedRoleId = 0.obs;
 
@@ -136,11 +136,11 @@ class UserController extends TBaseController<UserModel> {
     }
   }
 
-  void loadAllBuildings() async {
+  void loadAllObjects() async {
     try {
-      final result = await _buildingRepository.getAllBuildings();
+      final result = await _objectRepository.getAllObjects();
 
-      buildingsList.assignAll(result);
+      objectsList.assignAll(result);
       //    debugPrint('Buildings Loaded: ${buildingsList.length}');
     } catch (e) {
       //   Get.snackbar('Error', 'Failed to load buildings: $e');
@@ -149,11 +149,11 @@ class UserController extends TBaseController<UserModel> {
     }
   }
 
-  void toggleBuilding(int id) {
-    if (selectedBuildingIds.contains(id)) {
-      selectedBuildingIds.remove(id);
+  void toggleObject(int id) {
+    if (selectedObjectIds.contains(id)) {
+      selectedObjectIds.remove(id);
     } else {
-      selectedBuildingIds.add(id);
+      selectedObjectIds.add(id);
     }
   }
 
@@ -198,8 +198,8 @@ class UserController extends TBaseController<UserModel> {
             val?.email = user.email;
             val?.roleId = user.roleId;
             val?.roleName = user.roleName;
-            val?.agencyId = user.agencyId;
-            val?.agencyName = user.agencyName;
+            val?.companyId = user.companyId;
+            val?.companyName = user.companyName;
             val?.createdAt = user.createdAt;
             val?.updatedAt = user.updatedAt;
             val?.translatedRoleNameExt = user.translatedRoleNameExt;
@@ -222,16 +222,16 @@ class UserController extends TBaseController<UserModel> {
       selectedStatusId.value =
           userRetrived.value.statusId ?? -1; // Default to -1 if null
 
-      // get list of user assigned buildings
-      final assignedBuildings = await userRepository.getUserAssignedBuildings(
+      // get list of user assigned objects
+      final assignedObjects = await userRepository.getUserAssignedObjects(
         int.parse(userRetrived.value.id ?? '0'),
       );
 
-      selectedBuildingIds.clear(); // Clear previous selections
-      selectedBuildingIds.addAll(
-        assignedBuildings.map((b) => int.parse(b.id.toString())),
+      selectedObjectIds.clear(); // Clear previous selections
+      selectedObjectIds.addAll(
+        assignedObjects.map((b) => int.parse(b.id.toString())),
       );
-      debugPrint('Selected Building IDs: $selectedBuildingIds');
+      debugPrint('Selected Object IDs: $selectedObjectIds');
 
       return userRetrived.value;
     } catch (e) {
@@ -256,7 +256,7 @@ class UserController extends TBaseController<UserModel> {
     emailController.clear();
     memoryBytes.value = null;
     hasImageChanged.value = false;
-    selectedBuildingIds.clear();
+    selectedObjectIds.clear();
     selectedRoleId.value = 0;
   }
 
@@ -469,21 +469,21 @@ class UserController extends TBaseController<UserModel> {
 
         // update BuildingsUnits controller
         final userId = userRetrived.value.id;
-        if (selectedBuildingIds.isNotEmpty) {
+        if (selectedObjectIds.isNotEmpty) {
           // first delete all buildings assigned to the user
-          await userRepository.deleteAllUserAssignedBuildings(
+          await userRepository.deleteAllUserAssignedObjects(
             int.parse(userId!),
           );
 
           //    debugPrint('User ID: $userId');
 
-          await userRepository.assignUserToBuildingsBatch(
+          await userRepository.assignUserToObjectsBatch(
             int.parse(userId!),
-            selectedBuildingIds,
+            selectedObjectIds,
           );
         } else {
           // delete all incase no buildings are selected
-          await userRepository.deleteAllUserAssignedBuildings(
+          await userRepository.deleteAllUserAssignedObjects(
             int.parse(userId!),
           );
         }
@@ -553,14 +553,14 @@ class UserController extends TBaseController<UserModel> {
 
       var roleId = 2; // default for agency users
 
-      final agencyId = AuthenticationRepository.instance.currentUser!.agencyId;
+      final companyId = AuthenticationRepository.instance.currentUser!.companyId;
       final response = await UserRepository.instance.createNewUser(
         firstNameController.text,
         lastNameController.text,
         emailController.text,
         roleId,
         selectedRoleId.value, // role extension id
-        int.parse(agencyId),
+        int.parse(companyId),
       );
 
       statusCode = response['status'];
@@ -569,18 +569,18 @@ class UserController extends TBaseController<UserModel> {
 
       if (statusCode == 1) {
         //  check if selected buuilings has ids so we can assign them
-        if (selectedBuildingIds.isNotEmpty) {
+        if (selectedObjectIds.isNotEmpty) {
           // Assign buildings to the user
           final userId = response['data'][0]['user_id'];
           //    debugPrint('User ID: $userId');
 
-          await UserRepository.instance.assignUserToBuildingsBatch(
+          await UserRepository.instance.assignUserToObjectsBatch(
             userId,
-            selectedBuildingIds,
+            selectedObjectIds,
           );
         }
 
-        Get.back(result: true); //  Return `true` to indicate tenant was created
+        Get.back(result: true); //  Return `true` to indicate user was created
 
         // create a invitation record
 
@@ -759,7 +759,7 @@ class UserController extends TBaseController<UserModel> {
   }
 
   Future<List<UserModel>> fetchUsersAndTranslateFields() async {
-    final users = await userRepository.getAllAgencyUsers();
+    final users = await userRepository.getAllCompanyUsers();
 
     for (final user in users) {
       user.translatedStatus = await TranslationApi.smartTranslate(
@@ -783,7 +783,7 @@ class UserController extends TBaseController<UserModel> {
   Future<void> loadUsers() async {
     loading.value = true;
     try {
-      final users = await userRepository.getAllAgencyUsers();
+      final users = await userRepository.getAllCompanyUsers();
 
       for (final user in users) {
         user.translatedStatus = await TranslationApi.smartTranslate(
@@ -821,9 +821,9 @@ class UserController extends TBaseController<UserModel> {
 
     if (isDeleted) {
       // deletes user directory for the images
-      final agencyId = AuthenticationRepository.instance.currentUser!.agencyId;
+      final companyId = AuthenticationRepository.instance.currentUser!.companyId;
       final containerName = 'media';
-      final directory = 'agencies/$agencyId/users/${item.id}';
+      final directory = 'companies/$companyId/users/${item.id}';
 
       await userRepository.deleteUserDirectory(containerName, directory);
     }

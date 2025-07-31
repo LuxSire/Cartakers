@@ -28,7 +28,7 @@ class TLoginHeader extends StatelessWidget {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: 'Tenants10 ',
+                      text: 'XM ',
                       style: Theme.of(
                         context,
                       ).textTheme.headlineSmall?.copyWith(
@@ -37,7 +37,7 @@ class TLoginHeader extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: '\u00A0For Admins',
+                      text: '\u00A0Dashboard',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.w600,
                         fontStyle: FontStyle.italic,
@@ -53,7 +53,7 @@ class TLoginHeader extends StatelessWidget {
           Text(
             AppLocalization.of(
               context,
-            ).translate('general_msgs.msg_tenants10_for_admins_login'),
+            ).translate('general_msgs.msg_for_admins_login'),
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           const SizedBox(height: TSizes.sm),

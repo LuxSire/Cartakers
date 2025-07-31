@@ -15,16 +15,16 @@ import 'package:xm_frontend/utils/constants/sizes.dart';
 import 'package:xm_frontend/utils/popups/loaders.dart';
 
 class AssignContractDialog extends StatelessWidget {
-  final int buildingId;
+  final int objectId;
   final String unitNumer;
   final int unitId;
-  final String buildingName;
+  final String objectName;
   const AssignContractDialog({
     super.key,
-    required this.buildingId,
+    required this.objectId,
     required this.unitNumer,
     required this.unitId,
-    required this.buildingName,
+    required this.objectName,
   });
 
   @override
@@ -60,7 +60,7 @@ class AssignContractDialog extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '${AppLocalization.of(context).translate('dashboard_screen.lbl_assign_contract')} - $unitNumer ($buildingName) ',
+                    '${AppLocalization.of(context).translate('dashboard_screen.lbl_assign_contract')} - $unitNumer ($objectName) ',
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   IconButton(
@@ -135,9 +135,9 @@ class AssignContractDialog extends StatelessWidget {
                                             .copyWith(color: TColors.txt666666),
                                       ),
                                     const SizedBox(height: 4),
-                                    if ((contract.tenantNames ?? '').isNotEmpty)
+                                    if ((contract.userNames ?? '').isNotEmpty)
                                       Text(
-                                        '${AppLocalization.of(context).translate('tenants_screen.lbl_tenants')}: ${contract.tenantNames}',
+                                        '${AppLocalization.of(context).translate('users_screen.lbl_users')}: ${contract.userNames}',
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall!
@@ -196,8 +196,8 @@ class AssignContractDialog extends StatelessWidget {
                               TextButton.icon(
                                 onPressed: () async {
                                   // first check if contract has tenants
-                                  if (contract.tenantNames == null ||
-                                      contract.tenantNames!.isEmpty) {
+                                  if (contract.userNames == null ||
+                                      contract.userNames!.isEmpty) {
                                     TLoaders.errorSnackBar(
                                       title: AppLocalization.of(
                                         Get.context!,
@@ -205,7 +205,7 @@ class AssignContractDialog extends StatelessWidget {
                                       message: AppLocalization.of(
                                         Get.context!,
                                       ).translate(
-                                        'dashboard_screen.error_contract_must_have_at_least_one_tenant',
+                                        'dashboard_screen.error_contract_must_have_at_least_one_user',
                                       ),
                                     );
                                     return;
@@ -222,7 +222,7 @@ class AssignContractDialog extends StatelessWidget {
                                       );
 
                                   debugPrint(
-                                    'Assigning contract ${controllerContract.contractModel.value.contractCode} to building $buildingId and unit $unitNumer',
+                                    'Assigning contract ${controllerContract.contractModel.value.contractCode} to object $objectId and unit $unitNumer',
                                   );
 
                                   // update the status
@@ -283,9 +283,9 @@ class AssignContractDialog extends StatelessWidget {
                         barrierDismissible: false,
                         builder: (BuildContext context) {
                           return CreateContractDialog(
-                            displayUniits: false,
+                            displayUnits: false,
                             unitId: unitId,
-                            buildingId: buildingId,
+                            objectId: objectId,
                           );
                         },
                       );

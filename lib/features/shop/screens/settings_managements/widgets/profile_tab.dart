@@ -118,7 +118,7 @@ class ProfileTab extends StatelessWidget {
                           int.parse(userId!),
                         );
 
-                        controller.loadAllBuildings();
+                        controller.loadAllObjects();
                         controller.loadAllUserRoles();
 
                         await showDialog(

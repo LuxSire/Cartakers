@@ -25,7 +25,7 @@ class ImageConstant {
   static String imgEllipse25807 = '$imagePath/img_ellipse_2580_7.png';
 
   static String imgNetworkDefaultUser =
-      'https://tenants10storageaccount.blob.core.windows.net/media/web/img_default_user.png';
+      'https://xmarketstorage.blob.core.windows.net/media/web/img_default_user.png';
 
   // Splash Screen  images
   static String imgGroup2 = '$imagePath/img_group_2.png';

@@ -5,7 +5,7 @@ import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
 import 'package:xm_frontend/features/shop/screens/contract/dialogs/contracts_filter_dialog.dart';
 import 'package:xm_frontend/features/shop/screens/contract/dialogs/create_contract.dart';
-import 'package:xm_frontend/features/shop/screens/tenant/dialogs/create_tenant.dart';
+import 'package:xm_frontend/features/shop/screens/user/dialogs/create_user.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 import 'package:xm_frontend/utils/device/device_utility.dart';
 import 'package:xm_frontend/utils/popups/loaders.dart';
@@ -19,7 +19,7 @@ class ContractTableHeader extends StatelessWidget {
     final isDesktop = TDeviceUtils.isDesktopScreen(context);
     final width = MediaQuery.of(context).size.width;
 
-    final int buildingId = controller.contractModel.value.buildingId ?? 0;
+    final int objectId = controller.contractModel.value.objectId ?? 0;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -41,8 +41,8 @@ class ContractTableHeader extends StatelessWidget {
                     barrierDismissible: false,
                     builder:
                         (_) => CreateContractDialog(
-                          displayUniits: true,
-                          buildingId: buildingId,
+                          displayUnits: true,
+                          objectId: objectId,
                         ), // likely a placeholder
                   );
                   if (result == true) {

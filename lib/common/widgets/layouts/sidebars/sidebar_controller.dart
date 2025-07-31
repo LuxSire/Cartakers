@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:xm_frontend/features/shop/controllers/building/building_unit_detail_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/object/object_unit_detail_controller.dart';
 import '../../../../data/repositories/authentication/authentication_repository.dart';
 import '../../../../routes/routes.dart';
 import '../../../../utils/device/device_utility.dart';
@@ -44,12 +44,12 @@ class SidebarController extends GetxController {
           await AuthenticationRepository.instance.logout();
         } else {
           // 🧹 Reset specific controllers for certain routes
-          if (route == Routes.buildingsUnits) {
-            Get.delete<BuildingUnitDetailController>();
+          if (route == Routes.objectsUnits) {
+            Get.delete<ObjectUnitDetailController>();
             // Optionally delete others like EditBuildingController
           }
 
-          if (route == Routes.tenantsContracts) {
+          if (route == Routes.usersContracts) {
             // Get.delete<TenantsController>();
           }
 

@@ -16,7 +16,7 @@ class LanguageService {
     UserPrefModel? user = await UserPreferences.getUser();
     if (user != null) {
       // Update the user language code in the database
-      final response = await UserService().updateTenantLanguageCode(
+      final response = await UserService().updateUserLanguageCode(
         int.parse(user.id),
         languageCode,
       );

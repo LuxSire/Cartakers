@@ -23,7 +23,7 @@ class BookingsTab extends StatelessWidget {
 
     final controller = Get.put(
       BookingController(
-        sourceType: BookingSourceType.contract,
+        sourceType: BookingSourceType.user,
         id: int.parse(controllerContract.contractModel.value.id.toString()),
       ),
       tag: 'contract_bookings',

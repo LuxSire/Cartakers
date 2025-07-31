@@ -5,8 +5,8 @@ import 'package:xm_frontend/utils/formatters/formatter.dart';
 
 class ContractModel {
   final String? id;
-  final int? agencyId;
-  int? buildingId;
+  final int? companyId;
+  int? objectId;
   String? contractCode;
   int? unitId;
   DateTime? startDate;
@@ -14,17 +14,17 @@ class ContractModel {
   int? zoneId;
   int? statusId; // 1 opren, 2 - closed
   final DateTime? createdAt; // Make it mutable
-  List<UserModel>? tenants; // tenats
-  int? tenantCount;
-  String? tenantNames;
+  List<UserModel>? users; // tenats
+  int? userCount;
+  String? userNames;
   String unitNumber;
 
-  String? buildingName; // building name
+  String? objectName; // object name
 
   ContractModel({
     this.id,
-    this.agencyId,
-    this.buildingId,
+    this.companyId,
+    this.objectId,
     this.contractCode,
     this.unitId,
     this.startDate,
@@ -32,18 +32,18 @@ class ContractModel {
     this.zoneId,
     this.statusId,
     this.createdAt,
-    this.tenants,
-    this.tenantCount,
-    this.tenantNames,
+    this.users,
+    this.userCount,
+    this.userNames,
     this.unitNumber = '',
-    this.buildingName,
+    this.objectName,
   });
 
   // Convert JSON response to UnitModel
   factory ContractModel.fromJson(Map<String, dynamic> json) {
     return ContractModel(
       id: json['id']?.toString() ?? '',
-      buildingId: json['building_id'] ?? 0,
+      objectId: json['object_id'] ?? 0,
       contractCode: json['contract_code']?.toString() ?? '',
       unitId: json['unit_id'] ?? 0,
       startDate:
@@ -60,10 +60,10 @@ class ContractModel {
           json['created_at'] != null
               ? DateTime.parse(json['created_at']).toLocal()
               : DateTime.now(),
-      tenantCount: json['tenant_count'] ?? 0,
-      tenantNames: json['tenant_names'] ?? '',
+      userCount: json['user_count'] ?? 0,
+      userNames: json['user_names'] ?? '',
       unitNumber: json['unit_number']?.toString() ?? '',
-      buildingName: json['building_name']?.toString() ?? '',
+      objectName: json['object_name']?.toString() ?? '',
     );
   }
 
@@ -71,7 +71,7 @@ class ContractModel {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'building_id': buildingId,
+      'object_id': objectId,
       'contract_code': contractCode,
       'unit_id': unitId,
       'start_date': startDate?.toIso8601String(),
@@ -79,10 +79,10 @@ class ContractModel {
       'zone_id': zoneId,
       'status': statusId,
       'created_at': createdAt?.toIso8601String(),
-      'tenant_count': tenantCount,
-      'tenant_names': tenantNames,
+      'user_count': userCount,
+      'user_names': userNames,
       'unit_number': unitNumber,
-      'building_name': buildingName,
+      'object_name': objectName,
     };
   }
 

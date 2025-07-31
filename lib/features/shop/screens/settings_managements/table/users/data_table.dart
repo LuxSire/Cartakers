@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/building/building_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/tenant/tenant_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/object/object_controller.dart';
+//import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 
 import '../../../../../../common/widgets/data_table/paginated_data_table.dart';
 import 'table_source.dart';
@@ -88,13 +88,13 @@ class UsersTable extends StatelessWidget {
             label: Text(
               AppLocalization.of(
                 context,
-              ).translate('tab_users_screen.lbl_buildings'),
+              ).translate('tab_users_screen.lbl_objects'),
             ),
             onSort:
                 (columnIndex, ascending) => controller.sortByPropertyName(
                   columnIndex,
                   ascending,
-                  (u) => u.buildingPermissions.toString(),
+                  (u) => u.objectPermissions.toString(),
                 ),
           ),
 

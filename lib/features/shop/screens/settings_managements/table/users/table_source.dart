@@ -7,9 +7,9 @@ import 'package:xm_frontend/common/widgets/images/t_circular_image.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
 import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/tenant/tenant_controller.dart';
+//import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 import 'package:xm_frontend/features/shop/screens/settings_managements/dialogs/edit_user.dart';
-import 'package:xm_frontend/features/shop/screens/tenant/dialogs/edit_tenant.dart';
+//import 'package:xm_frontend/features/shop/screens/user/dialogs/edit_user.dart';
 import 'package:xm_frontend/routes/routes.dart';
 import 'package:xm_frontend/utils/constants/image_strings.dart';
 import 'package:xm_frontend/utils/helpers/helper_functions.dart';
@@ -43,7 +43,7 @@ class UserRows extends DataTableSource {
         // Fetch the user BEFORE opening the dialog
         await controller.fetchUserDetailsById(int.parse(userId));
 
-        controller.loadAllBuildings();
+        controller.loadAllObjects();
         controller.loadAllUserRoles();
 
         // await showDialog(
@@ -117,11 +117,11 @@ class UserRows extends DataTableSource {
         DataCell(Text(user.translatedRoleNameExt.toString())),
         DataCell(
           Text(
-            user.buildingPermissions == 'All'
+            user.objectPermissions == 'All'
                 ? AppLocalization.of(
-                  Get.context!,
-                ).translate('general_msgs.msg_all')
-                : user.buildingPermissions.toString(),
+              Get.context!,
+            ).translate('general_msgs.msg_all')
+                : user.objectPermissions.toString(),
           ),
         ),
 
@@ -165,7 +165,7 @@ class UserRows extends DataTableSource {
               // Fetch the user BEFORE opening the dialog
               await controller.fetchUserDetailsById(int.parse(userId));
 
-              controller.loadAllBuildings();
+              controller.loadAllObjects();
               controller.loadAllUserRoles();
 
               // await showDialog(

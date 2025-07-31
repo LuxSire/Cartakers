@@ -5,12 +5,12 @@ import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
 import 'package:xm_frontend/features/shop/controllers/booking/booking_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/request/request_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/tenant/tenant_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 import 'package:xm_frontend/features/shop/screens/booking/dialogs/bookings_filter_dialog.dart';
 import 'package:xm_frontend/features/shop/screens/booking/dialogs/view_toggle_widget.dart';
 import 'package:xm_frontend/features/shop/screens/request/dialogs/requests_filter_dialog.dart';
-import 'package:xm_frontend/features/shop/screens/tenant/dialogs/create_tenant.dart';
-import 'package:xm_frontend/features/shop/screens/tenant/dialogs/tenants_filter_dialog.dart';
+import 'package:xm_frontend/features/shop/screens/user/dialogs/create_user.dart';
+import 'package:xm_frontend/features/shop/screens/user/dialogs/users_filter_dialog.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 import 'package:xm_frontend/utils/device/device_utility.dart';
 import 'package:xm_frontend/utils/popups/loaders.dart';
@@ -20,10 +20,10 @@ class RequestTableHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final agencyId = AuthenticationRepository.instance.currentUser?.agencyId;
+    final agencyId = AuthenticationRepository.instance.currentUser?.companyId;
     final controller = Get.put(
       RequestController(
-        sourceType: RequestSourceType.agency,
+        sourceType: RequestSourceType.company,
         id: int.parse(agencyId!),
       ),
       tag: 'agency_requests',

@@ -16,7 +16,7 @@
    
    
     <application
-        android:label="Tenants10 Admin"
+        android:label="XM Dashboard"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

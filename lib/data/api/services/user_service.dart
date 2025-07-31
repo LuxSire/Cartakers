@@ -17,6 +17,9 @@ import 'package:path/path.dart' as path;
 class UserService extends BaseService {
   // validateTenantInvitationToken
 
+  // The 'post' method is inherited from BaseService. 
+  // Ensure BaseService defines 'post' as an async method.
+
   Future<Map<String, dynamic>> validateUserInvitationToken(
     String token,
   ) async {
@@ -80,7 +83,7 @@ class UserService extends BaseService {
   ) async {
     try {
       final response = await post(ApiEndpoints.registerUser, {
-        'tenant': registrationData,
+        'user': registrationData,
       });
 
       // debugPrint('User Service: registerTenant: $response');
@@ -183,7 +186,6 @@ class UserService extends BaseService {
             return {}; // Return an empty object if data is missing
           }
         } else {
-          //  throw Exception(response['message'] ?? 'Agent not found');
 
           debugPrint('Company not found: ' + response['message']);
 
@@ -193,8 +195,7 @@ class UserService extends BaseService {
 
       return {};
     } catch (error) {
-      //throw Exception('Failed to get tenant by email: $error');
-      debugPrint('Failed to get agent by email: $error');
+      debugPrint('Failed to get company by email: $error');
 
       return {};
     }
@@ -263,13 +264,13 @@ class UserService extends BaseService {
 
   // get tenant upcoming booking
 
-  Future<Map<String, dynamic>> getTenantUpcomingBooking(int contractId) async {
+  Future<Map<String, dynamic>> getUserUpcomingBooking(int contractId) async {
     try {
-      final response = await post(ApiEndpoints.getTenantUpcomingBooking, {
+      final response = await post(ApiEndpoints.getUserUpcomingBooking, {
         'contract_id': contractId,
       });
 
-      //  debugPrint('User Service: getTenantUpcomingBooking: $response');
+      //  debugPrint('User Service: getUserUpcomingBooking: $response');
 
       if (response is Map<String, dynamic> && response.containsKey('success')) {
         if (response['success'] == true) {
@@ -296,23 +297,23 @@ class UserService extends BaseService {
   }
 
   /// **Create a new tenant request**
-  Future<Map<String, dynamic>> createTenantBuildingRequest(
+  Future<Map<String, dynamic>> createUserObjectRequest(
     int requestTypeId,
-    int tenantId,
+    int userId,
     int unitId,
     String description,
-    int buildingId,
-    int agencyId,
+    int objectId,
+    int companyId,
     int contractId,
   ) async {
     try {
-      final response = await post(ApiEndpoints.createTenantBuildingRequest, {
+      final response = await post(ApiEndpoints.createUserObjectRequest, {
         'request_id': requestTypeId,
-        'tenant_id': tenantId,
+        'user_id': userId,
         'unit_id': unitId,
         'description': description,
-        'building_id': buildingId,
-        'agency_id': agencyId,
+        'object_id': objectId,
+        'company_id': companyId,
         'contract_id': contractId,
       });
 
@@ -325,7 +326,7 @@ class UserService extends BaseService {
     }
   }
 
-  Future<Map<String, dynamic>> createTenantBuildingRequestLog(
+  Future<Map<String, dynamic>> createUserObjectRequestLog(
     int requestId,
     int status,
     String description,
@@ -333,7 +334,7 @@ class UserService extends BaseService {
     String processedByType,
   ) async {
     try {
-      final response = await post(ApiEndpoints.createTenantBuildingRequestLog, {
+      final response = await post(ApiEndpoints.createUserObjectRequestLog, {
         'request_id': requestId,
         'status': status,
         'description': description,
@@ -534,13 +535,13 @@ class UserService extends BaseService {
 
   /// **Create a new request media record**
   ///
-  Future<Map<String, dynamic>> createTenantBuildingRequestMedia(
+  Future<Map<String, dynamic>> createUserObjectRequestMedia(
     int requestId,
     String mediaUrl,
   ) async {
     try {
       final response = await post(
-        ApiEndpoints.createTenantBuildingRequestMedia,
+        ApiEndpoints.createUserObjectRequestMedia,
         {'request_id': requestId, 'media_url': mediaUrl},
       );
 
@@ -551,30 +552,30 @@ class UserService extends BaseService {
     }
   }
 
-  Future<Map<String, dynamic>> updateTenantBuildingRequestStatus(
+  Future<Map<String, dynamic>> updateUserObjectRequestStatus(
     int requestId,
     int status,
   ) async {
     try {
       final response = await post(
-        ApiEndpoints.updateTenantBuildingRequeststatus,
+        ApiEndpoints.updateUserObjectRequestStatus,
         {'request_id': requestId, 'status': status},
       );
 
       return response;
     } catch (error) {
-      debugPrint("Error in updateTenantBuildingRequestStatus: $error");
+      debugPrint("Error in updateUserObjectRequestStatus: $error");
       return {"success": false, "message": "Failed to update request status"};
     }
   }
 
-  /// Fetch tenant requests from backend
-  Future<List<Map<String, dynamic>>> getTenantBuildingRequests(
-    int contractId,
+  /// Fetch user requests from backend
+  Future<List<Map<String, dynamic>>> getUserObjectRequests(
+    int objectId,
   ) async {
     try {
-      final response = await post(ApiEndpoints.getTenantBuildingRequests, {
-        'contract_id': contractId,
+      final response = await post(ApiEndpoints.getUserObjectRequests, {
+        'object_id': objectId,
       });
 
       //  debugPrint('Raw requests: $response');
@@ -584,7 +585,7 @@ class UserService extends BaseService {
           return List<Map<String, dynamic>>.from(response['data']);
         } else {
           //    debugPrint(
-          //        'Failed to get tenant building requests: ${response['message']}');
+          //        'Failed to get user object requests: ${response['message']}');
           return [];
         }
       } else if (response is List) {
@@ -600,18 +601,18 @@ class UserService extends BaseService {
     }
   }
 
-  Future<Map<String, dynamic>> createTenantBuildingPost(
-    int buildingId,
-    int tenantId,
+  Future<Map<String, dynamic>> createUserObjectPost(
+    int objectId,
+    int userId,
     String title,
     int isReceivePrivateMessage,
     String description,
     String creatorType,
   ) async {
     try {
-      final response = await post(ApiEndpoints.createTenantBuildingPost, {
-        'building_id': buildingId,
-        'creator_id': tenantId,
+      final response = await post(ApiEndpoints.createUserObjectPost, {
+        'object_id': objectId,
+        'creator_id': userId,
         'title': title,
         'is_receive_private_message': isReceivePrivateMessage,
         'description': description,
@@ -627,12 +628,12 @@ class UserService extends BaseService {
     }
   }
 
-  Future<Map<String, dynamic>> createTenantBuildingPostMedia(
+  Future<Map<String, dynamic>> createUserObjectPostMedia(
     int postId,
     String mediaUrl,
   ) async {
     try {
-      final response = await post(ApiEndpoints.createTenantBuildingPostMedia, {
+      final response = await post(ApiEndpoints.createUserObjectPostMedia, {
         'post_id': postId,
         'media_url': mediaUrl,
       });
@@ -644,18 +645,18 @@ class UserService extends BaseService {
     }
   }
 
-  Future<Map<String, dynamic>> createTenantBuildingPostComment(
+  Future<Map<String, dynamic>> createUserObjectPostComment(
     int postId,
-    int tenantId,
+    int userId,
     String creatorType,
     String description,
     int postOwnerId,
   ) async {
     try {
       final response =
-          await post(ApiEndpoints.createTenantBuildingPostComment, {
+          await post(ApiEndpoints.createUserObjectPostComment, {
             'post_id': postId,
-            'creator_id': tenantId,
+            'creator_id': userId  ,
             'creator_type': creatorType,
             'description': description,
             'post_owner_id': postOwnerId,
@@ -665,18 +666,18 @@ class UserService extends BaseService {
 
       return response;
     } catch (error) {
-      debugPrint("Error in createTenantBuildingPostComment: $error");
+      debugPrint("Error in createUserObjectPostComment: $error");
       return {"success": false, "message": "Failed to create post"};
     }
   }
 
-  Future<Map<String, dynamic>> createTenantBuildingPostLike(
+  Future<Map<String, dynamic>> createUserObjectPostLike (
     int postId,
     int userId,
     String userType,
   ) async {
     try {
-      final response = await post(ApiEndpoints.createTenantBuildingPostLike, {
+      final response = await post(ApiEndpoints.createUserObjectPostLike, {
         'post_id': postId,
         'user_id': userId,
         'user_type': userType,
@@ -686,18 +687,18 @@ class UserService extends BaseService {
 
       return response;
     } catch (error) {
-      debugPrint("Error in createTenantBuildingPostLike: $error");
+      debugPrint("Error in createUserObjectPostLike: $error");
       return {"success": false, "message": "Failed to create post"};
     }
   }
 
-  Future<Map<String, dynamic>> deleteTenantBuildingPostLike(
+  Future<Map<String, dynamic>> deleteUserObjectPostLike(
     int postId,
     int userId,
     String userType,
   ) async {
     try {
-      final response = await post(ApiEndpoints.deleteTenantBuildingPostLike, {
+      final response = await post(ApiEndpoints.deleteUserObjectPostLike, {
         'post_id': postId,
         'user_id': userId,
         'user_type': userType,
@@ -707,38 +708,11 @@ class UserService extends BaseService {
 
       return response;
     } catch (error) {
-      debugPrint("Error in deleteTenantBuildingPostLike: $error");
+      debugPrint("Error in deleteUserObjectPostLike: $error");
       return {"success": false, "message": "Failed to create post"};
     }
   }
 
-  Future<Map<String, dynamic>> updateTenantPersonalDetails(
-    int tenantId,
-    String displayName,
-    String phoneNumber,
-    String countryCode,
-    String profilePic,
-  ) async {
-    try {
-      final response = await post(ApiEndpoints.updateTenantPersonalDetails, {
-        'tenant_id': tenantId,
-        'display_name': displayName,
-        'phone_number': phoneNumber,
-        'country_code': countryCode,
-        'profile_pic': profilePic,
-      });
-
-      debugPrint('Update personal details response: $response');
-
-      return response;
-    } catch (error) {
-      debugPrint("Error in updateTenantPersonalDetails: $error");
-      return {
-        "success": false,
-        "message": "Failed to update tenant personal details status",
-      };
-    }
-  }
 
   Future<Map<String, dynamic>> updateUserPersonalDetails(
     int userId,
@@ -770,76 +744,12 @@ class UserService extends BaseService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getTenantBuildingUpcomingBookings(
-    int contractId,
+  Future<List<Map<String, dynamic>>> getUserObjectAllBookingsByUserId(
+    int userId,
   ) async {
     try {
-      final response = await post(ApiEndpoints.getTenantUpcomingBookings, {
-        'contract_id': contractId,
-      });
-
-      //  debugPrint('Raw requests: $response');
-
-      if (response is Map<String, dynamic> && response.containsKey('success')) {
-        if (response['success'] == true && response['data'] is List) {
-          // debugPrint('Upcoming bookings: ${response['data']}');
-          return List<Map<String, dynamic>>.from(response['data']);
-        } else {
-          //    debugPrint(
-          //        'Failed to get tenant building upcominh bookings: ${response['message']}');
-          return [];
-        }
-      } else if (response is List) {
-        // If the backend is returning a raw list instead of a JSON object
-        return List<Map<String, dynamic>>.from(response);
-      } else {
-        //   debugPrint('Unexpected response format: $response');
-        return [];
-      }
-    } catch (error) {
-      debugPrint('Failed to get tenant building upcoming bookings: $error');
-      return [];
-    }
-  }
-
-  Future<List<Map<String, dynamic>>> getTenantBuildingAllBookings(
-    int contractId,
-  ) async {
-    try {
-      final response = await post(ApiEndpoints.getTenantAllBookings, {
-        'contract_id': contractId,
-      });
-
-      //  debugPrint('Raw requests: $response');
-
-      if (response is Map<String, dynamic> && response.containsKey('success')) {
-        if (response['success'] == true && response['data'] is List) {
-          // debugPrint('Upcoming bookings: ${response['data']}');
-          return List<Map<String, dynamic>>.from(response['data']);
-        } else {
-          //    debugPrint(
-          //        'Failed to get tenant building all bookings: ${response['message']}');
-          return [];
-        }
-      } else if (response is List) {
-        // If the backend is returning a raw list instead of a JSON object
-        return List<Map<String, dynamic>>.from(response);
-      } else {
-        //   debugPrint('Unexpected response format: $response');
-        return [];
-      }
-    } catch (error) {
-      debugPrint('Failed to get tenant building all bookings: $error');
-      return [];
-    }
-  }
-
-  Future<List<Map<String, dynamic>>> getTenantBuildingAllBookingsByTenantId(
-    int tenantId,
-  ) async {
-    try {
-      final response = await post(ApiEndpoints.getTenantAllBookingsByTenantId, {
-        'tenant_id': tenantId,
+      final response = await post(ApiEndpoints.getUserAllBookingsByUserId, {
+        'user_id': userId,
       });
 
       //  debugPrint('Raw requests: $response');
@@ -868,12 +778,12 @@ class UserService extends BaseService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getTenantBuildingAllRequests(
-    int contractId,
+  Future<List<Map<String, dynamic>>> getUserObjectAllRequests(
+    int userId,
   ) async {
     try {
-      final response = await post(ApiEndpoints.getTenantAllRequests, {
-        'contract_id': contractId,
+      final response = await post(ApiEndpoints.getUserAllRequests, {
+        'user_id': userId,
       });
 
       //  debugPrint('Raw requests: $response');
@@ -895,18 +805,19 @@ class UserService extends BaseService {
         return [];
       }
     } catch (error) {
-      debugPrint('Failed to get tenant building all requests: $error');
+      debugPrint('Failed to get user object all requests: $error');
       return [];
     }
   }
 
-  Future<List<Map<String, dynamic>>> getTenantBuildingAllRequestsByTenantId(
-    int tenantId,
+  Future<List<Map<String, dynamic>>> getUserObjectAllRequestsByUserId(
+    int userId,
   ) async {
     try {
-      final response = await post(ApiEndpoints.getTenantAllRequestsByTenantId, {
-        'tenant_id': tenantId,
+      final response = await post(ApiEndpoints.getUserAllRequestsByUserId, {
+        'user_id': userId,
       });
+     
 
       //  debugPrint('Raw requests: $response');
 
@@ -934,11 +845,11 @@ class UserService extends BaseService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getTenantBuildingPastBookings(
+  Future<List<Map<String, dynamic>>> getUserObjectPastBookings(
     int contractId,
   ) async {
     try {
-      final response = await post(ApiEndpoints.getTenantPastBookings, {
+      final response = await post(ApiEndpoints.getUserPastBookings, {
         'contract_id': contractId,
       });
 
@@ -960,16 +871,16 @@ class UserService extends BaseService {
         return [];
       }
     } catch (error) {
-      debugPrint('Failed to get tenant building past bookings: $error');
+      debugPrint('Failed to get user object past bookings: $error');
       return [];
     }
   }
 
-  Future<List<Map<String, dynamic>>> getTenantBuildingBookingTypes(
+  Future<List<Map<String, dynamic>>> getUserObjectBookingTypes(
     int tenantId,
   ) async {
     try {
-      final response = await post(ApiEndpoints.getTenantBuildingBookingTypes, {
+      final response = await super.post(ApiEndpoints.getUserObjectBookingTypes, {
         'tenant_id': tenantId,
       });
 
@@ -993,38 +904,8 @@ class UserService extends BaseService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getTenantBuildingAvailableAmenityUnits(
-    int tenantId,
-    int amenityId,
-  ) async {
-    try {
-      final response = await post(
-        ApiEndpoints.getTenantAvailableBuildingAmenityUnits,
-        {'tenant_id': tenantId, 'amenity_id': amenityId},
-      );
-
-      //  debugPrint('Raw response: $response');
-
-      if (response is Map<String, dynamic> && response.containsKey('success')) {
-        if (response['success'] == true && response['data'] is List) {
-          return List<Map<String, dynamic>>.from(response['data']);
-        } else {
-          //   debugPrint(
-          //       'Failed to get tenant building available amenities: ${response['message']}');
-          return [];
-        }
-      } else {
-        //   debugPrint('Unexpected response format: $response');
-        return [];
-      }
-    } catch (error) {
-      //   debugPrint('Failed to get tenant building available amenities: $error');
-      return [];
-    }
-  }
-
-  Future<Map<String, dynamic>> createTenantBuildingBooking(
-    int tenantId,
+  Future<Map<String, dynamic>> createUserObjectBooking(
+    int userId,
     int amenityUnitId,
     DateTime bookingDate,
     String startTime,
@@ -1032,8 +913,8 @@ class UserService extends BaseService {
     int contractId,
   ) async {
     try {
-      final response = await post(ApiEndpoints.createTenantBuildingBooking, {
-        'tenant_id': tenantId,
+      final response = await post(ApiEndpoints.createUserObjectBooking, {
+        'user_id': userId,
         'amenity_unit_id': amenityUnitId,
         'booking_date': bookingDate.toIso8601String(),
         'start_time': startTime,
@@ -1050,7 +931,7 @@ class UserService extends BaseService {
     }
   }
 
-  Future<Map<String, dynamic>> updateTenantBuildingBooking(
+  Future<Map<String, dynamic>> updateUserObjectBooking(
     int bookingId,
     int statusId,
     DateTime bookingDate,
@@ -1058,7 +939,7 @@ class UserService extends BaseService {
     String endTime,
   ) async {
     try {
-      final response = await post(ApiEndpoints.updateTenantBuildingBooking, {
+      final response = await post(ApiEndpoints.updateUserObjectBooking, {
         'booking_id': bookingId,
         'status_id': statusId,
         'booking_date': bookingDate.toIso8601String(),
@@ -1075,13 +956,13 @@ class UserService extends BaseService {
     }
   }
 
-  Future<Map<String, dynamic>> updateTenantBuildingBookingStatus(
+  Future<Map<String, dynamic>> updateUserObjectBookingStatus(
     int bookingId,
     int statusId,
   ) async {
     try {
       final response = await post(
-        ApiEndpoints.updateTenantBuildingBookingStatus,
+        ApiEndpoints.updateUserObjectBookingStatus,
         {'booking_id': bookingId, 'status_id': statusId},
       );
 
@@ -1094,11 +975,11 @@ class UserService extends BaseService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getTenantBuildingDocs(
+  Future<List<Map<String, dynamic>>> getUserObjectDocs(
     int contractId,
   ) async {
     try {
-      final response = await post(ApiEndpoints.getTenantBuildingDocs, {
+      final response = await post(ApiEndpoints.getUserObjectDocs, {
         'contract_id': contractId,
       });
 
@@ -1125,12 +1006,12 @@ class UserService extends BaseService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getTenantBuildingHelpGuides(
-    int buildingId,
+  Future<List<Map<String, dynamic>>> getUserObjectHelpGuides(
+    int userId,
   ) async {
     try {
-      final response = await post(ApiEndpoints.getTenantBuildingHelpGuides, {
-        'building_id': buildingId,
+      final response = await post(ApiEndpoints.getUserObjectHelpGuides, {
+        'user_id': userId,
       });
 
       //  debugPrint('Raw help guides: $response');
@@ -1151,12 +1032,12 @@ class UserService extends BaseService {
         return [];
       }
     } catch (error) {
-      debugPrint('Failed to get tenant building help guides: $error');
+      debugPrint('Failed to get user object help guides: $error');
       return [];
     }
   }
 
-  Future<Map<String, dynamic>> sendTenantPasswordResetEmail(
+  Future<Map<String, dynamic>> sendUserObjectPasswordResetEmail(
     String email,
     String greetings,
     String bodyText,
@@ -1168,7 +1049,7 @@ class UserService extends BaseService {
     String subject,
   ) async {
     try {
-      final response = await post(ApiEndpoints.sendTenantPasswordResetEmail, {
+      final response = await post(ApiEndpoints.sendUserPasswordResetEmail, {
         'email': email,
         'greetings': greetings,
         'body_text': bodyText,
@@ -1184,7 +1065,7 @@ class UserService extends BaseService {
 
       if (response is Map<String, dynamic> && response.containsKey('success')) {
         if (response['success'] == true) {
-          debugPrint('User Service: sendTenantPasswordResetEmail: $response');
+          debugPrint('User Service: sendUserPasswordResetEmail: $response');
 
           // Fix: Handle `data` as a List instead of Map
           if (response.containsKey('data') &&
@@ -1201,30 +1082,10 @@ class UserService extends BaseService {
 
       throw Exception('Unexpected response format');
     } catch (error) {
-      throw Exception('Failed to send email: $error');
+        throw Exception('Failed to send email: $error');
+      }
     }
-  }
-
-  Future<Map<String, dynamic>> updateTenantResetPasswordCode(
-    String email,
-    String resetCode,
-  ) async {
-    try {
-      final response = await post(ApiEndpoints.updateTenantResetPasswordCode, {
-        'email': email,
-        'reset_code': resetCode,
-      });
-
-      return response;
-    } catch (error) {
-      debugPrint("Error in updateTenantResetPasswordCode: $error");
-      return {
-        "success": false,
-        "message": "Failed to update tenant reset password code",
-      };
-    }
-  }
-
+  
   Future<Map<String, dynamic>> updateUserResetPasswordCode(
     String email,
     String resetCode,
@@ -1240,42 +1101,42 @@ class UserService extends BaseService {
       debugPrint("Error in updateUserResetPasswordCode: $error");
       return {
         "success": false,
-        "message": "Failed to update user reset password code",
+        "message": "Failed to update tenant reset password code",
       };
     }
   }
 
-  Future<Map<String, dynamic>> updateTenantDeviceToken(
+  Future<Map<String, dynamic>> updateUserDeviceToken(
     int tenantId,
     String deviceToken,
   ) async {
     try {
-      final response = await post(ApiEndpoints.updateTenantDeviceToken, {
+      final response = await post(ApiEndpoints.updateUserDeviceToken, {
         'tenant_id': tenantId,
         'device_token': deviceToken,
       });
 
       return response;
     } catch (error) {
-      debugPrint("Error in updateTenantDeviceToken: $error");
+      debugPrint("Error in updateUserDeviceToken: $error");
       return {
         "success": false,
-        "message": "Failed to update tenant device token",
+        "message": "Failed to update user device token",
       };
     }
   }
 
-  Future<Map<String, dynamic>> getTenantByResetCode(
+  Future<Map<String, dynamic>> getUserByResetCode(
     String email,
     resetCode,
   ) async {
     try {
-      final response = await post(ApiEndpoints.getTenantByResetCode, {
+      final response = await post(ApiEndpoints.getUserByResetCode, {
         'email': email,
         'reset_code': resetCode,
       });
 
-      //  debugPrint('User Service: getTenantByResetCode: $response');
+      //  debugPrint('User Service: getUserByResetCode: $response');
 
       if (response is Map<String, dynamic> && response.containsKey('success')) {
         if (response['success'] == true) {
@@ -1288,7 +1149,7 @@ class UserService extends BaseService {
             return {}; // Return an empty object if data is missing
           }
         } else {
-          throw Exception(response['message'] ?? 'Tenant not found');
+          throw Exception(response['message'] ?? 'User not found');
         }
       }
 
@@ -1298,13 +1159,13 @@ class UserService extends BaseService {
     }
   }
 
-  Future<Map<String, dynamic>> updateTenantPassword(
-    int tenantId,
+  Future<Map<String, dynamic>> updateUserPassword(
+    int userId,
     String password,
   ) async {
     try {
-      final response = await post(ApiEndpoints.updateTenantPassword, {
-        'tenant_id': tenantId,
+      final response = await post(ApiEndpoints.updateUserPassword, {
+        'tenant_id': userId,
         'password': password,
       });
 
@@ -1315,13 +1176,13 @@ class UserService extends BaseService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getTenantNotifications(
-    int tenantId,
+  Future<List<Map<String, dynamic>>> getUserNotifications(
+    int userId,
     int readFilter,
   ) async {
     try {
-      final response = await post(ApiEndpoints.getTenantNotifications, {
-        'tenant_id': tenantId,
+      final response = await post(ApiEndpoints.getUserNotifications, {
+        'user_id': userId,
         'read_filter': readFilter,
       });
 
@@ -1343,14 +1204,14 @@ class UserService extends BaseService {
         return [];
       }
     } catch (error) {
-      debugPrint('Failed to get tenant notifications: $error');
+      debugPrint('Failed to get user notifications: $error');
       return [];
     }
   }
 
   Future<RequestModel?> fetchRequestById(int requestId) async {
     try {
-      final response = await post(ApiEndpoints.getTenantBuildingRequestById, {
+      final response = await post(ApiEndpoints.getUserObjectRequestById, {
         'id': requestId,
       });
 
@@ -1380,7 +1241,7 @@ class UserService extends BaseService {
 
   Future<BookingModel?> fetchBookingById(int bookingId) async {
     try {
-      final response = await post(ApiEndpoints.getTenantBuildingBookingById, {
+      final response = await post(ApiEndpoints.getUserObjectBookingById, {
         'id': bookingId,
       });
 
@@ -1408,13 +1269,13 @@ class UserService extends BaseService {
     }
   }
 
-  Future<Map<String, dynamic>> updateTenantNotificationStatus(
+  Future<Map<String, dynamic>> updateUserNotificationStatus(
     int id,
     int status,
   ) async {
     // status 1 = read, 0 = unread
     try {
-      final response = await post(ApiEndpoints.updateTenantNotificationStatus, {
+      final response = await post(ApiEndpoints.updateUserNotificationStatus, {
         'id': id,
         'status': status,
       });
@@ -1429,12 +1290,12 @@ class UserService extends BaseService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getTenantBuildingAnnoucemnts(
-    int buildingId,
+  Future<List<Map<String, dynamic>>> getUserObjectAnnouncements(
+    int objectId,
   ) async {
     try {
-      final response = await post(ApiEndpoints.getTenantBuildingAnnoucemnts, {
-        'building_id': buildingId,
+      final response = await post(ApiEndpoints.getUserObjectAnnouncements, {
+        'object_id': objectId,
       });
 
       //  debugPrint('Raw annoucemnts: $response');
@@ -1455,7 +1316,7 @@ class UserService extends BaseService {
         return [];
       }
     } catch (error) {
-      debugPrint('Failed to get tenant building annoucemnts: $error');
+      debugPrint('Failed to get user object announcements: $error');
       return [];
     }
   }
@@ -1463,7 +1324,7 @@ class UserService extends BaseService {
   Future<AnnoucementModel?> fetchAnnouncementById(int announcementId) async {
     try {
       final response = await post(
-        ApiEndpoints.getTenantBuildingAnnouncementById,
+        ApiEndpoints.getUserObjectAnnouncementById,
         {'id': announcementId},
       );
 
@@ -1491,11 +1352,11 @@ class UserService extends BaseService {
     }
   }
 
-  Future<Map<String, dynamic>> deleteTenantDeviceToken(
+  Future<Map<String, dynamic>> deleteUserDeviceToken(
     String deviceToken,
   ) async {
     try {
-      final response = await post(ApiEndpoints.deleteTenantDeviceToken, {
+      final response = await post(ApiEndpoints.deleteUserDeviceToken, {
         'device_token': deviceToken,
       });
 
@@ -1509,19 +1370,19 @@ class UserService extends BaseService {
     }
   }
 
-  Future<Map<String, dynamic>> updateTenantBookingReminders(
-    int tenantId,
+  Future<Map<String, dynamic>> updateUserBookingReminders(
+    int userId,
     bool value,
   ) async {
     try {
-      final response = await post(ApiEndpoints.updateTenantBookingReminders, {
-        'tenant_id': tenantId,
+      final response = await post(ApiEndpoints.updateUserBookingReminders, {
+        'user_id': userId,
         'val': value,
       });
 
       return response;
     } catch (error) {
-      debugPrint("Error in updateTenantBookingReminders: $error");
+      debugPrint("Error in updateUserBookingReminders: $error");
       return {
         "success": false,
         "message": "Failed to update tenant booking reminders",
@@ -1529,10 +1390,10 @@ class UserService extends BaseService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getTenantDeviceTokens(int tenantId) async {
+  Future<List<Map<String, dynamic>>> getUserDeviceTokens(int userId) async {
     try {
-      final response = await post(ApiEndpoints.getTenantDeviceTokens, {
-        'tenant_id': tenantId,
+      final response = await post(ApiEndpoints.getUserDeviceTokens, {
+        'user_id': userId,
       });
 
       if (response is Map<String, dynamic> && response.containsKey('success')) {
@@ -1541,7 +1402,7 @@ class UserService extends BaseService {
           return List<Map<String, dynamic>>.from(response['data']);
         } else {
           debugPrint(
-            'Failed to get tenant device tokens: ${response['message']}',
+            'Failed to get user device tokens: ${response['message']}',
           );
           return [];
         }
@@ -1599,12 +1460,12 @@ class UserService extends BaseService {
     }
   }
 
-  Future<Map<String, dynamic>> updateTenantLanguageCode(
+  Future<Map<String, dynamic>> updateUserLanguageCode(
     int tenantId,
     String langCode,
   ) async {
     try {
-      final response = await post(ApiEndpoints.updateTenantLanguageCode, {
+      final response = await post(ApiEndpoints.updateUserLanguageCode, {
         'tenant_id': tenantId,
         'lang_code': langCode,
       });
@@ -1619,17 +1480,17 @@ class UserService extends BaseService {
     }
   }
 
-  Future<Map<String, dynamic>> createTenantBuildingPostReport(
+  Future<Map<String, dynamic>> createUserObjectPostReport(
     int postId,
-    int buildingId,
+    int objectId,
     int reportedbyId,
     String reason,
     String additionalComments,
   ) async {
     try {
-      final response = await post(ApiEndpoints.createTenantBuildingPostReport, {
+      final response = await post(ApiEndpoints.createUserObjectPostReport, {
         'post_id': postId,
-        'building_id': buildingId,
+        'object_id': objectId,
         'reported_by_id': reportedbyId,
         'reason': reason,
         'additional_comments': additionalComments,
@@ -1644,9 +1505,9 @@ class UserService extends BaseService {
     }
   }
 
-  Future<Map<String, dynamic>> deleteTenantBuildingPost(int postId) async {
+  Future<Map<String, dynamic>> deleteUserObjectPost(int postId) async {
     try {
-      final response = await post(ApiEndpoints.deleteTenantBuildingPost, {
+      final response = await post(ApiEndpoints.deleteUserObjectPost, {
         'post_id': postId,
       });
 
@@ -1654,17 +1515,17 @@ class UserService extends BaseService {
 
       return response;
     } catch (error) {
-      debugPrint("Error in deleteTenantBuildingPost: $error");
+      debugPrint("Error in deleteUserObjectPost: $error");
       return {"success": false, "message": "Failed to delete post"};
     }
   }
 
-  Future<Map<String, dynamic>> deleteTenantBuildingPostComment(
+  Future<Map<String, dynamic>> deleteUserObjectPostComment(
     int commentId,
   ) async {
     try {
       final response = await post(
-        ApiEndpoints.deleteTenantBuildingPostComment,
+        ApiEndpoints.deleteUserObjectPostComment,
         {'comment_id': commentId},
       );
 
@@ -1672,16 +1533,16 @@ class UserService extends BaseService {
 
       return response;
     } catch (error) {
-      debugPrint("Error in deleteTenantBuildingPost: $error");
+      debugPrint("Error in deleteUserObjectPostComment: $error");
       return {"success": false, "message": "Failed to delete post comment"};
     }
   }
 
-  Future<List<Map<String, dynamic>>> getTenantsByContractId(
+  Future<List<Map<String, dynamic>>> getUsersByContractId(
     int contractId,
   ) async {
     try {
-      final response = await post(ApiEndpoints.getAllTenantsByContract, {
+      final response = await post(ApiEndpoints.getAllUsersByContract, {
         'contract_id': contractId,
       });
 
@@ -1700,69 +1561,69 @@ class UserService extends BaseService {
         return [];
       }
     } catch (error) {
-      debugPrint('Failed to get all tenants by contract: $error');
+      debugPrint('Failed to get all users by contract: $error');
       return [];
     }
   }
 
-  Future<Map<String, dynamic>> createQuickNewTenant(
+  Future<Map<String, dynamic>> createQuickNewUser(
     String firstName,
     String lastName,
     String email,
-    int buildingId,
+    int objectId,
     int createdById,
   ) async {
     try {
-      final response = await post(ApiEndpoints.createQuickNewTenant, {
+      final response = await post(ApiEndpoints.createQuickNewUser, {
         'first_name': firstName,
         'last_name': lastName,
         'email': email,
-        'building_id': buildingId,
+        'object_id': objectId,
         'created_by_id': createdById,
       });
 
       return response;
     } catch (error) {
-      debugPrint("Error in quickCreateNewTenant: $error");
-      return {"success": false, "message": "Failed to create new tenant"};
+      debugPrint("Error in quickCreateNewUser: $error");
+      return {"success": false, "message": "Failed to create new user"};
     }
   }
 
-  Future<Map<String, dynamic>> updateQuickTenant(
+  Future<Map<String, dynamic>> updateQuickUser(
     String firstName,
     String lastName,
 
-    int buildingId,
-    int tenantId,
+    int objectId,
+    int userId,
   ) async {
     try {
-      final response = await post(ApiEndpoints.updateQuickTenant, {
+      final response = await post(ApiEndpoints.updateQuickUser, {
         'first_name': firstName,
         'last_name': lastName,
-        'building_id': buildingId,
-        'tenant_id': tenantId,
+        'object_id': objectId,
+        'user_id': userId,
       });
 
       return response;
     } catch (error) {
-      debugPrint("Error in updateQuickTenant: $error");
-      return {"success": false, "message": "Failed to update quick tenant"};
+      debugPrint("Error in updateQuickUser: $error");
+      return {"success": false, "message": "Failed to update quick user"};
     }
   }
 
-  Future<Map<String, dynamic>> updateTenantContractPrimary(
+  Future<Map<String, dynamic>> updateUserContractPrimary(
     int contractId,
-    int tenantId,
+    int userId,
   ) async {
     try {
-      final response = await post(ApiEndpoints.updateTenantContractPrimary, {
+      final response = await post(ApiEndpoints.updateUserContractPrimary, {
         'contract_id': contractId,
-        'tenant_id': tenantId,
+        'user_id': userId,
       });
 
       return response;
     } catch (error) {
-      debugPrint("Error in updateTenantContractPrimary: $error");
+      debugPrint("Error in updateUserContractPrimary: $error");
       return {
         "success": false,
         "message": "Failed to update tenant contract primary status",
@@ -1770,27 +1631,27 @@ class UserService extends BaseService {
     }
   }
 
-  Future<Map<String, dynamic>> updateTenantRequestStatus(
+  Future<Map<String, dynamic>> updateUserRequestStatus(
     int requestId,
     int statusId,
   ) async {
     try {
-      final response = await post(ApiEndpoints.updateTenantRequestStatus, {
+      final response = await post(ApiEndpoints.updateUserRequestStatus, {
         'request_id': requestId,
         'status_id': statusId,
       });
 
       return response;
     } catch (error) {
-      debugPrint("Error in updateTenantRequestStatus: $error");
+      debugPrint("Error in updateUserRequestStatus: $error");
       return {
         "success": false,
-        "message": "Failed to update tenant request status",
+        "message": "Failed to update user request status",
       };
     }
   }
 
-  Future<Map<String, dynamic>> createTenantContractNotificationAndSendPush(
+  Future<Map<String, dynamic>> createUserContractNotificationAndSendPush(
     int contractId,
     int typeId,
     String message,
@@ -1798,7 +1659,7 @@ class UserService extends BaseService {
   ) async {
     try {
       final response =
-          await post(ApiEndpoints.createTenantContractNotificationAndSendPush, {
+          await post(ApiEndpoints.createUserContractNotificationAndSendPush, {
             'contract_id': contractId,
             'type_id': typeId,
             'message': message,
@@ -1808,21 +1669,21 @@ class UserService extends BaseService {
       return response;
     } catch (error) {
       debugPrint(
-        "Error in createTenantContractNotificationAndSendPush: $error",
+        "Error in createUserContractNotificationAndSendPush: $error",
       );
       return {
         "success": false,
-        "message": "Failed to create tenant request notification",
+        "message": "Failed to create user request notification",
       };
     }
   }
 
-  Future<List<Map<String, dynamic>>> getTenantsByBuildingId(
-    int buildingId,
+  Future<List<Map<String, dynamic>>> getUsersByObjectId(
+    int objectId,
   ) async {
     try {
-      final response = await post(ApiEndpoints.getAllTenantsByBuilding, {
-        'building_id': buildingId,
+      final response = await post(ApiEndpoints.getAllUsersByObject, {
+        'object_id': objectId,
       });
 
       if (response is Map<String, dynamic> && response.containsKey('success')) {
@@ -1839,60 +1700,36 @@ class UserService extends BaseService {
         return [];
       }
     } catch (error) {
-      debugPrint('Failed to get all tenants by building: $error');
+      debugPrint('Failed to get all users by object: $error');
       return [];
     }
   }
 
-  Future<List<Map<String, dynamic>>> getTenantsByAgencyId(int agencyId) async {
-    try {
-      final response = await post(ApiEndpoints.getAllTenantsByAgency, {
-        'agency_id': agencyId,
-      });
 
-      if (response is Map<String, dynamic> && response.containsKey('success')) {
-        if (response['success'] == true && response['data'] is List) {
-          return List<Map<String, dynamic>>.from(response['data']);
-        } else {
-          return [];
-        }
-      } else if (response is List) {
-        // If the backend is returning a raw list instead of a JSON object
-        return List<Map<String, dynamic>>.from(response);
-      } else {
-        //   debugPrint('Unexpected response format: $response');
-        return [];
-      }
-    } catch (error) {
-      debugPrint('Failed to get all tenants by agency: $error');
-      return [];
-    }
-  }
-
-  Future<Map<String, dynamic>> deleteTenantBuildingTenant(
-    int tenantId,
-    int buildingId,
+  Future<Map<String, dynamic>> deleteUserObjectUser(
+    int userId,
+    [int? objectId]
   ) async {
     try {
-      final response = await post(ApiEndpoints.deleteTenantBuildingTenant, {
-        'tenant_id': tenantId,
-        'building_id': buildingId,
+      final response = await post(ApiEndpoints.deleteUserObjectUser, {
+        'user_id': userId,
+        'object_id': objectId,
       });
 
       return response;
     } catch (error) {
-      debugPrint("Error in deleteTenantBuildingTenant: $error");
+      debugPrint("Error in deleteUserObjectUser: $error");
       return {
         "success": false,
-        "message": "Failed to delete tenant building tenant",
+        "message": "Failed to delete user from object",
       };
     }
   }
 
-  Future<List<Map<String, dynamic>>> getUsersByAgencyId(int agencyId) async {
+  Future<List<Map<String, dynamic>>> getUsersByCompanyId(int companyId) async {
     try {
-      final response = await post(ApiEndpoints.getAllUsersByAgency, {
-        'agency_id': agencyId,
+      final response = await post(ApiEndpoints.getAllUsersByCompany, {
+        'company_id': companyId,
       });
 
       if (response is Map<String, dynamic> && response.containsKey('success')) {
@@ -1909,7 +1746,7 @@ class UserService extends BaseService {
         return [];
       }
     } catch (error) {
-      debugPrint('Failed to get all users by agency: $error');
+      debugPrint('Failed to get all users by company: $error');
       return [];
     }
   }
@@ -1945,7 +1782,7 @@ class UserService extends BaseService {
     String email,
     int roleId,
     int roleExtId,
-    int agencyId,
+    int companyId,
   ) async {
     try {
       final response = await post(ApiEndpoints.createNewUser, {
@@ -1954,7 +1791,7 @@ class UserService extends BaseService {
         'email': email,
         'role_id': roleId,
         'role_ext_id': roleExtId,
-        'agency_id': agencyId,
+        'company_id': companyId,
       });
 
       return response;
@@ -1964,28 +1801,28 @@ class UserService extends BaseService {
     }
   }
 
-  Future<Map<String, dynamic>> assignUserToBuildingsBatch(
+  Future<Map<String, dynamic>> assignUserToObjectsBatch(
     int userId,
-    List<int> buildingIds,
+    List<int> objectIds,
   ) async {
     try {
       final response = await post(
         ApiEndpoints
-            .assignUserToBuildingsBatch, // e.g. "/api/users/assign-buildings-batch"
-        {'user_id': userId, 'building_ids': buildingIds},
+            .assignUserToObjectsBatch, // e.g. "/api/users/assign-objects-batch"
+        {'user_id': userId, 'object_ids': objectIds},
       );
       return response;
     } catch (error) {
-      debugPrint("Error in assignUserToBuildingsBatch: $error");
-      return {"success": false, "message": "Failed to assign buildings"};
+      debugPrint("Error in assignUserToObjectsBatch: $error");
+      return {"success": false, "message": "Failed to assign objects"};
     }
   }
 
-  Future<List<Map<String, dynamic>>> getUserAssignedBuildings(
+  Future<List<Map<String, dynamic>>> getUserAssignedObjects(
     int userId,
   ) async {
     try {
-      final response = await post(ApiEndpoints.getUserAssignedBuildings, {
+      final response = await post(ApiEndpoints.getUserAssignedObjects, {
         'user_id': userId,
       });
 
@@ -2003,16 +1840,16 @@ class UserService extends BaseService {
         return [];
       }
     } catch (error) {
-      debugPrint('Failed to get all user assigned buildings: $error');
+      debugPrint('Failed to get all user assigned objects: $error');
       return [];
     }
   }
 
-  Future<Map<String, dynamic>> deleteAllUserAssignedBuildings(
+  Future<Map<String, dynamic>> deleteAllUserAssignedObjects(
     int userId,
   ) async {
     try {
-      final response = await post(ApiEndpoints.deleteAllUserAssignedBuildings, {
+      final response = await post(ApiEndpoints.deleteAllUserAssignedObjects, {
         'user_id': userId,
       });
 
@@ -2076,28 +1913,6 @@ class UserService extends BaseService {
     }
   }
 
-  Future<Map<String, dynamic>> createTenantInvitationCode(
-    String email,
-    int tenantId,
-    int contractId,
-  ) async {
-    try {
-      final response = await post(ApiEndpoints.createTenantInvitationCode, {
-        'email': email,
-        'tenant_id': tenantId,
-        'contract_id': contractId,
-      });
-
-      return response;
-    } catch (error) {
-      debugPrint("Error in createTenantInvitationCode: $error");
-      return {
-        "success": false,
-        "message": "Failed to create new tenant invitation code",
-      };
-    }
-  }
-
   Future<Map<String, dynamic>> sendUserInvitationEmail(
     String greetings,
     String bodyText,
@@ -2111,40 +1926,6 @@ class UserService extends BaseService {
   ) async {
     try {
       final response = await post(ApiEndpoints.sendUserInvitationEmail, {
-        'greetings': greetings,
-        'body_text': bodyText,
-        'body2_title_text': invitationCodeText,
-        'body2_text': invitationCode,
-        'availableOnText': availableOnText,
-        'helpText': helpText,
-        'supportText': supportText,
-        'subject': subject,
-        'email': email,
-      });
-
-      return response;
-    } catch (error) {
-      debugPrint("Error in sendUserInvitationEmail: $error");
-      return {
-        "success": false,
-        "message": "Failed to create new user invitation email",
-      };
-    }
-  }
-
-  Future<Map<String, dynamic>> sendTenantInvitationEmail(
-    String greetings,
-    String bodyText,
-    String invitationCodeText,
-    String invitationCode,
-    String availableOnText,
-    String helpText,
-    String supportText,
-    String subject,
-    String email,
-  ) async {
-    try {
-      final response = await post(ApiEndpoints.sendTenantInvitationEmail, {
         'greetings': greetings,
         'body_text': bodyText,
         'body2_title_text': invitationCodeText,
@@ -2196,26 +1977,30 @@ class UserService extends BaseService {
       return response;
     } catch (error) {
       debugPrint("Error in updateUserStatus: $error");
-      return {"success": false, "message": "Failed to update user status"};
+      return {"success": false, 
+      "message": "Failed to update user status"
+      };
     }
   }
 
-  Future<Map<String, dynamic>> updateTenantBuildingStatus(
+
+  Future<Map<String, dynamic>> updateUserObjectStatus(
     int id,
     int statusId,
-    int buildingId,
+    int objectId,
   ) async {
     try {
-      final response = await post(ApiEndpoints.updateTenantBuildingStatus, {
+      final response = await post(ApiEndpoints.updateUserObjectStatus, {
         'id': id,
         'status_id': statusId,
-        'building_id': buildingId,
+        'object_id': objectId,
       });
 
       return response;
     } catch (error) {
-      debugPrint("Error in updateTenantStatus: $error");
-      return {"success": false, "message": "Failed to update tenant status"};
+      debugPrint("Error in updateUserObjectStatus: $error");
+      return {"success": false, "message": "Failed to update user object status"
+      };
     }
   }
 
@@ -2265,56 +2050,6 @@ class UserService extends BaseService {
       throw Exception('Unexpected response format');
     } catch (error) {
       throw Exception('Failed to send email: $error');
-    }
-  }
-
-  Future<Map<String, dynamic>> getUserByResetCode(
-    String email,
-    resetCode,
-  ) async {
-    try {
-      final response = await post(ApiEndpoints.getUserByResetCode, {
-        'email': email,
-        'reset_code': resetCode,
-      });
-
-      //  debugPrint('User Service: getTenantByResetCode: $response');
-
-      if (response is Map<String, dynamic> && response.containsKey('success')) {
-        if (response['success'] == true) {
-          // Fix: Handle `data` as a List instead of Map
-          if (response.containsKey('data') &&
-              response['data'] is List &&
-              response['data'].isNotEmpty) {
-            return response['data'][0]; // Extract first object from the List
-          } else {
-            return {}; // Return an empty object if data is missing
-          }
-        } else {
-          throw Exception(response['message'] ?? 'Tenant not found');
-        }
-      }
-
-      throw Exception('Unexpected response format');
-    } catch (error) {
-      throw Exception('Failed to get tenant by reset code: $error');
-    }
-  }
-
-  Future<Map<String, dynamic>> updateUserPassword(
-    int userId,
-    String password,
-  ) async {
-    try {
-      final response = await post(ApiEndpoints.updateUserPassword, {
-        'user_id': userId,
-        'password': password,
-      });
-
-      return response;
-    } catch (error) {
-      debugPrint("Error in updateUserPassword: $error");
-      return {"success": false, "message": "Failed to update user password"};
     }
   }
 }

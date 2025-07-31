@@ -67,14 +67,14 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: 'Tenants10 ',
+                      text: 'XM',
                       style: theme.textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.w900,
                         color: AppColors.primaryColor,
                       ),
                     ),
                     TextSpan(
-                      text: '\u00A0For Admins',
+                      text: '\u00A0Dashboard',
                       style: theme.textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.w600,
                         fontStyle: FontStyle.italic,

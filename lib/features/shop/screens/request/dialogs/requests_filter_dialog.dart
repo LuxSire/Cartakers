@@ -11,14 +11,14 @@ class RequestsFilterDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<RequestController>(tag: 'agency_requests');
+    final controller = Get.find<RequestController>(tag: 'company_requests');
     final theme = Theme.of(context);
 
     // Temporary copies of current values
     final RxInt tempStatusId = controller.selectedStatusId.value.obs;
     final RxInt tempRequestTypeId = controller.selectedRequestTypeId.value.obs;
-    final RxInt tempBuildingFilterId =
-        controller.selectedBuildingFilterId.value.obs;
+    final RxInt tempObjectFilterId =
+        controller.selectedObjectFilterId.value.obs;
     final Rx<DateTime?> tempStartDate = controller.startDate.value.obs;
     final Rx<DateTime?> tempEndDate = controller.endDate.value.obs;
 
@@ -155,12 +155,12 @@ class RequestsFilterDialog extends StatelessWidget {
                   alignedDropdown: true,
                   child: DropdownButtonFormField<int>(
                     isExpanded: true,
-                    value: tempBuildingFilterId.value,
-                    onChanged: (value) => tempBuildingFilterId.value = value!,
+                    value: tempObjectFilterId.value,
+                    onChanged: (value) => tempObjectFilterId.value = value!,
                     decoration: InputDecoration(
                       labelText: AppLocalization.of(
                         context,
-                      ).translate('buildings_screen.lbl_building_name'),
+                      ).translate('objects_screen.lbl_object_name'),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -178,10 +178,10 @@ class RequestsFilterDialog extends StatelessWidget {
                           ).translate("general_msgs.msg_all"),
                         ),
                       ),
-                      ...controller.buildingsList.map(
-                        (b) => DropdownMenuItem<int>(
-                          value: int.parse(b.id!),
-                          child: Text(b.name!),
+                      ...controller.objectsList.map(
+                        (o) => DropdownMenuItem<int>(
+                          value: int.parse(o.id!),
+                          child: Text(o.name!),
                         ),
                       ),
                     ],
@@ -234,7 +234,7 @@ class RequestsFilterDialog extends StatelessWidget {
                       controller.applyFilters(
                         tempStatusId.value,
                         tempRequestTypeId.value,
-                        tempBuildingFilterId.value,
+                        tempObjectFilterId.value,
                         tempStartDate.value,
                         tempEndDate.value,
                       );

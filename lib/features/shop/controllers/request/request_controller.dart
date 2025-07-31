@@ -3,13 +3,13 @@ import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/data/abstract/base_data_table_controller.dart';
-import 'package:xm_frontend/data/models/building_model.dart';
+import 'package:xm_frontend/data/models/object_model.dart';
 import 'package:xm_frontend/data/models/organization_model.dart';
 import 'package:xm_frontend/data/models/request_log_model.dart';
 import 'package:xm_frontend/data/models/request_model.dart';
 import 'package:xm_frontend/data/models/request_type_model.dart';
 import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
-import 'package:xm_frontend/data/repositories/building/building_repository.dart';
+import 'package:xm_frontend/data/repositories/object/object_repository.dart';
 import 'package:xm_frontend/data/repositories/user/user_repository.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 import 'package:xm_frontend/utils/helpers/helper_functions.dart';
@@ -17,7 +17,7 @@ import 'package:xm_frontend/utils/helpers/network_manager.dart';
 import 'package:xm_frontend/utils/popups/full_screen_loader.dart';
 import 'package:xm_frontend/utils/popups/loaders.dart';
 
-enum RequestSourceType { contract, tenant, building, agency }
+enum RequestSourceType { contract, user, object, company }
 
 class RequestController extends TBaseController<RequestModel> {
   static RequestController get instance => Get.find();
@@ -68,10 +68,10 @@ class RequestController extends TBaseController<RequestModel> {
 
   RequestController({required this.sourceType, required this.id});
 
-  final _buildingRepository = Get.put(BuildingRepository());
+  final _objectRepository = Get.put(ObjectRepository());
 
-  RxList<BuildingModel> buildingsList = <BuildingModel>[].obs;
-  RxInt selectedBuildingFilterId = 0.obs; // 0 = All
+  RxList<ObjectModel> objectsList = <ObjectModel>[].obs;
+  RxInt selectedObjectFilterId = 0.obs; // 0 = All
 
   RxList<OrganizationModel> maintenanceServicersList =
       <OrganizationModel>[].obs;
@@ -82,7 +82,7 @@ class RequestController extends TBaseController<RequestModel> {
   void onInit() {
     super.onInit();
     loadData(); // Load data when the controller is initialized
-    loadAllBuildings(); // Load all buildings
+    loadAllObjects(); // Load all buildings
     loadAllMaintenanceServicers(); // Load all maintenance servicers
   }
 
@@ -96,34 +96,34 @@ class RequestController extends TBaseController<RequestModel> {
       switch (sourceType) {
         case RequestSourceType.contract:
           requests = await UserRepository.instance
-              .fetchTenantRequestsByContractId(id!);
+              .fetchUserRequestsByContractId(id!);
           break;
-        case RequestSourceType.tenant:
+        case RequestSourceType.user:
           requests = await UserRepository.instance
-              .fetchTenantRequestsByTenantId(id!);
+              .fetchUserRequestsByUserId(id!);
           break;
-        case RequestSourceType.building:
-          requests = await BuildingRepository.instance
-              .fetchBuildingRequestsByBuildingId(id!);
+        case RequestSourceType.object:
+          requests = await ObjectRepository.instance
+              .fetchObjectRequestsByObjectId(id!);
           break;
-        case RequestSourceType.agency:
+        case RequestSourceType.company:
           requests =
-              await BuildingRepository.instance
-                  .fetchBuildingsRequestsByAgencyId();
+              await ObjectRepository.instance
+                  .fetchObjectsRequestsByCompanyId();
           break;
       }
 
       final updatedUser = await userController.fetchUserDetails();
 
-      final userBuildingRestrictions = updatedUser.buildingPermissionIds ?? [];
+      final userObjectRestrictions = updatedUser.objectPermissionIds ?? [];
 
       // debugPrint('User building restrictions: $userBuildingRestrictions');
 
       final filteredRequestsData =
           requests
               .where(
-                (request) => userBuildingRestrictions.contains(
-                  int.parse(request.buildingId.toString()),
+                (request) => userObjectRestrictions.contains(
+                  int.parse(request.objectId.toString()),
                 ),
               )
               .toList();
@@ -138,11 +138,11 @@ class RequestController extends TBaseController<RequestModel> {
       totalPendingRequests.value = allPendingRequests.length;
       totalRequests.value = filteredRequestsData.length;
 
-      final valBuildingId =
-          allRequests.isNotEmpty ? allRequests.first.buildingId : null;
-      if (valBuildingId != null) {
-        final types = await BuildingRepository.instance.fetchRequestTypes(
-          valBuildingId,
+      final valObjectId =
+          allRequests.isNotEmpty ? allRequests.first.objectId : null;
+      if (valObjectId != null) {
+        final types = await ObjectRepository.instance.fetchRequestTypes(
+          valObjectId,
         );
         requestTypes.assignAll(types);
       }
@@ -154,26 +154,26 @@ class RequestController extends TBaseController<RequestModel> {
     }
   }
 
-  void loadAllBuildings() async {
+  void loadAllObjects() async {
     try {
-      final result = await _buildingRepository.getAllBuildings();
+      final result = await _objectRepository.getAllObjects();
 
       final updatedUser = await userController.fetchUserDetails();
 
-      final userBuildingRestrictions = updatedUser.buildingPermissionIds ?? [];
+      final userObjectRestrictions = updatedUser.objectPermissionIds ?? [];
 
       // debugPrint('User building restrictions: $userBuildingRestrictions');
 
-      final filteredBuildings =
+      final filteredObjects =
           result
               .where(
-                (building) => userBuildingRestrictions.contains(
-                  int.parse(building.id.toString()),
+                (object) => userObjectRestrictions.contains(
+                  int.parse(object.id.toString()),
                 ),
               )
               .toList();
 
-      buildingsList.assignAll(filteredBuildings);
+      objectsList.assignAll(filteredObjects);
     } catch (e) {
       //   Get.snackbar('Error', 'Failed to load buildings: $e');
     } finally {
@@ -183,7 +183,7 @@ class RequestController extends TBaseController<RequestModel> {
 
   void loadAllMaintenanceServicers() async {
     try {
-      final result = await _buildingRepository.getAllMaintenanceServicers();
+      final result = await _objectRepository.getAllMaintenanceServicers();
 
       maintenanceServicersList.assignAll(result);
     } catch (e) {
@@ -207,7 +207,7 @@ class RequestController extends TBaseController<RequestModel> {
   // Method to load request logs
   Future<void> loadRequestLogs(int requestId) async {
     try {
-      final logs = await BuildingRepository.instance
+      final logs = await ObjectRepository.instance
           .fetchRequestLogsByRequestId(requestId);
       requestLogs.assignAll(logs); // Assign all fetched request logs
 
@@ -258,7 +258,7 @@ class RequestController extends TBaseController<RequestModel> {
       // Check if  selected status is not empty
 
       final isRequestUpdated = await UserRepository.instance
-          .updateTenantRequestStatus(
+          .updateUserRequestStatus(
             int.parse(request.id!),
             selectedStatus.value,
             commentsController.text,
@@ -284,7 +284,7 @@ class RequestController extends TBaseController<RequestModel> {
 
         // send a notification to the user
         await UserRepository.instance
-            .createTenantRequestNotificationByContractId(
+            .createUserRequestNotificationByContractId(
               request.contractId,
               int.parse(request.id!),
               selectedStatus.value,
@@ -437,16 +437,16 @@ class RequestController extends TBaseController<RequestModel> {
               endDate.value == null ||
               request.createdAt?.isBefore(endDate.value!) == true;
 
-          final matchesBuilding =
-              selectedBuildingFilterId.value == 0 ||
-              request.buildingId == selectedBuildingFilterId.value;
+          final matchesObject =
+              selectedObjectFilterId.value == 0 ||
+              request.objectId == selectedObjectFilterId.value;
 
           return matchesQuery &&
               matchesStatus &&
               matchesRequestType &&
               matchesStartDate &&
               matchesEndDate &&
-              matchesBuilding;
+              matchesObject;
         }).toList();
 
     filteredRequests.assignAll(filteredList);
@@ -469,7 +469,7 @@ class RequestController extends TBaseController<RequestModel> {
           applyFilters(
             selectedStatusId.value,
             selectedRequestTypeId.value,
-            selectedBuildingFilterId.value,
+            selectedObjectFilterId.value,
             startDate.value,
             endDate.value,
           );
@@ -488,7 +488,7 @@ class RequestController extends TBaseController<RequestModel> {
             applyFilters(
               selectedStatusId.value,
               selectedRequestTypeId.value,
-              selectedBuildingFilterId.value,
+              selectedObjectFilterId.value,
               startDate.value,
               endDate.value,
             );
@@ -497,18 +497,18 @@ class RequestController extends TBaseController<RequestModel> {
       }
     }
 
-    if (selectedBuildingFilterId.value != 0) {
-      final selectedBuilding = buildingsList.firstWhereOrNull(
-        (b) => int.parse(b.id!) == selectedBuildingFilterId.value,
+    if (selectedObjectFilterId.value != 0) {
+      final selectedObject = objectsList.firstWhereOrNull(
+        (o) => int.parse(o.id!) == selectedObjectFilterId.value,
       );
-      if (selectedBuilding != null) {
+      if (selectedObject != null) {
         filters.add({
-          selectedBuilding.name.toString(): () {
-            selectedBuildingFilterId.value = 0;
+          selectedObject.name.toString(): () {
+            selectedObjectFilterId.value = 0;
             applyFilters(
               selectedStatusId.value,
               selectedRequestTypeId.value,
-              selectedBuildingFilterId.value,
+              selectedObjectFilterId.value,
               startDate.value,
               endDate.value,
             );
@@ -525,7 +525,7 @@ class RequestController extends TBaseController<RequestModel> {
               applyFilters(
                 selectedStatusId.value,
                 selectedRequestTypeId.value,
-                selectedBuildingFilterId.value,
+                selectedObjectFilterId.value,
                 startDate.value,
                 endDate.value,
               );
@@ -541,7 +541,7 @@ class RequestController extends TBaseController<RequestModel> {
               applyFilters(
                 selectedStatusId.value,
                 selectedRequestTypeId.value,
-                selectedBuildingFilterId.value,
+                selectedObjectFilterId.value,
                 startDate.value,
                 endDate.value,
               );
@@ -577,17 +577,17 @@ class RequestController extends TBaseController<RequestModel> {
   void applyFilters(
     int statusId,
     int requestTypeId,
-    int buildingId,
+    int objectId,
     DateTime? start,
     DateTime? end,
   ) {
     debugPrint(
-      'Applying filters: statusId=$statusId, requestTypeId=$requestTypeId, buildingId=$buildingId, start=$start, end=$end',
+      'Applying filters: statusId=$statusId, requestTypeId=$requestTypeId, objectId=$objectId, start=$start, end=$end',
     );
 
     selectedStatusId.value = statusId;
     selectedRequestTypeId.value = requestTypeId;
-    selectedBuildingFilterId.value = buildingId;
+    selectedObjectFilterId.value = objectId;
     startDate.value = start;
     endDate.value = end;
     filtersApplied.value = true; // Only now show chips
@@ -599,7 +599,7 @@ class RequestController extends TBaseController<RequestModel> {
   void clearFilters() {
     selectedStatusId.value = -1; // Reset to 'All'
     selectedRequestTypeId.value = 0; // Reset to 'All'
-    selectedBuildingFilterId.value = 0; // Reset to 'All'
+    selectedObjectFilterId.value = 0; // Reset to 'All'
     startDate.value = null;
     endDate.value = null;
     searchController.clear();
@@ -629,7 +629,7 @@ class RequestController extends TBaseController<RequestModel> {
   bool containsSearchQuery(RequestModel item, String query) {
     return item.createdByName!.toLowerCase().contains(query.toLowerCase()) ||
         item.ticketNumber!.toLowerCase().contains(query.toLowerCase()) ||
-        item.buildingName!.toLowerCase().contains(query.toLowerCase());
+        item.objectName!.toLowerCase().contains(query.toLowerCase());
   }
 
   @override
@@ -641,19 +641,19 @@ class RequestController extends TBaseController<RequestModel> {
   @override
   Future<List<RequestModel>> fetchItems() async {
     final result =
-        await BuildingRepository.instance.fetchBuildingsRequestsByAgencyId();
+        await ObjectRepository.instance.fetchObjectsRequestsByCompanyId();
 
     final updatedUser = await userController.fetchUserDetails();
 
-    final userBuildingRestrictions = updatedUser.buildingPermissionIds ?? [];
+    final userObjectRestrictions = updatedUser.objectPermissionIds ?? [];
 
     // debugPrint('User building restrictions: $userBuildingRestrictions');
 
     final filteredRequests =
         result
             .where(
-              (request) => userBuildingRestrictions.contains(
-                int.parse(request.buildingId.toString()),
+              (request) => userObjectRestrictions.contains(
+                int.parse(request.objectId.toString()),
               ),
             )
             .toList();

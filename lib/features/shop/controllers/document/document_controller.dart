@@ -9,13 +9,13 @@ import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/data/models/amenity_zone_model.dart';
 import 'package:xm_frontend/data/models/docs_model.dart';
 import 'package:xm_frontend/data/models/unit_model.dart';
-import 'package:xm_frontend/data/repositories/building/building_repository.dart';
+import 'package:xm_frontend/data/repositories/object/object_repository.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xm_frontend/data/models/amenity_zone_model.dart';
 import 'package:xm_frontend/data/models/unit_model.dart';
-import 'package:xm_frontend/data/repositories/building/building_repository.dart';
+import 'package:xm_frontend/data/repositories/object/object_repository.dart';
 import 'package:xm_frontend/data/repositories/user/user_repository.dart';
 import 'package:xm_frontend/utils/popups/loaders.dart';
 
@@ -54,7 +54,7 @@ class DocumentController extends GetxController {
       debugPrint('Contract ID from load: $contractId');
 
       docs.assignAll(
-        await UserRepository.instance.fetchTenantDocsByContractId(contractId),
+        await UserRepository.instance.fetchUserDocsByContractId(contractId),
       );
 
       debugPrint('Docs: ${docs.length}');

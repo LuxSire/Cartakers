@@ -4,7 +4,7 @@ import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/data/models/contract_model.dart';
 import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
 import 'package:xm_frontend/features/shop/screens/contract/dialogs/edit_contract.dart';
-import 'package:xm_frontend/features/shop/screens/tenant/dialogs/create_tenant.dart';
+import 'package:xm_frontend/features/shop/screens/user/dialogs/create_user.dart';
 
 import 'package:xm_frontend/utils/constants/colors.dart';
 
@@ -65,18 +65,18 @@ class ContractInfo extends StatelessWidget {
                               updatedContract.endDate;
                           controller.contractModel.value.statusId =
                               updatedContract.statusId;
-                          controller.contractModel.value.tenantCount =
-                              updatedContract.tenantCount;
-                          controller.contractModel.value.tenantNames =
-                              updatedContract.tenantNames;
-                          controller.contractModel.value.tenants =
-                              updatedContract.tenants;
+                          controller.contractModel.value.userCount =
+                              updatedContract.userCount;
+                          controller.contractModel.value.userNames =
+                              updatedContract.userNames;
+                          controller.contractModel.value.users =
+                              updatedContract.users;
 
                           controller.contractModel.refresh();
                           controller.isDataUpdated.value = true;
-                          controller.loadingTenants.value = true;
+                          controller.loadingUsers.value = true;
 
-                          controller.loadTenants();
+                          controller.loadUsers();
                         }
                       },
 

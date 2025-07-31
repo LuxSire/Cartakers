@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/features/shop/screens/tenants_contracts/widgets/tenants_contracts_detail_tab.dart';
+import 'package:xm_frontend/features/shop/screens/users_contracts/widgets/users_contracts_detail_tab.dart';
 
 import 'package:xm_frontend/utils/constants/colors.dart';
 
@@ -38,7 +38,7 @@ class BookingsRequestsTabPanel extends StatelessWidget {
                     Tab(
                       text: AppLocalization.of(
                         context,
-                      ).translate('tenants_screen.lbl_tenants'),
+                      ).translate('users_screen.lbl_users'),
                       icon: Icon(Iconsax.record),
                     ),
                     Tab(
@@ -54,10 +54,10 @@ class BookingsRequestsTabPanel extends StatelessWidget {
                   height: 400,
                   child: TabBarView(
                     children: [
-                      // Tenants Tab
-                      TenantsContractsDetailsTab(tabType: 'tenants'),
+                      // Users Tab
+                      UsersContractsDetailTab(tabType: 'users'),
                       // contracts Tab
-                      TenantsContractsDetailsTab(tabType: 'contracts'),
+                      UsersContractsDetailTab(tabType: 'contracts'),
                     ],
                   ),
                 ),

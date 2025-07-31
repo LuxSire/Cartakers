@@ -16,13 +16,13 @@ class CreateBookingDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = Get.find<BookingController>(tag: 'agency_bookings');
+    final c = Get.find<BookingController>(tag: 'company_bookings');
     final maxHeight = MediaQuery.of(context).size.height * 0.9;
 
     // clear any previous values
     c.createCategoryId.value = null;
-    c.createBuildingId.value = null;
-    c.createTenantId.value = null;
+    c.createObjectId.value = null;
+    c.createUserId.value = null;
     c.createUnitId.value = null;
     c.createBookingDate.value = null;
     c.createSlotTime.value = null;
@@ -135,7 +135,7 @@ class CreateBookingDialog extends StatelessWidget {
                                   border: OutlineInputBorder(),
                                 ),
                                 items:
-                                    c.buildingsList
+                                    c.objectsList
                                         .map(
                                           (b) => DropdownMenuItem<int>(
                                             value: int.parse(b.id!),
@@ -143,8 +143,8 @@ class CreateBookingDialog extends StatelessWidget {
                                           ),
                                         )
                                         .toList(),
-                                value: c.createBuildingId.value,
-                                onChanged: c.onCreateBuildingChanged,
+                                value: c.createObjectId.value,
+                                onChanged: c.onCreateObjectChanged,
                                 validator: (v) => v == null ? 'Required' : null,
                               ),
                               const SizedBox(
@@ -160,7 +160,7 @@ class CreateBookingDialog extends StatelessWidget {
                                   border: OutlineInputBorder(),
                                 ),
                                 items:
-                                    c.createTenants
+                                    c.createUsers
                                         .map<DropdownMenuItem<int>>(
                                           (t) => DropdownMenuItem<int>(
                                             value: int.parse(t.id!),
@@ -168,8 +168,8 @@ class CreateBookingDialog extends StatelessWidget {
                                           ),
                                         )
                                         .toList(),
-                                value: c.createTenantId.value,
-                                onChanged: c.onCreateTenantChanged,
+                                value: c.createUserId.value,
+                                onChanged: c.onCreateUserChanged,
                                 validator: (v) => v == null ? 'Required' : null,
                               ),
                               const SizedBox(
@@ -463,8 +463,8 @@ class CreateBookingDialog extends StatelessWidget {
                   child: Obx(() {
                     final canSubmit =
                         c.createCategoryId.value != null &&
-                        c.createBuildingId.value != null &&
-                        c.createTenantId.value != null &&
+                        c.createObjectId.value != null &&
+                        c.createUserId.value != null &&
                         c.createUnitId.value != null &&
                         c.createBookingDate.value != null &&
                         c.createSlotTime.value != null &&

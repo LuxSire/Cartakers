@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/common/widgets/loaders/loader_animation.dart';
-import 'package:xm_frontend/data/models/contract_model.dart';
-import 'package:xm_frontend/features/personalization/controllers/settings_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/building/building_unit_controller.dart';
+//import 'package:xm_frontend/features/personalization/controllers/settings_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/object/object_unit_controller.dart';
 import 'package:xm_frontend/features/shop/screens/dashboard/dialogs/assign_contract.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 import 'package:xm_frontend/utils/constants/sizes.dart';
@@ -15,9 +13,9 @@ class VacantCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final buildingId =
-        SettingsController.instance.settings.value.selectedBuildingId;
-    final controller = Get.put(BuildingUnitController());
+ //   final objectId =
+   //     SettingsController.instance.settings.value.selectedObjectId;
+    final controller = Get.put(ObjectUnitController());
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,7 +75,7 @@ class VacantCard extends StatelessWidget {
                                 ),
                                 const SizedBox(height: TSizes.xs),
                                 Text(
-                                  unit.buildingName ?? '',
+                                  unit.objectName ?? '',
                                   overflow: TextOverflow.ellipsis,
                                   style: Theme.of(context).textTheme.bodySmall!
                                       .copyWith(color: TColors.txt666666),
@@ -110,12 +108,12 @@ class VacantCard extends StatelessWidget {
                                   barrierDismissible: false,
                                   builder:
                                       (context) => AssignContractDialog(
-                                        buildingId: unit.buildingId!,
+                                        objectId: unit.objectId!,
 
                                         unitNumer: unit.unitNumber ?? '',
                                         unitId: int.parse(unit.id!),
 
-                                        buildingName: unit.buildingName ?? '',
+                                        objectName: unit.objectName ?? '',
                                       ),
                                 );
 

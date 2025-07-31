@@ -8,6 +8,7 @@ class User {
   final int isPrimaryTenant;
   final String moveInDate;
   final int unitId;
+  final int companyId;
 
   User({
     required this.id,
@@ -18,6 +19,7 @@ class User {
     required this.isPrimaryTenant,
     required this.moveInDate,
     required this.unitId,
+    required this.companyId,
   });
 
   // Factory constructor for creating a User from JSON
@@ -31,6 +33,7 @@ class User {
       isPrimaryTenant: json['is_primary_tenant'],
       moveInDate: json['move_in_date'],
       unitId: json['unit_id'],
+      companyId: json['company_id'],
     );
   }
 
@@ -45,6 +48,7 @@ class User {
       'is_primary_tenant': isPrimaryTenant,
       'move_in_date': moveInDate,
       'unit_id': unitId,
+      'company_id': companyId,
     };
   }
 }

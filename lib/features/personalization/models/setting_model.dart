@@ -5,16 +5,15 @@ class SettingsModel {
   String appName;
   String appLogo;
   String agencyName;
-  String selectedBuildingId;
+  String selectedObjectId;
 
   /// Constructor for SettingModel.
   SettingsModel({
     this.id,
-
     this.appName = '',
     this.appLogo = '',
     this.agencyName = '',
-    this.selectedBuildingId = '',
+    this.selectedObjectId = '',
   });
 
   Map<String, dynamic> toJson() {
@@ -22,7 +21,7 @@ class SettingsModel {
       'appName': appName,
       'appLogo': appLogo,
       'agencyName': agencyName,
-      'selectedBuildingId': selectedBuildingId,
+      'selectedObjectId': selectedObjectId,
     };
   }
 }

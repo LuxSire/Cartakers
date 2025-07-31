@@ -5,8 +5,8 @@ import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/common/widgets/icons/table_action_icon_buttons.dart';
 import 'package:xm_frontend/data/models/contract_model.dart';
-import 'package:xm_frontend/features/shop/controllers/building/building_unit_detail_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/building/edit_building_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/object/object_unit_detail_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
 import 'package:xm_frontend/features/shop/screens/contract/dialogs/edit_contract.dart';
 import 'package:xm_frontend/routes/routes.dart';
@@ -39,12 +39,12 @@ class ContractsRows extends DataTableSource {
             contract.startDate =
                 controllerContract.contractModel.value.startDate;
             contract.endDate = controllerContract.contractModel.value.endDate;
-            contract.tenantCount =
-                controllerContract.contractModel.value.tenantCount;
-            contract.tenantNames =
-                controllerContract.contractModel.value.tenantNames;
+            contract.userCount =
+                controllerContract.contractModel.value.userCount;
+            contract.userNames =
+                controllerContract.contractModel.value.userNames;
             contract.statusId = controllerContract.contractModel.value.statusId;
-            contract.tenants = controllerContract.contractModel.value.tenants;
+            contract.users = controllerContract.contractModel.value.users;
 
             notifyListeners();
           }
@@ -54,7 +54,7 @@ class ContractsRows extends DataTableSource {
       selected: controller.selectedRows[index],
       cells: [
         DataCell(Text(contract.contractCode!)),
-        DataCell(Text(contract.buildingName!)),
+        DataCell(Text(contract.objectName!)),
         DataCell(Text(contract.unitNumber)),
         DataCell(Text(contract.formattedStartDate)),
         DataCell(
@@ -69,7 +69,7 @@ class ContractsRows extends DataTableSource {
                 : '-',
           ),
         ),
-        DataCell(Text('${contract.tenantNames} ')),
+        DataCell(Text('${contract.userNames} ')),
         DataCell(
           TRoundedContainer(
             radius: TSizes.cardRadiusSm,
@@ -143,14 +143,14 @@ class ContractsRows extends DataTableSource {
                       controllerContract.contractModel.value.startDate;
                   contract.endDate =
                       controllerContract.contractModel.value.endDate;
-                  contract.tenantCount =
-                      controllerContract.contractModel.value.tenantCount;
-                  contract.tenantNames =
-                      controllerContract.contractModel.value.tenantNames;
+                  contract.userCount =
+                      controllerContract.contractModel.value.userCount;
+                  contract.userNames =
+                      controllerContract.contractModel.value.userNames;
                   contract.statusId =
                       controllerContract.contractModel.value.statusId;
-                  contract.tenants =
-                      controllerContract.contractModel.value.tenants;
+                  contract.users =
+                      controllerContract.contractModel.value.users;
 
                   notifyListeners();
                 }
@@ -174,9 +174,9 @@ class ContractsRows extends DataTableSource {
                 contract.contractCode = updatedContract.contractCode;
                 contract.startDate = updatedContract.startDate;
                 contract.endDate = updatedContract.endDate;
-                contract.tenantCount = updatedContract.tenantCount;
-                contract.tenantNames = updatedContract.tenantNames;
-                contract.tenantCount = updatedContract.tenantCount;
+                contract.userCount = updatedContract.userCount;
+                contract.userNames = updatedContract.userNames;
+                contract.userCount = updatedContract.userCount;
                 controller.filteredItems.refresh();
               }
             },

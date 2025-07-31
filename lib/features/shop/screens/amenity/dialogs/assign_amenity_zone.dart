@@ -11,13 +11,13 @@ import 'package:xm_frontend/utils/constants/sizes.dart';
 import 'package:xm_frontend/utils/device/device_utility.dart';
 
 class AssignAmenityZoneDialog extends StatelessWidget {
-  final int buildingId;
+  final int objectId;
 
-  const AssignAmenityZoneDialog({super.key, required this.buildingId});
+  const AssignAmenityZoneDialog({super.key, required this.objectId});
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('AssignAmenityZoneDialog: buildingId: $buildingId');
+    debugPrint('AssignAmenityZoneDialog: objectId: $objectId');
 
     final controller = Get.find<AmenityAssignmentController>();
 

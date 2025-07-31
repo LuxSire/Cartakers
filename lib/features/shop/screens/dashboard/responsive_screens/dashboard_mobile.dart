@@ -3,11 +3,11 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:xm_frontend/app/app_controller.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/features/shop/controllers/building/building_controller.dart';
-import 'package:xm_frontend/features/shop/screens/building/all_buildings/dialogs/create_building.dart';
+import 'package:xm_frontend/features/shop/controllers/object/object_controller.dart';
+import 'package:xm_frontend/features/shop/screens/object/all_objects/dialogs/create_object.dart';
 import 'package:xm_frontend/features/shop/screens/dashboard/widgets/a_dashboard_card.dart';
 import 'package:xm_frontend/features/shop/screens/dashboard/widgets/booking_card.dart';
-import 'package:xm_frontend/features/shop/screens/dashboard/widgets/building_card.dart';
+import 'package:xm_frontend/features/shop/screens/dashboard/widgets/object_card.dart';
 import 'package:xm_frontend/features/shop/screens/dashboard/widgets/requests_card.dart';
 import 'package:xm_frontend/features/shop/screens/dashboard/widgets/vacant_card.dart';
 import 'package:xm_frontend/routes/routes.dart';
@@ -49,34 +49,34 @@ class DashboardMobileScreen extends StatelessWidget {
               const SizedBox(height: TSizes.spaceBtwSections),
               Obx(
                 () => ADashboardCard(
-                  onTap: () => Get.toNamed(Routes.buildingsUnits),
+                  onTap: () => Get.toNamed(Routes.objectsUnits),
 
                   headingIcon: Iconsax.building,
                   headingIconColor: TColors.alterColor,
                   headingIconBgColor: TColors.alterColor.withOpacity(0.1),
-                  stats: controller.totalAgencyBuildings.value,
+                  stats: controller.totalCompanyObjects.value,
                   context: context,
                   title: AppLocalization.of(
                     context,
-                  ).translate('dashboard_screen.lbl_buildings'),
-                  subTitle: controller.totalAgencyBuildings.value.toString(),
+                  ).translate('dashboard_screen.lbl_objects'),
+                  subTitle: controller.totalCompanyObjects.value.toString(),
                 ),
               ),
               const SizedBox(height: TSizes.spaceBtwItems),
               Obx(
                 () => ADashboardCard(
-                  onTap: () => Get.toNamed(Routes.tenantsContracts),
+                  onTap: () => Get.toNamed(Routes.usersContracts),
 
                   headingIcon: Iconsax.profile_2user,
                   headingIconColor: Colors.green,
                   headingIconBgColor: Colors.green.withOpacity(0.1),
-                  stats: controller.totalBuildingsTenants.value,
+                  stats: controller.totalObjectUsers.value,
                   context: context,
                   title: AppLocalization.of(
                     context,
-                  ).translate('sidebar.lbl_tenants_and_contracts'),
+                  ).translate('sidebar.lbl_users_and_contracts'),
                   subTitle:
-                      ' ${controller.totalBuildingsTenants.value.toString()}/${controller.totalBuildingsContracts.value.toString()}',
+                      ' ${controller.totalObjectUsers.value.toString()}/${controller.totalObjectsContracts.value.toString()}',
                 ),
               ),
               const SizedBox(height: TSizes.spaceBtwItems),
@@ -92,13 +92,13 @@ class DashboardMobileScreen extends StatelessWidget {
                   headingIcon: Iconsax.document,
                   headingIconColor: Colors.amber,
                   headingIconBgColor: Colors.amber.withOpacity(0.1),
-                  stats: controller.totalBuildingsPendingRequests.value,
+                  stats: controller.totalObjectsPendingRequests.value,
                   context: context,
                   title: AppLocalization.of(
                     context,
                   ).translate('dashboard_screen.lbl_pending_requests'),
                   subTitle:
-                      controller.totalBuildingsPendingRequests.value.toString(),
+                      controller.totalObjectsPendingRequests.value.toString(),
                 ),
               ),
               const SizedBox(height: TSizes.spaceBtwItems),
@@ -115,8 +115,8 @@ class DashboardMobileScreen extends StatelessWidget {
                   title: AppLocalization.of(
                     context,
                   ).translate('sidebar.lbl_communication'),
-                  subTitle: controller.totalBuildingsMessages.value.toString(),
-                  stats: controller.totalBuildingsMessages.value,
+                  subTitle: controller.totalObjectsMessages.value.toString(),
+                  stats: controller.totalObjectsMessages.value,
                 ),
               ),
               const SizedBox(height: TSizes.spaceBtwSections),
@@ -157,15 +157,15 @@ class DashboardMobileScreen extends StatelessWidget {
                             final result = await showDialog<bool>(
                               context: context,
                               barrierDismissible: false,
-                              builder: (_) => const CreateBuildingDialog(),
+                              builder: (_) => const CreateObjectDialog(),
                             );
                             if (result == true) {
-                              final buildingController =
-                                  Get.find<BuildingController>();
+                              final objectController =
+                                  Get.find<ObjectController>();
 
-                              buildingController.refreshData();
+                              objectController.refreshData();
                               controller
-                                  .initDashboardTotals(); // Refresh totals after creating a new building
+                                  .initDashboardTotals(); // Refresh totals after creating a new object
                             }
                           },
                           icon: const Icon(
@@ -174,7 +174,7 @@ class DashboardMobileScreen extends StatelessWidget {
                           ),
                           label: Text(
                             AppLocalization.of(context).translate(
-                              'buildings_screen.lbl_create_new_building',
+                              'objects_screen.lbl_create_new_object',
                             ),
                             style: const TextStyle(color: TColors.alterColor),
                           ),
@@ -182,7 +182,7 @@ class DashboardMobileScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: TSizes.spaceBtwSections),
-                    const BuildingCard(),
+                    const ObjectCard(),
                   ],
                 ),
               ),
@@ -205,7 +205,7 @@ class DashboardMobileScreen extends StatelessWidget {
                         const SizedBox(width: TSizes.spaceBtwItems),
                         Obx(
                           () => Text(
-                            "${AppLocalization.of(context).translate('dashboard_screen.lbl_vacant_units')} (${controller.totalBuildingsVacantUnits})",
+                            "${AppLocalization.of(context).translate('dashboard_screen.lbl_vacant_units')} (${controller.totalObjectsVacantUnits})",
                             style: Theme.of(context).textTheme.headlineSmall,
                           ),
                         ),
@@ -233,7 +233,7 @@ class DashboardMobileScreen extends StatelessWidget {
                             ),
                             const SizedBox(width: TSizes.spaceBtwItems),
                             Text(
-                              '${AppLocalization.of(context).translate('dashboard_screen.lbl_pending_requests')} (${controller.totalBuildingsPendingRequests.value})',
+                              '${AppLocalization.of(context).translate('dashboard_screen.lbl_pending_requests')} (${controller.totalObjectsPendingRequests.value})',
                               style: Theme.of(context).textTheme.headlineSmall,
                             ),
                           ],

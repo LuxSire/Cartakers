@@ -16,14 +16,14 @@ class RequestsTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final agencyId = AuthenticationRepository.instance.currentUser?.agencyId;
+    final agencyId = AuthenticationRepository.instance.currentUser?.companyId;
 
     final controller = Get.put(
       RequestController(
-        sourceType: RequestSourceType.agency,
+        sourceType: RequestSourceType.company,
         id: int.parse(agencyId!),
       ),
-      tag: 'agency_requests',
+      tag: 'company_requests',
     );
 
     final appController = Get.find<AppController>();
@@ -60,7 +60,7 @@ class RequestsTable extends StatelessWidget {
             label: Text(
               AppLocalization.of(
                 context,
-              ).translate('tenants_screen.lbl_tenant_name'),
+              ).translate('users_screen.lbl_user_name'),
             ),
             onSort:
                 (columnIndex, ascending) => controller.sortByPropertyName(
@@ -74,13 +74,13 @@ class RequestsTable extends StatelessWidget {
             label: Text(
               AppLocalization.of(
                 context,
-              ).translate('buildings_screen.lbl_building_name'),
+              ).translate('objects_screen.lbl_object_name'),
             ),
             onSort:
                 (columnIndex, ascending) => controller.sortByPropertyName(
                   columnIndex,
                   ascending,
-                  (b) => b.buildingName?.toLowerCase() ?? '',
+                  (b) => b.objectName?.toLowerCase() ?? '',
                 ),
           ),
 
@@ -158,7 +158,7 @@ class RequestsTable extends StatelessWidget {
             label: Text(
               AppLocalization.of(
                 context,
-              ).translate('tenants_screen.lbl_actions'),
+              ).translate('users_screen.lbl_actions'),
             ),
           ),
         ],

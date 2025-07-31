@@ -16,7 +16,7 @@ class ContractsFilterDialog extends StatelessWidget {
 
     final RxInt tempStatusId = controller.selectedStatusId.value.obs;
     final RxInt tempBuildingFilterId =
-        controller.selectedBuildingFilterId.value.obs;
+        controller.selectedObjectFilterId.value.obs;
     final Rx<DateTime?> tempStartDate = controller.startDate.value.obs;
     final Rx<DateTime?> tempEndDate = controller.endDate.value.obs;
 
@@ -74,7 +74,7 @@ class ContractsFilterDialog extends StatelessWidget {
                 decoration: InputDecoration(
                   labelText: AppLocalization.of(
                     context,
-                  ).translate('tenants_screen.lbl_contract_status'),
+                  ).translate('users_screen.lbl_contract_status'),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -102,7 +102,7 @@ class ContractsFilterDialog extends StatelessWidget {
                 decoration: InputDecoration(
                   labelText: AppLocalization.of(
                     context,
-                  ).translate('buildings_screen.lbl_building_name'),
+                  ).translate('objects_screen.lbl_object_name'),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -118,7 +118,7 @@ class ContractsFilterDialog extends StatelessWidget {
                         ),
                       ),
                     ] +
-                    controller.buildingsList
+                    controller.objectsList
                         .map(
                           (b) => DropdownMenuItem<int>(
                             value: int.parse(b.id!),

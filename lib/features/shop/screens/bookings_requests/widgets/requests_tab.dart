@@ -18,12 +18,12 @@ class RequestsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final agencyId = AuthenticationRepository.instance.currentUser?.agencyId;
+    final companyId = AuthenticationRepository.instance.currentUser?.companyId;
 
     // final controller = Get.put(
     //   BookingController(
     //     sourceType: BookingSourceType.agency,
-    //     id: int.parse(agencyId!),
+    //     id: int.parse(companyId!),
     //   ),
     //   tag: 'agency_bookings',
     // );

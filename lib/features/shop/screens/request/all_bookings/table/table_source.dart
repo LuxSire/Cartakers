@@ -7,13 +7,13 @@ import 'package:xm_frontend/common/widgets/images/t_circular_image.dart';
 import 'package:xm_frontend/data/models/request_model.dart';
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
 import 'package:xm_frontend/features/shop/controllers/booking/booking_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/building/building_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/building/edit_building_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/object/object_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/request/request_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/tenant/tenant_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 import 'package:xm_frontend/features/shop/screens/contract/dialogs/update_request.dart';
-import 'package:xm_frontend/features/shop/screens/tenant/dialogs/edit_tenant.dart';
+import 'package:xm_frontend/features/shop/screens/user/dialogs/edit_user.dart';
 import 'package:xm_frontend/routes/routes.dart';
 import 'package:xm_frontend/utils/constants/image_strings.dart';
 import 'package:xm_frontend/utils/helpers/helper_functions.dart';
@@ -76,7 +76,7 @@ class RequestsRows extends DataTableSource {
             ],
           ),
         ),
-        DataCell(Text(request.buildingName!)),
+        DataCell(Text(request.objectName!)),
         DataCell(Text(request.ticketNumber ?? '')),
         DataCell(Text(request.getTranslatedRequestTypeSync())),
         DataCell(Text(request.description!)),
@@ -115,7 +115,7 @@ class RequestsRows extends DataTableSource {
                 builder:
                     (_) => UpdateRequestDialog(
                       request: request,
-                      tag: 'agency_requests',
+                      tag: 'company_requests',
                     ),
               );
 

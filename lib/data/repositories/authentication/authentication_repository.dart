@@ -49,8 +49,8 @@ class AuthenticationRepository extends GetxController {
       final response = await _userService.getCompanyByEmail(
         email.trim().toLowerCase(),
       );
-
-      if ((response['id'] ?? 0) > 0) {
+      final id = int.tryParse(response['id'].toString()) ?? 0;
+      if (id > 0) {
         final isPasswordValid = Helpers.verifyPassword(
           password,
           response['password_hash'],
@@ -63,8 +63,8 @@ class AuthenticationRepository extends GetxController {
         await UserPreferences.updateUserField("has_registered", true);
         await UserPreferences.updateUserField("id", response['id'].toString());
         await UserPreferences.updateUserField(
-          "agency_id",
-          response['agency_id'],
+          "company_id",
+          response['company_id'],
         );
         await UserPreferences.updateUserField("role_id", response['role_id']);
         await UserPreferences.updateUserField(
@@ -75,10 +75,10 @@ class AuthenticationRepository extends GetxController {
           "display_name",
           response['display_name'],
         );
-        await UserPreferences.updateUserField(
-          "profile_pic",
-          response['profile_pic'] ?? '',
-        );
+        //await UserPreferences.updateUserField(
+        //  "profile_pic",
+        //  response['profile_pic'] ?? '',
+        //);
 
         // ── Persist only notification preferences from the API ──
         await UserPreferences.updateUserField(

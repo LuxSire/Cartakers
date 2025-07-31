@@ -7,7 +7,7 @@ class MessageModel {
   final String? title;
   final String? content;
   final int? senderUserId;
-  final int? agencyId;
+  final int? companyId;
   final DateTime? createdAt;
   final DateTime? scheduledAt;
   final List<MessageRecipient> recipients;
@@ -15,14 +15,14 @@ class MessageModel {
   final List<String> channels;
   final int? statusId;
   final String? statusName;
-  final List<int> buildingIds; // new (list of ids)
+  final List<int> objectIds; // new (list of ids)
 
   MessageModel({
     required this.id,
     this.title,
     this.content,
     this.senderUserId,
-    this.agencyId,
+    this.companyId,
     this.createdAt,
     this.scheduledAt,
     this.recipients = const [],
@@ -30,7 +30,7 @@ class MessageModel {
     this.channels = const [],
     this.statusId,
     this.statusName,
-    this.buildingIds = const [],
+    this.objectIds = const [],
   });
 
   factory MessageModel.fromJson(Map<String, dynamic> json) {
@@ -39,7 +39,7 @@ class MessageModel {
       title: json['title'] ?? '',
       content: json['body'] ?? '',
       senderUserId: json['created_by'] ?? 0,
-      agencyId: json['agency_id'],
+      companyId: json['company_id'],
       createdAt:
           json['created_at'] != null
               ? DateTime.parse(json['created_at']).toLocal()
@@ -65,9 +65,9 @@ class MessageModel {
           json['channels'] != null ? List<String>.from(json['channels']) : [],
       statusId: json['status_id'],
       statusName: json['status_name'],
-      buildingIds:
-          json['building_ids'] != null
-              ? (json['building_ids'] as List)
+      objectIds:
+          json['object_ids'] != null
+              ? (json['object_ids'] as List)
                   .map((id) => int.tryParse(id.toString()) ?? 0)
                   .where((id) => id != 0)
                   .toList()
@@ -80,13 +80,13 @@ class MessageModel {
     'title': title,
     'body': content,
     'created_by': senderUserId,
-    'agency_id': agencyId,
+    'company_id': companyId,
     'created_at': createdAt!.toIso8601String(),
     'scheduled_at': scheduledAt?.toIso8601String(),
     'recipients': recipients.map((r) => r.toJson()).toList(),
     'reads': reads.map((r) => r.toJson()).toList(),
     'channels': channels,
-    'building_ids': buildingIds,
+    'object_ids': objectIds,
     'status_id': statusId,
     'status_name': statusName,
   };

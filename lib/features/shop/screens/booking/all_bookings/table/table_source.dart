@@ -6,11 +6,11 @@ import 'package:xm_frontend/common/widgets/containers/rounded_container.dart';
 import 'package:xm_frontend/common/widgets/images/t_circular_image.dart';
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
 import 'package:xm_frontend/features/shop/controllers/booking/booking_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/building/building_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/building/edit_building_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/object/object_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/tenant/tenant_controller.dart';
-import 'package:xm_frontend/features/shop/screens/tenant/dialogs/edit_tenant.dart';
+import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
+import 'package:xm_frontend/features/shop/screens/user/dialogs/edit_user.dart';
 import 'package:xm_frontend/routes/routes.dart';
 import 'package:xm_frontend/utils/constants/image_strings.dart';
 import 'package:xm_frontend/utils/helpers/helper_functions.dart';
@@ -22,7 +22,7 @@ import '../../../../../../utils/constants/enums.dart';
 import '../../../../../../utils/constants/sizes.dart';
 
 class BookingsRows extends DataTableSource {
-  final controller = Get.find<BookingController>(tag: 'agency_bookings');
+  final controller = Get.find<BookingController>(tag: 'company_bookings');
 
   @override
   DataRow? getRow(int index) {
@@ -73,7 +73,7 @@ class BookingsRows extends DataTableSource {
             ],
           ),
         ),
-        DataCell(Text(booking.buildingName!)),
+        DataCell(Text(booking.objectName!)),
         DataCell(Text(booking.title ?? '')),
         DataCell(Text(booking.formattedDateWithText)),
         DataCell(Text(booking.startTime!.substring(0, 5))),

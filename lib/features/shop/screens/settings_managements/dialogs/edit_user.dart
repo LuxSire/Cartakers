@@ -8,7 +8,7 @@ import 'package:xm_frontend/common/widgets/images/image_uploader.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
 import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/tenant/tenant_controller.dart';
+//import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 import 'package:xm_frontend/utils/constants/enums.dart';
 import 'package:xm_frontend/utils/constants/image_strings.dart';
@@ -250,7 +250,7 @@ class EditUserDialog extends StatelessWidget {
                       Text(
                         AppLocalization.of(
                           context,
-                        ).translate('tab_users_screen.lbl_building_permission'),
+                        ).translate('tab_users_screen.lbl_object_permission'),
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       const SizedBox(height: 8),
@@ -258,20 +258,20 @@ class EditUserDialog extends StatelessWidget {
                         spacing: TSizes.sm,
                         runSpacing: TSizes.sm,
                         children:
-                            controller.buildingsList.map((building) {
-                              final selected = controller.selectedBuildingIds
-                                  .contains(int.parse(building.id!));
+                            controller.objectsList.map((object) {
+                              final selected = controller.selectedObjectIds
+                                  .contains(int.parse(object.id!));
 
                               return Padding(
                                 padding: const EdgeInsets.only(
                                   bottom: TSizes.sm,
                                 ),
                                 child: TChoiceChip(
-                                  text: building.name ?? '',
+                                  text: object.name ?? '',
                                   selected: selected,
                                   onSelected:
-                                      (_) => controller.toggleBuilding(
-                                        int.parse(building.id!),
+                                      (_) => controller.toggleObject(
+                                        int.parse(object.id!),
                                       ),
                                 ),
                               );

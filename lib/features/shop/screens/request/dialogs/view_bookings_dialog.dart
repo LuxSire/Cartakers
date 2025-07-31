@@ -246,7 +246,7 @@ class ViewBookingsDialog extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              booking.buildingName ?? '',
+                              booking.objectName ?? '',
                               style: const TextStyle(fontSize: 12),
                             ),
                             const SizedBox(height: 4),

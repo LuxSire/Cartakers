@@ -53,7 +53,7 @@ class _SidebarWidgetState extends State<SidebarWidget> {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: 'Tenants10 ',
+                        text: 'XM',
                         style: theme.textTheme.headlineSmall?.copyWith(
                           fontSize: 24.0,
                           fontWeight: FontWeight.w700,

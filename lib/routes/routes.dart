@@ -38,10 +38,10 @@ class Routes {
   static const settings = '/settings';
   static const profile = '/profile';
 
-  static const buildingsUnits = '/buildingsUnits';
-  static const tenantsContracts = '/tenantsContracts';
+  static const objectsUnits = '/objectsUnits';
+  static const usersContracts = '/usersContracts';
   static const contractDetails = '/contractDetails';
-  static const tenantDetails = '/tenantDetails';
+  static const userDetails = '/userDetails';
 
   static const maintenanceTasks = '/maintenanceTasks';
   static const amenitiesBookings = '/amenitiesBookings';
@@ -49,8 +49,8 @@ class Routes {
   static const tasks = '/tasks';
   static const communication = '/communication';
   static const settingsManagement = '/settingsManagement';
-  static const buildings = '/buildings';
-  static const editBuilding = '/editBuilding';
+  static const objects = '/objects';
+  static const editObject = '/editObject';
 
   static const invitation = '/invitation';
   static const registerAdmin = '/registerAdmin';
@@ -68,18 +68,18 @@ class Routes {
     coupons,
     settings,
     profile,
-    buildingsUnits,
-    tenantsContracts,
+    objectsUnits,
+    usersContracts,
     maintenanceTasks,
     amenitiesBookings,
     communication,
     settingsManagement,
-    buildings,
+    objects,
     invitation,
     registerAdmin,
-    editBuilding,
+    editObject,
     contractDetails,
-    tenantDetails,
+    userDetails,
     bookingsRequests,
     tasks,
     forgotPassword,
@@ -113,12 +113,12 @@ class AppScreens {
   static const invitation = '/invitation';
   static const registerAdmin = '/register-admin';
   static const splash = '/splash';
-  static const editBuilding = '/edit-building';
+  static const editObject = '/edit-object';
   static const unitDetails = '/unit-details';
-  static const buildingsUnits = '/buildings-units';
-  static const editBuildingUnit = '/edit-building-unit';
-  static const createBuildingUnit = '/create-building-unit';
-  static const createBuilding = '/create-building';
+  static const objectsUnits = '/objects-units';
+  static const editObjectUnit = '/edit-object-unit';
+  static const createObjectUnit = '/create-object-unit';
+  static const createObject = '/create-object';
   static const forgotPassword = '/forgot-password';
 
   static List<String> allAppScreenItems = [
@@ -145,13 +145,13 @@ class AppScreens {
     userAddress,
     signUp,
     signupSuccess,
-    editBuilding,
+    editObject,
     unitDetails,
-    buildingsUnits,
-    editBuildingUnit,
-    createBuildingUnit,
-    createBuilding,
-    createBuilding,
+    objectsUnits,
+    editObjectUnit,
+    createObjectUnit,
+    createObject,
+    createObject,
     invitation,
     registerAdmin,
     splash,

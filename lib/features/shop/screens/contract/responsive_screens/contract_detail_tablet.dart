@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:xm_frontend/data/models/contract_model.dart';
 import 'package:xm_frontend/data/models/unit_model.dart';
 import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
-import 'package:xm_frontend/features/shop/screens/building/unit_detail/widgets/unit_contracts.dart';
+import 'package:xm_frontend/features/shop/screens/object/unit_detail/widgets/unit_contracts.dart';
 import 'package:xm_frontend/features/shop/screens/contract/widgets/contract_tab_panel.dart';
 
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';

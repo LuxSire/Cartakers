@@ -15,23 +15,23 @@ class UserModel {
   String roleId;
   String roleName;
   String lang;
-  String agencyId;
-  String agencyName;
-  int? isPrimaryTenant;
+  String companyId;
+  String companyName;
+  int? isPrimaryUser;
   DateTime? createdAt;
   DateTime? updatedAt;
   String? fullPhoneNumber;
   String? contractReference;
-  int? tenantContractId;
-  int? buildingId; // tenant assigned building id
+  int? userContractId;
+  int? objectId; // user assigned object id
   String? unitNumber; // tenant assigned unit number
   int? contractStatus;
   int? zoneId; // zone id for the tenant which comes from the contract unit
 
   String? roleNameExt;
   String? status; // status of user, invited, active, disabled
-  String? buildingPermissions; // building permission for the user
-  String? buildingName;
+  String? objectPermissions; // building permission for the user
+  String? objectName;
   int?
   statusId; // status id of the user, 1 for active, 2 for disabled, 3 for invited
   int?
@@ -43,7 +43,7 @@ class UserModel {
   String? translatedStatus;
   String? translatedRoleNameExt;
 
-  List<int>? buildingPermissionIds;
+  List<int>? objectPermissionIds;
 
   /// Constructor for UserModel.
   UserModel({
@@ -58,28 +58,28 @@ class UserModel {
     this.roleId = '',
     this.roleName = '',
     this.lang = '',
-    this.agencyId = '',
-    this.agencyName = '',
+    this.companyId = '',
+    this.companyName = '',
     this.createdAt,
     this.updatedAt,
-    this.isPrimaryTenant,
+    this.isPrimaryUser,
     this.fullPhoneNumber,
     this.contractReference,
-    this.tenantContractId,
-    this.buildingId,
+    this.userContractId,
+    this.objectId,
     this.unitNumber,
 
     this.contractStatus,
-    this.buildingName,
+    this.objectName,
     this.zoneId,
     this.isPushNotificationsEnabled,
     this.isEmailNotificationsEnabled,
-    this.buildingPermissions,
+    this.objectPermissions,
     this.roleNameExt,
     this.status,
     this.statusId,
     this.roleExtId,
-    this.buildingPermissionIds,
+    this.objectPermissionIds,
   });
 
   /// Helper methods
@@ -108,27 +108,27 @@ class UserModel {
       'role_id': roleId,
       'role_name': roleName,
       'lang': lang,
-      'agency_id': agencyId,
-      'agency_name': agencyName,
+      'company_id': companyId,
+      'company_name': companyName,
       'created_at': createdAt?.toIso8601String(),
       'updated_at': updatedAt?.toIso8601String(),
-      'is_primary_tenant': isPrimaryTenant,
+      'is_primary_user': isPrimaryUser,
       'full_phone_number': fullPhoneNumber,
       'contract_reference': contractReference,
-      'tenant_contract_id': tenantContractId,
-      'building_id': buildingId,
+      'user_contract_id': userContractId,
+      'object_id': objectId,
       'unit_number': unitNumber,
       'contract_status': contractStatus,
-      'building_name': buildingName,
+      'object_name': objectName,
       'zone_id': zoneId,
       'is_push_notifications_enabled': isPushNotificationsEnabled,
       'is_email_notifications_enabled': isEmailNotificationsEnabled,
       'role_name_ext': roleNameExt,
       'status': status,
-      'building_permissions': buildingPermissions,
+      'object_permissions': objectPermissions,
       'status_id': statusId,
       'role_ext_id': roleExtId,
-      'building_permission_ids': buildingPermissionIds ?? [],
+      'object_permission_ids': objectPermissionIds ?? [],
     };
   }
 
@@ -146,8 +146,8 @@ class UserModel {
       roleId: json['role_id']?.toString() ?? '',
       roleName: json['role_name'] ?? '',
       lang: json['lang'] ?? '',
-      agencyId: json['agency_id']?.toString() ?? '',
-      agencyName: json['agency_name'] ?? '',
+      companyId: json['company_id']?.toString() ?? '',
+      companyName: json['company_name'] ?? '',
       createdAt:
           json['created_at'] != null
               ? DateTime.parse(json['created_at']).toLocal()
@@ -156,25 +156,25 @@ class UserModel {
           json['updated_at'] != null
               ? DateTime.parse(json['updated_at']).toLocal()
               : null,
-      isPrimaryTenant: json['is_primary_tenant'] ?? 0,
+      isPrimaryUser: json['is_primary_user'] ?? 0,
       fullPhoneNumber: json['full_phone_number'] ?? '',
       contractReference: json['contract_reference'] ?? '',
-      tenantContractId: json['tenant_contract_id'] ?? 0,
-      buildingId: json['building_id'] ?? 0,
+      userContractId: json['user_contract_id'] ?? 0,
+      objectId: json['object_id'] ?? 0,
       unitNumber: json['unit_number'] ?? '',
       contractStatus: json['contract_status'] ?? 0,
-      buildingName: json['building_name'] ?? '',
+      objectName: json['object_name'] ?? '',
       zoneId: json['zone_id'] ?? 0,
       isPushNotificationsEnabled: json['is_push_notifications_enabled'] ?? 0,
       isEmailNotificationsEnabled: json['is_email_notifications_enabled'] ?? 0,
       roleNameExt: json['role_name_ext'] ?? '',
       status: json['status'] ?? '',
-      buildingPermissions: json['building_permissions'] ?? '',
+      objectPermissions: json['object_permissions'] ?? '',
       statusId: json['status_id'] ?? 0,
       roleExtId: json['role_ext_id'] ?? 0,
-      buildingPermissionIds:
-          json['building_permission_ids'] != null
-              ? (json['building_permission_ids'] is String
+      objectPermissionIds:
+          json['object_permission_ids'] != null
+              ? (json['object_permission_ids'] is String
                   ? (json['building_permission_ids'] as String)
                       .split(',')
                       .where((e) => e.trim().isNotEmpty)

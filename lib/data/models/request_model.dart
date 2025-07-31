@@ -21,9 +21,9 @@ class RequestModel {
   String? unitNumber;
 
   int contractId;
-  int buildingId;
+  int objectId;
 
-  String? buildingName;
+  String? objectName;
 
   String? translatedRequestTypeText;
 
@@ -42,8 +42,8 @@ class RequestModel {
     this.contractReference,
     this.unitNumber,
     this.requestTypeId,
-    required this.buildingId,
-    this.buildingName,
+    required this.objectId,
+    this.objectName,
   });
 
   /// Helper methods
@@ -84,8 +84,8 @@ class RequestModel {
             Get.context!,
           ).translate('general_msgs.msg_unknown'), // Default to Unknown if null
       requestTypeId: json['request_type_id'] ?? 0, // Default to 0 if null
-      buildingId: json['building_id'] ?? 0, // Default to 0 if null
-      buildingName: json['building_name'] ?? '',
+      objectId: json['object_id'] ?? 0, // Default to 0 if null
+      objectName: json['object_name'] ?? '',
     );
   }
 
@@ -130,6 +130,6 @@ class RequestModel {
     contractReference: 'A1-B1-20250305-3',
     unitNumber: 'A1-B1-20250305-3',
     requestTypeId: 0,
-    buildingId: 0,
+    objectId: 0,
   ); // Default
 }
