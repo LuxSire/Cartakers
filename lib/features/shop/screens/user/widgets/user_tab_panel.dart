@@ -112,7 +112,7 @@ class UserTabPanel extends StatelessWidget {
                         Text(
                           AppLocalization.of(
                             context,
-                          ).translate('tenants_screen.lbl_primary_tenant'),
+                          ).translate('users_screen.lbl_primary_user'),
                           style: const TextStyle(color: TColors.alterColor),
                         ),
                     ],

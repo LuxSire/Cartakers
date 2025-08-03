@@ -104,7 +104,7 @@ class MessagesFilterDialog extends StatelessWidget {
                 decoration: InputDecoration(
                   labelText: AppLocalization.of(
                     context,
-                  ).translate('buildings_screen.lbl_building_name'),
+                  ).translate('objects_screen.lbl_object_name'),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),

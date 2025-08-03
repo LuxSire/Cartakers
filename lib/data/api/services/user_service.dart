@@ -1565,7 +1565,32 @@ class UserService extends BaseService {
       return [];
     }
   }
+  Future<List<Map<String, dynamic>>> getAllUsers(
+  ) async {
+    try {
+      final response = await post(ApiEndpoints.getAllUsers,{} );
+        
 
+
+      if (response is Map<String, dynamic> && response.containsKey('success')) {
+        if (response['success'] == true && response['data'] is List) {
+          // debugPrint('Upcoming bookings: ${response['data']}');
+          return List<Map<String, dynamic>>.from(response['data']);
+        } else {
+          return [];
+        }
+      } else if (response is List) {
+        // If the backend is returning a raw list instead of a JSON object
+        return List<Map<String, dynamic>>.from(response);
+      } else {
+        //   debugPrint('Unexpected response format: $response');
+        return [];
+      }
+    } catch (error) {
+      debugPrint('Failed to get all users: $error');
+      return [];
+    }
+  }
   Future<Map<String, dynamic>> createQuickNewUser(
     String firstName,
     String lastName,
@@ -1728,7 +1753,7 @@ class UserService extends BaseService {
 
   Future<List<Map<String, dynamic>>> getUsersByCompanyId(int companyId) async {
     try {
-      final response = await post(ApiEndpoints.getAllUsersByCompany, {
+      final response = await post(ApiEndpoints.getUsersByCompany, {
         'company_id': companyId,
       });
 

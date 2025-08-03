@@ -21,6 +21,7 @@ import '../models/user_model.dart';
 
 /// Controller for managing admin-related data and operations
 class UserController extends TBaseController<UserModel> {
+  RxList<bool> selectedRows = <bool>[].obs;
   static UserController get instance => Get.find();
 
   // Observable variables
@@ -39,11 +40,14 @@ class UserController extends TBaseController<UserModel> {
 
   final searchController = TextEditingController();
 
+  final selectedObjectId = 0.obs;
+
   Rx<Uint8List?> memoryBytes = Rx<Uint8List?>(null);
 
   RxBool hasImageChanged = false.obs;
 
   final paginatedPage = 0.obs;
+  var userModel = UserModel.empty().obs; // Make it observable
 
   // Dependencies
   final userRepository = Get.put(UserRepository());
@@ -75,6 +79,9 @@ class UserController extends TBaseController<UserModel> {
 
     // Get users
     loadUsers();
+    ever(filteredUsers, (_) {
+      selectedRows.value = List<bool>.filled(filteredUsers.length, false);
+    });
     //  fetchUsersAndTranslateFields();
   }
 
@@ -116,7 +123,6 @@ class UserController extends TBaseController<UserModel> {
       return UserModel.empty();
     }
   }
-
   void loadAllUserRoles() async {
     try {
       final result = await userRepository.getAllUserRoles();
@@ -669,6 +675,15 @@ class UserController extends TBaseController<UserModel> {
       );
     }
   }
+  void resetFields() {
+    firstNameController.clear();
+    lastNameController.clear();
+    emailController.clear();
+    phoneController.clear();
+    emailController.clear();
+    selectedObjectId.value = 0; // Reset selected object ID
+
+  }
 
   Future<void> sendUserInvitation(UserModel user) async {
     try {
@@ -783,7 +798,7 @@ class UserController extends TBaseController<UserModel> {
   Future<void> loadUsers() async {
     loading.value = true;
     try {
-      final users = await userRepository.getAllCompanyUsers();
+      final users = await userRepository.getAllUsers();
 
       for (final user in users) {
         user.translatedStatus = await TranslationApi.smartTranslate(
@@ -807,6 +822,72 @@ class UserController extends TBaseController<UserModel> {
     debugPrint("Fetching items in UserController fetchItems()");
     return await fetchUsersAndTranslateFields();
   }
+
+  void sortByName(int sortColumnIndex, bool ascending) {
+    sortByProperty(
+      sortColumnIndex,
+      ascending,
+      (UserModel b) => b.fullName.toString().toLowerCase(),
+    );
+  }
+
+  void sortByObject(int sortColumnIndex, bool ascending) {
+    sortByProperty(
+      sortColumnIndex,
+      ascending,
+      (UserModel b) => b.objectName.toString().toLowerCase(),
+    );
+  }
+
+  void sortByEmail(int sortColumnIndex, bool ascending) {
+    sortByProperty(
+      sortColumnIndex,
+      ascending,
+      (UserModel b) => b.email.toString().toLowerCase(),
+    );
+  }
+
+  void sortByPhone(int sortColumnIndex, bool ascending) {
+    sortByProperty(
+      sortColumnIndex,
+      ascending,
+      (UserModel b) => b.phoneNumber.toString().toLowerCase(),
+    );
+  }
+
+  void sortByUnit(int sortColumnIndex, bool ascending) {
+    sortByProperty(
+      sortColumnIndex,
+      ascending,
+      (UserModel b) => b.unitNumber.toString().toLowerCase(),
+    );
+  }
+
+  void sortByContract(int sortColumnIndex, bool ascending) {
+    sortByProperty(
+      sortColumnIndex,
+      ascending,
+      (UserModel b) => b.contractReference.toString().toLowerCase(),
+    );
+  }
+
+  void sortByStatus(int sortColumnIndex, bool ascending) {
+    sortByProperty(
+      sortColumnIndex,
+      ascending,
+      (UserModel b) => b.contractStatus.toString().toLowerCase(),
+    );
+  }
+
+  void sortByCreatedAt(int sortColumnIndex, bool ascending) {
+    sortByProperty(
+      sortColumnIndex,
+      ascending,
+      (UserModel b) => b.createdAt.toString().toLowerCase(),
+    );
+  }
+
+
 
   @override
   bool containsSearchQuery(UserModel item, String query) {

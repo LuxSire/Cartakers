@@ -122,7 +122,7 @@ class TSidebar extends StatelessWidget {
                             ).translate('objects_screen.lbl_objects'),
                           ),
                           TMenuItem(
-                            route: Routes.usersContracts,
+                            route: Routes.usersPermissions,
                             icon: Iconsax.profile_2user,
                             itemName: AppLocalization.of(
                               context,

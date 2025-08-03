@@ -3,9 +3,9 @@ import 'package:xm_frontend/features/shop/screens/bookings_requests/responsive_s
 import 'package:xm_frontend/features/shop/screens/bookings_requests/responsive_screens/bookings_requests_mobile.dart';
 import 'package:xm_frontend/features/shop/screens/bookings_requests/responsive_screens/bookings_requests_tablet.dart';
 
-import 'package:xm_frontend/features/shop/screens/users_contracts/responsive_screens/users_contracts_desktop.dart';
-import 'package:xm_frontend/features/shop/screens/users_contracts/responsive_screens/users_contracts_mobile.dart';
-import 'package:xm_frontend/features/shop/screens/users_contracts/responsive_screens/users_contracts_tablet.dart';
+import 'package:xm_frontend/features/shop/screens/users_permissions/responsive_screens/users_permissions_desktop.dart';
+import 'package:xm_frontend/features/shop/screens/users_permissions/responsive_screens/users_permissions_mobile.dart';
+import 'package:xm_frontend/features/shop/screens/users_permissions/responsive_screens/users_permissions_tablet.dart';
 
 import '../../../../../common/widgets/layouts/templates/site_layout.dart';
 

@@ -9,7 +9,7 @@ import 'package:xm_frontend/features/shop/controllers/object/object_controller.d
 import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 import 'package:xm_frontend/features/shop/screens/bookings_requests/widgets/bookings_requests_detail_tab.dart';
 import 'package:xm_frontend/features/shop/screens/user/all_users/widgets/table_header.dart';
-import 'package:xm_frontend/features/shop/screens/users_contracts/widgets/users_contracts_detail_tab.dart';
+import 'package:xm_frontend/features/shop/screens/users_permissions/widgets/users_permissions_detail_tab.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 
 import '../../../../../../common/widgets/containers/rounded_container.dart';
@@ -20,7 +20,7 @@ class BookingsRequestsDesktopScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(UserController());
+    final controller = Get.find<UserController>();
 
     final appController = Get.find<AppController>();
     final isPendingShown = appController.navigateToPendingRequests.value;

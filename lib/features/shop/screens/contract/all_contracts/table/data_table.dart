@@ -51,7 +51,7 @@ class ContractsTable extends StatelessWidget {
             label: Text(
               AppLocalization.of(
                 context,
-              ).translate('buildings_screen.lbl_building_name'),
+              ).translate('objects_screen.lbl_object_name'),
             ),
             onSort:
                 (columnIndex, ascending) =>
@@ -114,7 +114,7 @@ class ContractsTable extends StatelessWidget {
             label: Text(
               AppLocalization.of(
                 context,
-              ).translate('buildings_screen.lbl_actions'),
+              ).translate('objects_screen.lbl_actions'),
             ),
           ),
         ],

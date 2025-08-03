@@ -10,6 +10,7 @@ import 'package:path/path.dart' as path;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http_parser/http_parser.dart'; // Import MediaType
 import 'package:xm_frontend/data/models/contract_model.dart';
+import 'package:get/get.dart'; // Import for RxList
 
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -24,6 +25,20 @@ import '../api_endpoints.dart';
 class ObjectService extends BaseService {
   // get object last announcement
 
+
+RxList<String> objectImages = <String>[].obs;
+
+Future<List<String>> fetchObjectImages(int objectId) async {
+  final response = await post(ApiEndpoints.getObjectDocUrls, {
+    'object_id': objectId,
+  });
+  if (response is Map<String, dynamic> && response['success'] == true) {
+    if (response['data'] is List) {
+      return List<String>.from(response['data']);
+    }
+  }
+  return [];
+}
   Future<Map<String, dynamic>> getObjectLastAnnouncement(
     int objectId,
   ) async {
@@ -299,28 +314,49 @@ class ObjectService extends BaseService {
       return [];
     }
   }
+  Future<List<Map<String, dynamic>>> getAllObjects(
+
+  ) async {
+    try {
+      final response = await post(ApiEndpoints.getAllObjects, {});
+
+        debugPrint('Raw response: $response');
+
+      if (response is Map<String, dynamic> && response.containsKey('success')) {
+        if (response['success'] == true && response['data'] is List) {
+          return List<Map<String, dynamic>>.from(response['data']);
+        } else {
+          return [];
+        }
+      } else {        return [];
+      }
+    } catch (error) {
+      
+      return [];
+    }
+  }
 
   Future<Map<String, dynamic>> updateObjectDetails(
     int objectId  ,
     String name,
     String street,
-    String objectNumber,
     String zipCode,
     String location,
     String imageURL,
+    String description,
   ) async {
     try {
       debugPrint(
-        'Updating object details: $objectId, $name, $street, $objectNumber, $zipCode, $location, $imageURL',
+        'Updating object details: $objectId, $name, $street, $zipCode, $location, $imageURL, $description',
       );
       final response = await post(ApiEndpoints.updateObjectDetails, {
         'object_id': objectId,
         'name': name,
         'street': street,
-        'object_number': objectNumber,
         'zip_code': zipCode,
         'location': location,
         'image_url': imageURL,
+        'description': description,
       });
 
       debugPrint('Update object details response: $response');
@@ -1225,20 +1261,8 @@ class ObjectService extends BaseService {
     int companyId,
   ) async {
     try {
-      final response = await post(ApiEndpoints.getAllCompanyObjectsContracts, {
-        'company_id': companyId,
-      });
-
-      if (response is Map<String, dynamic> && response.containsKey('success')) {
-        if (response['success'] == true && response['data'] is List) {
-          return List<Map<String, dynamic>>.from(response['data']);
-        } else {
-          return [];
-        }
-      } else {
-        //   debugPrint('Unexpected response format: $response');
-        return [];
-      }
+      //   debugPrint('Unexpected response format: $response');
+      return [];
     } catch (error) {
       return [];
     }

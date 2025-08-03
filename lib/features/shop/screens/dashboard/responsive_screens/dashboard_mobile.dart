@@ -65,7 +65,7 @@ class DashboardMobileScreen extends StatelessWidget {
               const SizedBox(height: TSizes.spaceBtwItems),
               Obx(
                 () => ADashboardCard(
-                  onTap: () => Get.toNamed(Routes.usersContracts),
+                  onTap: () => Get.toNamed(Routes.usersPermissions),
 
                   headingIcon: Iconsax.profile_2user,
                   headingIconColor: Colors.green,
@@ -147,7 +147,7 @@ class DashboardMobileScreen extends StatelessWidget {
                             Text(
                               AppLocalization.of(
                                 context,
-                              ).translate('dashboard_screen.lbl_buildings'),
+                              ).translate('dashboard_screen.lbl_objects'),
                               style: Theme.of(context).textTheme.headlineSmall,
                             ),
                           ],

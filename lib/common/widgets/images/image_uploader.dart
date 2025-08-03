@@ -71,6 +71,7 @@ class TImageUploader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+      debugPrint('TRoundedImage build called');
     return Stack(
       children: [
         // Display the image in either circular or rounded shape

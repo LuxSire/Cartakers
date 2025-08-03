@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
-import 'package:xm_frontend/features/shop/screens/users_contracts/widgets/users_contracts_detail_tab.dart';
+import 'package:xm_frontend/features/shop/screens/users_permissions/widgets/users_permissions_detail_tab.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
@@ -11,12 +11,12 @@ import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../common/widgets/loaders/loader_animation.dart';
 import '../../../../../../utils/constants/sizes.dart';
 
-class UsersContractsTabletScreen extends StatelessWidget {
-  const UsersContractsTabletScreen({super.key});
+class UsersPermissionsTabletScreen extends StatelessWidget {
+  const UsersPermissionsTabletScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(UserController());
+    final controller = Get.find<UserController>();
 
     final double tabViewHeight = MediaQuery.of(context).size.height * 0.7;
 
@@ -58,13 +58,13 @@ class UsersContractsTabletScreen extends StatelessWidget {
                                 Tab(
                                   text: AppLocalization.of(
                                     context,
-                                  ).translate('tenants_screen.lbl_tenants'),
+                                  ).translate('users_screen.lbl_users'),
                                   icon: const Icon(Iconsax.profile_2user),
                                 ),
                                 Tab(
                                   text: AppLocalization.of(
                                     context,
-                                  ).translate('profile_screen.lbl_contracts'),
+                                  ).translate('profile_screen.lbl_permissions'),
                                   icon: const Icon(Iconsax.note_2),
                                 ),
                               ],
@@ -74,11 +74,11 @@ class UsersContractsTabletScreen extends StatelessWidget {
                               height: tabViewHeight,
                               child: const TabBarView(
                                 children: [
-                                  UsersContractsDetailTab(
+                                  UsersPermissionsDetailTab(
                                     tabType: 'users',
                                   ),
-                                  UsersContractsDetailTab(
-                                    tabType: 'contracts',
+                                  UsersPermissionsDetailTab(
+                                    tabType: 'permissions',
                                   ),
                                 ],
                               ),

@@ -463,17 +463,19 @@ class CommunicationController extends TBaseController<MessageModel> {
     final result = await _companyRepo.fetchAllCompanyMessages();
 
     final updatedUser = await userController.fetchUserDetails();
-
     final userObjectRestrictions = updatedUser.objectPermissionIds ?? [];
 
-    // debugPrint('User building restrictions: $userBuildingRestrictions');
+    // Normalize both lists to String for comparison
+    final restrictionIds = userObjectRestrictions.map((e) => e.toString()).toSet();
 
-    final filteredMessages =
-        result.where((message) {
-          final objectIds = message.objectIds ?? [];
-          return objectIds.any((id) => userObjectRestrictions.contains(id));
-        }).toList();
+    final filteredMessages = result.where((message) {
+      final objectIds = (message.objectIds ?? []).map((e) => e.toString());
+      return objectIds.any((id) => restrictionIds.contains(id));
+    }).toList();
 
+    debugPrint('User object restrictions: $userObjectRestrictions');
+    debugPrint('All object IDs: ${result.map((o) => o.id).toList()}');
+    
     return filteredMessages;
   }
 

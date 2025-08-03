@@ -27,36 +27,52 @@ import 'package:path/path.dart' as p;
 
 /// Repository class for user-related operations.
 class ObjectRepository extends GetxController {
+  /// Fetch all image URLs for an object from backend
+  Future<List<String>> fetchObjectImages(int objectId) async {
+    try {
+      final response = await _objectService.fetchObjectImages( objectId);
+      if (response == null ) {
+        debugPrint('No images found for object $objectId');
+        return [];
+      }
+      // Assuming response['data'] is a List<String> of URLs
+      final images = response ?? [];
+      debugPrint('Fetched images for object $objectId: ${images.length}');
+      return images;
+    } catch (e) {
+      debugPrint('Error fetching object images: $e');
+      return [];
+    }
+  }
   static ObjectRepository get instance => Get.find();
 
   final _objectService = ObjectService();
 
-  var totalBuildingTenants = 0.obs;
+  var totalObjectUsers = 0.obs;
 
   /// Function to fetch all buildings from mysql.
   Future<List<ObjectModel>> getAllObjects() async {
     try {
       // Assuming you already have access to the companyId from somewhere (e.g. logged-in user)
-      final companyId = UserController.instance.user.value.companyId;
+      final response = await _objectService.getAllObjects();
 
-      if (companyId == null || companyId.isEmpty) {
-        debugPrint('Company ID not found.');
+      if (response.isEmpty) {
+        debugPrint('No objects found.');
         return [];
+      } else if (response is String) {
+        debugPrint('Error fetching objects: $response');
+        return [];
+      } else {
+        debugPrint('Fetched objects: ${response.length}');
       }
 
-      final response = await _objectService.getObjectsByCompanyId(
-        int.parse(companyId),
-      );
-
-      // get the user building restrictions
-
-      totalBuildingTenants.value = response.length;
+      totalObjectUsers.value = response.length;
 
       return response
-          .map((buildingData) => ObjectModel.fromJson(buildingData))
+          .map((objectData) => ObjectModel.fromJson(objectData))
           .toList();
     } catch (e) {
-      debugPrint('Error fetching buildings: $e');
+      debugPrint('Error fetching objects: $e');
       return [];
     }
   }
@@ -181,7 +197,7 @@ class ObjectRepository extends GetxController {
 
       if (controller.hasImageChanged.value) {
         final directoryName =
-            "agencies/${updatedObject.companyId}/buildings/${updatedObject.id}";
+            "companies/${updatedObject.companyId}/objects/${updatedObject.id}";
 
         try {
           late Map<String, dynamic> imageResponse;
@@ -236,10 +252,10 @@ class ObjectRepository extends GetxController {
         int.parse(updatedObject.id!),
         updatedObject.name!,
         updatedObject.street!,
-        updatedObject.objectNumber!,
         updatedObject.zipCode!,
         updatedObject.location!,
         updatedObject.imgUrl ?? '',
+        updatedObject.description ?? '',
       );
 
       if (result['success'] == false) {

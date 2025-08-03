@@ -4,7 +4,7 @@ class SettingsModel {
 
   String appName;
   String appLogo;
-  String agencyName;
+  String companyName;
   String selectedObjectId;
 
   /// Constructor for SettingModel.
@@ -12,7 +12,7 @@ class SettingsModel {
     this.id,
     this.appName = '',
     this.appLogo = '',
-    this.agencyName = '',
+    this.companyName = '',
     this.selectedObjectId = '',
   });
 
@@ -20,7 +20,7 @@ class SettingsModel {
     return {
       'appName': appName,
       'appLogo': appLogo,
-      'agencyName': agencyName,
+      'companyName': companyName,
       'selectedObjectId': selectedObjectId,
     };
   }

@@ -36,8 +36,11 @@ class ObjectRows extends DataTableSource {
                 width: 50,
                 height: 50,
                 padding: TSizes.sm,
-                image: object.imgUrl,
-                imageType: ImageType.network,
+                image: object.imgUrl ??  'assets/images/app_icon.png',
+                imageType: (object.imgUrl != null && object.imgUrl!.isNotEmpty)
+                ? ImageType.network
+              : ImageType.asset,
+
                 borderRadius: TSizes.borderRadiusMd,
                 backgroundColor: TColors.primaryBackground,
               ),
@@ -55,15 +58,13 @@ class ObjectRows extends DataTableSource {
             ],
           ),
         ),
-        DataCell(Text(object.street!)),
-        DataCell(Text(object.objectNumber!.toString())),
-        DataCell(Text(object.zipCode!)),
-        DataCell(Text(object.location!)),
-        DataCell(Text(object.totalUnits.toString())),
-        DataCell(Text(object.totalFloors.toString())),
-        DataCell(
-          Text(object.createdAt == null ? '' : object.formattedDate),
-        ),
+        DataCell(Text(object.street ?? '')),
+DataCell(Text(object.objectNumber?.toString() ?? '')),
+DataCell(Text(object.zipCode ?? '')),
+DataCell(Text(object.location ?? '')),
+DataCell(Text(object.totalUnits?.toString() ?? '')),
+DataCell(Text(object.totalFloors?.toString() ?? '')),
+DataCell(Text(object.createdAt == null ? '' : object.formattedDate)),
         DataCell(
           TTableActionButtons(
             view: true,

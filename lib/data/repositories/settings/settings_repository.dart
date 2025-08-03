@@ -17,8 +17,8 @@ class SettingsRepository extends GetxController {
   Future<SettingsModel> getSettings() async {
     return SettingsModel(
       appName: 'XM Dashboard',
-      agencyName: 'Apleona Real Estate AG',
-      selectedObjectId: '1', // replace with selected building id
+      companyName: 'XM Real Estate AG',
+      selectedObjectId: '1', // replace with selected object id
     );
   }
   

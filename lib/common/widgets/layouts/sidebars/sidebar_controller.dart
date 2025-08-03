@@ -49,7 +49,7 @@ class SidebarController extends GetxController {
             // Optionally delete others like EditBuildingController
           }
 
-          if (route == Routes.usersContracts) {
+          if (route == Routes.usersPermissions) {
             // Get.delete<TenantsController>();
           }
 

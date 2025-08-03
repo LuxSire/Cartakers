@@ -126,18 +126,14 @@ class ObjectCard extends StatelessWidget {
                                 _StatIcon(
                                   icon: Iconsax.building,
                                   label:
-                                      '${object.totalUnits ?? 0} ${AppLocalization.of(context).translate('buildings_screen.lbl_units').toLowerCase()}',
+                                      '${object.street ?? 0} ${AppLocalization.of(context).translate('objects_screen.lbl_street').toLowerCase()}',
                                 ),
                                 _StatIcon(
-                                  icon: Iconsax.profile_2user,
+                                  icon: Iconsax.money,
                                   label:
-                                      '${object.totalUsers ?? 0} ${AppLocalization.of(context).translate('tenants_screen.lbl_tenants').toLowerCase()}',
+                                      '${object.price ?? 0}' '${object.currency ?? ''}',
                                 ),
-                                _StatIcon(
-                                  icon: Iconsax.document,
-                                  label:
-                                      '${object.totalContracts ?? 0} ${AppLocalization.of(context).translate('create_contract_screen.lbl_contracts').toLowerCase()}',
-                                ),
+                                
                               ],
                             ),
                           ],

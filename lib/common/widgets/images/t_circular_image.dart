@@ -33,6 +33,7 @@ class TCircularImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('TCircularImage build called');  
     return Container(
       width: width,
       height: height,
@@ -48,6 +49,7 @@ class TCircularImage extends StatelessWidget {
 
   Widget _buildImageWidget() {
     Widget imageWidget;
+      debugPrint('TCircularImage imageType: $imageType, image: $image');
 
     switch (imageType) {
       case ImageType.network:
@@ -74,6 +76,7 @@ class TCircularImage extends StatelessWidget {
   // Function to build the network image widget
   Widget _buildNetworkImage() {
     if (image != null) {
+          debugPrint('TRoundedImage loading network image: $image');
       // Use CachedNetworkImage for efficient loading and caching of network images // Not working in Web but just for loading
       return CachedNetworkImage(
         fit: fit,

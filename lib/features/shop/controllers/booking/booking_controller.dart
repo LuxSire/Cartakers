@@ -118,11 +118,12 @@ class BookingController extends TBaseController<BookingModel> {
           result
               .where(
                 (object) => userObjectRestrictions.contains(
-                  int.parse(object.id.toString()),
+                  int.tryParse(object.id.toString()) ?? 0 ,
                 ),
               )
               .toList();
-
+      debugPrint('User object restrictions: $userObjectRestrictions');
+      debugPrint('All object IDs: ${result.map((o) => o.id).toList()}');
       objectsList.assignAll(filteredObjects);
     } catch (e) {
       //   Get.snackbar('Error', 'Failed to load buildings: $e');

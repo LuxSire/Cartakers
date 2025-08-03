@@ -3,14 +3,14 @@ import 'package:xm_frontend/features/shop/screens/user/widgets/bookings_tab.dart
 import 'package:xm_frontend/features/shop/screens/user/widgets/user_documents_tab.dart';
 import 'package:xm_frontend/features/shop/screens/user/widgets/user_requests_tab.dart';
 import 'package:xm_frontend/features/shop/screens/user/widgets/user_tab.dart';
-import 'package:xm_frontend/features/shop/screens/users_contracts/widgets/app_invitation_tab.dart';
-import 'package:xm_frontend/features/shop/screens/users_contracts/widgets/contracts_tab.dart';
-import 'package:xm_frontend/features/shop/screens/users_contracts/widgets/users_tab.dart';
+import 'package:xm_frontend/features/shop/screens/users_permissions/widgets/app_invitation_tab.dart';
+import 'package:xm_frontend/features/shop/screens/users_permissions/widgets/permissions_tab.dart';
+import 'package:xm_frontend/features/shop/screens/users_permissions/widgets/users_tab.dart';
 
-class UsersContractsDetailTab extends StatelessWidget {
+class UsersPermissionsDetailTab extends StatelessWidget {
   final String tabType;
 
-  const UsersContractsDetailTab({Key? key, required this.tabType})
+  const UsersPermissionsDetailTab({Key? key, required this.tabType})
     : super(key: key);
 
   @override
@@ -18,8 +18,8 @@ class UsersContractsDetailTab extends StatelessWidget {
     switch (tabType) {
       case 'users':
         return UsersTab();
-      case 'contracts':
-        return ContractsTab();
+      case 'permissions':
+        return PermissionsTab();
       case 'app_invitation':
         return AppInvitationTab();
 

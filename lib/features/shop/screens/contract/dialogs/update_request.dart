@@ -201,7 +201,7 @@ class UpdateRequestDialog extends StatelessWidget {
                                   Text(
                                     AppLocalization.of(
                                       context,
-                                    ).translate('tenants_screen.lbl_tenant'),
+                                    ).translate('users_screen.lbl_user'),
                                     style: Theme.of(
                                       context,
                                     ).textTheme.bodyLarge!.copyWith(

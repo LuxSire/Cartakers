@@ -8,9 +8,17 @@ class ObjectModel {
   String? street;
   String? zipCode;
   String? objectNumber;
-  String? canton;
+  String? state;
   String? address;
-
+  String? occupancy;
+  String? zoning;
+  String? city;
+  String? description;
+  String? currency;
+  int? owner;
+  int? status;
+  String? type_;
+  double? price;
   final int? totalUnits;
   final int? totalFloors;
   String? imgUrl;
@@ -28,7 +36,16 @@ class ObjectModel {
     this.street,
     this.zipCode,
     this.objectNumber,
-    this.canton,
+    this.state,
+    this.occupancy,
+    this.zoning,
+    this.city,
+    this.description,
+    this.currency,
+    this.owner,
+    this.status,
+    this.type_,
+    this.price,
     this.address,
     this.totalUnits,
     this.totalFloors,
@@ -50,12 +67,21 @@ class ObjectModel {
   factory ObjectModel.fromJson(Map<String, dynamic> json) {
     return ObjectModel(
       id: json['id']?.toString() ?? '',
-      companyId: json['company_id'] ?? 0,
+      companyId: json['company'] ?? 0,
+      occupancy: json['occupancy'] ?? 0,
+      zoning: json['zoning'] ?? '',
+      city: json['city'] ?? '',
+      description: json['description'] ?? '',
+      owner: json['owner'] ?? '',
+      status: json['status'] ?? '',
+      type_: json['type'] ?? '',
+      price: json['price'] ?? '',
+      currency: json['currency'] ?? '',
       name: json['name'] ?? '',
       imgUrl: json['img_url'] ?? '',
       street: json['street'] ?? '',
       zipCode: json['zip_code'] ?? '',
-      canton: json['canton'] ?? '',
+      state: json['state'] ?? '',
       address: json['address'] ?? '',
       totalUnits: json['total_units'] ?? 0,
       totalFloors: json['total_floors'] ?? 0,
@@ -84,7 +110,7 @@ class ObjectModel {
       'street': street,
       'zip_code': zipCode,
       'object_number': objectNumber,
-      'canton': canton,
+      'sate': state,
       'address': address,
       'total_units': totalUnits,
       'total_floors': totalFloors,
@@ -93,6 +119,15 @@ class ObjectModel {
       'location': location,
       'total_users': totalUsers,
       'total_contracts': totalContracts,
+      'occupancy': occupancy,
+      'zoning': zoning,
+      'city': city,
+      'description': description,
+      'currency': currency,
+      'owner': owner,
+      'status': status,
+      'type': type_,
+      'price': price,
     };
   }
 }

@@ -24,7 +24,7 @@ class ViewUserDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(UserController());
+    final controller = Get.find<UserController>();
 
     //  debugPrint('Tenant: ${tenant!.toJson().toString()}');
 

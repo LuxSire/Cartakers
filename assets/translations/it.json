@@ -376,7 +376,7 @@
         "msg_close": "Chiudi",
         "msg_download": "Scarica",
         "msg_download_completed": "Download completato",
-        "msg_set_as_primary_tenant": "Imposta come inquilino principale",
+        "msg_set_as_primary_user": "Imposta come utente principale",
         "msg_new_document_uploaded_successfully": "Nuovo documento caricato con successo.",
         "msg_document_failed": "Caricamento del nuovo documento non riuscito. Per favore riprova.",
         "msg_document_delete_failed": "Eliminazione del documento non riuscita. Per favore riprova.",
@@ -428,19 +428,16 @@
 "msg_sent_immediately": "Inviato immediatamente",
 "msg_send_user_invitation": "Invia invito utente",
 "msg_send_user_invitation_success": "Invito utente inviato con successo.",
-"msg_send_tenant_invitation": "Invia invito inquilino",
-"msg_send_tenant_invitation_success": "Invito inquilino inviato con successo.",
 "msg_mail_subject_user_invitation": "Sei stato invitato a unirti a XM per amministratori",
 "msg_mail_body_text_user_invitation": "Sei stato invitato a unirti al nostro spazio di lavoro sulla piattaforma XM. Usa il codice di invito qui sotto per configurare il tuo account e iniziare.",
 "msg_mail_invitation_code_text": "Codice di invito",
 "msg_mail_dear": "Caro/Cara",
-"msg_error_building_cannot_be_delete_with_active_and_terminated_contracts": "L'edificio non può essere eliminato se sono presenti contratti attivi o terminati.",
+"msg_error_object_cannot_be_delete_with_active_and_terminated_contracts": "L'oggetto non può essere eliminato se sono presenti contratti attivi o terminati.",
 "msg_new_invitation_code_sent": "Nuovo codice di invito inviato con successo.",
 "msg_failed_to_send_invitation_code": "Invio del codice di invito non riuscito. Per favore riprova.",
-"msg_mail_body_text_tenant_invitation": "Sei stato invitato a unirti all'app XM per accedere alle informazioni sull'affitto, inviare richieste e rimanere aggiornato. Usa il codice di invito qui sotto per creare il tuo account e iniziare.",
-"msg_mail_subject_tenant_invitation_code": "Sei stato invitato a unirti a XM per inquilini",
-   "msg_no_tenants_selected": "Nessun inquilino selezionato.",
-          "msg_bulk_invitation_success": "Invito inviato con successo a tutti gli inquilini selezionati.",
+"msg_mail_subject_user_invitation_code": "Sei stato invitato a unirti a XM per utenti",
+   "msg_no_users_selected": "Nessun utente selezionato.",
+          "msg_bulk_invitation_success": "Invito inviato con successo a tutti gli utenti selezionati.",
         "msg_bulk_invitation_failed": "Invito in massa non riuscito. Per favore riprova.",
         "msg_sent_successfully": "Inviato con successo"
 
@@ -575,8 +572,8 @@
     },
     "sidebar": {
         "lbl_dashboard": "Dashboard",
-        "lbl_buildings_and_units": "Edifici & unità",
-        "lbl_tenants_and_contracts": "Inquilini & contratti",
+        "lbl_objects_and_units": "Oggetti & unità",
+        "lbl_users_and_contracts": "Utenti & contratti",
         "lbl_maintenance_and_tasks": "Manutenzione & attività",
         "lbl_amenities_and_bookings": "Servizi & prenotazioni",
         "lbl_communication": "Comunicazione",
@@ -588,8 +585,8 @@
     },
     "dashboard_screen": {
         "lbl_dashboard": "Dashboard",
-        "lbl_buildings": "Edifici",
-        "lbl_tenants": "Inquilini",
+        "lbl_objects": "Oggetti",
+        "lbl_users": "Utenti",
         "lbl_pending_requests": "Richieste in sospeso",
         "lbl_opened_tasks": "Attività aperte",
         "lbl_opened_support_request": "Richiesta di supporto aperta",
@@ -603,41 +600,50 @@
         "lbl_vacant_since": "Vuoto da",
         "lbl_floor": "Piano",
         "lbl_room": "Stanza",
-        "lbl_add_tenant": "Aggiungi inquilino",
+        "lbl_add_user": "Aggiungi utente",
         "lbl_assign_contract": "Assegna contratto",
-        "error_contract_must_have_at_least_one_tenant": "Il contratto deve includere almeno un inquilino",
+        "error_contract_must_have_at_least_one_user": "Il contratto deve includere almeno un utente",
         "lbl_no_pending_contracts_found": "Nessun contratto in sospeso trovato"
 
 
 
     },
-    "buildings_screen": {
-        "lbl_buildings": "Edifici",
-        "lbl_search_buildings": "Cerca edifici",
-        "lbl_create_new_building": "Crea nuovo edificio",
-        "lbl_building_name": "Nome dell'edificio",
+    "objects_screen": {
+        "lbl_objects": "Oggetti",
+        "lbl_price": "Prezzo",
+        "lbl_search_objects": "Cerca oggetti",
+        "lbl_create_new_object": "Crea nuovo oggetto",
+        "lbl_object_name": "Nome dell'oggetto",
+        "lbl_object_description": "Descrizione dell'oggetto",
         "lbl_street": "Via",
         "lbl_location": "Località",
         "lbl_zip_code": "CAP",
-        "lbl_building_number": "Numero civico",
+        "lbl_object_number": "Numero dell'oggetto",
         "lbl_units": "Unità",
         "lbl_floors": "Piani",
         "lbl_date_created": "Data di creazione",
         "lbl_actions": "Azioni",
-        
-            "lbl_total_units": "Totale unità",
+        "lbl_owner": "Proprietario",
+        "lbl_city": "Città",
+        "lbl_country": "Paese",
+        "lbl_object_details": "Dettagli dell'oggetto",
+        "lbl_currency": "Valuta",
+        "lbl_type": "Tipo",
+        "lbl_occupancy": "Occupazione",
+        "lbl_zoning": "Zonizzazione",
+        "lbl_total_units": "Totale unità",
             "tooltip_total_units": "Inserisci il numero totale di unità (appartamenti, uffici, ecc.) presenti nell’edificio.",
           
             "lbl_total_floors": "Totale piani",
-            "tooltip_total_floors": "Inserisci il numero totale di piani dell’edificio, compresi piano terra e seminterrato se applicabile.",
-            "lbl_new_building": "Nuovo edificio"
+            "tooltip_total_floors": "Inserisci il numero totale di piani dell’oggetto, compresi piano terra e seminterrato se applicabile.",
+            "lbl_new_object": "Nuovo oggetto"
 
           
           
     },
-    "edit_building_screen": {
-        "lbl_building_details": "Dettagli edificio",
-        "lbl_update_building": "Aggiorna edificio",
+    "edit_object_screen": {
+        "lbl_object_details": "Dettagli oggetto",
+        "lbl_update_object": "Aggiorna oggetto",
         "lbl_units": "Unità",
         "lbl_search_units": "Cerca unità",
         "lbl_date_created": "Data di creazione",
@@ -645,7 +651,7 @@
         "lbl_unit_#": "Unità n°",
         "lbl_floor": "Piano",
         "lbl_room": "Camera",
-        "lbl_tenants": "Inquilini",
+        "lbl_users": "Utenti",
         "lbl_status": "Stato",
         "lbl_contract_reference": "Riferimento contratto",
         "lbl_updated_on": "Aggiornato il",
@@ -659,14 +665,14 @@
         "lbl_start_date": "Data di inizio",
         "lbl_end_date": "Data di fine",
         "lbl_status": "Stato",
-        "lbl_tenants": "Inquilini",
+        "lbl_users": "Utenti",
         "lbl_create_new_contract": "Crea nuovo contratto",
         "lbl_end_contract": "Termina contratto",
         "lbl_contracts": "Contratti",
         "lbl_search_contracts": "Cerca contratti",
-        "lbl_tenants_on_active_contract": "Inquilini con contratto attivo",
-        "lbl_no_tenants_found": "Nessun inquilino trovato",
-        "lbl_cannot_remove_last_tenant": "Impossibile rimuovere l’ultimo inquilino senza terminare il contratto",
+        "lbl_users_on_active_contract": "Utenti con contratto attivo",
+        "lbl_no_users_found": "Nessun utente trovato",
+        "lbl_cannot_remove_last_user": "Impossibile rimuovere l’ultimo utente senza terminare il contratto",
         "lbl_unit_finformation": "Informazioni sull’unità"
     },
     "edit_contract_screen": {
@@ -675,36 +681,36 @@
         "lbl_start_date": "Data di inizio",
         "lbl_end_date": "Data di fine",
         "lbl_status": "Stato",
-        "lbl_tenants": "Inquilini",
+        "lbl_users": "Utenti",
         "lbl_create_new_contract": "Crea nuovo contratto",
         "lbl_end_contract": "Termina contratto",
         "lbl_contracts": "Contratti",
         "lbl_search_contracts": "Cerca contratti",
-        "lbl_select_tenants": "Seleziona inquilini",
-        "error_msg_please_select_at_least_one_tenant": "Seleziona almeno un inquilino",
+        "lbl_select_users": "Seleziona utenti",
+        "error_msg_please_select_at_least_one_user": "Seleziona almeno un utente",
         "error_msg_another_active_contract_exists": "Esiste già un altro contratto attivo per questa unità. Termina il contratto esistente prima di attivarne uno nuovo.",
         "error_msg_cannot_set_to_pending_when_active": "Impossibile impostare su 'in attesa' quando è attivo"
     },
-    "tenants_screen": {
-        "lbl_tenants": "Inquilini",
-        "lbl_search_tenants": "Cerca inquilini",
-        "lbl_create_new_tenant": "Crea nuovo inquilino",
+    "users_screen": {
+        "lbl_users": "Utenti",
+        "lbl_search_users": "Cerca utenti",
+        "lbl_create_new_user": "Crea nuovo utente",
         "lbl_first_name": "Nome",
         "lbl_last_name": "Cognome",
         "lbl_email": "Email",
         "lbl_phone_no": "Numero di telefono",
         "lbl_date_created": "Data di creazione",
         "lbl_actions": "Azioni",
-        "lbl_tenant_details": "Dettagli inquilino",
-        "lbl_update_tenant": "Aggiorna inquilino",
-        "lbl_tenant_name": "Nome dell'inquilino",
-        "lbl_new_tenant": "Nuovo inquilino",
-        "lbl_tenant": "Inquilino",
+        "lbl_user_details": "Dettagli utente",
+        "lbl_update_user": "Aggiorna utente",
+        "lbl_user_name": "Nome dell'utente",
+        "lbl_new_user": "Nuovo utente",
+        "lbl_user": "Utente",
         "lbl_contract_reference": "Riferimento contratto",
-        "lbl_primary_tenant": "Inquilino principale",
-        "lbl_additional_tenant": "Inquilino aggiuntivo",
+        "lbl_primary_user": "Utente principale",
+        "lbl_additional_user": "Utente aggiuntivo",
         "lbl_preferred_language": "Lingua preferita",
-        "lbl_import_tenants": "Importa inquilini",
+        "lbl_import_users": "Importa utenti",
         "lbl_unit": "Unità",
         "lbl_contract_status": "Stato del contratto"
 
@@ -717,13 +723,13 @@
         "lbl_start_date": "Data di inizio",
         "lbl_end_date": "Data di fine",
         "lbl_status": "Stato",
-        "lbl_tenants": "Inquilini",
+        "lbl_users": "Utenti",
         "lbl_create_new_contract": "Crea nuovo contratto",
         "lbl_end_contract": "Termina contratto",
         "lbl_contracts": "Contratti",
         "lbl_search_contracts": "Cerca contratti",
-        "lbl_select_tenants": "Seleziona inquilini",
-        "error_msg_please_select_at_least_one_tenant": "Seleziona almeno un inquilino"
+        "lbl_select_users": "Seleziona utenti",
+        "error_msg_please_select_at_least_one_user": "Seleziona almeno un utente"
     },
     "amenity_zone_screen": {
         "lbl_assign_amenity_zone": "Assegna zona servizi",
@@ -735,7 +741,7 @@
     },
     "contract_screen": {
         "lbl_contract_information": "Informazioni sul contratto",
-        "lbl_tenants": "Inquilini",
+        "lbl_users": "Utenti",
         "lbl_start_date": "Data di inizio",
         "lbl_end_date": "Data di fine",
         "lbl_status": "Stato",
@@ -756,9 +762,9 @@
 "lbl_please_select_a_unit": "Seleziona un'unità, per favore",
 "msg_unit_required": "L’unità è obbligatoria",
 "msg_cannot_delete_contract_because_there_are_still_documents_present": "Impossibile eliminare il contratto perché ci sono ancora dei documenti presenti",
-"lbl_please_select_a_building": "Seleziona un edificio",
-"msg_building_required": "L'edificio è obbligatorio",
-"lbl_select_building": "Seleziona un edificio"
+"lbl_please_select_a_object": "Seleziona un oggetto",
+"msg_object_required": "L'oggetto è obbligatorio",
+"lbl_select_object": "Seleziona un oggetto"
 
 
 
@@ -787,8 +793,8 @@
 
 
     },
-    "tenant_screen": {
-  "lbl_tenant_details": "Dettagli inquilino",
+    "user_screen": {
+  "lbl_user_details": "Dettagli utente",
   "lbl_profile_information": "Informazioni profilo"
 },
 "bookings_screen": {
@@ -812,8 +818,8 @@
     "lbl_new_booking": "Nuova prenotazione",
 "lbl_amenity_category": "Categoria del servizio",
 "lbl_select_amenity_category": "Seleziona categoria del servizio",
-"lbl_building": "Edificio",
-"lbl_tenant": "Inquilino",
+"lbl_object": "Oggetto",
+"lbl_user": "Utente",
 "lbl_amenity_unit": "Unità servizio",
 "lbl_select_date": "Seleziona data"
 
@@ -836,8 +842,8 @@
     "lbl_create_new_message": "Crea un nuovo messaggio",
     "lbl_send_message": "Invia messaggio",
     "lbl_new_message": "Nuovo messaggio",
-    "lbl_select_building": "Seleziona edificio",
-    "lbl_all_buildings": "Tutti gli edifici",
+    "lbl_select_object": "Seleziona oggetto",
+    "lbl_all_objects": "Tutti gli oggetti",
     "lbl_all_contracts": "Tutti i contratti",
     "lbl_select_contracts": "Seleziona contratti",
     "lbl_enter_title": "Inserisci titolo...",
@@ -896,16 +902,16 @@
   "lbl_actions": "Azioni",
   "lbl_user_details": "Dettagli utente",
   "lbl_name": "Nome",
-  "lbl_buildings": "Edifici",
+  "lbl_objects": "Oggetti",
   "lbl_status": "Stato",
   "lbl_new_user": "Nuovo utente",
 "lbl_user_role": "Ruolo utente",
-"lbl_building_permission": "Autorizzazione edificio",
+"lbl_object_permission": "Autorizzazione oggetto",
 "lbl_role_is_required": "Il ruolo è obbligatorio",
-"lbl_building_permission_is_required": "Il permesso edificio è obbligatorio",
+"lbl_object_permission_is_required": "Il permesso oggetto è obbligatorio",
 "lbl_select_role": "Seleziona ruolo",
-"lbl_select_building_permission": "Seleziona permesso edificio",
-"lbl_select_building": "Seleziona edificio",
+"lbl_select_object_permission": "Seleziona permesso oggetto",
+"lbl_select_object": "Seleziona oggetto",
 "lbl_invited": "Invitato",
 "lbl_active": "Attivo",
 "lbl_disabled": "Disabilitato",
@@ -915,7 +921,7 @@
 "tab_app_invitation_screen": {
   "lbl_app_invitation": "Invito all'app",
   "lbl_invitation_code": "Codice di invito",
-  "lbl_note_tenant_invitation": "Nota: Il codice di invito per gli inquilini viene utilizzato per invitarli all'app. Gli inquilini devono avere un contratto attivo per potersi registrare all'app.",
+  "lbl_note_user_invitation": "Nota: Il codice di invito per gli utenti viene utilizzato per invitarli all'app. Gli utenti devono avere un contratto attivo per potersi registrare all'app.",
   "lbl_updated_on": "Aggiornato il"
 }
 

@@ -7,7 +7,7 @@ import 'package:xm_frontend/data/models/object_model.dart';
 import 'package:xm_frontend/data/repositories/object/object_repository.dart';
 import 'package:xm_frontend/data/repositories/user/user_repository.dart';
 import 'package:xm_frontend/features/personalization/controllers/settings_controller.dart';
-import 'package:xm_frontend/features/personalization/controllers/user_controller.dart' as personalization;
+// Removed ambiguous import of personalization UserController
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
 import 'package:xm_frontend/features/shop/controllers/object/object_unit_detail_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
@@ -78,7 +78,7 @@ class UserController extends TBaseController<UserModel> {
   RxBool invitationFiltersApplied =
       false.obs; // Track if invitation filters are applied
 
-  final userController = personalization.UserController.instance; 
+  final userController = UserController.instance; 
 
   /// Init Data
   // void init(AgentInvitationModel agentModel) {
@@ -105,7 +105,7 @@ class UserController extends TBaseController<UserModel> {
     try {
       final result = await _objectRepository.getAllObjects();
 
-      final updatedUser = await userController.fetchUserDetails();
+      final updatedUser = userModel.value;
 
       final userObjectRestrictions = updatedUser.objectPermissionIds ?? [];
 
@@ -135,7 +135,7 @@ class UserController extends TBaseController<UserModel> {
 
       debugPrint('Loaded users: ${users.length}');
 
-      final updatedUser = await userController.fetchUserDetails();
+      final updatedUser = userModel.value;
 
       final userObjectRestrictions = updatedUser.objectPermissionIds ?? [];
 
@@ -608,7 +608,7 @@ class UserController extends TBaseController<UserModel> {
 
     final result = await _userRepository.getAllCompanyObjectUsers();
 
-    final updatedUser = await userController.fetchUserDetails();
+    final updatedUser = userModel.value;
 
     final userObjectRestrictions = updatedUser.objectPermissionIds ?? [];
 
@@ -634,7 +634,7 @@ class UserController extends TBaseController<UserModel> {
     );
   }
 
-  void sortByBuilding(int sortColumnIndex, bool ascending) {
+  void sortByObject(int sortColumnIndex, bool ascending) {
     sortByProperty(
       sortColumnIndex,
       ascending,

@@ -43,6 +43,7 @@ class TRoundedImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+          debugPrint('TRoundedImage build called');
     return Container(
       width: width,
       height: height,
@@ -54,6 +55,7 @@ class TRoundedImage extends StatelessWidget {
   }
 
   Widget _buildImageWidget() {
+    debugPrint('TRoundedImage _buildImageWidget called');
     Widget imageWidget;
 
     switch (imageType) {
@@ -81,14 +83,18 @@ class TRoundedImage extends StatelessWidget {
   // Function to build the network image widget
   Widget _buildNetworkImage() {
     if (image != null) {
-      // Use CachedNetworkImage for efficient loading and caching of network images // Not working in Web but just for loading
-      return CachedNetworkImage(
-        fit: fit,
-        color: overlayColor,
-        imageUrl: image!,
-        errorWidget: (context, url, error) => const Icon(Iconsax.image),
-        progressIndicatorBuilder: (context, url, downloadProgress) => TShimmerEffect(width: width, height: height),
-      );
+      debugPrint('TRoundedImage loading network image: $image');
+      // Use Image.network for direct network image loading and debugging
+
+
+      // Old CachedNetworkImage code for reference:
+       return CachedNetworkImage(
+         fit: fit,
+         color: overlayColor,
+         imageUrl: image!,
+         errorWidget: (context, url, error) => const Icon(Iconsax.image),
+         progressIndicatorBuilder: (context, url, downloadProgress) => TShimmerEffect(width: width, height: height),
+       );
     } else {
       // Return an empty container if no image is provided
       return Container();

@@ -19,7 +19,7 @@ import 'package:xm_frontend/features/shop/screens/contract/contract_detail.dart'
 import 'package:xm_frontend/features/shop/screens/dashboard/dashboard.dart';
 import 'package:xm_frontend/features/shop/screens/settings_managements/settings_management.dart';
 import 'package:xm_frontend/features/shop/screens/user/user_detail.dart';
-import 'package:xm_frontend/features/shop/screens/users_contracts/users_contracts.dart';
+import 'package:xm_frontend/features/shop/screens/users_permissions/users_permissions.dart';
 import 'package:xm_frontend/presentation/screens/splash_screen/splash_screen.dart';
 
 import 'package:xm_frontend/routes/routes.dart';
@@ -93,14 +93,14 @@ class AppRoute {
       page: () => UserDetailScreen(),
       binding: BindingsBuilder(() {
         // Get.delete<TenantController>(); //  ensures previous instance is removed
-        Get.put(UserController()); // fresh instance every time
+        Get.find<UserController>(); // fresh instance every time
       }),
       middlewares: [RouteMiddleware()],
     ),
 
     GetPage(
-      name: Routes.usersContracts,
-      page: () => UsersContractsScreen(),
+      name: Routes.usersPermissions,
+      page: () => UsersPermissionsScreen(),
 
       middlewares: [RouteMiddleware()],
     ),
@@ -121,7 +121,6 @@ class AppRoute {
       page: () => SettingsManagementScreen(),
       binding: BindingsBuilder(() {
         // Get.delete<UserController>(); //  ensures previous instance is removed
-        // Get.put(UserController()); // fresh instance every time
       }),
       middlewares: [RouteMiddleware()],
     ),

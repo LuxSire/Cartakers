@@ -22,8 +22,8 @@ import 'package:xm_frontend/utils/constants/sizes.dart';
 import 'package:xm_frontend/utils/device/device_utility.dart';
 import 'package:xm_frontend/utils/helpers/helper_functions.dart';
 
-class ContractsTab extends StatelessWidget {
-  const ContractsTab({super.key});
+class PermissionsTab extends StatelessWidget {
+  const PermissionsTab({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -6,11 +6,13 @@ import 'package:get_storage/get_storage.dart';
 import 'package:xm_frontend/app/utils/helpers.dart';
 import 'package:xm_frontend/app/utils/user_preferences.dart';
 import 'package:xm_frontend/data/api/services/user_service.dart';
+
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
 import 'package:xm_frontend/routes/routes.dart';
+import 'package:xm_frontend/data/repositories/user/user_repository.dart';
 
-class AuthenticationRepository extends GetxController {
+class AuthenticationRepository extends GetxController { 
   static AuthenticationRepository get instance => Get.find();
 
   final UserService _userService = Get.put(UserService());
@@ -24,6 +26,13 @@ class AuthenticationRepository extends GetxController {
   bool get isAuthenticated => _currentUser.value != null;
 
   @override
+  void onInit() {
+    super.onInit();
+    // Always refresh permissions when the instance is created
+    refreshCurrentUserDetails();
+  }
+
+  @override
   Future<void> onReady() async {
     super.onReady();
     await loadUserFromPrefs(); // Loads from prefs and fetches real user
@@ -34,13 +43,17 @@ class AuthenticationRepository extends GetxController {
     final userId = await UserPreferences.getUserId(); // ID only
     if (userId != null) {
       try {
-        final response = await _userService.getCompanyById(int.parse(userId));
-        _currentUser.value = UserModel.fromJson(response);
+        await refreshCurrentUserDetails();
+        debugPrint('objectPermissions after refresh: ${currentUser?.objectPermissions}');
       } catch (e) {
         debugPrint('Failed to fetch user: $e');
         _currentUser.value = null;
       }
     }
+  }
+  Future<void> refreshCurrentUserDetails() async {
+    final user = await UserRepository.instance.fetchUserDetails();
+    currentUser = user;
   }
 
   /// LOGIN with email and password
@@ -89,7 +102,7 @@ class AuthenticationRepository extends GetxController {
           "is_email_notifications",
           (response['is_email_notifications_enabled'] ?? 1) == 1,
         );
-
+        await refreshCurrentUserDetails(); 
         return true;
       }
       return false;

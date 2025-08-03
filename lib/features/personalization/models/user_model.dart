@@ -30,7 +30,7 @@ class UserModel {
 
   String? roleNameExt;
   String? status; // status of user, invited, active, disabled
-  String? objectPermissions; // building permission for the user
+  List<Map<String, dynamic>> objectPermissions = const []; // object permission for the user
   String? objectName;
   int?
   statusId; // status id of the user, 1 for active, 2 for disabled, 3 for invited
@@ -74,7 +74,7 @@ class UserModel {
     this.zoneId,
     this.isPushNotificationsEnabled,
     this.isEmailNotificationsEnabled,
-    this.objectPermissions,
+    this.objectPermissions = const [],
     this.roleNameExt,
     this.status,
     this.statusId,
@@ -125,7 +125,7 @@ class UserModel {
       'is_email_notifications_enabled': isEmailNotificationsEnabled,
       'role_name_ext': roleNameExt,
       'status': status,
-      'object_permissions': objectPermissions,
+      'objectpermissions': objectPermissions,
       'status_id': statusId,
       'role_ext_id': roleExtId,
       'object_permission_ids': objectPermissionIds ?? [],
@@ -160,30 +160,29 @@ class UserModel {
       fullPhoneNumber: json['full_phone_number'] ?? '',
       contractReference: json['contract_reference'] ?? '',
       userContractId: json['user_contract_id'] ?? 0,
-      objectId: json['object_id'] ?? 0,
+      objectId: json['object_id'] != null ? int.tryParse(json['object_id'].toString()) ?? 0 : 0,
       unitNumber: json['unit_number'] ?? '',
       contractStatus: json['contract_status'] ?? 0,
       objectName: json['object_name'] ?? '',
-      zoneId: json['zone_id'] ?? 0,
+      zoneId: json['zone_id'] != null ? int.tryParse(json['zone_id'].toString()) ?? 0 : 0,
       isPushNotificationsEnabled: json['is_push_notifications_enabled'] ?? 0,
       isEmailNotificationsEnabled: json['is_email_notifications_enabled'] ?? 0,
       roleNameExt: json['role_name_ext'] ?? '',
       status: json['status'] ?? '',
-      objectPermissions: json['object_permissions'] ?? '',
+      objectPermissions: json['objectpermissions'] ?? [],
       statusId: json['status_id'] ?? 0,
       roleExtId: json['role_ext_id'] ?? 0,
       objectPermissionIds:
           json['object_permission_ids'] != null
               ? (json['object_permission_ids'] is String
-                  ? (json['building_permission_ids'] as String)
+                  ? (json['object_permission_ids'] as String)
                       .split(',')
-                      .where((e) => e.trim().isNotEmpty)
-                      .map((e) => int.tryParse(e.trim()) ?? 0)
-                      .where((id) => id != 0)
+                      .map((e) => int.tryParse(e.trim()))
+                      .whereType<int>()
                       .toList()
-                  : (json['building_permission_ids'] as List)
-                      .map((e) => int.tryParse(e.toString()) ?? 0)
-                      .where((id) => id != 0)
+                  : (json['object_permission_ids'] as List)
+                      .map((e) => int.tryParse(e.toString()))
+                      .whereType<int>()
                       .toList())
               : [],
     );

@@ -429,7 +429,7 @@
 "msg_mail_body_text_user_invitation": "Sie wurden eingeladen, unserem Workspace beizutreten. Bitte verwenden Sie den untenstehenden Einladungscode, um Ihr Konto einzurichten und loszulegen.",
 "msg_mail_invitation_code_text": "Einladungscode",
 "msg_mail_dear": "Sehr geehrte/r",
-"msg_error_building_cannot_be_delete_with_active_and_terminated_contracts": "Gebäude kann nicht gelöscht werden, wenn aktive und beendete Verträge vorhanden sind.",
+"msg_error_object_cannot_be_delete_with_active_and_terminated_contracts": "Gebäude kann nicht gelöscht werden, wenn aktive und beendete Verträge vorhanden sind.",
 "msg_new_invitation_code_sent": "Neuer Einladungscode wurde erfolgreich gesendet.",
 "msg_failed_to_send_invitation_code": "Einladungscode konnte nicht gesendet werden. Bitte versuche es erneut.", 
 "msg_mail_body_text_user_invitation": "Sie wurden eingeladen, App zu nutzen, um auf Ihre Mietinformationen zuzugreifen, Anfragen zu stellen und auf dem Laufenden zu bleiben. Verwenden Sie den untenstehenden Einladungscode, um Ihr Konto zu erstellen und loszulegen.",
@@ -575,7 +575,7 @@
   },
   "sidebar": {
     "lbl_dashboard": "Dashboard",
-    "lbl_buildings_and_units": "Gebäude & Einheiten",
+    "lbl_objects_and_units": "Gebäude & Einheiten",
     "lbl_users_and_contracts": "Mieter & Verträge",
     "lbl_maintenance_and_tasks": "Wartung & Aufgaben",
     "lbl_amenities_and_bookings": "Annehmlichkeiten & Buchungen",
@@ -588,8 +588,8 @@
   },
   "dashboard_screen": {
     "lbl_dashboard": "Dashboard",
-    "lbl_buildings": "Gebäude",
-    "lbl_tenants": "Mieter",
+    "lbl_objects": "Objekte",
+    "lbl_users": "Benutzer",
     "lbl_pending_requests": "Ausstehende Anfragen",
     "lbl_opened_tasks": "Offene Aufgaben",
     "lbl_opened_support_request": "Offene Support-Anfrage",
@@ -611,33 +611,46 @@
 
 
   },
-  "buildings_screen": {
-    "lbl_buildings": "Gebäude",
-    "lbl_search_buildings": "Gebäude suchen",
-    "lbl_create_new_building": "Neues Gebäude erstellen",
-    "lbl_building_name": "Gebäudename",
+  "objects_screen": {
+    "lbl_objects": "Objekte",
+    "lbl_price": "Preis",
+    "lbl_search_objects": "Objekte suchen",
+    "lbl_create_new_object": "Neues Objekt erstellen",
+    "lbl_object_name": "Objektname",
+    "lbl_object_type": "Objekttyp",
+    "lbl_object_description": "Objektbeschreibung",
+    "lbl_address": "Adresse",
+    "lbl_city": "Stadt",
+    "lbl_country": "Land",
+    "lbl_state": "Bundesland",
     "lbl_street": "Straße",
     "lbl_location": "Ort",
     "lbl_zip_code": "Postleitzahl",
-    "lbl_building_number": "Hausnummer",
+    "lbl_object_number": "Objektnummer",
     "lbl_units": "Einheiten",
     "lbl_floors": "Stockwerke",
     "lbl_date_created": "Erstellungsdatum",
     "lbl_actions": "Aktionen",
-    
+    "lbl_type": "Typ",
+    "lbl_owner": "Eigentümer",
+    "lbl_occupancy": "Belegung",
+        "lbl_zoning": "Zonierung",
+        "lbl_object_details": "Objektdetails",
+        "lbl_currency": "Währung",
+
       "lbl_total_units": "Gesamtanzahl der Einheiten",
       "tooltip_total_units": "Geben Sie die Gesamtanzahl der einzelnen Einheiten (Wohnungen, Büros usw.) im Gebäude ein.",
     
       "lbl_total_floors": "Gesamtanzahl der Stockwerke",
       "tooltip_total_floors": "Geben Sie die Gesamtanzahl der Stockwerke im Gebäude an, einschließlich Erd- und Kellergeschoss, falls zutreffend.",
-      "lbl_new_building": "Neues Gebäude"
+      "lbl_new_object": "Neues Objekt"
 
     
     
   },
-  "edit_building_screen": {
-    "lbl_building_details": "Gebäudedetails",
-    "lbl_update_building": "Gebäude aktualisieren",
+  "edit_object_screen": {
+    "lbl_object_details": "Objektdetails",
+    "lbl_update_object": "Objekt aktualisieren",
     "lbl_units": "Einheiten",
     "lbl_search_units": "Einheiten suchen",
     "lbl_date_created": "Erstellungsdatum",
@@ -680,15 +693,15 @@
     "lbl_end_contract": "Vertrag beenden",
     "lbl_contracts": "Verträge",
     "lbl_search_contracts": "Verträge suchen",
-    "lbl_select_tenants": "Mieter auswählen",
+    "lbl_select_users": "Benutzer auswählen",
     "error_msg_please_select_at_least_one_tenant": "Bitte wählen Sie mindestens einen Mieter aus",
     "error_msg_another_active_contract_exists": "Für diese Einheit besteht bereits ein aktiver Vertrag. Bitte beenden Sie den bestehenden Vertrag, bevor Sie einen neuen aktivieren.",
     "error_msg_cannot_set_to_pending_when_active": "Kann nicht auf 'Ausstehend' gesetzt werden, wenn aktiv"
   },
-  "tenants_screen": {
-    "lbl_tenants": "Mieter",
-    "lbl_search_tenants": "Mieter suchen",
-    "lbl_create_new_tenant": "Neuen Mieter erstellen",
+  "users_screen": {
+    "lbl_users": "Benutzer",
+    "lbl_search_users": "Benutzer suchen",
+    "lbl_create_new_user": "Neuen Benutzer erstellen",
     "lbl_first_name": "Vorname",
     "lbl_last_name": "Nachname",
     "lbl_email": "E-Mail",
@@ -757,9 +770,9 @@
 "msg_unit_required": "Einheit ist erforderlich",
 
 "msg_cannot_delete_contract_because_there_are_still_documents_present": "Vertrag kann nicht gelöscht werden, da noch Dokumente vorhanden sind",
-"lbl_please_select_a_building": "Bitte wählen Sie ein Gebäude aus",
-"msg_building_required": "Gebäude ist erforderlich",
-"lbl_select_building": "Gebäude auswählen"
+"lbl_please_select_a_object": "Bitte wählen Sie ein Objekt aus",
+"msg_object_required": "Objekt ist erforderlich",
+"lbl_select_object": "Objekt auswählen"
 
 
 
@@ -813,8 +826,8 @@
     "lbl_new_booking": "Neue Buchung",
 "lbl_amenity_category": "Ausstattungskategorie",
 "lbl_select_amenity_category": "Ausstattungskategorie auswählen",
-"lbl_building": "Gebäude",
-"lbl_tenant": "Mieter",
+"lbl_object": "Objekt",
+"lbl_user": "Benutzer",
 "lbl_amenity_unit": "Ausstattungseinheit",
 "lbl_select_date": "Datum auswählen"
 
@@ -837,8 +850,8 @@
     "lbl_create_new_message": "Neue Nachricht erstellen",
     "lbl_send_message": "Nachricht senden",
     "lbl_new_message": "Neue Nachricht",
-    "lbl_select_building": "Gebäude auswählen",
-    "lbl_all_buildings": "Alle Gebäude",
+    "lbl_select_object": "Objekt auswählen",
+    "lbl_all_objects": "Alle Objekte",
     "lbl_all_contracts": "Alle Verträge",
     "lbl_select_contracts": "Verträge auswählen",
     "lbl_enter_title": "Titel eingeben...",
@@ -899,16 +912,16 @@
   "lbl_actions": "Aktionen",
   "lbl_user_details": "Benutzerdetails",
   "lbl_name": "Name",
-  "lbl_buildings": "Gebäude",
+  "lbl_objects": "Objekte",
   "lbl_status": "Status",
   "lbl_new_user": "Neuer Benutzer",
 "lbl_user_role": "Benutzerrolle",
-"lbl_building_permission": "Gebäudeberechtigung",
+"lbl_object_permission": "Objektberechtigung",
 "lbl_role_is_required": "Rolle ist erforderlich",
-"lbl_building_permission_is_required": "Gebäudeberechtigung ist erforderlich",
+"lbl_object_permission_is_required": "Objektberechtigung ist erforderlich",
 "lbl_select_role": "Rolle auswählen",
-"lbl_select_building_permission": "Gebäudeberechtigung auswählen",
-"lbl_select_building": "Gebäude auswählen",
+"lbl_select_object_permission": "Objektberechtigung auswählen",
+"lbl_select_object": "Objekt auswählen",
 "lbl_invited": "Eingeladen",
 "lbl_active": "Aktiv",
 "lbl_disabled": "Deaktiviert",
@@ -922,7 +935,7 @@
 "tab_app_invitation_screen": {
   "lbl_app_invitation": "App-Einladung",
   "lbl_invitation_code": "Einladungscode",
-  "lbl_note_tenant_invitation": "Hinweis: Der Einladungscode für Mieter wird verwendet, um Mieter zur App einzuladen. Mieter müssen einen aktiven Vertrag haben, um sich in der App registrieren zu können.",
+  "lbl_note_user_invitation": "Hinweis: Der Einladungscode für Benutzer wird verwendet, um Benutzer zur App einzuladen. Benutzer müssen einen aktiven Vertrag haben, um sich in der App registrieren zu können.",
   "lbl_updated_on": "Aktualisiert am"
 }
 

@@ -4,7 +4,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/features/shop/controllers/customer/customer_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
-import 'package:xm_frontend/features/shop/screens/users_contracts/widgets/users_contracts_detail_tab.dart';
+import 'package:xm_frontend/features/shop/screens/users_permissions/widgets/users_permissions_detail_tab.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
@@ -12,12 +12,12 @@ import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../common/widgets/loaders/loader_animation.dart';
 import '../../../../../../utils/constants/sizes.dart';
 
-class UsersContractsMobileScreen extends StatelessWidget {
-  const UsersContractsMobileScreen({super.key});
+class UsersPermissionsMobileScreen extends StatelessWidget {
+  const UsersPermissionsMobileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(UserController());
+    final controller = Get.find<UserController>();
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -29,7 +29,7 @@ class UsersContractsMobileScreen extends StatelessWidget {
               TBreadcrumbsWithHeading(
                 heading: AppLocalization.of(
                   context,
-                ).translate('sidebar.lbl_tenants_and_contracts'),
+                ).translate('sidebar.lbl_users_and_contracts'),
                 breadcrumbItems: [
                   // AppLocalization.of(
                   //   context,
@@ -72,7 +72,7 @@ class UsersContractsMobileScreen extends StatelessWidget {
                                 Tab(
                                   text: AppLocalization.of(
                                     context,
-                                  ).translate('profile_screen.lbl_contracts'),
+                                  ).translate('profile_screen.lbl_permissions'),
                                   icon: Icon(Iconsax.note_2),
                                 ),
                               ],
@@ -83,12 +83,12 @@ class UsersContractsMobileScreen extends StatelessWidget {
                               child: TabBarView(
                                 children: [
                                   // Users Tab
-                                  UsersContractsDetailTab(
+                                  UsersPermissionsDetailTab(
                                     tabType: 'users',
                                   ),
                                   // contracts Tab
-                                  UsersContractsDetailTab(
-                                    tabType: 'contracts',
+                                  UsersPermissionsDetailTab(
+                                    tabType: 'permissions',
                                   ),
                                 ],
                               ),

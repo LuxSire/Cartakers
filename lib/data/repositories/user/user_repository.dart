@@ -10,16 +10,16 @@ import 'package:xm_frontend/data/api/services/user_service.dart';
 import 'package:xm_frontend/data/models/booking_model.dart';
 import 'package:xm_frontend/data/models/object_model.dart';
 import 'package:xm_frontend/data/models/docs_model.dart';
-import 'package:xm_frontend/data/models/request_log_model.dart';
+//import 'package:xm_frontend/data/models/request_log_model.dart';
 import 'package:xm_frontend/data/models/request_model.dart';
 import 'package:xm_frontend/data/models/user_role_model.dart';
-import 'package:xm_frontend/features/personalization/controllers/settings_controller.dart';
+//import 'package:xm_frontend/features/personalization/controllers/settings_controller.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 import 'package:xm_frontend/utils/helpers/helper_functions.dart';
 import '../../../features/personalization/models/user_model.dart';
-import '../../../utils/exceptions/firebase_auth_exceptions.dart';
-import '../../../utils/exceptions/format_exceptions.dart';
-import '../../../utils/exceptions/platform_exceptions.dart';
+//import '../../../utils/exceptions/firebase_auth_exceptions.dart';
+//import '../../../utils/exceptions/format_exceptions.dart';
+//import '../../../utils/exceptions/platform_exceptions.dart';
 import '../authentication/authentication_repository.dart';
 import 'package:path/path.dart' as p;
 
@@ -30,7 +30,13 @@ class UserRepository extends GetxController {
 
   /// Function to fetch user details based on user ID.
   Future<List<UserModel>> getAllUsers() async {
-    return [];
+    try {
+      final response = await _userService.getAllUsers();
+      return response.map((userData) => UserModel.fromJson(userData)).toList();
+    } catch (e) {
+      debugPrint('Error fetching users from getAllUsers: $e');
+      return [];
+    }
   }
 
   Future<List<UserModel>> getAllObjectUsers(String objectId) async {
@@ -44,11 +50,12 @@ class UserRepository extends GetxController {
         int.parse(objectId),
       );
 
+
       return response
           .map((userData) => UserModel.fromJson(userData))
           .toList();
     } catch (e) {
-      debugPrint('Error fetching tenants: $e');
+      debugPrint('Error fetching users from getAllObjectUsers: $e');
       return [];
     }
   }
@@ -65,12 +72,12 @@ class UserRepository extends GetxController {
       final response = await _userService.getUsersByCompanyId(
         int.parse(companyId),
       );
-
+       debugPrint('Raw response: $response');
       return response
           .map((userData) => UserModel.fromJson(userData))
           .toList();
     } catch (e) {
-      debugPrint('Error fetching users: $e');
+      debugPrint('Error fetching users from getAllCompanyObjectUsers: $e');
       return [];
     }
   }
@@ -87,10 +94,10 @@ class UserRepository extends GetxController {
       final response = await _userService.getUsersByCompanyId(
         int.parse(companyId),
       );
-
+      debugPrint('Raw response: $response');
       return response.map((userData) => UserModel.fromJson(userData)).toList();
     } catch (e) {
-      debugPrint('Error fetching users: $e');
+      debugPrint('Error fetching users from getAllCompanyUsers: $e');
       return [];
     }
   }
@@ -110,10 +117,23 @@ class UserRepository extends GetxController {
       int.parse(userId.toString()),
     );
 
+    // Fetch assigned objects and extract their IDs
+    final assignedObjects = await _userService.getUserAssignedObjects(int.parse(userId));
+    final objectPermissionIds = assignedObjects.map((obj) {
+      // Try to parse id as int, fallback to 0 if not possible
+      final id = obj['id'];
+      return int.tryParse(id.toString()) ?? 0;
+    }).where((id) => id != 0).toList();
+
     debugPrint('Response from fetchUserDetails API : $response');
+    debugPrint('Fetched object_permission: $assignedObjects');
 
     if (response['id'] > 0) {
-      return UserModel.fromJson(response);
+      // Pass object_permission_ids to UserModel
+      final userMap = Map<String, dynamic>.from(response);
+      userMap['object_permission_ids'] = objectPermissionIds;
+      userMap['objectpermissions'] = assignedObjects;
+      return UserModel.fromJson(userMap);
     } else {
       return UserModel.empty();
     }
@@ -121,7 +141,7 @@ class UserRepository extends GetxController {
 
   Future<UserModel> fetchUserDetailsById(int userId) async {
     //debugPrint('User ID from  UserRepository: $userId');
-    final response = await _userService.getCompanyById(
+    final response = await _userService.getUserById(
       int.parse(userId.toString()),
     );
 
@@ -358,7 +378,7 @@ class UserRepository extends GetxController {
     debugPrint('Updated User: ${updatedUser.toJson()}');
 
     // get editcontroller instance
-    final controller = Get.put(UserController());
+    final controller = Get.find<UserController>();
 
     debugPrint(controller.hasImageChanged.value.toString());
 

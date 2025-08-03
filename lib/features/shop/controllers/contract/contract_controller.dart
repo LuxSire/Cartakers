@@ -84,9 +84,9 @@ class ContractController extends TBaseController<ContractModel> {
     //
     loadUsers();
     loadAllObjects();
-    loadContracts();
+    //loadContracts();
   }
-
+/*
   Future<void> loadContracts() async {
     loading.value = true;
     try {
@@ -121,7 +121,7 @@ class ContractController extends TBaseController<ContractModel> {
       loading.value = false;
     }
   }
-
+*/
   // Load tenants and update state
   void loadUsers() async {
     try {

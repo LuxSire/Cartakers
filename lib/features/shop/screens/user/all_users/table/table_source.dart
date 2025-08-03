@@ -1,27 +1,28 @@
 import 'package:data_table_2/data_table_2.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/common/widgets/containers/rounded_container.dart';
+//import 'package:xm_frontend/common/widgets/containers/rounded_container.dart';
 import 'package:xm_frontend/common/widgets/images/t_circular_image.dart';
-import 'package:xm_frontend/features/personalization/models/user_model.dart';
-import 'package:xm_frontend/features/shop/controllers/object/object_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
+//import 'package:xm_frontend/features/personalization/models/user_model.dart';
+//import 'package:xm_frontend/features/shop/controllers/object/object_controller.dart';
+//import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
+//import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 import 'package:xm_frontend/features/shop/screens/user/dialogs/edit_user.dart';
 import 'package:xm_frontend/routes/routes.dart';
 import 'package:xm_frontend/utils/constants/image_strings.dart';
-import 'package:xm_frontend/utils/helpers/helper_functions.dart';
+//import 'package:xm_frontend/utils/helpers/helper_functions.dart';
 
 import '../../../../../../common/widgets/icons/table_action_icon_buttons.dart';
-import '../../../../../../common/widgets/images/t_rounded_image.dart';
+//import '../../../../../../common/widgets/images/t_rounded_image.dart';
 import '../../../../../../utils/constants/colors.dart';
 import '../../../../../../utils/constants/enums.dart';
 import '../../../../../../utils/constants/sizes.dart';
 
 class UsersRows extends DataTableSource {
-  final controller = UserController.instance;
+  final controller = Get.find<UserController>();
 
   // UsersRows  () {
   //   controller.refreshData();
@@ -29,17 +30,15 @@ class UsersRows extends DataTableSource {
 
   @override
   DataRow? getRow(int index) {
-    if (index >= controller.filteredItems.length)
-      return null; // prevent overflow
+//    if (index >= controller.filteredUsers.length)
+ //     return null; // prevent overflow
 
-    final user = controller.filteredItems[index];
+    final user = controller.filteredUsers[index];
+    debugPrint("UsersRows initialized" 
+        " for user: ${user.fullName} with index: $index");
+
     return DataRow2(
       onTap: () async {
-        final controllerContract = Get.put(ContractController());
-
-        controllerContract.initializeContractData(user.userContractId!);
-
-        //  controllerContract.contractModel.value;
 
         debugPrint('User FULL Name: ${user.fullName}');
         final result = await Get.toNamed(
@@ -48,13 +47,13 @@ class UsersRows extends DataTableSource {
         );
 
         if (result == true) {
-          final updatedUser = controller.userModel.value;
-          final index = controller.filteredItems.indexWhere(
+          final updatedUser = controller.user.value;
+          final index = controller.filteredUsers.indexWhere(
             (t) => t.id == updatedUser.id,
           );
           if (index != -1) {
-            controller.filteredItems[index] = updatedUser;
-            controller.filteredItems.refresh();
+            controller.filteredUsers[index] = updatedUser;
+            controller.filteredUsers.refresh();
           }
         }
       },
@@ -62,6 +61,7 @@ class UsersRows extends DataTableSource {
       onSelectChanged:
           (value) => controller.selectedRows[index] = value ?? false,
       cells: [
+        // 1. User name (with image)
         DataCell(
           Row(
             children: [
@@ -88,7 +88,6 @@ class UsersRows extends DataTableSource {
                   children: [
                     Text(
                       user.fullName,
-
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -109,71 +108,38 @@ class UsersRows extends DataTableSource {
             ],
           ),
         ),
-        DataCell(Text(user.objectName!)),
+        // 2. Object Name
+        DataCell(Text(user.objectName ?? '')), // <-- Added cell for object name
+        // 3. Email
         DataCell(Text(user.email)),
+        // 4. Phone
         DataCell(Text(user.fullPhoneNumber!)),
-        DataCell(Text(user.unitNumber!)),
-        DataCell(Text(user.contractReference!)),
-        DataCell(
-          TRoundedContainer(
-            radius: TSizes.cardRadiusSm,
-            padding: const EdgeInsets.symmetric(
-              vertical: TSizes.sm,
-              horizontal: TSizes.md,
-            ),
-            backgroundColor: THelperFunctions.getUnitContractStatusColor(
-              user.contractStatus!,
-            ).withOpacity(0.1),
-            child: Text(
-              THelperFunctions.getUnitContractStatusText(
-                user.contractStatus!,
-              ),
-              style: TextStyle(
-                color: THelperFunctions.getUnitStatusColor(
-                  user.contractStatus!,
-                ),
-              ),
-            ),
-          ),
-        ),
-
+        // 5. Date Created
         DataCell(Text(user.createdAt == null ? '' : user.formattedDate)),
+        // 6. Actions
         DataCell(
           TTableActionButtons(
             view: true,
             edit: true,
-
             onViewPressed: () async {
-              //  controller.tenantModel.value = tenant;
-
-              final controllerContract = Get.put(ContractController());
-
-              controllerContract.initializeContractData(
-                user.userContractId!,
-              );
-
-              //  controllerContract.contractModel.value;
-
               debugPrint('User FULL Name: ${user.fullName}');
               final result = await Get.toNamed(
                 Routes.userDetails,
                 arguments: user,
               );
-
               if (result == true) {
                 final updatedUser = controller.userModel.value;
-                final index = controller.filteredItems.indexWhere(
+                final index = controller.filteredUsers.indexWhere(
                   (t) => t.id == updatedUser.id,
                 );
                 if (index != -1) {
-                  controller.filteredItems[index] = updatedUser ;
-                  controller.filteredItems.refresh();
+                  controller.filteredUsers[index] = updatedUser;
+                  controller.filteredUsers.refresh();
                 }
               }
             },
             onEditPressed: () async {
               controller.userModel.value = user;
-
               final result = await showDialog<bool>(
                 context: Get.context!,
                 barrierDismissible: false,
@@ -181,11 +147,8 @@ class UsersRows extends DataTableSource {
                   return const EditUserDialog();
                 },
               );
-
               if (result == true) {
-                //  debugPrint('Tenant updated successfully');
                 controller.refreshData();
-                // update the UI
                 controller.userModel.refresh();
               } else {
                 debugPrint('User update failed');
@@ -202,7 +165,7 @@ class UsersRows extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => controller.filteredItems.length;
+  int get rowCount => controller.filteredUsers.length;
 
   @override
   int get selectedRowCount =>

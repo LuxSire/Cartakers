@@ -20,7 +20,7 @@ class UserTableHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(UserController());
+    final controller = Get.find<UserController>();
     final isDesktop = TDeviceUtils.isDesktopScreen(context);
     final width = MediaQuery.of(context).size.width;
 

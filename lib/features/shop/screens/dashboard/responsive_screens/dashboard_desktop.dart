@@ -73,7 +73,7 @@ class DashboardDesktopScreen extends StatelessWidget {
                   Expanded(
                     child: Obx(
                       () => ADashboardCard(
-                        onTap: () => Get.toNamed(Routes.usersContracts),
+                        onTap: () => Get.toNamed(Routes.usersPermissions),
 
                         headingIcon: Iconsax.profile_2user,
                         headingIconColor: Colors.green,

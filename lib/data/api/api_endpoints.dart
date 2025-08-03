@@ -10,13 +10,18 @@ class ApiEndpoints {
   static const String loginUser = 'api/users/login-user';
   static const String getUserByEmail = 'api/users/get-user-by-email';
   static const String getUserById = 'api/users/get-user-by-id';
-
+  static const String getUsersByCompany = 'api/users/get-users-by-company';
+  static const String getAllObjects = 'api/objects/get-all-objects';
+  static const String getAllUsers = 'api/users/get-all-users';
   static const String getObjectsLastAnnouncement =
-      'api/buildings/get-object-last-announcement';
+      'api/objects/get-object-last-announcement';
+  static const String getObjectDocUrls =
+      'api/objects/get-object-doc-urls';
+ 
   static const String getUserUpcomingBooking =
       'api/users/get-user-upcoming-booking';
   static const String getObjectRequestTypes =
-      'api/buildings/get-object-request-types';
+      'api/objects/get-object-request-types';
   static const String createUserObjectRequest =
       'api/users/create-user-object-request';
   static const String createUserObjectRequestLog =
@@ -27,7 +32,7 @@ class ApiEndpoints {
   static const String getUserObjectRequests =
       'api/users/get-user-object-requests';
   static const String getObjectRequestLogs =
-      'api/buildings/get-object-request-logs';
+      'api/objects/get-object-request-logs';
   static const String updateUserObjectRequestStatus =
       'api/users/update-user-object-request-status';
   static const String getObjectContactNumbers =
@@ -126,8 +131,8 @@ class ApiEndpoints {
       'api/objects/get-object-units-by-id';
   static const String getAllUsersByContract =
       'api/users/get-all-users-by-contract';
-  static const String getBuildingUnitContractsByUnitId =
-      'api/objects/get-building-unit-contracts-by-unit-id';
+  static const String getObjectUnitContractsByUnitId =
+      'api/objects/get-object-unit-contracts-by-unit-id';
   static const String getObjectNonContractUsersByObjectId =
       'api/objects/get-object-non-contract-users-by-object-id';
   static const String getContractById = 'api/objects/get-contract-by-id';
@@ -244,10 +249,10 @@ class ApiEndpoints {
   static const String assignUserToObjectsBatch =
       'api/users/assign-user-to-object-batch';
   static const String getUserAssignedObjects =
-      'api/users/get-user-assigned-objects';
+      'api/objects/get-objects-by-user-id';
 
   static const String deleteAllUserAssignedObjects =
-      'api/users/delete-all-user-assigned-objects';
+      'api/objects/delete-all-user-assigned-objects';
 
   static const String deleteUserById = 'api/users/delete-user-by-id';
   static const String deleteUserDirectory = 'api/users/delete-user-directory';

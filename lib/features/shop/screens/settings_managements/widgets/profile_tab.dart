@@ -171,32 +171,32 @@ class ProfileTab extends StatelessWidget {
                         _InfoItem(
                           label: AppLocalization.of(
                             context,
-                          ).translate('tenants_screen.lbl_first_name'),
+                          ).translate('users_screen.lbl_first_name'),
                           value: user.firstName ?? '',
                         ),
                         _InfoItem(
                           label: AppLocalization.of(
                             context,
-                          ).translate('tenants_screen.lbl_last_name'),
+                          ).translate('users_screen.lbl_last_name'),
                           value: user.lastName ?? '',
                         ),
                         if (user.fullPhoneNumber?.isNotEmpty ?? false)
                           _InfoItem(
                             label: AppLocalization.of(
                               context,
-                            ).translate('tenants_screen.lbl_phone_no'),
+                            ).translate('users_screen.lbl_phone_no'),
                             value: user.fullPhoneNumber ?? '',
                           ),
                         _InfoItem(
                           label: AppLocalization.of(
                             context,
-                          ).translate('tenants_screen.lbl_email'),
+                          ).translate('users_screen.lbl_email'),
                           value: user.email ?? '',
                         ),
                         if ((user.lang ?? '').isNotEmpty)
                           _InfoItem(
                             label: AppLocalization.of(context).translate(
-                              'tenants_screen.lbl_preferred_language',
+                              'users_screen.lbl_preferred_language',
                             ),
                             value: user.lang!,
                             icon: Iconsax.language_circle5,

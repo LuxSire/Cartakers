@@ -80,8 +80,6 @@ dependencies:
 
 
 
-
-
 flutter_icons:
   android: true
   ios: true
@@ -118,6 +116,7 @@ flutter:
     - assets/translations/en.json
     - assets/.env.dev
     - assets/.env.prod
+    - assets/images/app_icon.png
 
   fonts: 
     - family: Lato

@@ -31,7 +31,7 @@ class UserRows extends DataTableSource {
       return null;
     }
 
-    var user = controller.filteredItems[index];
+    var user = controller.filteredUsers[index];
     return DataRow2(
       onTap: () async {
         final userId = user.id.toString();
@@ -62,12 +62,12 @@ class UserRows extends DataTableSource {
         if (updatedUser != null) {
           // Update the user in the filteredItems list
 
-          final index = controller.filteredItems.indexWhere(
+          final index = controller.filteredUsers.indexWhere(
             (u) => u.id == updatedUser.id,
           );
           if (index != -1) {
-            controller.filteredItems[index] = updatedUser;
-            controller.filteredItems.refresh();
+            controller.filteredUsers[index] = updatedUser;
+            controller.filteredUsers.refresh();
 
             controller.refreshData();
           }
@@ -190,8 +190,8 @@ class UserRows extends DataTableSource {
                 // Update the user in the filteredItems list
 
                 if (index != -1) {
-                  controller.filteredItems[index] = updatedUser;
-                  controller.filteredItems.refresh();
+                  controller.filteredUsers[index] = updatedUser;
+                  controller.filteredUsers.refresh();
 
                   controller.refreshData();
                 }
@@ -208,7 +208,7 @@ class UserRows extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => controller.filteredItems.length;
+  int get rowCount => controller.filteredUsers.length;
 
   @override
   int get selectedRowCount =>

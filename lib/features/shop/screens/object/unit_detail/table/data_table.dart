@@ -77,7 +77,7 @@ class ObjectUnitContractTable extends StatelessWidget {
             label: Text(
               AppLocalization.of(
                 context,
-              ).translate('buildings_screen.lbl_actions'),
+              ).translate('objects_screen.lbl_actions'),
             ),
           ),
         ],

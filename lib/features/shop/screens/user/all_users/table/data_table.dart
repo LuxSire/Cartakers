@@ -2,7 +2,8 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
+import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
+//import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 import '../../../../../../common/widgets/data_table/paginated_data_table.dart';
 import 'table_source.dart';
 
@@ -11,15 +12,15 @@ class UsersTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(UserController());
+    final controller = Get.find<UserController>();
 
     return LayoutBuilder(
       builder: (context, constraints) {
         return Obx(() {
           // For forcing rebuilds (do not remove, just invisible updates)
           final _ =
-              controller.filteredItems.length + controller.selectedRows.length;
-
+              controller.filteredUsers.length + controller.selectedRows.length;
+          debugPrint("UsersTable rebuilt with ${controller.filteredUsers.length} users");
           return SizedBox(
             width: constraints.maxWidth,
             child: TPaginatedDataTable(
@@ -48,7 +49,7 @@ class UsersTable extends StatelessWidget {
                   ),
                   onSort:
                       (columnIndex, ascending) =>
-                          controller.sortByBuilding(columnIndex, ascending),
+                          controller.sortByObject(columnIndex, ascending),
                 ),
                 DataColumn2(
                   size: ColumnSize.M,
@@ -68,39 +69,6 @@ class UsersTable extends StatelessWidget {
                       context,
                     ).translate('users_screen.lbl_phone_no'),
                   ),
-                ),
-                DataColumn2(
-                  size: ColumnSize.S,
-                  label: Text(
-                    AppLocalization.of(
-                      context,
-                    ).translate('users_screen.lbl_unit'),
-                  ),
-                  onSort:
-                      (columnIndex, ascending) =>
-                          controller.sortByUnit(columnIndex, ascending),
-                ),
-                DataColumn2(
-                  size: ColumnSize.M,
-                  label: Text(
-                    AppLocalization.of(
-                      context,
-                    ).translate('users_screen.lbl_contract_reference'),
-                  ),
-                  onSort:
-                      (columnIndex, ascending) =>
-                          controller.sortByContract(columnIndex, ascending),
-                ),
-                DataColumn2(
-                  size: ColumnSize.S,
-                  label: Text(
-                    AppLocalization.of(
-                      context,
-                    ).translate('users_screen.lbl_contract_status'),
-                  ),
-                  onSort:
-                      (columnIndex, ascending) =>
-                          controller.sortByStatus(columnIndex, ascending),
                 ),
                 DataColumn2(
                   size: ColumnSize.S,

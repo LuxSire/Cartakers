@@ -39,7 +39,7 @@ class Routes {
   static const profile = '/profile';
 
   static const objectsUnits = '/objectsUnits';
-  static const usersContracts = '/usersContracts';
+  static const usersPermissions = '/usersPermissions';
   static const contractDetails = '/contractDetails';
   static const userDetails = '/userDetails';
 
@@ -69,7 +69,7 @@ class Routes {
     settings,
     profile,
     objectsUnits,
-    usersContracts,
+    usersPermissions,
     maintenanceTasks,
     amenitiesBookings,
     communication,

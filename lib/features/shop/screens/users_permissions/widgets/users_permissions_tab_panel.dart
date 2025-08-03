@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/features/shop/screens/users_contracts/widgets/users_contracts_detail_tab.dart';
+import 'package:xm_frontend/features/shop/screens/users_permissions/widgets/users_permissions_detail_tab.dart';
 
 import 'package:xm_frontend/utils/constants/colors.dart';
 
 import '../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../utils/constants/sizes.dart';
 
-class UsersContractsTabPanel extends StatelessWidget {
-  const UsersContractsTabPanel({super.key});
+class UsersPermissionsTabPanel extends StatelessWidget {
+  const UsersPermissionsTabPanel({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class UsersContractsTabPanel extends StatelessWidget {
                     Tab(
                       text: AppLocalization.of(
                         context,
-                      ).translate('profile_screen.lbl_contracts'),
+                      ).translate('profile_screen.lbl_permissions'),
                       icon: Icon(Iconsax.document),
                     ),
                   ],
@@ -55,11 +55,11 @@ class UsersContractsTabPanel extends StatelessWidget {
                   child: TabBarView(
                     children: [
                       // Users Tab
-                      UsersContractsDetailTab(tabType: 'users'),
+                      UsersPermissionsDetailTab(tabType: 'users'),  
                       // contracts Tab
-                      UsersContractsDetailTab(tabType: 'contracts'),
+                      UsersPermissionsDetailTab(tabType: 'permissions'),
                     ],
-                  ),
+                  ),    
                 ),
               ],
             ),

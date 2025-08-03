@@ -71,7 +71,7 @@ class DashboardTabletScreen extends StatelessWidget {
                   Expanded(
                     child: Obx(
                       () => ADashboardCard(
-                        onTap: () => Get.toNamed(Routes.usersContracts),
+                        onTap: () => Get.toNamed(Routes.usersPermissions),
 
                         headingIcon: Iconsax.profile_2user,
                         headingIconColor: Colors.green,
@@ -192,7 +192,7 @@ class DashboardTabletScreen extends StatelessWidget {
                             Text(
                               AppLocalization.of(
                                 context,
-                              ).translate('dashboard_screen.lbl_buildings'),
+                              ).translate('dashboard_screen.lbl_objects'),
                               style: Theme.of(context).textTheme.headlineSmall,
                             ),
                           ],
@@ -219,7 +219,7 @@ class DashboardTabletScreen extends StatelessWidget {
                           ),
                           label: Text(
                             AppLocalization.of(context).translate(
-                              'buildings_screen.lbl_create_new_building',
+                              'objects_screen.lbl_create_new_object',
                             ),
                             style: const TextStyle(color: TColors.alterColor),
                           ),

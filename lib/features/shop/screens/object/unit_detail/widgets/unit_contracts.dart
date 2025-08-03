@@ -80,7 +80,7 @@ class UnitContracts extends StatelessWidget {
                 Text(
                   AppLocalization.of(
                     context,
-                  ).translate('unit_detail_screen.lbl_contracts'),
+                  ).translate('unit_detail_screen.lbl_permissions'),
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ],

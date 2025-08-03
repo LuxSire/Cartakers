@@ -21,6 +21,14 @@ class EditObjectController extends GetxController {
   final loading = false.obs;
   RxString imageURL = ''.obs;
   final name = TextEditingController();
+  final occupancy = TextEditingController();
+  final zoning = TextEditingController();
+  final city = TextEditingController();
+  final description = TextEditingController();
+  final owner = TextEditingController();
+  final status = TextEditingController();
+  final type_ = TextEditingController();
+  final price = TextEditingController();
   final street = TextEditingController();
   final objectNumber = TextEditingController();
   final zipCode = TextEditingController();
@@ -40,6 +48,7 @@ class EditObjectController extends GetxController {
   RxList<UnitModel> filteredObjectUnits = <UnitModel>[].obs;
 
   RxList<UnitRoomModel> unitListRooms = <UnitRoomModel>[].obs;
+  RxList<String> objectImages = <String>[].obs;
 
   Rx<Uint8List?> memoryBytes = Rx<Uint8List?>(null);
 
@@ -60,19 +69,37 @@ class EditObjectController extends GetxController {
 
   /// Init Data
   void init(ObjectModel object) {
-    name.text = object.name!;
-    street.text = object.street!;
-    objectNumber.text = object.objectNumber!;
-    zipCode.text = object.zipCode!;
-    location.text = object.location!;
-    units.text = object.totalUnits!.toString();
-    floors.text = object.totalFloors!.toString();
-    imageURL.value = object.imgUrl!;
+    name.text = object.name ?? '';
+    occupancy.text = object.occupancy ?? '';
+    zoning.text = object.zoning ?? '';
+    city.text = object.city ?? '';
+    description.text = object.description ?? '';
+    owner.text = object.owner?.toString() ?? '';
+    status.text = object.status?.toString() ?? '';
+    type_.text = object.type_ ?? '';
+    price.text = object.price?.toString() ?? '';
+    street.text = object.street ?? '';
+    objectNumber.text = object.objectNumber ?? '';
+    zipCode.text = object.zipCode ?? '';
+    location.text = object.location ?? '';
+    units.text = object.totalUnits?.toString() ?? '';
+    floors.text = object.totalFloors?.toString() ?? '';
+    imageURL.value = object.imgUrl ?? '';
+    // Fetch object images
+    getObjectImages(object);
   }
 
   /// Method to reset fields
   void resetFields() {
     name.clear();
+    occupancy.clear();
+    zoning.clear();
+    city.clear();
+    description.clear();
+    owner.clear();
+    status.clear();
+    type_.clear();
+    price.clear();
     street.clear();
     objectNumber.clear();
     zipCode.clear();
@@ -83,6 +110,7 @@ class EditObjectController extends GetxController {
 
     loading(false);
   }
+
 
   void updateUnitRoom(UnitModel unit, UnitRoomModel newRoom) {
     unit.pieceId = newRoom.id; // or however you store ID
@@ -98,6 +126,7 @@ class EditObjectController extends GetxController {
     // tell the table to refresh
     update();
   }
+
 
   Future<void> getObjectUnits(ObjectModel object) async {
     try {
@@ -130,6 +159,25 @@ class EditObjectController extends GetxController {
     } finally {
       unitsLoading.value = false;
     }
+  }
+  /// Fetch object images from repository
+  Future<void> getObjectImages(ObjectModel object) async {
+    try {
+      if (object.id != null && object.id!.isNotEmpty) {
+        final images = await ObjectRepository.instance.fetchObjectImages(int.parse(object.id!));
+        debugPrint('Fetched images for object ${object.id}: $images');
+        
+        if (images != null) {
+          objectImages.assignAll(images);
+        } else {
+          objectImages.clear();
+        }
+      }
+    } catch (e) {
+      TLoaders.errorSnackBar(title: 'Image Fetch Error', message: e.toString());
+      objectImages.clear();
+    }
+    update();
   }
 
   void searchQuery(String query) {
@@ -248,6 +296,14 @@ class EditObjectController extends GetxController {
 
       // Map Data
       object.name = name.text.trim();
+      object.occupancy = occupancy.text.trim();
+      object.zoning = zoning.text.trim();
+      object.city = city.text.trim();
+      object.description = description.text.trim();
+      object.owner = int.tryParse(owner.text.trim());
+      object.status = int.tryParse(status.text.trim());
+      object.type_ = type_.text.trim();
+      object.price = double.tryParse(price.text.trim());
       object.street = street.text.trim();
       object.objectNumber = objectNumber.text.trim();
       object.zipCode = zipCode.text.trim();

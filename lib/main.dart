@@ -15,6 +15,7 @@ import 'app.dart';
 import 'data/repositories/authentication/authentication_repository.dart';
 import 'features/personalization/controllers/user_controller.dart';
 import 'features/shop/controllers/dashboard/dashboard_controller.dart';
+import 'package:xm_frontend/data/repositories/user/user_repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,9 +35,10 @@ Future<void> main() async {
   Get.put(AppController());
   Get.put(AuthenticationRepository());
   Get.put(CompanyRepository());
-  Get.put(UserController());
+  Get.put(UserController()); // personalization version ONLY
   Get.put(SettingsController());
   Get.put(DashboardController());
+  Get.put(UserRepository());
 
   AuthenticationRepository.instance.restoreSession();
 

@@ -103,22 +103,6 @@ class CreateObjectDialog extends StatelessWidget {
 
               // const SizedBox(height: TSizes.spaceBtwInputFields),
 
-              // TextFormField(
-              //   controller: controller.zipCode,
-              //   validator:
-              //       (value) => TValidator.validateEmptyText(
-              //         AppLocalization.of(
-              //           context,
-              //         ).translate('buildings_screen.lbl_zip_code'),
-              //         value,
-              //       ),
-              //   decoration: InputDecoration(
-              //     labelText: AppLocalization.of(
-              //       context,
-              //     ).translate('buildings_screen.lbl_zip_code'),
-              //     prefixIcon: Icon(Icons.location_on_outlined),
-              //   ),
-              // ),
 
               // const SizedBox(height: TSizes.spaceBtwInputFields),
 

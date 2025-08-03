@@ -5,7 +5,7 @@ import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/features/shop/controllers/customer/customer_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 import 'package:xm_frontend/features/shop/screens/communication/all_communications/widgets/communication_detail_tab.dart';
-import 'package:xm_frontend/features/shop/screens/users_contracts/widgets/users_contracts_detail_tab.dart';
+import 'package:xm_frontend/features/shop/screens/users_permissions/widgets/users_permissions_detail_tab.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
@@ -18,7 +18,7 @@ class CommunicationMobileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(UserController());
+    final controller = Get.find<UserController>();
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -70,13 +70,7 @@ class CommunicationMobileScreen extends StatelessWidget {
                                   ),
                                   icon: Icon(Iconsax.message),
                                 ),
-                                // Tab(
-                                //   text: AppLocalization.of(
-                                //     context,
-                                //   ).translate('profile_screen.lbl_contracts'),
-                                //   icon: Icon(Iconsax.note_2),
-                                // ),
-                              ],
+                               ],
                             ),
                             const SizedBox(height: TSizes.defaultSpace),
                             const SizedBox(

@@ -14,7 +14,7 @@ class UsersTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(UserController());
+    final controller = Get.find<UserController>();
 
     // add post frame callback to ensure data is loaded after first build
     //  WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -69,49 +69,7 @@ class UsersTable extends StatelessWidget {
                 ),
           ),
 
-          DataColumn2(
-            size: ColumnSize.M,
-            label: Text(
-              AppLocalization.of(
-                context,
-              ).translate('tab_users_screen.lbl_role'),
-            ),
-            onSort:
-                (columnIndex, ascending) => controller.sortByPropertyName(
-                  columnIndex,
-                  ascending,
-                  (u) => u.translatedRoleNameExt.toString(),
-                ),
-          ),
-          DataColumn2(
-            size: ColumnSize.M,
-            label: Text(
-              AppLocalization.of(
-                context,
-              ).translate('tab_users_screen.lbl_objects'),
-            ),
-            onSort:
-                (columnIndex, ascending) => controller.sortByPropertyName(
-                  columnIndex,
-                  ascending,
-                  (u) => u.objectPermissions.toString(),
-                ),
-          ),
 
-          DataColumn2(
-            size: ColumnSize.M,
-            label: Text(
-              AppLocalization.of(
-                context,
-              ).translate('tab_users_screen.lbl_status'),
-            ),
-            onSort:
-                (columnIndex, ascending) => controller.sortByPropertyName(
-                  columnIndex,
-                  ascending,
-                  (u) => u.translatedStatus.toString(),
-                ),
-          ),
           DataColumn2(
             size: ColumnSize.M,
             label: Text(

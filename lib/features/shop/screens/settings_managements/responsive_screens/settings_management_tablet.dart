@@ -5,7 +5,7 @@ import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 //import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 import 'package:xm_frontend/features/shop/screens/settings_managements/widgets/settings_management_detail_tab.dart';
-import 'package:xm_frontend/features/shop/screens/users_contracts/widgets/users_contracts_detail_tab.dart';
+import 'package:xm_frontend/features/shop/screens/users_permissions/widgets/users_permissions_detail_tab.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
@@ -19,7 +19,7 @@ class SettingsManagementTabletScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(UserController());
+    final controller = Get.find<UserController>();
 
     final double tabViewHeight = MediaQuery.of(context).size.height * 0.7;
 

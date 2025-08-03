@@ -4,20 +4,20 @@ import 'package:iconsax/iconsax.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import 'package:xm_frontend/common/widgets/loaders/loader_animation.dart';
-import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
-import 'package:xm_frontend/features/shop/screens/users_contracts/widgets/users_contracts_detail_tab.dart';
+import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
+import 'package:xm_frontend/features/shop/screens/users_permissions/widgets/users_permissions_detail_tab.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../utils/constants/sizes.dart';
 
-class UsersContractsDesktopScreen extends StatelessWidget {
-  const UsersContractsDesktopScreen({super.key});
+class UsersPermissionsDesktopScreen extends StatelessWidget {
+  const UsersPermissionsDesktopScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(UserController());
-
+    final controller = Get.find<UserController>();
+    debugPrint('UsersPermissionsDesktopScreen build called');
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(TSizes.defaultSpace),
@@ -28,7 +28,7 @@ class UsersContractsDesktopScreen extends StatelessWidget {
             TBreadcrumbsWithHeading(
               heading: AppLocalization.of(
                 context,
-              ).translate('sidebar.lbl_tenants_and_contracts'),
+              ).translate('sidebar.lbl_users_and_contracts'),
               breadcrumbItems: const [],
             ),
             const SizedBox(height: TSizes.spaceBtwSections),
@@ -55,13 +55,13 @@ class UsersContractsDesktopScreen extends StatelessWidget {
                             Tab(
                               text: AppLocalization.of(
                                 context,
-                              ).translate('tenants_screen.lbl_tenants'),
+                              ).translate('users_screen.lbl_users'),
                               icon: const Icon(Iconsax.profile_2user),
                             ),
                             Tab(
                               text: AppLocalization.of(
                                 context,
-                              ).translate('profile_screen.lbl_contracts'),
+                              ).translate('profile_screen.'),
                               icon: const Icon(Iconsax.note_2),
                             ),
                             Tab(
@@ -77,9 +77,9 @@ class UsersContractsDesktopScreen extends StatelessWidget {
                         Expanded(
                           child: TabBarView(
                             children: [
-                              UsersContractsDetailTab(tabType: 'users'),
-                              UsersContractsDetailTab(tabType: 'contracts'),
-                              UsersContractsDetailTab(
+                              UsersPermissionsDetailTab(tabType: 'users'),
+                              UsersPermissionsDetailTab(tabType: 'permissions'),
+                              UsersPermissionsDetailTab(
                                 tabType: 'app_invitation',
                               ),
                             ],

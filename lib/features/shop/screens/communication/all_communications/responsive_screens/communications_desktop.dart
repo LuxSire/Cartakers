@@ -8,7 +8,7 @@ import 'package:xm_frontend/features/shop/controllers/object/object_controller.d
 import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 import 'package:xm_frontend/features/shop/screens/communication/all_communications/widgets/communication_detail_tab.dart';
 import 'package:xm_frontend/features/shop/screens/user/all_users/widgets/table_header.dart';
-import 'package:xm_frontend/features/shop/screens/users_contracts/widgets/users_contracts_detail_tab.dart';
+import 'package:xm_frontend/features/shop/screens/users_permissions/widgets/users_permissions_detail_tab.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 
 import '../../../../../../common/widgets/containers/rounded_container.dart';
@@ -19,7 +19,7 @@ class CommunicationDesktopScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(UserController());
+    final controller = Get.find<UserController>();
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -71,12 +71,7 @@ class CommunicationDesktopScreen extends StatelessWidget {
                                   ),
                                   icon: Icon(Iconsax.message),
                                 ),
-                                // Tab(
-                                //   text: AppLocalization.of(
-                                //     context,
-                                //   ).translate('profile_screen.lbl_contracts'),
-                                //   icon: Icon(Iconsax.note_2),
-                                // ),
+
                               ],
                             ),
                             const SizedBox(height: TSizes.defaultSpace),

@@ -341,41 +341,18 @@ class ContractRepository extends GetxController {
 
   Future<List<ContractModel>> getContractsByObjectId(int objectId) async {
     try {
-      final response = await _objectService.getAllObjectContracts(
-        int.parse(objectId.toString()),
-      );
-
-      debugPrint('Object ID: $objectId');
-      // get the cont of response
-
-      debugPrint('Response contract length: ${response.length}');
-
-      return response
-          .map((contractData) => ContractModel.fromJson(contractData))
-          .toList();
+      return [];
     } catch (e) {
-      debugPrint('Error fetching all object contracts: $e');
+      debugPrint('Error fetching contracts by object ID: $e');
       return [];
     }
   }
 
   Future<List<ContractModel>> getAllCompanyObjectsContracts() async {
     try {
-      final companyId = AuthenticationRepository.instance.currentUser!.companyId;
-
-      final response = await _objectService.getAllCompanyObjectsContracts(
-        int.parse(companyId.toString()),
-      );
-
-      // get the cont of response
-
-      debugPrint('Response contract length: ${response.length}');
-
-      return response
-          .map((contractData) => ContractModel.fromJson(contractData))
-          .toList();
+      return [];
     } catch (e) {
-      debugPrint('Error fetching all agency buildings contracts: $e');
+      debugPrint('Error fetching company object contracts: $e');
       return [];
     }
   }

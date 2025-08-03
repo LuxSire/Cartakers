@@ -37,24 +37,11 @@ class EditObjectDesktopScreen extends StatelessWidget {
               ),
               const SizedBox(height: TSizes.spaceBtwSections),
 
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Right Side
-                  Expanded(
-                    child: Column(
-                      children: [
-                        // Form
-                        EditObjectForm(object: object),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: TSizes.spaceBtwSections),
-
-                  // Left Side units
-                  Expanded(flex: 2, child: ObjectUnits(object: object)),
-                ],
-              ),
+              // Form on top, full width
+              EditObjectForm(object: object),
+              const SizedBox(height: TSizes.spaceBtwSections),
+              // Units at the bottom, full width
+              ObjectUnits(object: object),
             ],
           ),
         ),

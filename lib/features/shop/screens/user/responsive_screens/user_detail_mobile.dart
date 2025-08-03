@@ -18,7 +18,7 @@ class UserDetailMobileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(UserController());
+    final controller = Get.find<UserController>();
 
     debugPrint('User from detail: ${user.toJson()}');
     WidgetsBinding.instance.addPostFrameCallback((_) {

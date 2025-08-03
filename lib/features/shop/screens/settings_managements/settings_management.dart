@@ -12,7 +12,7 @@ class SettingsManagementScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userController = Get.put(UserController());
+    final userController = Get.find<UserController>();
 
     // post frame callback to ensure data is loaded after first build
     WidgetsBinding.instance.addPostFrameCallback((_) async {

@@ -23,30 +23,29 @@ class ObjectController extends TBaseController<ObjectModel> {
     final result = await _objectRepository.getAllObjects();
 
     // also get user object restrictions
-
     final updatedUser = await userController.fetchUserDetails();
 
     debugPrint('Updated User in controller: ${updatedUser.toJson()}');
 
     final userObjectRestrictions = updatedUser.objectPermissionIds ?? [];
+    
 
-    debugPrint('User object restrictions: $userObjectRestrictions');
+    // Normalize both lists to String for comparison
+    final restrictionIds = userObjectRestrictions.map((e) => e.toString()).toSet();
+    
 
-    debugPrint('Loaded objects: ${result.length}');
+    // Debug print each object's imgUrl 
+    for (var object in result) {
+      debugPrint('Object: ${object.name}, imgUrl: ${object.imgUrl}');
+    }
 
-    final filteredObjects =
-        result
-            .where(
-              (object) => userObjectRestrictions.contains(
-                int.parse(object.id.toString()),
-              ),
-            )
-            .toList();
+    final filteredObjects = result.where((object) {
+      final objectIdStr = object.id.toString();
+      return restrictionIds.contains(objectIdStr);
+    }).toList();
 
-    debugPrint('Filtered objects: ${filteredObjects.length}');
 
     filteredItems.value = filteredObjects;
-
     // debugPrint('Filtered buildings: ${filteredItems.length}');
   }
 

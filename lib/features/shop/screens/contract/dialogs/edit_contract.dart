@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/data/models/contract_model.dart';
+//import 'package:xm_frontend/data/models/contract_model.dart';
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
 import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
 import 'package:xm_frontend/features/shop/screens/user/dialogs/create_user.dart';
@@ -218,13 +218,13 @@ class EditContractDialog extends StatelessWidget {
                       child: MultiSelectDialogField<UserModel>(
                         title: Text(
                           AppLocalization.of(context).translate(
-                            'edit_contract_screen.lbl_select_tenants',
+                            'edit_permission_screen.lbl_select_users',
                           ),
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                         buttonText: Text(
                           AppLocalization.of(context).translate(
-                            'edit_contract_screen.lbl_select_tenants',
+                            'edit_permission_screen.lbl_select_users',
                           ),
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),

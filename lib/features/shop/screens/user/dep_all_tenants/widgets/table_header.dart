@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
+//import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
+import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 import 'package:xm_frontend/features/shop/screens/user/dialogs/create_user.dart';
 import 'package:xm_frontend/features/shop/screens/user/dialogs/users_filter_dialog.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
@@ -14,7 +15,7 @@ class TenantTableHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(UserController());
+    final controller = Get.find<UserController>();
     final isDesktop = TDeviceUtils.isDesktopScreen(context);
     final width = MediaQuery.of(context).size.width;
 
