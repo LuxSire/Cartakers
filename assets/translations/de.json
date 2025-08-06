@@ -800,8 +800,8 @@
 
   },
 
-  "tenant_screen": {
-  "lbl_tenant_details": "Mieterdetails",
+  "user_screen": {
+  "lbl_user_details": "Benutzerdetails",
   "lbl_profile_information": "Profilinformationen"
 },
 
@@ -901,6 +901,7 @@
 
 "tab_users_screen": {
   "lbl_users": "Benutzer",
+   "lbl_permissions": "Berechtigungen",
   "lbl_search_users": "Benutzer suchen",
   "lbl_create_new_user": "Neuen Benutzer erstellen",
   "lbl_first_name": "Vorname",

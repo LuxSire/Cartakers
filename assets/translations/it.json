@@ -891,6 +891,7 @@
 
 "tab_users_screen": {
   "lbl_users": "Utenti",
+"lbl_permissions": "Permessi",
   "lbl_search_users": "Cerca utenti",
   "lbl_create_new_user": "Crea nuovo utente",
   "lbl_first_name": "Nome",

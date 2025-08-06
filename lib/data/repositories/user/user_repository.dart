@@ -113,7 +113,7 @@ class UserRepository extends GetxController {
       return UserModel.empty();
     }
 
-    final response = await _userService.getCompanyById(
+    final response = await _userService.getUserById(
       int.parse(userId.toString()),
     );
 
@@ -127,8 +127,9 @@ class UserRepository extends GetxController {
 
     debugPrint('Response from fetchUserDetails API : $response');
     debugPrint('Fetched object_permission: $assignedObjects');
+    final id = int.tryParse(response['id'].toString()) ?? 0;
 
-    if (response['id'] > 0) {
+    if (id > 0) {
       // Pass object_permission_ids to UserModel
       final userMap = Map<String, dynamic>.from(response);
       userMap['object_permission_ids'] = objectPermissionIds;
@@ -147,7 +148,8 @@ class UserRepository extends GetxController {
 
     //  debugPrint('Response from fetchUserDetailsById 2: $response');
 
-    if (response['id'] > 0) {
+   final id = int.tryParse(response['id'].toString()) ?? 0;
+    if (id > 0) {
       return UserModel.fromJson(response);
     } else {
       return UserModel.empty();
@@ -178,10 +180,10 @@ class UserRepository extends GetxController {
     }
   }
 
-  Future<List<DocsModel>> fetchUserDocsByContractId(int contractId) async {
+  Future<List<DocsModel>> fetchUserDocsByUserId(int userId) async {
     try {
       final List<Map<String, dynamic>> responseList = await _userService
-          .getUserObjectDocs(contractId);
+          .getUserDocs(userId);
 
       if (responseList.isEmpty) return [];
 
@@ -189,7 +191,7 @@ class UserRepository extends GetxController {
           .map((docData) => DocsModel.fromJson(docData))
           .toList();
     } catch (e) {
-      debugPrint('Error in fetchUserDocsByContractId: $e');
+      debugPrint('Error in fetchUserDocsByUserId: $e');
       return [];
     }
   }
@@ -394,7 +396,7 @@ class UserRepository extends GetxController {
 
       if (controller.hasImageChanged.value) {
         final directoryName =
-            "companies/${updatedUser.companyId}/users/${updatedUser.id}";
+            "users/${updatedUser.id}";
 
         try {
           late Map<String, dynamic> imageResponse;
@@ -405,25 +407,25 @@ class UserRepository extends GetxController {
             //${DateTime.now().millisecondsSinceEpoch}
 
             final bytes = controller.memoryBytes.value!;
-            final filename = "user_${updatedUser.id}_$timestamp.jpg";
+            final filename = "user_${updatedUser.id}.jpg";
             imageResponse = await ObjectService().uploadAzureImage(
               bytes: bytes,
               filename: filename,
               id: int.parse(updatedUser.id!),
-              containerName: "media",
+              containerName: "docs",
               directoryName: directoryName,
             );
           } else {
             // MOBILE/DESKTOP: write to temp file then upload
             final temp = await writeBytesToTempFile(
               controller.memoryBytes.value!,
-              'user_${updatedUser.id}_$timestamp.jpg',
+              'user_${updatedUser.id}.jpg',
             );
             imageResponse = await ObjectService().uploadAzureImage(
               file: temp,
               filename: p.basename(temp.path),
               id: int.parse(updatedUser.id!),
-              containerName: 'media',
+              containerName: 'docs',
               directoryName: directoryName,
             );
           }
@@ -450,8 +452,9 @@ class UserRepository extends GetxController {
         updatedUser.firstName,
         updatedUser.lastName,
         updatedUser.displayName,
-        updatedUser.profilePicture,
-        updatedUser.roleExtId!,
+        updatedUser.phoneNumber,
+        updatedUser.countryCode,
+        updatedUser.profilePicture
       );
 
       if (result['success'] == false) {

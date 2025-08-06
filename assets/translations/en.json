@@ -705,9 +705,8 @@
         "lbl_preferred_language": "Preferred Language",
         "lbl_import_users": "Import Users",
         "lbl_unit": "Unit",
-        "lbl_contract_status": "Contract Status"
-
- 
+        "lbl_contract_status": "Contract Status",
+        "lbl_permissions": "Permissions"
     },
     "create_contract_screen": {
         "lbl_new_contract": "New Contract",
@@ -722,6 +721,28 @@
         "lbl_select_users": "Select Users",
         "error_msg_please_select_at_least_one_user": "Please select at least one user"
     },
+        "contract_screen": {
+        "lbl_contract_information": "Information about the contract",
+        "lbl_users": "Users",
+        "lbl_start_date": "Start Date",
+        "lbl_end_date": "End Date",
+        "lbl_status": "Status",
+        "lbl_contract_reference": "Contract Reference",
+        "lbl_unit": "Unit",
+        "lbl_date_created": "Date Created",
+        "lbl_last_date_updated": "Last Date Updated",
+        "lbl_documents": "Documents",
+        "lbl_file_name": "File Name",
+        "lbl_file_type": "File Type",
+        "lbl_file_size": "File Size",
+        "lbl_created_on": "Created On",
+        "lbl_uploaded_by": "Uploaded By",
+        "lbl_upload_new_document": "Upload New Document",
+        "lbl_search_documents": "Search Documents",
+        "lbl_no_documents_found": "No documents found",
+        "lbl_select_unit": "Select Unit"
+    },
+
     "amenity_zone_screen": {
         "lbl_assign_amenity_zone": "Assign Amenity Zone",
         "lbl_amenity_zones": "Amenity Zones",

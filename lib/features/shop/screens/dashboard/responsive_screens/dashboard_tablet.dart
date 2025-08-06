@@ -7,7 +7,7 @@ import 'package:xm_frontend/common/widgets/texts/page_heading.dart';
 import 'package:xm_frontend/features/shop/controllers/object/object_controller.dart';
 import 'package:xm_frontend/features/shop/screens/object/all_objects/dialogs/create_object.dart';
 import 'package:xm_frontend/features/shop/screens/dashboard/widgets/a_dashboard_card.dart';
-import 'package:xm_frontend/features/shop/screens/dashboard/widgets/booking_card.dart';
+//import 'package:xm_frontend/features/shop/screens/dashboard/widgets/booking_card.dart';
 import 'package:xm_frontend/features/shop/screens/dashboard/widgets/object_card.dart';
 import 'package:xm_frontend/features/shop/screens/dashboard/widgets/requests_card.dart';
 import 'package:xm_frontend/features/shop/screens/dashboard/widgets/vacant_card.dart';
@@ -18,8 +18,8 @@ import '../../../../../common/widgets/icons/t_circular_icon.dart';
 import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../controllers/dashboard/dashboard_controller.dart';
-import '../table/data_table.dart';
-import '../widgets/dashboard_card.dart';
+//import '../table/data_table.dart';
+//import '../widgets/dashboard_card.dart';
 
 class DashboardTabletScreen extends StatelessWidget {
   const DashboardTabletScreen({super.key});
@@ -57,13 +57,13 @@ class DashboardTabletScreen extends StatelessWidget {
                         headingIcon: Iconsax.building,
                         headingIconColor: TColors.alterColor,
                         headingIconBgColor: TColors.alterColor.withOpacity(0.1),
-                        stats: controller.totalCompanyObjects.value,
+                        stats: controller.totalObjects.value,
                         context: context,
                         title: AppLocalization.of(
                           context,
                         ).translate('dashboard_screen.lbl_objects'),
                         subTitle:
-                            controller.totalCompanyObjects.value.toString(),
+                            controller.totalObjects.value.toString(),
                       ),
                     ),
                   ),
@@ -82,7 +82,7 @@ class DashboardTabletScreen extends StatelessWidget {
                           context,
                         ).translate('sidebar.lbl_users_and_contracts'),
                         subTitle:
-                            ' ${controller.totalObjectUsers.value.toString()}/${controller.totalObjectsContracts.value.toString()}',
+                            ' ${controller.totalUsers.value.toString()}/${controller.totalObjectsContracts.value.toString()}',
                       ),
                     ),
                   ),

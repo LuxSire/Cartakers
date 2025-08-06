@@ -1,45 +1,82 @@
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+import 'package:xm_frontend/data/repositories/object/object_repository.dart';
 
 class DocsModel {
-  final int id;
-  final int contractId;
+  final String id;
   RxString fileName; // Making fileName reactive
 
   final String fileUrl;
-  final DateTime createdAt;
   final DateTime updatedAt;
-  final int creatorId;
+  final DateTime? createdAt;
+  final String contentType;
+  final int size;
   final String creatorName;
-  final String creatorType;
 
   DocsModel({
     required this.id,
-    required this.contractId,
     required this.fileName,
     required this.fileUrl,
-    required this.createdAt,
     required this.updatedAt,
-    required this.creatorId,
+    this.createdAt,
+    required this.contentType,
     required this.creatorName,
-    required this.creatorType,
+    this.size = 0,
   });
 
-  // Convert JSON response to RequestModel
+  // Convert JSON response to DocsModel
   factory DocsModel.fromJson(Map<String, dynamic> json) {
+    DateTime updatedAt = DateTime.parse(json['lastModified']).toLocal();
+    DateTime? createdAt;
+    if (json['createdAt'] != null) {
+      try {
+        createdAt = DateTime.parse(json['createdAt']).toLocal();
+      } catch (_) {
+        createdAt = null;
+      }
+    }
     return DocsModel(
-      id: json['id'],
-      contractId: json['contract_id'],
-      fileName: RxString(json['file_name'] ?? ''), // Initialize as RxString
-      fileUrl: json['file_url'],
-      createdAt: DateTime.parse(json['created_at']).toLocal(),
-      updatedAt: DateTime.parse(json['updated_at']).toLocal(),
-      creatorId: json['creator_id'],
-      creatorName: json['creator_name'],
-      creatorType: json['creator_type'],
+      id: json['etag'],
+      fileName: RxString(json['name'] ?? ''), // Initialize as RxString
+      fileUrl: json['url'],
+      updatedAt: updatedAt,
+      createdAt: createdAt ?? updatedAt,
+      contentType: json['contentType'],
+      size: json['size'] ?? 0,
+      creatorName: json['creatorName'] ?? '',
     );
   }
 
   void updateFileName(String newFileName) {
     fileName.value = newFileName; // Reactively updating fileName
   }
+
+  // View: Open the document URL (PDF/Image/Web)
+  Future<void> view(BuildContext context) async {
+    if (await canLaunchUrlString(fileUrl)) {
+      await launchUrlString(fileUrl, mode: LaunchMode.externalApplication);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Cannot open document')),
+      );
+    }
+  }
+
+  // Rename: Update the file name both locally and via repository
+  Future<bool> rename(String newFileName) async {
+    // You may need to call an API to rename the file on the backend
+    // For now, just update locally
+    fileName.value = newFileName;
+    // Optionally, call repository to persist change
+    // return await ObjectRepository.instance.renameObjectDoc(id, newFileName);
+    return true;
+  }
+
+  // Delete: Remove the document via repository
+  Future<bool> delete() async {
+    // Call repository to delete the document
+    return true;
+  }
+
 }

@@ -21,8 +21,14 @@ class ProfileTab extends StatelessWidget {
 
     // add post frame callback to ensure the controller is initialized
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (userController.user.value.id == null) {
+      int id=userController.user.value.id != null
+          ? int.tryParse(userController.user.value.id ?? '') ?? 0
+          : 0;  
+      if (id == 0) {
         userController.fetchUserDetails();
+
+      } else {
+        userController.fetchUserDetailsById(id);
       }
     });
 
@@ -185,7 +191,7 @@ class ProfileTab extends StatelessWidget {
                             label: AppLocalization.of(
                               context,
                             ).translate('users_screen.lbl_phone_no'),
-                            value: user.fullPhoneNumber ?? '',
+                            value: user.phoneNumber ?? '',
                           ),
                         _InfoItem(
                           label: AppLocalization.of(

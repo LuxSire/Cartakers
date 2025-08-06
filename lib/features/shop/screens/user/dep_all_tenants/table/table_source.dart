@@ -8,7 +8,8 @@ import 'package:xm_frontend/features/personalization/models/user_model.dart';
 import 'package:xm_frontend/features/shop/controllers/object/object_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
+import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
+//import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 import 'package:xm_frontend/features/shop/screens/user/dialogs/edit_user.dart';
 import 'package:xm_frontend/routes/routes.dart';
 import 'package:xm_frontend/utils/constants/image_strings.dart';
@@ -32,19 +33,18 @@ class TenantsRows extends DataTableSource {
     if (index >= controller.filteredItems.length)
       return null; // prevent overflow
 
-    final tenant = controller.filteredItems[index];
+    final user = controller.filteredItems[index];
     return DataRow2(
       onTap: () async {
         final controllerContract = Get.put(ContractController());
 
-        controllerContract.initializeContractData(tenant.userContractId!);
+        controllerContract.initializeContractData(user.userContractId!);
 
         //  controllerContract.contractModel.value;
 
-        debugPrint('User FULL Name: ${tenant.fullName}');
         final result = await Get.toNamed(
           Routes.userDetails,
-          arguments: tenant,
+          arguments: user,
         );
 
         if (result == true) {
@@ -72,11 +72,11 @@ class TenantsRows extends DataTableSource {
                 fit: BoxFit.cover,
                 backgroundColor: TColors.primaryBackground,
                 image:
-                    tenant.profilePicture.isNotEmpty
-                        ? tenant.profilePicture
+                    user.profilePicture.isNotEmpty
+                        ? user.profilePicture
                         : TImages.user,
                 imageType:
-                    tenant.profilePicture.isNotEmpty
+                    user.profilePicture.isNotEmpty
                         ? ImageType.network
                         : ImageType.asset,
               ),
@@ -87,12 +87,12 @@ class TenantsRows extends DataTableSource {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      tenant.fullName,
+                      user.fullName,
 
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    if (tenant.isPrimaryUser == 1) ...[
+                    if (user.isPrimaryUser == 1) ...[
                       Text(
                         AppLocalization.of(
                           Get.context!,
@@ -109,11 +109,11 @@ class TenantsRows extends DataTableSource {
             ],
           ),
         ),
-        DataCell(Text(tenant.objectName!)),
-        DataCell(Text(tenant.email)),
-        DataCell(Text(tenant.fullPhoneNumber!)),
-        DataCell(Text(tenant.unitNumber!)),
-        DataCell(Text(tenant.contractReference!)),
+        DataCell(Text(user.fullName!)),
+        DataCell(Text(user.email)),
+        DataCell(Text(user.phoneNumber!)),
+        DataCell(Text(user.displayName!)),
+        DataCell(Text(user.companyName!)),
         DataCell(
           TRoundedContainer(
             radius: TSizes.cardRadiusSm,
@@ -122,22 +122,22 @@ class TenantsRows extends DataTableSource {
               horizontal: TSizes.md,
             ),
             backgroundColor: THelperFunctions.getUnitContractStatusColor(
-              tenant.contractStatus!,
+              user.contractStatus!,
             ).withOpacity(0.1),
             child: Text(
               THelperFunctions.getUnitContractStatusText(
-                tenant.contractStatus!,
+                user.contractStatus!,
               ),
               style: TextStyle(
                 color: THelperFunctions.getUnitStatusColor(
-                  tenant.contractStatus!,
+                  user.contractStatus!,
                 ),
               ),
             ),
           ),
         ),
 
-        DataCell(Text(tenant.createdAt == null ? '' : tenant.formattedDate)),
+        DataCell(Text(user.createdAt == null ? '' : user.formattedDate)),
         DataCell(
           TTableActionButtons(
             view: true,
@@ -149,15 +149,15 @@ class TenantsRows extends DataTableSource {
               final controllerContract = Get.put(ContractController());
 
               controllerContract.initializeContractData(
-                tenant.userContractId!,
+                user.userContractId!,
               );
 
               //  controllerContract.contractModel.value;
 
-              debugPrint('User FULL Name: ${tenant.fullName}');
+              debugPrint('User FULL Name: ${user.fullName}');
               final result = await Get.toNamed(
                 Routes.userDetails,
-                arguments: tenant,
+                arguments: user,
               );
 
               if (result == true) {
@@ -172,7 +172,7 @@ class TenantsRows extends DataTableSource {
               }
             },
             onEditPressed: () async {
-              controller.userModel.value = tenant;
+              controller.userModel.value = user;
 
               final result = await showDialog<bool>(
                 context: Get.context!,
@@ -191,7 +191,7 @@ class TenantsRows extends DataTableSource {
                 debugPrint('User update failed');
               }
             },
-            onDeletePressed: () => controller.confirmAndDeleteItem(tenant),
+            onDeletePressed: () => controller.confirmAndDeleteItem(user),
           ),
         ),
       ],

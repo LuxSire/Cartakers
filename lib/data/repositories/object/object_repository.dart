@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
 import 'package:xm_frontend/data/api/services/object_service.dart';
 import 'package:xm_frontend/data/models/amenity_unit_model.dart';
+import 'package:xm_frontend/data/models/docs_model.dart';
 import 'package:xm_frontend/data/models/amenity_zone_model.dart';
 import 'package:xm_frontend/data/models/booking_model.dart';
 import 'package:xm_frontend/data/models/booking_timeslot_model.dart';
@@ -23,12 +24,13 @@ import 'package:xm_frontend/data/repositories/authentication/authentication_repo
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:xm_frontend/data/repositories/media/media_repository.dart';
 import 'package:path/path.dart' as p;
 
 /// Repository class for user-related operations.
 class ObjectRepository extends GetxController {
   /// Fetch all image URLs for an object from backend
-  Future<List<String>> fetchObjectImages(int objectId) async {
+  Future<List<DocsModel>> fetchObjectImages(int objectId) async {
     try {
       final response = await _objectService.fetchObjectImages( objectId);
       if (response == null ) {
@@ -38,9 +40,24 @@ class ObjectRepository extends GetxController {
       // Assuming response['data'] is a List<String> of URLs
       final images = response ?? [];
       debugPrint('Fetched images for object $objectId: ${images.length}');
-      return images;
+      return images.map((doc) => DocsModel.fromJson(doc)).toList();
     } catch (e) {
       debugPrint('Error fetching object images: $e');
+      return [];
+    }
+  }
+    Future<List<DocsModel>> fetchObjectDocs(int objectId) async {
+    try {
+      final response = await _objectService.fetchObjectDocs(objectId);
+      if (response == null) {
+        debugPrint('No documents found for object $objectId');
+        return [];
+      }
+  
+      return response.map((doc) => DocsModel.fromJson(doc)).toList();
+
+    } catch (e) {
+      debugPrint('Error fetching object docs: $e');
       return [];
     }
   }
@@ -197,7 +214,7 @@ class ObjectRepository extends GetxController {
 
       if (controller.hasImageChanged.value) {
         final directoryName =
-            "companies/${updatedObject.companyId}/objects/${updatedObject.id}";
+            "objects/${updatedObject.id}";
 
         try {
           late Map<String, dynamic> imageResponse;
@@ -208,25 +225,25 @@ class ObjectRepository extends GetxController {
             //${DateTime.now().millisecondsSinceEpoch}
 
             final bytes = controller.memoryBytes.value!;
-            final filename = "object_${updatedObject.id}_$timestamp.jpg";
+            final filename = "object_${updatedObject.id}.jpg";
             imageResponse = await _objectService.uploadAzureImage(
               bytes: bytes,
               filename: filename,
               id: int.parse(updatedObject.id!),
-              containerName: "media",
+              containerName: "docs",
               directoryName: directoryName,
             );
           } else {
             // MOBILE/DESKTOP: write to temp file then upload
             final temp = await writeBytesToTempFile(
               controller.memoryBytes.value!,
-              'object_${updatedObject.id}_$timestamp.jpg',
+              'object_${updatedObject.id}.jpg',
             );
             imageResponse = await _objectService.uploadAzureImage(
               file: temp,
               filename: p.basename(temp.path),
               id: int.parse(updatedObject.id!),
-              containerName: 'media',
+              containerName: 'docs',
               directoryName: directoryName,
             );
           }
@@ -626,6 +643,60 @@ class ObjectRepository extends GetxController {
       return [];
     }
   }
+
+  Future<bool> uploadNewDocument(
+    int objectId,
+    String directoryName,
+    PickedFileDescriptor pickedFile
+
+  ) async {
+    try {
+      // Now, we call the uploadAzureDocument function to upload the selected file
+      final documentResponse = await _objectService.uploadAzureDocument(
+        file: pickedFile,
+        objectId: objectId, //
+        containerName: "docs", // Set the container to store the file
+        directoryName:
+            directoryName, // Set the directory path for Azure Blob Storage
+      );
+
+      // final get file name
+      final fileName = path.basename(pickedFile.path ?? ''  );
+      // remove the extension
+      final fileNameWithoutExtension = fileName.substring(
+        0,
+        fileName.lastIndexOf('.'),
+      );
+      // final fileExtension = fileName.substring(fileName.lastIndexOf('.'));
+      final creatorId = AuthenticationRepository.instance.currentUser!.id;
+      if (creatorId == null) {
+        debugPrint("Creator ID is null");
+        return false;
+      }
+
+      if (documentResponse['success'] == false) {
+        debugPrint("Failed to upload document: ${documentResponse['message']}");
+        return false;
+      } else {
+        final documentData = jsonDecode(documentResponse['data']);
+        final docUrl =
+            documentData['url']; // Retrieve the URL of the uploaded document
+        final mediaResponse = await _objectService.createObjectMedia(
+          objectId,
+          docUrl,
+          fileNameWithoutExtension,
+          int.parse(creatorId),
+          'agency_user',
+        );
+      }
+
+      return true;
+    } catch (e) {
+      debugPrint('Error uploading document: $e');
+      return false;
+    }
+  }
+
 
   Future<bool> assignUserToObjectPermission(
     int objectId,

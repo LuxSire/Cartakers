@@ -6,7 +6,7 @@ import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/features/shop/controllers/object/object_controller.dart';
 import 'package:xm_frontend/features/shop/screens/object/all_objects/dialogs/create_object.dart';
 import 'package:xm_frontend/features/shop/screens/dashboard/widgets/a_dashboard_card.dart';
-import 'package:xm_frontend/features/shop/screens/dashboard/widgets/booking_card.dart';
+//import 'package:xm_frontend/features/shop/screens/dashboard/widgets/booking_card.dart';
 import 'package:xm_frontend/features/shop/screens/dashboard/widgets/object_card.dart';
 import 'package:xm_frontend/features/shop/screens/dashboard/widgets/requests_card.dart';
 import 'package:xm_frontend/features/shop/screens/dashboard/widgets/vacant_card.dart';
@@ -54,12 +54,12 @@ class DashboardMobileScreen extends StatelessWidget {
                   headingIcon: Iconsax.building,
                   headingIconColor: TColors.alterColor,
                   headingIconBgColor: TColors.alterColor.withOpacity(0.1),
-                  stats: controller.totalCompanyObjects.value,
+                  stats: controller.totalObjects.value,
                   context: context,
                   title: AppLocalization.of(
                     context,
                   ).translate('dashboard_screen.lbl_objects'),
-                  subTitle: controller.totalCompanyObjects.value.toString(),
+                  subTitle: controller.totalObjects.value.toString(),
                 ),
               ),
               const SizedBox(height: TSizes.spaceBtwItems),
@@ -70,13 +70,13 @@ class DashboardMobileScreen extends StatelessWidget {
                   headingIcon: Iconsax.profile_2user,
                   headingIconColor: Colors.green,
                   headingIconBgColor: Colors.green.withOpacity(0.1),
-                  stats: controller.totalObjectUsers.value,
+                  stats: controller.totalUsers.value,
                   context: context,
                   title: AppLocalization.of(
                     context,
                   ).translate('sidebar.lbl_users_and_contracts'),
                   subTitle:
-                      ' ${controller.totalObjectUsers.value.toString()}/${controller.totalObjectsContracts.value.toString()}',
+                      ' ${controller.totalUsers.value.toString()}/${controller.totalObjectsContracts.value.toString()}',
                 ),
               ),
               const SizedBox(height: TSizes.spaceBtwItems),

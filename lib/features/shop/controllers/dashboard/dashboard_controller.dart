@@ -28,7 +28,9 @@ class DashboardController extends GetxController {
   final RxList<double> weeklySales = <double>[].obs;
 
   var totalCompanyObjects = 0.obs;
-  var totalObjectUsers = 0.obs;
+  var totalObjects=0.obs;
+  var totalUsers = 0.obs;
+  var totalObjectUsers=0.obs;
   var totalObjectsContracts = 0.obs;
   var totalObjectsPendingRequests = 0.obs;
   var totalObjectsBookings = 0.obs;
@@ -114,7 +116,7 @@ Future<void> fetchTotalObjectUsers() async {
     final objectPermissionIds = user.objectPermissionIds ?? [];
 
     //debugPrint('User Object Restrictions: $objectPermissionIds');
-
+  /*
     final filteredObjects =
         result
             .where(
@@ -123,20 +125,20 @@ Future<void> fetchTotalObjectUsers() async {
               ),
             )
             .toList();
-
-    totalCompanyObjects.value = filteredObjects.length;
+*/
+    totalObjects.value = objectPermissionIds.length;
   }
 
   Future<void> fetchTotalUsers() async {
-    final result = await UserRepository.instance.getAllCompanyObjectUsers();
+    final result = await UserRepository.instance.getAllUsers();
 
     // Make sure user is loaded and not empty
-    final user = userRetrived.value;
+    //final user = userRetrived.value;
     //   debugPrint('Current User: ${user.toJson()}');
-    final objectPermissionIds = user.objectPermissionIds ?? [];
+    //final objectPermissionIds = user.objectPermissionIds ?? [];
 
     //debugPrint('User Object Restrictions: $objectPermissionIds');
-
+  /*
     final filteredUsers =
         result
             .where(
@@ -145,8 +147,8 @@ Future<void> fetchTotalObjectUsers() async {
               ),
             )
             .toList();
-
-    totalCompanyObjects.value = filteredUsers.length;
+  */
+    totalUsers.value = result.length;
   }
 
   Future<void> fetchTotalBookings() async {

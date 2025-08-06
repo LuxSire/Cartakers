@@ -8,7 +8,8 @@ import 'package:xm_frontend/common/widgets/images/t_circular_image.dart';
 import 'package:xm_frontend/data/models/contract_model.dart';
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
 import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
+//import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
+import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 import 'package:xm_frontend/features/shop/screens/contract/dialogs/create_contract.dart';
 import 'package:xm_frontend/features/shop/screens/contract/dialogs/edit_contract.dart';
 import 'package:xm_frontend/features/shop/screens/user/dialogs/create_user.dart';
@@ -131,7 +132,7 @@ class UserTab extends StatelessWidget {
             AppLocalization.of(
               context,
             ).translate('users_screen.lbl_phone_no'),
-            user.fullPhoneNumber.toString(),
+            user.phoneNumber.toString(),
           ),
           const Divider(),
           _buildInfoRow(

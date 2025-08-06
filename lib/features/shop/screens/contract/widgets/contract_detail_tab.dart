@@ -15,8 +15,8 @@ class ContractDetailsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     switch (tabType) {
-      case 'tenants':
-        return TenantsTab();
+      case 'users':
+        return UsersTab();
       case 'documents':
         return DocumentsTab();
       case 'bookings':

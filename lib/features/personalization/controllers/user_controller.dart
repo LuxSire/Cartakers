@@ -93,6 +93,7 @@ class UserController extends TBaseController<UserModel> {
       //  debugPrint('Fetching User Details');
       final userR = await userRepository.fetchUserDetails();
       debugPrint('User from fetchUserDetails controller: ${userR.toJson()}');
+      
       user.value = userR;
 
       debugPrint('User from user controller: ${user.value.toJson()}');
@@ -456,7 +457,7 @@ class UserController extends TBaseController<UserModel> {
       user.value.lastName = lastNameController.text.trim();
       user.value.displayName = displayNameController.text.trim();
       user.value.profilePicture = userRetrivedProfileUrl.value;
-      user.value.roleExtId = selectedRoleId.value;
+      //user.value.roleExtId = selectedRoleId.value;
 
       // debugPrint('User Details: ${user.value.toJson()}');
 
@@ -467,12 +468,12 @@ class UserController extends TBaseController<UserModel> {
       user.refresh();
 
       loading.value = false;
-
+      
       if (isUserUpdated) {
         final updatedUser = await userRepository.fetchUserDetailsById(
           int.parse(userRetrived.value.id!),
         );
-
+      /*
         // update BuildingsUnits controller
         final userId = userRetrived.value.id;
         if (selectedObjectIds.isNotEmpty) {
@@ -493,7 +494,7 @@ class UserController extends TBaseController<UserModel> {
             int.parse(userId!),
           );
         }
-
+        
         //   debugPrint('Updated User: ${updatedUser.toJson()}');
 
         updatedUser.translatedStatus = await TranslationApi.smartTranslate(
@@ -502,7 +503,7 @@ class UserController extends TBaseController<UserModel> {
         updatedUser.translatedRoleNameExt = await TranslationApi.smartTranslate(
           updatedUser.roleNameExt ?? '',
         );
-
+        */
         Get.back(result: updatedUser);
 
         TLoaders.successSnackBar(
@@ -572,7 +573,7 @@ class UserController extends TBaseController<UserModel> {
       statusCode = response['status'];
 
       loading.value = false;
-
+      
       if (statusCode == 1) {
         //  check if selected buuilings has ids so we can assign them
         if (selectedObjectIds.isNotEmpty) {
@@ -585,7 +586,7 @@ class UserController extends TBaseController<UserModel> {
             selectedObjectIds,
           );
         }
-
+      
         Get.back(result: true); //  Return `true` to indicate user was created
 
         // create a invitation record
@@ -800,13 +801,12 @@ class UserController extends TBaseController<UserModel> {
     try {
       final users = await userRepository.getAllUsers();
 
+      debugPrint('Load Users: ${users.length}');
       for (final user in users) {
         user.translatedStatus = await TranslationApi.smartTranslate(
           user.status ?? '',
         );
-        user.translatedRoleNameExt = await TranslationApi.smartTranslate(
-          user.roleNameExt ?? '',
-        );
+
       }
       allUsers.assignAll(users);
       filteredUsers.assignAll(users);

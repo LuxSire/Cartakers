@@ -5,6 +5,7 @@ import 'package:xm_frontend/data/models/object_model.dart';
 import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
 import 'package:xm_frontend/features/shop/screens/object/edit_object/widgets/object_units.dart';
 import 'package:xm_frontend/features/shop/screens/object/edit_object/widgets/edit_object_form.dart';
+import '../widgets/object_docs.dart';
 
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../utils/constants/sizes.dart';
@@ -39,6 +40,12 @@ class EditObjectDesktopScreen extends StatelessWidget {
 
               // Form on top, full width
               EditObjectForm(object: object),
+              const SizedBox(height: TSizes.spaceBtwSections),
+              // Object documents widget
+              SizedBox(
+                height: 350, // Set a fixed height for the document list
+                child: ObjectDocsWidget(objectId: int.parse(object.id!)),
+              ),
               const SizedBox(height: TSizes.spaceBtwSections),
               // Units at the bottom, full width
               ObjectUnits(object: object),

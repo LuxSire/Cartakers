@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:xm_frontend/features/shop/screens/object/unit_detail/responsive_screens/unit_detail_desktop.dart';
-import 'package:xm_frontend/features/shop/screens/object/unit_detail/responsive_screens/unit_detail_mobile.dart';
-import 'package:xm_frontend/features/shop/screens/object/unit_detail/responsive_screens/unit_detail_tablet.dart';
-import 'package:xm_frontend/features/shop/screens/contract/responsive_screens/contract_detail_desktop.dart';
-import 'package:xm_frontend/features/shop/screens/contract/responsive_screens/contract_detail_mobile.dart';
-import 'package:xm_frontend/features/shop/screens/contract/responsive_screens/contract_detail_tablet.dart';
+//import 'package:xm_frontend/features/shop/screens/object/unit_detail/responsive_screens/unit_detail_desktop.dart';
+//import 'package:xm_frontend/features/shop/screens/object/unit_detail/responsive_screens/unit_detail_mobile.dart';
+//import 'package:xm_frontend/features/shop/screens/object/unit_detail/responsive_screens/unit_detail_tablet.dart';
+//import 'package:xm_frontend/features/shop/screens/contract/responsive_screens/contract_detail_desktop.dart';
+//import 'package:xm_frontend/features/shop/screens/contract/responsive_screens/contract_detail_mobile.dart';
+//import 'package:xm_frontend/features/shop/screens/contract/responsive_screens/contract_detail_tablet.dart';
 import 'package:xm_frontend/features/shop/screens/user/responsive_screens/user_detail_desktop.dart';
 import 'package:xm_frontend/features/shop/screens/user/responsive_screens/user_detail_mobile.dart';
 import 'package:xm_frontend/features/shop/screens/user/responsive_screens/user_detail_tablet.dart';

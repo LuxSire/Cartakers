@@ -11,7 +11,9 @@ import 'package:xm_frontend/features/shop/controllers/object/object_controller.d
 import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/request/request_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
+//import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
+
+//import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 import 'package:xm_frontend/features/shop/screens/contract/dialogs/update_request.dart';
 import 'package:xm_frontend/features/shop/screens/user/dialogs/edit_user.dart';
 import 'package:xm_frontend/routes/routes.dart';

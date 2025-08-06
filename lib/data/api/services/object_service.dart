@@ -11,7 +11,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http_parser/http_parser.dart'; // Import MediaType
 import 'package:xm_frontend/data/models/contract_model.dart';
 import 'package:get/get.dart'; // Import for RxList
-
+import 'package:xm_frontend/data/repositories/media/media_repository.dart';
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:http/http.dart' as http;
@@ -28,17 +28,45 @@ class ObjectService extends BaseService {
 
 RxList<String> objectImages = <String>[].obs;
 
-Future<List<String>> fetchObjectImages(int objectId) async {
-  final response = await post(ApiEndpoints.getObjectDocUrls, {
+Future<List<Map<String, dynamic>>> fetchObjectImages(int objectId) async {
+  final response = await post(ApiEndpoints.getObjectDocs, {
     'object_id': objectId,
   });
   if (response is Map<String, dynamic> && response['success'] == true) {
     if (response['data'] is List) {
-      return List<String>.from(response['data']);
+      final allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+      return (response['data'] as List<dynamic>)
+        .where((doc) =>
+          doc is Map<String, dynamic> &&
+          allowedTypes.contains((doc['contentType'] ?? '').toLowerCase())
+        )
+        .map((doc) => doc as Map<String, dynamic>)
+        .toList();
     }
   }
   return [];
 }
+
+  Future<List<Map<String, dynamic>>> fetchObjectDocs(int objectId) async {
+  final response = await post(ApiEndpoints.getObjectDocs, {
+    'object_id': objectId,
+  });
+  if (response is Map<String, dynamic> && response['success'] == true) {
+    if (response['data'] is List) {
+      return (response['data'] as List<dynamic>)
+          .map((doc) => doc as Map<String, dynamic>)
+          .toList();
+    } else {
+      debugPrint('No documents found for object $objectId');
+    }
+  }
+  return [];
+    }
+  
+ 
+
+
+
   Future<Map<String, dynamic>> getObjectLastAnnouncement(
     int objectId,
   ) async {
@@ -965,6 +993,7 @@ Future<List<String>> fetchObjectImages(int objectId) async {
   Future<Map<String, dynamic>> deleteDocumentFromAzure({
     required String fileName,
     required String containerName,
+    required String directoryName,  
   }) async {
     try {
       final String baseUrl = dotenv.get('BASE_URL');
@@ -976,7 +1005,10 @@ Future<List<String>> fetchObjectImages(int objectId) async {
       );
 
       // Create a map with the data to be sent in the body
-      var requestBody = {'containerName': containerName, 'fileName': fileName};
+      var requestBody = {'containerName': containerName, 'directoryName': directoryName, 'fileName': fileName};
+
+      debugPrint('Delete URI: $uri'); // Debugging log
+      debugPrint('Request body: $requestBody'); // Debugging log
 
       var response = await http.delete(
         uri,
@@ -1000,22 +1032,19 @@ Future<List<String>> fetchObjectImages(int objectId) async {
   }
 
   Future<Map<String, dynamic>> uploadAzureDocument({
-    required File file,
-    required int contractId,
+    required PickedFileDescriptor file,
+    required int objectId,
     required String containerName,
     required String directoryName,
   }) async {
     try {
       final String baseUrl = dotenv.get('BASE_URL');
-      String? mimeType = lookupMimeType(file.path); // Get the correct MIME type
-      String fileExtension = path.extension(file.path).replaceAll('.', '');
-      String newFileName =
-          "${contractId}_${DateTime.now().millisecondsSinceEpoch}";
+      String? mimeType = lookupMimeType(file.name ?? ''); // Get the correct MIME type
+      String fileExtension = path.extension(file.name ?? '').replaceAll('.', '');
+      String newFileName = "${objectId}_${DateTime.now().millisecondsSinceEpoch}";
 
-      // If MIME type couldn't be determined, set default (could be based on file extension)
-      mimeType ??= 'application/octet-stream';
+      mimeType ??= 'application/pdf';
 
-      // Build the URI for the Azure upload endpoint
       var uri = Uri.parse(
         '$baseUrl${ApiEndpoints.uploadUserMedia}'
         '?containerName=$containerName'
@@ -1023,16 +1052,39 @@ Future<List<String>> fetchObjectImages(int objectId) async {
         '&directoryName=$directoryName'
         '&newFileName=$newFileName',
       );
-
+      debugPrint('Upload URI: $uri'); // Debugging log
       var request = http.MultipartRequest('POST', uri);
-      request.files.add(await http.MultipartFile.fromPath('file', file.path));
 
-      // Send the request
+      if (kIsWeb) {
+        // Web: Read file as bytes and use MultipartFile.fromBytes
+        final bytes = await file.bytes;
+        if (bytes == null) {
+            throw Exception('[uploadAzureDocument] File bytes are null');
+          }
+        request.files.add(
+          http.MultipartFile.fromBytes(
+            'file',
+             bytes,
+            filename: newFileName,
+            contentType: MediaType.parse(mimeType),
+          ),
+        );
+      } else {
+        // Mobile/Desktop: Use MultipartFile.fromPath
+        request.files.add(
+          await http.MultipartFile.fromPath(
+            'file',
+            file.path ?? '',
+            filename: newFileName,
+            contentType: MediaType.parse(mimeType),
+          ),
+        );
+      }
+
       var response = await request.send();
       var responseData = await response.stream.bytesToString();
-
+      debugPrint('[uploadAzureDocument] Response data: $responseData');
       if (response.statusCode == 200) {
-        // Return success response with file URL or relevant data from the response
         return {
           "success": true,
           "message": "Document uploaded successfully",
@@ -1047,16 +1099,16 @@ Future<List<String>> fetchObjectImages(int objectId) async {
     }
   }
 
-  Future<Map<String, dynamic>> createContractMedia(
-    int contractId,
+  Future<Map<String, dynamic>> createObjectMedia(
+    int objectId,
     String docUrl,
     String filaName,
     int creatorId,
     String creatorType,
   ) async {
     try {
-      final response = await post(ApiEndpoints.createContractMedia, {
-        'contract_id': contractId,
+      final response = await post(ApiEndpoints.createObjectMedia, {
+        'object_id': objectId,
         'doc_url': docUrl,
         'file_name': filaName,
         'creator_id': creatorId,
@@ -1073,7 +1125,7 @@ Future<List<String>> fetchObjectImages(int objectId) async {
     }
   }
 
-  Future<Map<String, dynamic>> deleteDocumentById(int documentId) async {
+  Future<Map<String, dynamic>> deleteDocumentById(String documentId) async {
     try {
       final response = await post(ApiEndpoints.deleteDocumentById, {
         'document_id': documentId,
@@ -1087,7 +1139,7 @@ Future<List<String>> fetchObjectImages(int objectId) async {
   }
 
   Future<Map<String, dynamic>> updateFileName(
-    int documentId,
+    String documentId,
     String newFileName,
   ) async {
     try {

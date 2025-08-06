@@ -1206,7 +1206,7 @@ class ContractController extends TBaseController<ContractModel> {
     }
   }
 
-  void filterTenants(String query) {
+  void filterUsers(String query) {
     searchQueryValue.value = query;
 
     if (query.isEmpty) {
@@ -1237,7 +1237,7 @@ class ContractController extends TBaseController<ContractModel> {
   Future<bool> deleteDocumentFromAzure(
     String fileName,
     String containerName,
-    int documentId,
+    String documentId,
   ) async {
     try {
       if (fileName == '') {
@@ -1371,7 +1371,7 @@ class ContractController extends TBaseController<ContractModel> {
     }
   }
 
-  Future<bool> renameFile(int documentId, String newFileName) async {
+  Future<bool> renameFile(String documentId, String newFileName) async {
     try {
       // Start Loading
       loading.value = true;

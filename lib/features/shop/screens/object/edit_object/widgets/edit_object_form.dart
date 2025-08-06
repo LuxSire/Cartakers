@@ -116,14 +116,14 @@ class EditObjectForm extends StatelessWidget {
                         child: GestureDetector(
                           onTap: () async {
                             await launchUrlString(
-                              imageUrl,
+                              imageUrl.fileUrl,
                               mode: LaunchMode.externalApplication,
                             );
                           },
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(12),
                             child: Image.network(
-                              imageUrl,
+                              imageUrl.fileUrl,
                               fit: BoxFit.cover,
                               width: double.infinity,
                               errorBuilder: (context, error, stackTrace) => Container(

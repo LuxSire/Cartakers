@@ -155,11 +155,8 @@ class UserController extends TBaseController<UserModel> {
       allUsers.assignAll(filteredUsersData);
       filteredUsers.assignAll(filteredUsersData);
 
-      // Load users for app invitations, from the list filter only users with active contracts
-      allUsersAppInvitation.assignAll(
-        filteredUsersData.where((user) => user.contractStatus == 1),
-      );
-      filteredUsersAppInvitation.assignAll(allUsersAppInvitation);
+
+      filteredUsersAppInvitation.assignAll(allUsers);
     } catch (e) {
       TLoaders.errorSnackBar(
         title: "Error",

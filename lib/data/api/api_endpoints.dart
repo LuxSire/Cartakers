@@ -17,7 +17,11 @@ class ApiEndpoints {
       'api/objects/get-object-last-announcement';
   static const String getObjectDocUrls =
       'api/objects/get-object-doc-urls';
- 
+   static const String getObjectDocs =
+      'api/objects/get-object-docs';
+   static const String getUserDocs =
+      'api/objects/get-user-docs';
+
   static const String getUserUpcomingBooking =
       'api/users/get-user-upcoming-booking';
   static const String getObjectRequestTypes =
@@ -27,6 +31,8 @@ class ApiEndpoints {
   static const String createUserObjectRequestLog =
       'api/users/create-user-object-request-log';
   static const String uploadUserMedia = 'api/users/upload-user-media';
+  static const String deleteUserMedia = 'api/users/delete-user-media';
+
   static const String createUserObjectRequestMedia =
       'api/users/create-user-object-request-media';
   static const String getUserObjectRequests =
@@ -162,9 +168,9 @@ class ApiEndpoints {
 
   static const String updateUserContractPrimary =
       'api/users/update-user-contract-primary';
-  static const String createContractMedia =
-      'api/objects/create-contract-media';
-  static const String deleteUserMedia = 'api/users/delete-profile-file';
+  static const String createObjectMedia =
+      'api/objects/create-object-media';
+//  static const String deleteUserMedia = 'api/users/delete-profile-file';
 
   static const String deleteDocumentById =
       'api/objects/delete-document-by-id';

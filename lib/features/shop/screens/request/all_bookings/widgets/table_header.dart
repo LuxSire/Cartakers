@@ -5,7 +5,7 @@ import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
 import 'package:xm_frontend/features/shop/controllers/booking/booking_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/request/request_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
+//import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 import 'package:xm_frontend/features/shop/screens/booking/dialogs/bookings_filter_dialog.dart';
 import 'package:xm_frontend/features/shop/screens/booking/dialogs/view_toggle_widget.dart';
 import 'package:xm_frontend/features/shop/screens/request/dialogs/requests_filter_dialog.dart';

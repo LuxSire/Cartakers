@@ -120,6 +120,23 @@ class CreateUserDialog extends StatelessWidget {
 
               const SizedBox(height: TSizes.spaceBtwInputFields),
 
+              /// Phone Number
+              TextFormField(
+                controller: controller.phoneController,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Iconsax.call),
+                  labelText: AppLocalization.of(
+                    context,
+                  ).translate('register_screen.lbl_phone_no'),
+                ),
+                validator: (value) => TValidator.validateEmptyText(
+                  AppLocalization.of(context).translate('register_screen.lbl_phone_no'),
+                  value,
+                ),
+              ),
+
+              const SizedBox(height: TSizes.spaceBtwInputFields),
+
               /// Email
               TextFormField(
                 controller: controller.emailController,

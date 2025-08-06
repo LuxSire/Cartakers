@@ -1,14 +1,15 @@
 import 'dart:io';
-
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:mime/mime.dart';
+import 'package:flutter/foundation.dart';
 import 'package:xm_frontend/data/models/annoucement_model.dart';
 import 'package:xm_frontend/data/models/booking_model.dart';
 import 'package:xm_frontend/data/models/request_model.dart';
 import 'package:xm_frontend/features/personalization/controllers/settings_controller.dart';
-
+import 'package:xm_frontend/data/repositories/media/media_repository.dart';
 import 'base_service.dart';
 import '../api_endpoints.dart';
 import 'package:http/http.dart' as http;
@@ -409,6 +410,140 @@ class UserService extends BaseService {
   //     return {"success": false, "message": "Failed to upload image"};
   //   }
   // }
+ 
+  Future<Map<String, dynamic>> deleteDocumentFromAzure({
+    required String fileName,
+    required String containerName,
+    required String directoryName,
+  }) async {
+    try {
+      final String baseUrl = dotenv.get('BASE_URL');
+
+      debugPrint('[deleteDocumentFromAzure] filename: $fileName, container: $containerName, directory: $directoryName');
+
+      var uri = Uri.parse(
+        '$baseUrl${ApiEndpoints.deleteUserMedia}',
+      );
+
+      // Backend expects all three: containerName, directoryName, fileName
+      var requestBody = {
+        'containerName': containerName,
+        'directoryName': directoryName,
+        'fileName': fileName,
+      };
+      debugPrint('[deleteDocumentFromAzure] Request body: $requestBody');
+      var response = await http.delete(
+        uri,
+        body: jsonEncode(requestBody),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      );
+
+      debugPrint('[deleteDocumentFromAzure] Delete response: ${response.body}');
+
+      if (response.statusCode == 200) {
+        return {"success": true, "message": "Document deleted successfully"};
+      } else if (response.statusCode == 404) {
+        return {"success": false, "message": "File not found."};
+      } else {
+        return {"success": false, "message": "Document deletion failed"};
+      }
+    } catch (error) {
+      debugPrint("Error deleting document: $error");
+      return {"success": false, "message": "Failed to delete document"};
+    }
+  }
+
+  Future<Map<String, dynamic>> uploadAzureDocument({
+    required PickedFileDescriptor file,
+    required int userId,
+    required String containerName,
+    required String directoryName,
+  }) async {
+    try {
+      final String baseUrl = dotenv.get('BASE_URL');
+      String? mimeType = lookupMimeType(file.name ?? ''); // Get the correct MIME type
+      debugPrint('[uploadAzureDocument] lookupMimeType for path: \'${file.name}\' => $mimeType');
+      if (mimeType == null && file.name!.toLowerCase().endsWith('.pdf')) {
+        debugPrint('[uploadAzureDocument] Fallback: Detected .pdf extension, setting mimeType to application/pdf');
+        mimeType = 'application/pdf';
+      }
+      String fileExtension = path.extension(file.path ?? '').replaceAll('.', '');
+      String newFileName = "${userId}_${DateTime.now().millisecondsSinceEpoch}";
+
+      debugPrint('[uploadAzureDocument] Final mimeType: $mimeType');
+      mimeType ??= 'application/pdf'; // Fallback to PDF if mimeType is still null
+      var uri = Uri.parse(
+        '$baseUrl${ApiEndpoints.uploadUserMedia}'
+        '?containerName=$containerName'
+        '&contentType=$mimeType'
+        '&directoryName=$directoryName'
+        '&newFileName=$newFileName',
+      );
+      debugPrint('[uploadAzureDocument] Upload URI: $uri');
+      var request = http.MultipartRequest('POST', uri);
+      request.fields['creatorId'] = userId.toString();
+      
+      
+      if (kIsWeb) {
+        debugPrint('[uploadAzureDocument] Platform: Web, reading file as bytes');
+        try {
+          final bytes = await file.bytes;
+          if (bytes == null) {
+            throw Exception('[uploadAzureDocument] File bytes are null');
+          }
+          debugPrint('[uploadAzureDocument] Read ${bytes.length} bytes from file');
+          request.files.add(
+            http.MultipartFile.fromBytes(
+              'file',
+              bytes,
+              filename: newFileName,
+              contentType: MediaType.parse(mimeType),
+            ),
+          );
+        } catch (e) {
+          debugPrint('[uploadAzureDocument] Error reading file as bytes: $e');
+          rethrow;
+        }
+      } else {
+        debugPrint('[uploadAzureDocument] Platform: Mobile/Desktop, using fromPath');
+        try {
+          request.files.add(
+            await http.MultipartFile.fromPath(
+              'file',
+              file.path ?? '',
+              filename: newFileName,
+              contentType: MediaType.parse(mimeType),
+            ),
+          );
+        } catch (e) {
+          debugPrint('[uploadAzureDocument] Error adding file from path: $e');
+          rethrow;
+        }
+      }
+      
+      debugPrint('[uploadAzureDocument] Sending request...');
+      var response = await request.send();
+      debugPrint('[uploadAzureDocument] Response status: ${response.statusCode}');
+      var responseData = await response.stream.bytesToString();
+      debugPrint('[uploadAzureDocument] Response data: $responseData');
+
+      if (response.statusCode == 200) {
+        return {
+          "success": true,
+          "message": "Document uploaded successfully",
+          "data": responseData,
+        };
+      } else {
+        return {"success": false, "message": "Document upload failed"};
+      }
+    } catch (error) {
+      debugPrint("[uploadAzureDocument] Error uploading document: $error");
+      return {"success": false, "message": "Failed to upload document"};
+    }
+  }
+
 
   Future<Map<String, dynamic>> uploadRequestImage({
     required File file,
@@ -453,7 +588,7 @@ class UserService extends BaseService {
 
   Future<Map<String, dynamic>> uploadProfileImage({
     required File file,
-    required int tenantId,
+    required int userId,
     required String containerName,
     required String directoryName,
   }) async {
@@ -462,7 +597,7 @@ class UserService extends BaseService {
       String? mimeType = lookupMimeType(file.path) ?? 'image/jpeg';
       String fileExtension = path.extension(file.path).replaceAll('.', '');
       String newFileName =
-          "profile_pic_${tenantId}_${DateTime.now().millisecondsSinceEpoch}";
+          "profile_pic_${userId}_${DateTime.now().millisecondsSinceEpoch}";
 
       var uri = Uri.parse(
         '$baseUrl${ApiEndpoints.uploadUserMedia}'
@@ -719,8 +854,10 @@ class UserService extends BaseService {
     String firstName,
     String lastName,
     String displayName,
-    String profilePic,
-    int roleExtId,
+    String phoneNumber,
+    String countryCode,
+    String profilePic
+    
   ) async {
     try {
       final response = await post(ApiEndpoints.updateUserPersonalDetails, {
@@ -728,8 +865,9 @@ class UserService extends BaseService {
         'first_name': firstName,
         'last_name': lastName,
         'display_name': displayName,
-        'profile_pic': profilePic,
-        'role_ext_id': roleExtId,
+        'phone_number': phoneNumber,
+        'country_code': countryCode,
+        'profile_pic': profilePic
       });
 
       debugPrint('Update personal details response: $response');
@@ -975,12 +1113,12 @@ class UserService extends BaseService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getUserObjectDocs(
-    int contractId,
+  Future<List<Map<String, dynamic>>> getUserDocs(
+    int userId,
   ) async {
     try {
-      final response = await post(ApiEndpoints.getUserObjectDocs, {
-        'contract_id': contractId,
+      final response = await post(ApiEndpoints.getUserDocs, {
+        'user_id': userId,
       });
 
       //  debugPrint('Raw requests: $response');

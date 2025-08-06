@@ -10,12 +10,13 @@ import 'package:xm_frontend/app/app_controller.dart';
 import 'package:xm_frontend/data/repositories/company/company_repository.dart';
 import 'package:xm_frontend/features/personalization/controllers/settings_controller.dart';
 import 'package:xm_frontend/utils/helpers/network_manager.dart';
-
+import 'package:xm_frontend/data/repositories/media/media_repository.dart';
 import 'app.dart';
 import 'data/repositories/authentication/authentication_repository.dart';
 import 'features/personalization/controllers/user_controller.dart';
 import 'features/shop/controllers/dashboard/dashboard_controller.dart';
 import 'package:xm_frontend/data/repositories/user/user_repository.dart';
+import 'features/shop/controllers/document/document_controller.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,7 +40,10 @@ Future<void> main() async {
   Get.put(SettingsController());
   Get.put(DashboardController());
   Get.put(UserRepository());
+  Get.put(MediaRepository());
+//  Get.put(DocumentController());
 
+  
   AuthenticationRepository.instance.restoreSession();
 
   ///  Catch Flutter framework errors

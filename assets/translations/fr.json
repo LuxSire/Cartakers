@@ -432,10 +432,7 @@
 "msg_sent_immediately": "Envoyé immédiatement",
 "msg_send_user_invitation": "Envoyer une invitation utilisateur",
 "msg_send_user_invitation_success": "Invitation utilisateur envoyée avec succès.",
-"msg_send_user_invitation": "Envoyer une invitation à l'utilisateur",
-"msg_send_user_invitation_success": "Invitation à l'utilisateur envoyée avec succès.",
 "msg_mail_subject_user_invitation": "Vous êtes invité à rejoindre XM pour les administrateurs",
-"msg_mail_body_text_user_invitation": "Vous avez été invité à rejoindre notre espace de travail sur la plateforme XM. Veuillez utiliser le code d'invitation ci-dessous pour configurer votre compte et commencer.",
 "msg_mail_invitation_code_text": "Code d'invitation",
 "msg_mail_dear": "Cher/Chère",
 "msg_error_object_cannot_be_delete_with_active_and_terminated_contracts": "L'objet ne peut pas être supprimé s'il existe des contrats actifs ou terminés.",
@@ -694,6 +691,8 @@
     },
     "users_screen": {
         "lbl_users": "Utilisateurs",
+        "lbl_permissions": "Permissions",
+        "lbl_search_permissions": "Rechercher des permissions",
         "lbl_search_users": "Rechercher des utilisateurs",
         "lbl_create_new_user": "Créer un nouvel utilisateur",
         "lbl_first_name": "Prénom",
@@ -766,9 +765,8 @@
         "lbl_please_select_a_object": "Veuillez sélectionner un objet",
         "msg_object_required": "L'objet est requis",
         "lbl_select_object": "Sélectionner un objet"
-
-
-
+        
+    
 
 
 

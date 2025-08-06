@@ -113,7 +113,7 @@ class UsersRows extends DataTableSource {
         // 3. Email
         DataCell(Text(user.email)),
         // 4. Phone
-        DataCell(Text(user.fullPhoneNumber!)),
+        DataCell(Text(user.phoneNumber)),
         // 5. Date Created
         DataCell(Text(user.createdAt == null ? '' : user.formattedDate)),
         // 6. Actions

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
+//import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/user/user_invitation_controller.dart';
 import 'package:xm_frontend/features/shop/screens/user/dialogs/create_user.dart';
 import 'package:xm_frontend/features/shop/screens/user/dialogs/users_filter_dialog.dart';

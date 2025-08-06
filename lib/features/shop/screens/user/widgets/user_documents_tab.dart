@@ -3,12 +3,12 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/common/widgets/loaders/animation_loader.dart';
-import 'package:xm_frontend/data/models/contract_model.dart';
+//import 'package:xm_frontend/data/models/contract_model.dart';
 import 'package:xm_frontend/data/models/docs_model.dart';
 import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/document/document_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
-import 'package:xm_frontend/features/shop/screens/contract/dialogs/edit_contract.dart';
+import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
+//import 'package:xm_frontend/features/shop/screens/contract/dialogs/edit_contract.dart';
 import 'package:xm_frontend/features/shop/screens/document/file_detail_dialog.dart';
 import 'package:xm_frontend/features/shop/screens/document/file_rename_dialog.dart';
 import 'package:xm_frontend/features/shop/screens/document/img_viewer_page.dart';
@@ -27,17 +27,16 @@ class UserDocumentsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     // Ensure the DocumentController is created only once
     final controllerUser = Get.find<UserController>();
-    final controllerContract = Get.find<ContractController>();
-    final controller = Get.put(
+    String userID=controllerUser.userModel.value.id.toString();
+    final controllerDocument = Get.put(
       DocumentController(
-        contractId: int.parse(
-          controllerUser.userModel.value.userContractId.toString(),
+        userId: int.parse(userID,
         ),
       ),
     );
 
     // Load the data once during initialization
-    controller.loadData();
+    controllerDocument.loadData();
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -52,7 +51,7 @@ class UserDocumentsTab extends StatelessWidget {
               Expanded(
                 flex: TDeviceUtils.isDesktopScreen(context) ? 2 : 1,
                 child: TextFormField(
-                  onChanged: (query) => controller.filterDocs(query),
+                  onChanged: (query) => controllerDocument.filterDocs(query),
                   decoration: InputDecoration(
                     hintText: AppLocalization.of(
                       context,
@@ -67,18 +66,18 @@ class UserDocumentsTab extends StatelessWidget {
               TextButton.icon(
                 onPressed: () async {
                   // Pick a file
-                  final pickedFile = await controllerContract.pickFile();
+                  final pickedFile = await controllerDocument.pickFile();
                   if (pickedFile != null) {
                     // Upload the file to Azure
-                    final uploadResponse = await controllerContract
-                        .uploadDocumentToAzure(
+                    final uploadResponse = await controllerDocument
+                        .uploadUserDocumentToAzure(
                           pickedFile,
-                          int.parse(controllerContract.contractModel.value.id!),
+                          int.parse( controllerUser.userModel.value.id.toString()),
                         );
 
                     if (uploadResponse) {
                       // If upload was successful, reload the documents
-                      controller.loadData();
+                      controllerDocument.loadData();
                       //  Get.snackbar("Success", "Document uploaded successfully.");
                     }
                   }
@@ -99,7 +98,7 @@ class UserDocumentsTab extends StatelessWidget {
           // Grid of documents
           Expanded(
             child: Obx(() {
-              if (controller.filteredDocs.isEmpty) {
+              if (controllerDocument.filteredDocs.isEmpty) {
                 return SingleChildScrollView(
                   child: Center(
                     child: Padding(
@@ -116,7 +115,7 @@ class UserDocumentsTab extends StatelessWidget {
                 );
               }
               return GridView.builder(
-                itemCount: controller.filteredDocs.length,
+                itemCount: controllerDocument.filteredDocs.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount:
                       TDeviceUtils.isDesktopScreen(context)
@@ -130,12 +129,11 @@ class UserDocumentsTab extends StatelessWidget {
                 ),
                 itemBuilder: (context, index) {
                   return _buildDocumentCard(
-                    controller.filteredDocs[index].fileName.value,
-                    controller.filteredDocs[index].createdAt,
-                    controller.filteredDocs[index].fileUrl,
-                    controller.filteredDocs[index],
-                    controller,
-                    controllerContract,
+                    controllerDocument.filteredDocs[index].fileName.value,
+                    controllerDocument.filteredDocs[index].updatedAt,
+                    controllerDocument.filteredDocs[index].fileUrl,
+                    controllerDocument.filteredDocs[index],
+                    controllerDocument
                   );
                 },
               );
@@ -151,13 +149,12 @@ class UserDocumentsTab extends StatelessWidget {
     DateTime date,
     String url,
     DocsModel doc,
-    DocumentController controller,
-    ContractController controllerContract,
+    DocumentController controller
   ) {
     final fileType = url.split('.').last.toLowerCase();
 
     // get file name from url
-    final fileName = THelperFunctions.extractFileName(url, 'media');
+    final fileName = THelperFunctions.extractFileName(url, 'docs');
 
     return Container(
       padding: const EdgeInsets.all(0),
@@ -303,7 +300,7 @@ class UserDocumentsTab extends StatelessWidget {
                         fileName: doc.fileName.value,
                         fileType: fileType,
                         creationDate:
-                            doc.createdAt, // Example date, replace with actual
+                            doc.updatedAt, // Example date, replace with actual
                         fileSize:
                             fileSize, // Example file size in bytes, replace with actual size
                         createdBy:
@@ -317,11 +314,11 @@ class UserDocumentsTab extends StatelessWidget {
                 } else if (value == 'delete') {
                   // Handle delete
 
-                  final deleteResponse = await controllerContract
+                  final deleteResponse = await controller
                       .deleteDocumentFromAzure(
-                        fileName.toString(),
-                        'media',
-                        doc.id,
+                        doc.fileName.value.toString(),
+                        'docs',
+                         doc.fileUrl,
                       );
 
                   if (deleteResponse) {
@@ -361,21 +358,7 @@ class UserDocumentsTab extends StatelessWidget {
                       ],
                     ),
                   ),
-                  if (doc.creatorType == 'agency_user')
-                    PopupMenuItem<String>(
-                      value: 'rename',
-                      child: Row(
-                        children: [
-                          const Icon(Icons.edit_document, size: 20),
-                          const SizedBox(width: 8),
-                          Text(
-                            AppLocalization.of(
-                              Get.context!,
-                            ).translate('general_msgs.msg_rename'),
-                          ),
-                        ],
-                      ),
-                    ),
+                  
                   PopupMenuItem<String>(
                     value: 'view',
                     child: Row(
@@ -390,22 +373,34 @@ class UserDocumentsTab extends StatelessWidget {
                       ],
                     ),
                   ),
-                  if (doc.creatorType == 'agency_user')
-                    PopupMenuItem<String>(
-                      value: 'delete',
-                      child: Row(
-                        children: [
-                          const Icon(Icons.delete, size: 20, color: Colors.red),
-                          const SizedBox(width: 8),
-                          Text(
-                            AppLocalization.of(
-                              Get.context!,
-                            ).translate('general_msgs.msg_delete'),
-                            style: const TextStyle(color: Colors.red),
-                          ),
-                        ],
-                      ),
+                  PopupMenuItem<String>(
+                    value: 'delete',
+                    child: Row(
+                      children: [
+                        const Icon(Icons.delete, size: 20),
+                        const SizedBox(width: 8),
+                        Text(
+                          AppLocalization.of(
+                            Get.context!,
+                          ).translate('general_msgs.msg_delete'),
+                        ),
+                      ],
                     ),
+                  ),
+                    PopupMenuItem<String>(
+                    value: 'rename',
+                    child: Row(
+                      children: [
+                        const Icon(Icons.read_more, size: 20),
+                        const SizedBox(width: 8),
+                        Text(
+                          AppLocalization.of(
+                            Get.context!,
+                          ).translate('general_msgs.msg_rename'),
+                        ),
+                      ],
+                    ),
+                  ),
                 ];
               },
               icon: const Icon(Icons.more_vert),

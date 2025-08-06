@@ -10,7 +10,7 @@ class AppLocalization {
     return Localizations.of<AppLocalization>(context, AppLocalization)!;
   }
 
-  late Map<String, dynamic> _localizedStrings;
+  Map<String, dynamic>? _localizedStrings;
 
   Future<bool> load() async {
     try {
@@ -26,6 +26,10 @@ class AppLocalization {
 
   // Updated translate method to support nested keys
   String translate(String key) {
+    if (_localizedStrings == null) {
+      debugPrint('Localization not loaded: $key');
+      return key;
+    }
     List<String> keys = key.split('.'); // Split the key by dot notation
     dynamic value = _localizedStrings;
 

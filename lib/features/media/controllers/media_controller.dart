@@ -3,6 +3,8 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/common/widgets/loaders/circular_loader.dart';
 import 'package:xm_frontend/data/repositories/media/media_repository.dart';
 import 'package:xm_frontend/features/media/models/image_model.dart';
@@ -13,7 +15,7 @@ import 'package:xm_frontend/utils/constants/text_strings.dart';
 import 'package:xm_frontend/utils/popups/dialogs.dart';
 import 'package:xm_frontend/utils/popups/full_screen_loader.dart';
 import 'package:universal_html/html.dart' as html;
-
+import 'package:xm_frontend/utils/helpers/network_manager.dart';
 import '../../../../utils/popups/loaders.dart';
 import '../../../utils/constants/image_strings.dart';
 import '../../../utils/constants/sizes.dart';
@@ -166,6 +168,76 @@ class MediaController extends GetxController {
           'Are you sure you want to upload all the Images in ${selectedPath.value.name.toUpperCase()} folder?',
     );
   }
+
+  Future<bool> deleteDocumentFromAzure(
+    String fileName,
+    String containerName,
+    String documentId,
+  ) async {
+    try {
+      if (fileName == '') {
+        debugPrint('No file name found.');
+        return false;
+      }
+
+      // Start Loading
+      loading.value = true;
+
+      // Check Internet Connectivity
+      final isConnected = await NetworkManager.instance.isConnected();
+      if (!isConnected) {
+        loading.value = false;
+        return false;
+      }
+      bool isFileDeleted = false;
+
+      isFileDeleted = await mediaRepository.deleteDocument(
+        fileName,
+        containerName,
+        documentId,
+      );
+
+      // Remove Loader
+      loading.value = false;
+
+      if (isFileDeleted) {
+        TLoaders.successSnackBar(
+          title: AppLocalization.of(
+            Get.context!,
+          ).translate('general_msgs.msg_info'),
+          message: AppLocalization.of(
+            Get.context!,
+          ).translate('general_msgs.msg_document_deleted'),
+        );
+      } else {
+        TLoaders.errorSnackBar(
+          title: AppLocalization.of(
+            Get.context!,
+          ).translate('general_msgs.msg_error'),
+          message: AppLocalization.of(
+            Get.context!,
+          ).translate('general_msgs.msg_document_delete_failed'),
+        );
+        return false;
+      }
+
+      // Update UI Listeners
+      update();
+      return true;
+    } catch (e) {
+      debugPrint('Error from catch uploadDocumentToAzure: $e');
+      loading.value = false;
+      TFullScreenLoader.stopLoading();
+      TLoaders.errorSnackBar(
+        title: AppLocalization.of(
+          Get.context!,
+        ).translate('general_msgs.msg_error'),
+        message: e.toString(),
+      );
+      return false;
+    }
+  }
+
 
   /// Upload Images
   Future<void> uploadImages() async {

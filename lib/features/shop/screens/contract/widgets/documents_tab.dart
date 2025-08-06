@@ -3,11 +3,11 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/common/widgets/loaders/animation_loader.dart';
-import 'package:xm_frontend/data/models/contract_model.dart';
 import 'package:xm_frontend/data/models/docs_model.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+import 'package:xm_frontend/features/media/controllers/media_controller.dart';
+import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
+//import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/document/document_controller.dart';
-import 'package:xm_frontend/features/shop/screens/contract/dialogs/edit_contract.dart';
 import 'package:xm_frontend/features/shop/screens/document/file_detail_dialog.dart';
 import 'package:xm_frontend/features/shop/screens/document/file_rename_dialog.dart';
 import 'package:xm_frontend/features/shop/screens/document/img_viewer_page.dart';
@@ -25,11 +25,11 @@ class DocumentsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Ensure the DocumentController is created only once
-    final controllerContract = Get.find<ContractController>();
+    final controllerUser = Get.find<UserController>();
     final controller = Get.put(
       DocumentController(
-        contractId: int.parse(
-          controllerContract.contractModel.value.id.toString(),
+        userId: int.parse(
+          controllerUser.userModel.value.id.toString(),
         ),
       ),
     );
@@ -65,13 +65,13 @@ class DocumentsTab extends StatelessWidget {
               TextButton.icon(
                 onPressed: () async {
                   // Pick a file
-                  final pickedFile = await controllerContract.pickFile();
+                  final pickedFile = await controller.pickFile();
                   if (pickedFile != null) {
                     // Upload the file to Azure
-                    final uploadResponse = await controllerContract
+                    final uploadResponse = await controller
                         .uploadDocumentToAzure(
                           pickedFile,
-                          int.parse(controllerContract.contractModel.value.id!),
+                          int.parse(controllerUser.userModel.value.id!),
                         );
 
                     if (uploadResponse) {
@@ -129,11 +129,11 @@ class DocumentsTab extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return _buildDocumentCard(
                     controller.filteredDocs[index].fileName.value,
-                    controller.filteredDocs[index].createdAt,
+                    controller.filteredDocs[index].updatedAt,
                     controller.filteredDocs[index].fileUrl,
                     controller.filteredDocs[index],
                     controller,
-                    controllerContract,
+                    MediaController.instance,
                   );
                 },
               );
@@ -150,7 +150,7 @@ class DocumentsTab extends StatelessWidget {
     String url,
     DocsModel doc,
     DocumentController controller,
-    ContractController controllerContract,
+    MediaController controllerMedia,
   ) {
     final fileType = url.split('.').last.toLowerCase();
 
@@ -301,7 +301,7 @@ class DocumentsTab extends StatelessWidget {
                         fileName: doc.fileName.value,
                         fileType: fileType,
                         creationDate:
-                            doc.createdAt, // Example date, replace with actual
+                            doc.updatedAt, // Example date, replace with actual
                         fileSize:
                             fileSize, // Example file size in bytes, replace with actual size
                         createdBy:
@@ -315,11 +315,11 @@ class DocumentsTab extends StatelessWidget {
                 } else if (value == 'delete') {
                   // Handle delete
 
-                  final deleteResponse = await controllerContract
+                  final deleteResponse = await controllerMedia
                       .deleteDocumentFromAzure(
                         fileName.toString(),
-                        'media',
-                        doc.id,
+                        'docs',
+                        'users/${doc.id}',
                       );
 
                   if (deleteResponse) {
@@ -359,21 +359,6 @@ class DocumentsTab extends StatelessWidget {
                       ],
                     ),
                   ),
-                  if (doc.creatorType == 'agency_user')
-                    PopupMenuItem<String>(
-                      value: 'rename',
-                      child: Row(
-                        children: [
-                          const Icon(Icons.edit_document, size: 20),
-                          const SizedBox(width: 8),
-                          Text(
-                            AppLocalization.of(
-                              Get.context!,
-                            ).translate('general_msgs.msg_rename'),
-                          ),
-                        ],
-                      ),
-                    ),
                   PopupMenuItem<String>(
                     value: 'view',
                     child: Row(
@@ -388,24 +373,23 @@ class DocumentsTab extends StatelessWidget {
                       ],
                     ),
                   ),
-                  if (doc.creatorType == 'agency_user')
-                    PopupMenuItem<String>(
-                      value: 'delete',
-                      child: Row(
-                        children: [
-                          const Icon(Icons.delete, size: 20, color: Colors.red),
-                          const SizedBox(width: 8),
-                          Text(
-                            AppLocalization.of(
-                              Get.context!,
-                            ).translate('general_msgs.msg_delete'),
-                            style: const TextStyle(color: Colors.red),
-                          ),
-                        ],
-                      ),
+                   PopupMenuItem<String>(
+                    value: 'delete',
+                    child: Row(
+                      children: [
+                        const Icon(Icons.delete, size: 20),
+                        const SizedBox(width: 8),
+                        Text(
+                          AppLocalization.of(
+                            Get.context!,
+                          ).translate('general_msgs.msg_delete'),
+                        ),
+                      ],
                     ),
+                  ),
                 ];
               },
+
               icon: const Icon(Icons.more_vert),
             ),
           ),

@@ -25,7 +25,13 @@ class EditUserDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<UserController>();
+    controller.emailController.text = controller.user.value.email ?? '';
+    controller.firstNameController.text = controller.user.value.firstName ?? '';
+    controller.lastNameController.text = controller.user.value.lastName ?? '';
+    controller.displayNameController.text =
+        controller.user.value.displayName ?? '';
 
+        
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: TRoundedContainer(

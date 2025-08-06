@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
+//import 'package:iconsax/iconsax.dart';
+//import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/common/widgets/images/t_circular_image.dart';
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
+//import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 import 'package:xm_frontend/routes/routes.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 import 'package:xm_frontend/utils/constants/enums.dart';
@@ -14,7 +14,7 @@ import 'package:xm_frontend/utils/constants/image_strings.dart';
 
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../utils/constants/sizes.dart';
-import '../../../../../../utils/validators/validation.dart';
+//import '../../../../../../utils/validators/validation.dart';
 
 class ViewUserDialog extends StatelessWidget {
   const ViewUserDialog({super.key, this.user, this.contractCode});

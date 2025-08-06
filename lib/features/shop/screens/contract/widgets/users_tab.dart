@@ -19,8 +19,8 @@ import 'package:xm_frontend/utils/constants/sizes.dart';
 import 'package:xm_frontend/utils/device/device_utility.dart';
 import 'package:xm_frontend/utils/popups/loaders.dart';
 
-class TenantsTab extends StatelessWidget {
-  const TenantsTab({super.key});
+class UsersTab extends StatelessWidget {
+  const UsersTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class TenantsTab extends StatelessWidget {
               Expanded(
                 flex: TDeviceUtils.isDesktopScreen(context) ? 2 : 1,
                 child: TextFormField(
-                  onChanged: (query) => controllerContract.filterTenants(query),
+                  onChanged: (query) => controllerContract.filterUsers(query),
                   decoration: InputDecoration(
                     hintText: AppLocalization.of(
                       context,

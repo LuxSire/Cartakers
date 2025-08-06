@@ -139,9 +139,7 @@ class UserInvitationController extends TBaseController<UserModel> {
 
       debugPrint('Filtered users: ${filteredUsersData.length}');
 
-      allUsers.assignAll(
-        filteredUsersData.where((user) => user.contractStatus == 1),
-      );
+
       filteredUsers.assignAll(allUsers);
     } catch (e) {
       TLoaders.errorSnackBar(

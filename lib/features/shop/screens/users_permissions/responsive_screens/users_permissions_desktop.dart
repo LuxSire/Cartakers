@@ -61,7 +61,7 @@ class UsersPermissionsDesktopScreen extends StatelessWidget {
                             Tab(
                               text: AppLocalization.of(
                                 context,
-                              ).translate('profile_screen.'),
+                              ).translate('users_screen.lbl_permissions'),
                               icon: const Icon(Iconsax.note_2),
                             ),
                             Tab(

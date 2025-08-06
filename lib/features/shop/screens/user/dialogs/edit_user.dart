@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
+//import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/features/personalization/models/user_model.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
-import 'package:xm_frontend/utils/constants/colors.dart';
+//import 'package:xm_frontend/features/personalization/models/user_model.dart';
+//import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+//import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
+import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
+//import 'package:xm_frontend/utils/constants/colors.dart';
 
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../utils/constants/sizes.dart';
@@ -18,7 +19,6 @@ class EditUserDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<UserController>();
-    controller.initFormFields();
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: TRoundedContainer(
@@ -53,7 +53,7 @@ class EditUserDialog extends StatelessWidget {
                   // First Name
                   Expanded(
                     child: TextFormField(
-                      controller: controller.firstName,
+                      controller: controller.firstNameController,
                       decoration: InputDecoration(
                         hintText: AppLocalization.of(
                           context,
@@ -78,7 +78,7 @@ class EditUserDialog extends StatelessWidget {
                   // Last Name
                   Expanded(
                     child: TextFormField(
-                      controller: controller.lastName,
+                      controller: controller.lastNameController,
                       decoration: InputDecoration(
                         hintText: AppLocalization.of(
                           context,
@@ -108,7 +108,7 @@ class EditUserDialog extends StatelessWidget {
               TextFormField(
                 readOnly: true,
 
-                controller: controller.email,
+                controller: controller.emailController,
                 validator: TValidator.validateEmail,
 
                 decoration: InputDecoration(
@@ -130,7 +130,7 @@ class EditUserDialog extends StatelessWidget {
                     : SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: controller.submitUpdateUser,
+                        onPressed: controller.submitUser,
                         child: Text(
                           AppLocalization.of(
                             context,

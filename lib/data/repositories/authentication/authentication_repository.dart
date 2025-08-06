@@ -59,7 +59,7 @@ class AuthenticationRepository extends GetxController {
   /// LOGIN with email and password
   Future<bool> loginWithEmailAndPassword(String email, String password) async {
     try {
-      final response = await _userService.getCompanyByEmail(
+      final response = await _userService.getUserByEmail(
         email.trim().toLowerCase(),
       );
       final id = int.tryParse(response['id'].toString()) ?? 0;
@@ -68,12 +68,17 @@ class AuthenticationRepository extends GetxController {
           password,
           response['password_hash'],
         );
+
+        debugPrint('Password is $isPasswordValid   $password.  ${response['password_hash']}');
+
         if (!isPasswordValid) return false;
 
         _currentUser.value = UserModel.fromJson(response);
 
+
+        debugPrint('Current user after login');
         // Persist user‐meta
-        await UserPreferences.updateUserField("has_registered", true);
+        //await UserPreferences.updateUserField("has_registered", true);
         await UserPreferences.updateUserField("id", response['id'].toString());
         await UserPreferences.updateUserField(
           "company_id",
@@ -93,6 +98,8 @@ class AuthenticationRepository extends GetxController {
         //  response['profile_pic'] ?? '',
         //);
 
+        debugPrint('Current user after display_name');
+
         // ── Persist only notification preferences from the API ──
         await UserPreferences.updateUserField(
           "is_push_notifications",
@@ -102,6 +109,9 @@ class AuthenticationRepository extends GetxController {
           "is_email_notifications",
           (response['is_email_notifications_enabled'] ?? 1) == 1,
         );
+
+        debugPrint('Current user before refresh');
+
         await refreshCurrentUserDetails(); 
         return true;
       }

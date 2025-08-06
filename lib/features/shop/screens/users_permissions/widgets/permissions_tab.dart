@@ -7,7 +7,7 @@ import 'package:xm_frontend/data/models/contract_model.dart';
 import 'package:xm_frontend/data/models/docs_model.dart';
 import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/document/document_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
+//import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 import 'package:xm_frontend/features/shop/screens/contract/all_contracts/table/data_table.dart';
 import 'package:xm_frontend/features/shop/screens/contract/all_contracts/widgets/table_header.dart';
 import 'package:xm_frontend/features/shop/screens/contract/dialogs/edit_contract.dart';

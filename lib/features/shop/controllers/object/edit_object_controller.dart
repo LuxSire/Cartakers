@@ -1,4 +1,6 @@
 import 'dart:typed_data';
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -7,19 +9,21 @@ import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/data/models/object_model.dart';
 import 'package:xm_frontend/data/models/unit_model.dart';
 import 'package:xm_frontend/data/models/unit_room_model.dart';
-import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
+import 'package:xm_frontend/data/models/docs_model.dart';
+//import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
 import 'package:xm_frontend/data/repositories/object/object_repository.dart';
 import 'package:xm_frontend/utils/popups/full_screen_loader.dart';
-
+import 'package:xm_frontend/data/repositories/media/media_repository.dart';
 import '../../../../utils/helpers/network_manager.dart';
 import '../../../../utils/popups/loaders.dart';
-import '../../../media/models/image_model.dart';
+//import '../../../media/models/image_model.dart';
 
 class EditObjectController extends GetxController {
   static EditObjectController get instance => Get.find();
 
   final loading = false.obs;
   RxString imageURL = ''.obs;
+  RxString fileURL = ''.obs;
   final name = TextEditingController();
   final occupancy = TextEditingController();
   final zoning = TextEditingController();
@@ -39,17 +43,19 @@ class EditObjectController extends GetxController {
   RxInt sortColumnIndex = 1.obs;
   RxBool sortAscending = true.obs;
   final searchTextController = TextEditingController();
+  final _objectRepository = Get.put(ObjectRepository());
 
   RxBool unitsLoading = true.obs;
   RxBool hasImageChanged = false.obs;
+  RxBool hasFileChanged = false.obs;
   RxBool isDataUpdated = false.obs;
 
   RxList<UnitModel> allObjectUnits = <UnitModel>[].obs;
   RxList<UnitModel> filteredObjectUnits = <UnitModel>[].obs;
 
   RxList<UnitRoomModel> unitListRooms = <UnitRoomModel>[].obs;
-  RxList<String> objectImages = <String>[].obs;
-
+  RxList<DocsModel> objectImages = <DocsModel>[].obs;
+  RxList<DocsModel> objectDocs = <DocsModel>[].obs;
   Rx<Uint8List?> memoryBytes = Rx<Uint8List?>(null);
 
   ObjectModel objectInstance = ObjectModel.empty();
@@ -179,6 +185,25 @@ class EditObjectController extends GetxController {
     }
     update();
   }
+  /// Fetch object images from repository
+  Future<void> getObjectDocs(ObjectModel object) async {
+    try {
+      if (object.id != null && object.id!.isNotEmpty) {
+        final docs = await ObjectRepository.instance.fetchObjectDocs(int.parse(object.id!));
+        debugPrint('Fetched docs for object ${object.id}: $docs');
+        
+        if (docs != null) {
+          objectDocs.assignAll(docs);
+        } else {
+          objectDocs.clear();
+        }
+      }
+    } catch (e) {
+      TLoaders.errorSnackBar(title: 'Image Fetch Error', message: e.toString());
+      objectImages.clear();
+    }
+    update();
+  }
 
   void searchQuery(String query) {
     filteredObjectUnits.assignAll(
@@ -225,6 +250,89 @@ class EditObjectController extends GetxController {
       hasImageChanged.value = true;
 
       imageURL.value = file.name;
+    }
+  }
+
+  Future<PickedFileDescriptor?> pickFile() async {
+    // Show the file picker dialog and allow the user to select a file
+    final result = await FilePicker.platform.pickFiles();
+
+     if (result != null && result.files.isNotEmpty) {
+      final file = result.files.first;
+      return PickedFileDescriptor(
+        bytes: file.bytes,
+        path: file.path ?? '',
+        name: file.name,
+      );
+    }
+  }
+  Future<bool> uploadDocumentToAzure(PickedFileDescriptor pickedFile, int objectId) async {
+    try {
+      if (pickedFile == null) {
+        debugPrint('No file selected.');
+        return false;
+      }
+
+      final directoryName =
+          "objects/$objectId"; // Set the directory for storage
+
+      // Start Loading
+      loading.value = true;
+
+      // Check Internet Connectivity
+      final isConnected = await NetworkManager.instance.isConnected();
+      if (!isConnected) {
+        loading.value = false;
+        return false;
+      }
+      bool isFileUploaded = false;
+
+      debugPrint('Uploading file: ${pickedFile.path}');
+      isFileUploaded = await _objectRepository.uploadNewDocument(
+        objectId,
+        directoryName,
+        pickedFile,
+      );
+      debugPrint('Uploaded file: ${pickedFile.path}');
+
+      // Remove Loader
+      loading.value = false;
+
+      if (isFileUploaded) {
+        TLoaders.successSnackBar(
+          title: AppLocalization.of(
+            Get.context!,
+          ).translate('general_msgs.msg_info'),
+          message: AppLocalization.of(
+            Get.context!,
+          ).translate('general_msgs.msg_new_document_uploaded_successfully'),
+        );
+      } else {
+        TLoaders.errorSnackBar(
+          title: AppLocalization.of(
+            Get.context!,
+          ).translate('general_msgs.msg_error'),
+          message: AppLocalization.of(
+            Get.context!,
+          ).translate('general_msgs.msg_document_failed'),
+        );
+        return false;
+      }
+
+      // Update UI Listeners
+      update();
+      return true;
+    } catch (e) {
+      debugPrint('Error from catch uploadDocumentToAzure: $e');
+      loading.value = false;
+      TFullScreenLoader.stopLoading();
+      TLoaders.errorSnackBar(
+        title: AppLocalization.of(
+          Get.context!,
+        ).translate('general_msgs.msg_error'),
+        message: e.toString(),
+      );
+      return false;
     }
   }
 

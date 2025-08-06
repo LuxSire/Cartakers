@@ -244,13 +244,7 @@ class ContractRepository extends GetxController {
   ) async {
     try {
       // Now, we call the uploadAzureDocument function to upload the selected file
-      final documentResponse = await _objectService.uploadAzureDocument(
-        file: pickedFile,
-        contractId: contractId, //
-        containerName: "media", // Set the container to store the file
-        directoryName:
-            directoryName, // Set the directory path for Azure Blob Storage
-      );
+      
 
       // final get file name
       final fileName = path.basename(pickedFile.path);
@@ -266,21 +260,6 @@ class ContractRepository extends GetxController {
         return false;
       }
 
-      if (documentResponse['success'] == false) {
-        debugPrint("Failed to upload document: ${documentResponse['message']}");
-        return false;
-      } else {
-        final documentData = jsonDecode(documentResponse['data']);
-        final docUrl =
-            documentData['url']; // Retrieve the URL of the uploaded document
-        final mediaResponse = await _objectService.createContractMedia(
-          contractId,
-          docUrl,
-          fileNameWithoutExtension,
-          int.parse(creatorId),
-          'agency_user',
-        );
-      }
 
       return true;
     } catch (e) {
@@ -292,12 +271,13 @@ class ContractRepository extends GetxController {
   Future<bool> deleteDocument(
     String docName,
     String containerName,
-    int documentId,
+    String directoryName,
   ) async {
     try {
       final documentResponse = await _objectService.deleteDocumentFromAzure(
         fileName: docName,
         containerName: containerName,
+        directoryName: directoryName, 
       );
 
       if (documentResponse['success'] == false) {
@@ -306,9 +286,6 @@ class ContractRepository extends GetxController {
       } else {
         // now let's delete the record in the datdabase
 
-        final deleteResponse = await _objectService.deleteDocumentById(
-          documentId,
-        );
       }
 
       return true;
@@ -318,7 +295,7 @@ class ContractRepository extends GetxController {
     }
   }
 
-  Future<bool> updateFileName(int documentId, String newFileName) async {
+  Future<bool> updateFileName(String documentId, String newFileName) async {
     try {
       final documentResponse = await _objectService.updateFileName(
         documentId,

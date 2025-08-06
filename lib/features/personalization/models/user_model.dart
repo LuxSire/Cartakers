@@ -13,6 +13,7 @@ class UserModel {
   String phoneNumber;
   String profilePicture;
   String roleId;
+  String countryCode; // Added country code
   String roleName;
   String lang;
   String companyId;
@@ -68,7 +69,7 @@ class UserModel {
     this.userContractId,
     this.objectId,
     this.unitNumber,
-
+    this.countryCode='', 
     this.contractStatus,
     this.objectName,
     this.zoneId,
@@ -106,6 +107,7 @@ class UserModel {
       'phone_number': phoneNumber,
       'profile_pic': profilePicture,
       'role_id': roleId,
+      'country_code': countryCode, // Added country code  
       'role_name': roleName,
       'lang': lang,
       'company_id': companyId,

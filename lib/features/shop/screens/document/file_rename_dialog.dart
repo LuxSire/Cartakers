@@ -7,7 +7,7 @@ import 'package:xm_frontend/utils/constants/colors.dart';
 
 class RenameFileDialog extends StatelessWidget {
   final String currentFileName;
-  final int documentId;
+  final String documentId;
 
   RenameFileDialog({
     super.key,

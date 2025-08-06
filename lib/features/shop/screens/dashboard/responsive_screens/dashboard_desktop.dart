@@ -59,13 +59,13 @@ class DashboardDesktopScreen extends StatelessWidget {
                         headingIcon: Iconsax.building,
                         headingIconColor: TColors.alterColor,
                         headingIconBgColor: TColors.alterColor.withOpacity(0.1),
-                        stats: controller.totalCompanyObjects.value,
+                        stats: controller.totalObjects.value,
                         context: context,
                         title: AppLocalization.of(
                           context,
                         ).translate('dashboard_screen.lbl_objects'),
                         subTitle:
-                            controller.totalCompanyObjects.value.toString(),
+                            controller.totalObjects.value.toString(),
                       ),
                     ),
                   ),
@@ -78,13 +78,13 @@ class DashboardDesktopScreen extends StatelessWidget {
                         headingIcon: Iconsax.profile_2user,
                         headingIconColor: Colors.green,
                         headingIconBgColor: Colors.green.withOpacity(0.1),
-                        stats: controller.totalObjectUsers.value,
+                        stats: controller.totalUsers.value,
                         context: context,
                         title: AppLocalization.of(
                           context,
                         ).translate('sidebar.lbl_users_and_contracts'),
                         subTitle:
-                            ' ${controller.totalObjectUsers.value.toString()}/${controller.totalObjectUsers.value.toString()}',
+                            ' ${controller.totalUsers.value.toString()}/${controller.totalUsers.value.toString()}',
                       ),
                     ),
                   ),

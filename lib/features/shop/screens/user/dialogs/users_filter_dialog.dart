@@ -4,7 +4,8 @@ import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/features/shop/controllers/request/request_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
+//import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
+import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 import 'package:xm_frontend/utils/device/device_utility.dart';
 class UsersFilterDialog extends StatelessWidget {
@@ -17,7 +18,7 @@ class UsersFilterDialog extends StatelessWidget {
 
     final RxInt tempStatusId = controller.selectedStatusId.value.obs;
     final RxInt tempObjectFilterId =
-        controller.selectedObjectFilterId.value.obs;
+    controller.selectedObjectId.value.obs;
     final Rx<DateTime?> tempStartDate = controller.startDate.value.obs;
     final Rx<DateTime?> tempEndDate = controller.endDate.value.obs;
 
@@ -65,70 +66,8 @@ class UsersFilterDialog extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // Contract Status
-            Obx(() {
-              final statusMap = controller.getTranslatedContractStatuses();
-              return DropdownButtonFormField<int>(
-                value: tempStatusId.value,
-                onChanged: (value) => tempStatusId.value = value!,
-                isExpanded: true,
-                decoration: InputDecoration(
-                  labelText: AppLocalization.of(
-                    context,
-                  ).translate('users_screen.lbl_contract_status'),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                items:
-                    statusMap.entries
-                        .map(
-                          (entry) => DropdownMenuItem<int>(
-                            value: entry.key,
-                            child: Text(entry.value),
-                          ),
-                        )
-                        .toList(),
-              );
-            }),
 
             const SizedBox(height: 16),
-
-            // Building
-            Obx(() {
-              return DropdownButtonFormField<int>(
-                value: tempObjectFilterId.value,
-                onChanged: (value) => tempObjectFilterId.value = value!,
-                isExpanded: true,
-                decoration: InputDecoration(
-                  labelText: AppLocalization.of(
-                    context,
-                  ).translate('objects_screen.lbl_object_name'),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                items:
-                    [
-                      DropdownMenuItem<int>(
-                        value: 0,
-                        child: Text(
-                          AppLocalization.of(
-                            context,
-                          ).translate("general_msgs.msg_all"),
-                        ),
-                      ),
-                    ] +
-                    controller.objectsList
-                        .map(
-                          (b) => DropdownMenuItem<int>(
-                            value: int.parse(b.id!),
-                            child: Text(b.name!),
-                          ),
-                        )
-                        .toList(),
-              );
-            }),
 
             const SizedBox(height: 18),
 

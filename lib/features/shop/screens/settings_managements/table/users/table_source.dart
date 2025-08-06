@@ -114,7 +114,7 @@ class UserRows extends DataTableSource {
           ),
         ),
         DataCell(Text(user.email!)),
-        DataCell(Text(user.translatedRoleNameExt.toString())),
+        DataCell(Text(user.phoneNumber.toString())),
         DataCell(
           Text(
             user.objectPermissions == 'All'
