@@ -40,7 +40,7 @@ class ContractTabPanel extends StatelessWidget {
                     Tab(
                       text: AppLocalization.of(
                         context,
-                      ).translate('contract_screen.lbl_tenants'),
+                      ).translate('contract_screen.lbl_users'),
                       icon: Icon(Iconsax.profile_2user),
                     ),
                     Tab(
@@ -71,8 +71,8 @@ class ContractTabPanel extends StatelessWidget {
                   height: 400,
                   child: TabBarView(
                     children: [
-                      // Tenants Tab
-                      ContractDetailsTab(tabType: 'tenants'),
+                      // Users Tab
+                      ContractDetailsTab(tabType: 'users    '),
                       // Documents Tab
                       ContractDetailsTab(tabType: 'documents'),
                       // Booking History Tab

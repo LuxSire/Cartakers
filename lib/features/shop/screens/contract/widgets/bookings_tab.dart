@@ -5,7 +5,7 @@ import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/common/widgets/loaders/animation_loader.dart';
 import 'package:xm_frontend/data/models/booking_model.dart';
 import 'package:xm_frontend/features/shop/controllers/booking/booking_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 import 'package:xm_frontend/features/shop/screens/contract/dialogs/bookings_filter_dialog.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 import 'package:xm_frontend/utils/constants/image_strings.dart';
@@ -19,12 +19,12 @@ class BookingsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controllerContract = Get.find<ContractController>();
+    final controllerContract = Get.find<PermissionController>();
 
     final controller = Get.put(
       BookingController(
         sourceType: BookingSourceType.user,
-        id: int.parse(controllerContract.contractModel.value.id.toString()),
+        id: int.parse(controllerContract.permissionModel.value.id.toString()),
       ),
       tag: 'contract_bookings',
     );

@@ -40,17 +40,6 @@ class UsersInvitationTable extends StatelessWidget {
                           controller.sortByName(columnIndex, ascending),
                 ),
                 DataColumn2(
-                  size: ColumnSize.S,
-                  label: Text(
-                    AppLocalization.of(
-                      context,
-                    ).translate('objects_screen.lbl_object_name'),
-                  ),
-                  onSort:
-                      (columnIndex, ascending) =>
-                          controller.sortByObject(columnIndex, ascending),
-                ),
-                DataColumn2(
                   size: ColumnSize.M,
                   label: Text(
                     AppLocalization.of(
@@ -60,18 +49,6 @@ class UsersInvitationTable extends StatelessWidget {
                   onSort:
                       (columnIndex, ascending) =>
                           controller.sortByEmail(columnIndex, ascending),
-                ),
-
-                DataColumn2(
-                  size: ColumnSize.S,
-                  label: Text(
-                    AppLocalization.of(
-                      context,
-                    ).translate('objects_screen.lbl_contract_reference'),
-                  ),
-                  onSort:
-                      (columnIndex, ascending) =>
-                          controller.sortByContract(columnIndex, ascending),
                 ),
                 DataColumn2(
                   size: ColumnSize.S,

@@ -558,8 +558,8 @@
     "err_msg_dialog_title_failed_token": "Token-Validierung fehlgeschlagen",
     "err_msg_dialog_content_failed_token": "Der eingegebene Token ist ungültig oder abgelaufen. Bitte versuchen Sie es erneut oder fordern Sie einen neuen Token an.",
     "lbl_welcome_title": "Wo Immobilienverwaltung auf Einfachheit trifft",
-    "lbl_welcome_content": "Mit Ihrem Einladungscode erhalten Sie Zugang zu einer leistungsstarken Plattform für nahtlose Immobilienverwaltung, Mieterkommunikation und betriebliche Effizienz.",
-    "lbl_validating_your_code": "Ihr Code wird überprüft..."
+    "lbl_validating_your_code": "Ihr Code wird überprüft...",
+    "lbl_welcome_content": "Erhalten Sie Zugang zu unserer Plattform mit Ihrem exklusiven Einladungscode."
   },
   "language_selection": {
     "lbl_de": "DE",
@@ -613,6 +613,7 @@
   },
   "objects_screen": {
     "lbl_objects": "Objekte",
+    "lbl_types": "Typen",
     "lbl_price": "Preis",
     "lbl_search_objects": "Objekte suchen",
     "lbl_create_new_object": "Neues Objekt erstellen",
@@ -643,15 +644,25 @@
     
       "lbl_total_floors": "Gesamtanzahl der Stockwerke",
       "tooltip_total_floors": "Geben Sie die Gesamtanzahl der Stockwerke im Gebäude an, einschließlich Erd- und Kellergeschoss, falls zutreffend.",
-      "lbl_new_object": "Neues Objekt"
-
+      "lbl_new_object": "Neues Objekt",
+      "lbl_yieldgross": "Bruttoertrag",
+      "lbl_yieldnet": "Nettoertrag",
+      "lbl_assign_amenity_zone": "Annehmlichkeitszone zuweisen",
+      "lbl_object_information": "Objektinformationen",
+      "lbl_no_objects_found": "Keine Objekte gefunden",
+        "lbl_no_units_found": "Keine Einheiten gefunden",
+    "lbl_no_floors_found": "Keine Stockwerke gefunden",
+    "lbl_no_amenity_zones_found": "Keine Annehmlichkeitszonen gefunden"
     
     
   },
   "edit_object_screen": {
     "lbl_object_details": "Objektdetails",
     "lbl_update_object": "Objekt aktualisieren",
+    "lbl_description": "Beschreibung",
     "lbl_units": "Einheiten",
+    "lbl_yieldnet": "Nettoertrag",
+    "lbl_yieldgross": "Bruttoertrag",
     "lbl_search_units": "Einheiten suchen",
     "lbl_date_created": "Erstellungsdatum",
     "lbl_update": "Aktualisieren",
@@ -700,6 +711,7 @@
   },
   "users_screen": {
     "lbl_users": "Benutzer",
+    "lbl_company": "Unternehmen",
     "lbl_search_users": "Benutzer suchen",
     "lbl_create_new_user": "Neuen Benutzer erstellen",
     "lbl_first_name": "Vorname",
@@ -726,17 +738,18 @@
 
   },
   "create_contract_screen": {
-    "lbl_new_contract": "Neuer Vertrag",
+    "lbl_new_permission": "Neues Recht",
     "lbl_start_date": "Startdatum",
     "lbl_end_date": "Enddatum",
     "lbl_status": "Status",
-    "lbl_tenants": "Mieter",
-    "lbl_create_new_contract": "Neuen Vertrag erstellen",
+    "lbl_users": "Benutzer",
+    "lbl_create_new_permission": "Neues Recht erstellen",
     "lbl_end_contract": "Vertrag beenden",
+    "lbl_select_object": "Objekt auswählen",
     "lbl_contracts": "Verträge",
     "lbl_search_contracts": "Verträge suchen",
-    "lbl_select_tenants": "Mieter auswählen",
-    "error_msg_please_select_at_least_one_tenant": "Bitte wählen Sie mindestens einen Mieter aus"
+    "lbl_select_users": "Benutzer auswählen",
+    "error_msg_please_select_at_least_one_user": "Bitte wählen Sie mindestens einen Benutzer aus"
   },
   "amenity_zone_screen": {
     "lbl_assign_amenity_zone": "Annehmlichkeitszone zuweisen",
@@ -802,9 +815,36 @@
 
   "user_screen": {
   "lbl_user_details": "Benutzerdetails",
-  "lbl_profile_information": "Profilinformationen"
+  "lbl_profile_information": "Profilinformationen",
+  "lbl_permissions": "Berechtigungen"
+
 },
 
+"permission_screen": {
+        "lbl_permissions": "Berechtigungen",
+        "lbl_create_new_permission": "Neue Berechtigung erstellen",
+        "lbl_permission_name": "Name der Berechtigung",
+        "lbl_permission_description": "Beschreibung der Berechtigung",
+        "lbl_select_users": "Benutzer auswählen",
+        "lbl_select_objects": "Objekte auswählen",
+        "lbl_select_contracts": "Verträge auswählen",
+        "lbl_date_created": "Erstellungsdatum",
+        "lbl_actions": "Aktionen",
+        "lbl_no_permissions_found": "Keine Berechtigungen gefunden",
+        "lbl_update_permission": "Berechtigung aktualisieren"
+    },
+
+
+
+    "companies_screen": {
+        "lbl_new_company": "Neue Firma erstellen",
+        "lbl_name": "Name",
+        "lbl_description": "Beschreibung",
+        "lbl_email": "-Mail",
+        "lbl_phone_no": "Telefonnummer",
+        "lbl_address": "Adresse",
+        "lbl_select_company": "Firma auswählen"
+    },
 "bookings_screen": {
     "lbl_bookings": "Buchungen",
     "lbl_search_bookings": "Buchungen suchen",
@@ -926,6 +966,9 @@
 "lbl_invited": "Eingeladen",
 "lbl_active": "Aktiv",
 "lbl_disabled": "Deaktiviert",
+
+    "lbl_companies": "Unternehmen",
+
         "lbl_pending_invitation": "Ausstehende Einladung"
 
 

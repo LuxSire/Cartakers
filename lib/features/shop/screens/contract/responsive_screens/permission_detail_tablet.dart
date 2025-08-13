@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/data/models/contract_model.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:xm_frontend/data/models/permission_model.dart';
 import 'package:xm_frontend/data/models/unit_model.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 import 'package:xm_frontend/features/shop/screens/object/unit_detail/widgets/unit_contracts.dart';
 import 'package:xm_frontend/features/shop/screens/contract/widgets/contract_tab_panel.dart';
 
@@ -11,14 +12,14 @@ import '../../../../../../routes/routes.dart';
 import '../../../../../../utils/constants/sizes.dart';
 import '../widgets/contract_info.dart';
 
-class ContractDetailMobileScreen extends StatelessWidget {
-  const ContractDetailMobileScreen({super.key, required this.contract});
+class PermissionDetailTabletScreen extends StatelessWidget {
+  const PermissionDetailTabletScreen({super.key, required this.contract});
 
-  final ContractModel contract;
+  final PermissionModel contract;
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ContractController());
+    final controller = Get.put(PermissionController());
 
     controller.initializeContractData(int.parse(contract.id!));
 
@@ -42,7 +43,7 @@ class ContractDetailMobileScreen extends StatelessWidget {
                 onreturnUpdated: () => controller.isDataUpdated.value,
 
                 returnToPreviousScreen: true,
-                heading: contract.contractCode!,
+                heading: contract.permissionId.toString() ?? '' ,
                 breadcrumbItems: const [
                   // Routes.buildingsUnits,
                   // 'Building Unit Details',
@@ -51,11 +52,24 @@ class ContractDetailMobileScreen extends StatelessWidget {
               const SizedBox(height: TSizes.spaceBtwSections),
 
               // Body
-              const ContractInfo(),
-              const SizedBox(height: TSizes.spaceBtwSections),
-
-              // Contract Details Tabs
-              const ContractTabPanel(),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Left Side Order Information
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      children: [
+                        // Contract Info
+                        const ContractInfo(),
+                        const SizedBox(height: TSizes.spaceBtwSections),
+                        // Contract Details Tabs
+                        const ContractTabPanel(),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),

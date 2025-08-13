@@ -3,11 +3,10 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/common/widgets/loaders/animation_loader.dart';
-import 'package:xm_frontend/data/models/contract_model.dart';
+import 'package:xm_frontend/data/models/permission_model.dart';
 import 'package:xm_frontend/data/models/docs_model.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/document/document_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 import 'package:xm_frontend/features/shop/screens/contract/all_contracts/table/data_table.dart';
 import 'package:xm_frontend/features/shop/screens/contract/all_contracts/widgets/table_header.dart';
 import 'package:xm_frontend/features/shop/screens/contract/dialogs/edit_contract.dart';
@@ -32,11 +31,11 @@ class ContractsTab extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ContractTableHeader(),
+          PermissionTableHeader(),
           SizedBox(height: TSizes.spaceBtwItems),
 
           // Table
-          ContractsTable(),
+          PermissionsTable(),
         ],
       ),
     );

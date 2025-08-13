@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/data/models/contract_model.dart';
+import 'package:xm_frontend/data/models/permission_model.dart';
 import 'package:xm_frontend/features/shop/controllers/object/object_unit_detail_controller.dart';
 import 'package:xm_frontend/features/shop/screens/contract/dialogs/create_contract.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
@@ -25,7 +25,7 @@ class ObjectUnitContractTableHeader extends StatelessWidget {
             children: [
               TextButton.icon(
                 onPressed: () async {
-                  final newContract = await showDialog<ContractModel>(
+                  final newContract = await showDialog<PermissionModel>(
                     context: context,
                     barrierDismissible: false,
                     builder: (BuildContext context) {
@@ -67,7 +67,7 @@ class ObjectUnitContractTableHeader extends StatelessWidget {
             children: [
               TextButton.icon(
                 onPressed: () async {
-                  final newContract = await showDialog<ContractModel>(
+                  final newContract = await showDialog<PermissionModel>(
                     context: context,
                     barrierDismissible: false,
                     builder: (BuildContext context) {

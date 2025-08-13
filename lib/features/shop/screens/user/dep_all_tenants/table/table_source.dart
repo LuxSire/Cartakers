@@ -7,7 +7,7 @@ import 'package:xm_frontend/common/widgets/images/t_circular_image.dart';
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
 import 'package:xm_frontend/features/shop/controllers/object/object_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 //import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 import 'package:xm_frontend/features/shop/screens/user/dialogs/edit_user.dart';
@@ -21,13 +21,13 @@ import '../../../../../../utils/constants/colors.dart';
 import '../../../../../../utils/constants/enums.dart';
 import '../../../../../../utils/constants/sizes.dart';
 
-class TenantsRows extends DataTableSource {
+class UsersRows extends DataTableSource {
   final controller = UserController.instance;
 
   // TenantsRows() {
   //   controller.refreshData();
   // }
-
+  
   @override
   DataRow? getRow(int index) {
     if (index >= controller.filteredItems.length)
@@ -36,7 +36,7 @@ class TenantsRows extends DataTableSource {
     final user = controller.filteredItems[index];
     return DataRow2(
       onTap: () async {
-        final controllerContract = Get.put(ContractController());
+        final controllerContract = Get.put(PermissionController());
 
         controllerContract.initializeContractData(user.userContractId!);
 
@@ -146,7 +146,7 @@ class TenantsRows extends DataTableSource {
             onViewPressed: () async {
               //  controller.tenantModel.value = tenant;
 
-              final controllerContract = Get.put(ContractController());
+              final controllerContract = Get.put(PermissionController());
 
               controllerContract.initializeContractData(
                 user.userContractId!,

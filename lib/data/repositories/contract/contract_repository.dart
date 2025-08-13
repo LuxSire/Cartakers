@@ -8,7 +8,7 @@ import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/data/api/services/object_service.dart';
 import 'package:xm_frontend/data/api/services/user_service.dart';
 import 'package:xm_frontend/data/models/object_model.dart';
-import 'package:xm_frontend/data/models/contract_model.dart';
+import 'package:xm_frontend/data/models/permission_model.dart';
 import 'package:xm_frontend/data/models/docs_model.dart';
 import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
 import 'package:xm_frontend/features/personalization/controllers/settings_controller.dart';
@@ -19,8 +19,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:xm_frontend/utils/popups/loaders.dart';
 
 /// Repository class for user-related operations.
-class ContractRepository extends GetxController {
-  static ContractRepository get instance => Get.find();
+class PermissionRepository extends GetxController {
+  static PermissionRepository get instance => Get.find();
 
   final _objectService = ObjectService();
   final _userService = UserService();
@@ -36,7 +36,7 @@ class ContractRepository extends GetxController {
           );
 
       return response
-          .map((tenantData) => UserModel.fromJson(tenantData))
+          .map((userData) => UserModel.fromJson(userData))
           .toList();
     } catch (e) {
       debugPrint('Error fetching non contract users: $e');
@@ -44,25 +44,25 @@ class ContractRepository extends GetxController {
     }
   }
 
-  Future<ContractModel> fetchContractById(int contractId) async {
+  Future<PermissionModel> fetchPermissionById(int permissionId) async {
     try {
-      final contract = await _objectService.fetchContractById(contractId);
-      if (contract == null) throw Exception('Contract not found');
-      return contract;
+      final permission = await _objectService.fetchPermissionById(permissionId);
+      if (permission == null) throw Exception('Permission not found');
+      return permission;
     } catch (e) {
-      debugPrint('Error fetching contract: $e');
+      debugPrint('Error fetching permission: $e');
       rethrow;
     }
   }
 
-  Future<ContractModel> fetchActiveContractsByUnitId(int unitId) async {
+  Future<PermissionModel> fetchActiveContractsByUnitId(int unitId) async {
     try {
       final contract = await _objectService.fetchActiveContractByUnitId(
         unitId,
       );
       if (contract == null) {
         debugPrint('No active contract found for unit ID: $unitId');
-        return ContractModel.empty();
+        return PermissionModel.empty();
       }
       return contract;
     } catch (e) {
@@ -72,47 +72,24 @@ class ContractRepository extends GetxController {
         debugPrint(
           'No active contract found for unit ID: $unitId (Handled 404)',
         );
-        return ContractModel.empty();
+        return PermissionModel.empty();
       }
 
-      debugPrint('Error fetching contract: $e');
+      debugPrint('Error fetching permission: $e');
       rethrow;
     }
   }
 
-  Future<bool> updateContractDetails(ContractModel updatedContract) async {
+  Future<bool> updatePermissionDetails(PermissionModel updatedPermission) async {
     try {
       // first update the fields
-      final result = await _objectService.updateContractDetails(
-        int.parse(updatedContract.id!),
-        updatedContract.contractCode!,
-        updatedContract.startDate,
-        updatedContract.endDate,
-        updatedContract.statusId!,
+      final result = await _objectService.updatePermissionDetails(
+        int.parse(updatedPermission.id!),
+        updatedPermission.startDate,
+        updatedPermission.endDate
+
       );
 
-      // update the tenants
-
-      if (updatedContract.users != null) {
-        // remove all tenants from contract
-        await _objectService.deleteUsersFromContract(
-          int.parse(updatedContract.id!),
-        );
-
-        for (var tenant in updatedContract.users!) {
-          // set first tenant as primary
-          var isPrimary = 0;
-          if (updatedContract.users!.indexOf(tenant) == 0) {
-            isPrimary = 1;
-          }
-          await _objectService.addUserToContract(
-            int.parse(updatedContract.id!),
-            int.parse(tenant.id!),
-
-            isPrimary,
-          );
-        }
-      }
 
       if (result['success'] == false) {
         debugPrint('Error updating contract : ${result['message']}');
@@ -128,11 +105,11 @@ class ContractRepository extends GetxController {
     }
   }
 
-  Future<bool> removeUserFromContract(int contractId, int userId) async {
+  Future<bool> removeUserFromObject(int objectId, int userId) async {
     try {
       // first update the fields
-      final result = await _objectService.removeUserFromContract(
-        contractId,
+      final result = await _objectService.removeUserFromObject(
+        objectId,
         userId,
       );
 
@@ -172,34 +149,16 @@ class ContractRepository extends GetxController {
     }
   }
 
-  Future<bool> createContract(ContractModel contract) async {
+  Future<bool> createPermission(PermissionModel permission) async {
     try {
       // first update the fields
-      final result = await _objectService.createContract(
-        contract.contractCode!,
-        contract.startDate,
-        contract.statusId!,
-        contract.unitId!,
-        contract.objectId!,
+      final result = await _objectService.createPermission(
+        permission.userId!,
+        permission.objectId!,
       );
 
-      final contractId = result['data'][0]['contract_id'];
-
-      // add the users
-      for (var user in contract.users!) {
-        // set first user as primary
-        var isPrimary = 0;
-        if (contract.users!.indexOf(user) == 0) {
-          isPrimary = 1;
-        }
-
-        await _objectService.addUserToContract(
-          int.parse(contractId.toString()),
-          int.parse(user.id!),
-
-          isPrimary,
-        );
-      }
+      final permissionId = result['data'][0]['permission_id'];
+ 
 
       if (result['success'] == false) {
         debugPrint('Error updating contract : ${result['message']}');
@@ -316,7 +275,7 @@ class ContractRepository extends GetxController {
     }
   }
 
-  Future<List<ContractModel>> getContractsByObjectId(int objectId) async {
+  Future<List<PermissionModel>> getContractsByObjectId(int objectId) async {
     try {
       return [];
     } catch (e) {
@@ -325,7 +284,7 @@ class ContractRepository extends GetxController {
     }
   }
 
-  Future<List<ContractModel>> getAllCompanyObjectsContracts() async {
+  Future<List<PermissionModel>> getAllCompanyObjectsContracts() async {
     try {
       return [];
     } catch (e) {

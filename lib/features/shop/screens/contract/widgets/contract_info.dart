@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/data/models/contract_model.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+import 'package:xm_frontend/data/models/permission_model.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 import 'package:xm_frontend/features/shop/screens/contract/dialogs/edit_contract.dart';
 import 'package:xm_frontend/features/shop/screens/user/dialogs/create_user.dart';
 
@@ -18,10 +18,10 @@ class ContractInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<ContractController>();
+    final controller = Get.find<PermissionController>();
 
     return Obx(() {
-      final contract = controller.contractModel.value;
+      final contract = controller.permissionModel.value;
 
       return TRoundedContainer(
         padding: const EdgeInsets.all(TSizes.defaultSpace),
@@ -45,7 +45,7 @@ class ContractInfo extends StatelessWidget {
                     const SizedBox(width: TSizes.defaultSpace),
                     TextButton.icon(
                       onPressed: () async {
-                        final updatedContract = await showDialog<ContractModel>(
+                        final updatedContract = await showDialog<PermissionModel>(
                           context: Get.context!,
                           barrierDismissible: false,
                           builder: (BuildContext context) {
@@ -57,22 +57,10 @@ class ContractInfo extends StatelessWidget {
                         );
 
                         if (updatedContract != null) {
-                          controller.contractModel.value.contractCode =
-                              updatedContract.contractCode;
-                          controller.contractModel.value.startDate =
-                              updatedContract.startDate;
-                          controller.contractModel.value.endDate =
-                              updatedContract.endDate;
-                          controller.contractModel.value.statusId =
-                              updatedContract.statusId;
-                          controller.contractModel.value.userCount =
-                              updatedContract.userCount;
-                          controller.contractModel.value.userNames =
-                              updatedContract.userNames;
-                          controller.contractModel.value.users =
-                              updatedContract.users;
-
-                          controller.contractModel.refresh();
+                          controller.permissionModel.value.permissionId =
+                              updatedContract.permissionId    ;
+ 
+                          controller.permissionModel.refresh();
                           controller.isDataUpdated.value = true;
                           controller.loadingUsers.value = true;
 
@@ -102,51 +90,13 @@ class ContractInfo extends StatelessWidget {
                       Text(
                         AppLocalization.of(
                           context,
-                        ).translate('contract_screen.lbl_start_date'),
+                        ).translate('contract_screen.lbl_object_name'),
                         style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                           color: TColors.black.withOpacity(0.5),
                         ),
                       ),
                       Text(
-                        contract.formattedStartDate,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ],
-                  ),
-                ),
-                if (controller.contractModel.value.statusId == 2) // terminated
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          AppLocalization.of(
-                            context,
-                          ).translate('contract_screen.lbl_end_date'),
-                          style: Theme.of(context).textTheme.bodyLarge!
-                              .copyWith(color: TColors.black.withOpacity(0.5)),
-                        ),
-                        Text(
-                          contract.formattedEndDate,
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ],
-                    ),
-                  ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        AppLocalization.of(
-                          context,
-                        ).translate('contract_screen.lbl_unit'),
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: TColors.black.withOpacity(0.5),
-                        ),
-                      ),
-                      Text(
-                        contract.unitNumber,
+                        contract.objectName ?? '' ,
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ],
@@ -175,66 +125,6 @@ class ContractInfo extends StatelessWidget {
                 //           ),
                 //         ),
                 //       ],
-                //     ),
-                //   ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        AppLocalization.of(context).translate(
-                          'edit_building_screen.lbl_contract_reference',
-                        ),
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: TColors.black.withOpacity(0.5),
-                        ),
-                      ),
-                      Text(
-                        contract.contractCode?.isEmpty == true
-                            ? '-'
-                            : contract.contractCode ?? '-',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  flex: TDeviceUtils.isMobileScreen(context) ? 2 : 1,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        AppLocalization.of(
-                          context,
-                        ).translate('contract_screen.lbl_status'),
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: TColors.black.withOpacity(0.5),
-                        ),
-                      ),
-                      TRoundedContainer(
-                        radius: TSizes.cardRadiusSm,
-                        padding: const EdgeInsets.symmetric(
-                          vertical: TSizes.sm,
-                          horizontal: TSizes.md,
-                        ),
-                        backgroundColor:
-                            THelperFunctions.getUnitContractStatusColor(
-                              contract.statusId ?? 0,
-                            ).withOpacity(0.1),
-                        child: Text(
-                          THelperFunctions.getUnitContractStatusText(
-                            contract.statusId ?? 0,
-                          ),
-                          style: TextStyle(
-                            color: THelperFunctions.getUnitContractStatusColor(
-                              contract.statusId ?? 0,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
               ],
             ),
 

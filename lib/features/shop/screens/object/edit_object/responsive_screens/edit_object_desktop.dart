@@ -6,6 +6,7 @@ import 'package:xm_frontend/features/shop/controllers/object/edit_object_control
 import 'package:xm_frontend/features/shop/screens/object/edit_object/widgets/object_units.dart';
 import 'package:xm_frontend/features/shop/screens/object/edit_object/widgets/edit_object_form.dart';
 import '../widgets/object_docs.dart';
+import '../widgets/object_pics.dart';
 
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../utils/constants/sizes.dart';
@@ -20,36 +21,59 @@ class EditObjectDesktopScreen extends StatelessWidget {
     // get edit controller
     final controller = Get.put(EditObjectController());
 
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(TSizes.defaultSpace),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Breadcrumbs
-              TBreadcrumbsWithHeading(
-                onreturnUpdated: () => controller.isDataUpdated.value,
-                returnToPreviousScreen: true,
-                heading: AppLocalization.of(
-                  context,
-                ).translate('edit_object_screen.lbl_object_details'),
-                breadcrumbItems: [],
-              ),
-              const SizedBox(height: TSizes.spaceBtwSections),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(TSizes.defaultSpace),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Breadcrumbs
+                TBreadcrumbsWithHeading(
+                  onreturnUpdated: () => controller.isDataUpdated.value,
+                  returnToPreviousScreen: true,
+                  heading: AppLocalization.of(
+                    context,
+                  ).translate('edit_object_screen.lbl_object_details'),
+                  breadcrumbItems: [],
+                ),
+                const SizedBox(height: TSizes.spaceBtwSections),
 
-              // Form on top, full width
-              EditObjectForm(object: object),
-              const SizedBox(height: TSizes.spaceBtwSections),
-              // Object documents widget
-              SizedBox(
-                height: 350, // Set a fixed height for the document list
-                child: ObjectDocsWidget(objectId: int.parse(object.id!)),
-              ),
-              const SizedBox(height: TSizes.spaceBtwSections),
-              // Units at the bottom, full width
-              ObjectUnits(object: object),
-            ],
+                // Form on top, full width
+                EditObjectForm(object: object),
+                const SizedBox(height: TSizes.spaceBtwSections),
+
+                // Tabs for Documents and Images
+                TabBar(
+                  labelColor: Theme.of(context).colorScheme.primary,
+                  unselectedLabelColor: Colors.grey,
+                  tabs: const [
+                    Tab(text: 'Documents'),
+                    Tab(text: 'Images'),
+                  ],
+                ),
+                SizedBox(
+                  height: 370,
+                  child: TabBarView(
+                    children: [
+                      SizedBox(
+                        height: 350,
+                        child: ObjectDocsWidget(objectId: object.id!),
+                      ),
+                      SizedBox(
+                        height: 350,
+                        child: ObjectPicsWidget(objectId: object.id!),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: TSizes.spaceBtwSections),
+                // Units at the bottom, full width
+                //ObjectUnits(object: object),
+              ],
+            ),
           ),
         ),
       ),

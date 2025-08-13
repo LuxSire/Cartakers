@@ -19,6 +19,28 @@ import '../../../../utils/popups/loaders.dart';
 //import '../../../media/models/image_model.dart';
 
 class EditObjectController extends GetxController {
+  /// Returns a valid dropdown value for occupancy
+  String? getValidOccupancyValue(String? value) {
+    final uniqueList = occupancyList.toSet().toList();
+    if (value != null && uniqueList.contains(value)) {
+      return value;
+    }
+    return null;
+  }
+
+  /// Returns a valid dropdown value for zoning
+  String? getValidZoningValue(String? value) {
+    final uniqueList = zoningList.toSet().toList();
+    if (value != null && uniqueList.contains(value)) {
+      return value;
+    }
+    return null;
+  }
+  RxList<String> occupancyList = <String>[].obs;
+  RxList<String> zoningList = <String>[].obs;
+  RxList<String> typeList = <String>[].obs;
+  /// Set occupancy options
+   RxInt selectedCompanyId = 0.obs;
   static EditObjectController get instance => Get.find();
 
   final loading = false.obs;
@@ -30,6 +52,8 @@ class EditObjectController extends GetxController {
   final city = TextEditingController();
   final description = TextEditingController();
   final owner = TextEditingController();
+  final companyId = TextEditingController();
+  final currency = TextEditingController();
   final status = TextEditingController();
   final type_ = TextEditingController();
   final price = TextEditingController();
@@ -39,6 +63,9 @@ class EditObjectController extends GetxController {
   final location = TextEditingController();
   final units = TextEditingController();
   final floors = TextEditingController();
+  final country = TextEditingController();
+  final yieldNet = TextEditingController();
+  final yieldGross = TextEditingController();
 
   RxInt sortColumnIndex = 1.obs;
   RxBool sortAscending = true.obs;
@@ -70,30 +97,44 @@ class EditObjectController extends GetxController {
   void onInit() {
     super.onInit();
     // Initialize the controller
+    _initLists();
+  }
 
+  Future<void> _initLists() async {
+    occupancyList.clear();
+    zoningList.clear();
+
+    typeList.clear();
+    occupancyList.assignAll((await repository.getAllOccupancies()).toSet().toList());
+    zoningList.assignAll((await repository.getAllZonings()).toSet().toList());
+    typeList.assignAll((await repository.getAllTypes()).toSet().toList());
   }
 
   /// Init Data
   void init(ObjectModel object) {
     name.text = object.name ?? '';
-    occupancy.text = object.occupancy ?? '';
-    zoning.text = object.zoning ?? '';
-    city.text = object.city ?? '';
+    occupancy.text = object.occupancy ?? 'Full';
+    zoning.text = object.zoning ?? 'Agriculture';
+    city.text = object.city ?? 'Milan';
     description.text = object.description ?? '';
     owner.text = object.owner?.toString() ?? '';
     status.text = object.status?.toString() ?? '';
-    type_.text = object.type_ ?? '';
+    type_.text = object.type_ ?? 'Office';
     price.text = object.price?.toString() ?? '';
     street.text = object.street ?? '';
-    objectNumber.text = object.objectNumber ?? '';
     zipCode.text = object.zipCode ?? '';
     location.text = object.location ?? '';
     units.text = object.totalUnits?.toString() ?? '';
     floors.text = object.totalFloors?.toString() ?? '';
+    yieldGross.text = object.yieldGross?.toString() ?? '';
+    yieldNet.text = object.yieldNet?.toString() ?? '';
     imageURL.value = object.imgUrl ?? '';
+    currency.text = object.currency ?? 'EUR';
+    companyId.text=object.companyId.toString() ?? '';
+    country.text = object.country ?? '';
     // Fetch object images
     getObjectImages(object);
-  }
+  } 
 
   /// Method to reset fields
   void resetFields() {
@@ -103,6 +144,7 @@ class EditObjectController extends GetxController {
     city.clear();
     description.clear();
     owner.clear();
+    currency.clear();
     status.clear();
     type_.clear();
     price.clear();
@@ -112,8 +154,10 @@ class EditObjectController extends GetxController {
     location.clear();
     units.clear();
     floors.clear();
+    companyId.clear();
     imageURL.value = '';
-
+    yieldGross.clear();
+    yieldNet.clear();
     loading(false);
   }
 
@@ -141,7 +185,7 @@ class EditObjectController extends GetxController {
 
       debugPrint('Object ID: ${object.id}');
       // Fetch customer orders & addresses
-      if (object.id != null && object.id!.isNotEmpty) {
+      if (object.id != null ) {
         object.units = await ObjectRepository.instance.fetchObjectUnits(
           object.id!,
         );
@@ -169,8 +213,8 @@ class EditObjectController extends GetxController {
   /// Fetch object images from repository
   Future<void> getObjectImages(ObjectModel object) async {
     try {
-      if (object.id != null && object.id!.isNotEmpty) {
-        final images = await ObjectRepository.instance.fetchObjectImages(int.parse(object.id!));
+      if (object.id != null  ) {
+        final images = await ObjectRepository.instance.fetchObjectImages(object.id!);
         debugPrint('Fetched images for object ${object.id}: $images');
         
         if (images != null) {
@@ -188,8 +232,8 @@ class EditObjectController extends GetxController {
   /// Fetch object images from repository
   Future<void> getObjectDocs(ObjectModel object) async {
     try {
-      if (object.id != null && object.id!.isNotEmpty) {
-        final docs = await ObjectRepository.instance.fetchObjectDocs(int.parse(object.id!));
+      if (object.id != null ) {
+        final docs = await ObjectRepository.instance.fetchObjectDocs(object.id!);
         debugPrint('Fetched docs for object ${object.id}: $docs');
         
         if (docs != null) {
@@ -340,25 +384,37 @@ class EditObjectController extends GetxController {
     if (!formKey.currentState!.validate()) return;
 
     loading.value = true;
-
+    debugPrint('Submitting object ${name.text.trim()}');
     // AuthenticationRepository.instance.currentUser.agencyId
 
     var isCreated = false;
 
     isCreated = await ObjectRepository.instance.createObject(
+      
       name.text.trim(),
       street.text.trim(),
-      objectNumber.text.trim(),
       zipCode.text.trim(),
-      location.text.trim(),
+      description.text.trim(),
+      city.text.trim(),
+      currency.text.trim(),
+      double.tryParse(price.text.trim()),
+      selectedCompanyId.value ,
       int.parse(units.text.trim()),
       int.parse(floors.text.trim()),
+      occupancy.text.trim(),
+      zoning.text.trim(),
+      country.text.trim(),
+      type_.text.trim(),
+      imageURL.value,
+      int.tryParse(owner.text.trim()),
+      int.tryParse(status.text.trim())
     );
 
     loading.value = false;
 
     if (isCreated) {
-      Get.back(result: true); //  Return `true` to indicate tenant was created
+      
+      Get.back(result: true); //  Return `true` to indicate object was created
 
       TLoaders.successSnackBar(
         title: AppLocalization.of(
@@ -403,23 +459,27 @@ class EditObjectController extends GetxController {
       bool isObjectUpdatedSuccessfully = false;
 
       // Map Data
+      object.companyId=int.tryParse(companyId.text.trim());
       object.name = name.text.trim();
       object.occupancy = occupancy.text.trim();
       object.zoning = zoning.text.trim();
       object.city = city.text.trim();
+      object.currency=currency.text.trim();
       object.description = description.text.trim();
       object.owner = int.tryParse(owner.text.trim());
       object.status = int.tryParse(status.text.trim());
       object.type_ = type_.text.trim();
       object.price = double.tryParse(price.text.trim());
       object.street = street.text.trim();
-      object.objectNumber = objectNumber.text.trim();
       object.zipCode = zipCode.text.trim();
       object.location = location.text.trim();
       object.imgUrl = imageURL.value;
-
+      object.totalUnits = int.tryParse(units.text.trim()) ?? 1;
+      object.totalFloors = int.tryParse(floors.text.trim()) ?? 1;
+      object.yieldGross = double.tryParse(yieldGross.text.trim());
+      object.yieldNet = double.tryParse(yieldNet.text.trim());
       // Call Repository to Update
-      isObjectUpdatedSuccessfully = await repository.updateObjectDetails(
+      isObjectUpdatedSuccessfully = await repository.updateObject(
         object,
       );
 

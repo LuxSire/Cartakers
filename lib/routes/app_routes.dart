@@ -7,7 +7,7 @@ import 'package:xm_frontend/features/authentication/screens/register/register.da
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/object/object_unit_detail_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/object/object_unit_detail_controller.dart';
 //import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 import 'package:xm_frontend/features/shop/screens/bookings_requests/bookings_requests.dart';
@@ -15,7 +15,7 @@ import 'package:xm_frontend/features/shop/screens/object/all_objects/objects.dar
 import 'package:xm_frontend/features/shop/screens/object/edit_object/edit_object.dart';
 import 'package:xm_frontend/features/shop/screens/object/unit_detail/unit_detail.dart';
 import 'package:xm_frontend/features/shop/screens/communication/all_communications/communications.dart';
-import 'package:xm_frontend/features/shop/screens/contract/contract_detail.dart';
+import 'package:xm_frontend/features/shop/screens/contract/permission_detail.dart';
 import 'package:xm_frontend/features/shop/screens/dashboard/dashboard.dart';
 import 'package:xm_frontend/features/shop/screens/settings_managements/settings_management.dart';
 import 'package:xm_frontend/features/shop/screens/user/user_detail.dart';
@@ -77,13 +77,13 @@ class AppRoute {
     ),
 
     GetPage(
-      name: Routes.contractDetails,
-      page: () => ContractDetailScreen(),
+      name: Routes.permissionDetails,
+      page: () => PermissionDetailScreen(),
       binding: BindingsBuilder(() {
         //  Get.delete<
         //    ContractController
         //   >(); //  ensures previous instance is removed
-        Get.put(ContractController()); // fresh instance every time
+        Get.put(PermissionController()); // fresh instance every time
       }),
       middlewares: [RouteMiddleware()],
     ),

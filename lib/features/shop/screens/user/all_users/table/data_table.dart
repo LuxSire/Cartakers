@@ -83,7 +83,7 @@ class UsersTable extends StatelessWidget {
                 ),
                 DataColumn2(
                   size: ColumnSize.S,
-                  fixedWidth: 130,
+                  fixedWidth: 160,
                   label: Text(
                     AppLocalization.of(
                       context,

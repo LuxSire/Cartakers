@@ -12,7 +12,7 @@ import 'package:xm_frontend/data/models/booking_model.dart';
 import 'package:xm_frontend/data/models/booking_timeslot_model.dart';
 import 'package:xm_frontend/data/models/object_model.dart';
 import 'package:xm_frontend/data/models/category_model.dart';
-import 'package:xm_frontend/data/models/contract_model.dart';
+import 'package:xm_frontend/data/models/permission_model.dart';
 import 'package:xm_frontend/data/models/organization_model.dart';
 import 'package:xm_frontend/data/models/request_log_model.dart';
 import 'package:xm_frontend/data/models/request_model.dart';
@@ -94,6 +94,97 @@ class ObjectRepository extends GetxController {
     }
   }
 
+  /// Function to fetch all buildings from mysql.
+  Future<List<String>> getAllZonings() async {
+    try {
+      // Assuming you already have access to the companyId from somewhere (e.g. logged-in user)
+      final response = await _objectService.getAllZonings();
+
+      if (response.isEmpty) {
+        debugPrint('No objects found.');
+        return [];
+      } else if (response is String) {
+        debugPrint('Error fetching zonings: $response');
+        return [];
+      } else {
+        debugPrint('Fetched zonings: ${response.length}');
+      }
+      return response.map((z) => z['name'].toString()).toList();
+   
+    } catch (e) {
+      debugPrint('Error fetching zonings: $e');
+      return [];
+    }
+  }
+
+  /// Function to fetch all buildings from mysql.
+  Future<List<String>> getAllOccupancies() async {
+    try {
+      // Assuming you already have access to the companyId from somewhere (e.g. logged-in user)
+      final response = await _objectService.getAllOccupancies();
+
+      if (response.isEmpty) {
+        debugPrint('No objects found.');
+        return [];
+      } else if (response is String) {
+        debugPrint('Error fetching occupancie§: $response');
+        return [];
+      } else {
+        debugPrint('Fetched occupancie§: ${response.length}');
+      }
+      return response.map((z) => z['name'].toString()).toList();
+   
+    } catch (e) {
+      debugPrint('Error fetching occupancie§: $e');
+      return [];
+    }
+  }
+    Future<List<String>> getAllTypes() async {
+    try {
+      // Assuming you already have access to the companyId from somewhere (e.g. logged-in user)
+      final response = await _objectService.getAllTypes();
+
+      if (response.isEmpty) {
+        debugPrint('No objects found.');
+        return [];
+      } else if (response is String) {
+        debugPrint('Error fetching types: $response');
+        return [];
+      } else {
+        debugPrint('Fetched types: ${response.length}');
+      }
+      return response.map((z) => z['description'].toString()).toList();
+   
+    } catch (e) {
+      debugPrint('Error fetching types: $e');
+      return [];
+    }
+  }
+
+    Future<List<CategoryModel>> getAllBookingCategories() async {
+    try {
+      // Assuming you already have access to the companyId from somewhere (e.g. logged-in user)
+      final response = await _objectService.getAllBookingCategories();
+
+      if (response.isEmpty) {
+        debugPrint('No booking categories found.');
+        return [];
+      } else if (response is String) {
+        debugPrint('Error fetching booking categories: $response');
+        return [];  
+      } else {
+        debugPrint('Fetched booking categories: ${response.length}');
+      }
+     
+      return response
+          .map((categoryData) => CategoryModel.fromJson(categoryData))
+          .toList();
+   
+    } catch (e) {
+      debugPrint('Error fetching booking categories: $e');
+      return [];
+    }
+  }
   Future<List<OrganizationModel>> getAllMaintenanceServicers() async {
     try {
       // Assuming you already have access to the agencyId from somewhere (e.g. logged-in user)
@@ -120,17 +211,17 @@ class ObjectRepository extends GetxController {
     return ObjectModel.empty();
   }
 
-  Future<List<UnitModel>> fetchObjectUnits(String objectId) async {
+  Future<List<UnitModel>> fetchObjectUnits(int objectId) async {
     //   debugPrint('Building ID: $buildingId');
 
     try {
-      if (objectId == null || objectId.isEmpty) {
+      if (objectId == null  ) {
         debugPrint('Object ID not found.');
         return [];
       }
 
       final response = await _objectService.getObjectUnitsById(
-        int.parse(objectId),
+        objectId,
       );
 
       return response.map((unitData) => UnitModel.fromJson(unitData)).toList();
@@ -173,7 +264,7 @@ class ObjectRepository extends GetxController {
     debugPrint(controller.hasImageChanged.value.toString());
 
     try {
-      if (updatedObject.id == null || updatedObject.id!.isEmpty) {
+      if (updatedObject.id == null  ) {
         debugPrint('Object ID not found.');
         return false;
       }
@@ -229,7 +320,7 @@ class ObjectRepository extends GetxController {
             imageResponse = await _objectService.uploadAzureImage(
               bytes: bytes,
               filename: filename,
-              id: int.parse(updatedObject.id!),
+              id: updatedObject.id!,
               containerName: "docs",
               directoryName: directoryName,
             );
@@ -242,7 +333,7 @@ class ObjectRepository extends GetxController {
             imageResponse = await _objectService.uploadAzureImage(
               file: temp,
               filename: p.basename(temp.path),
-              id: int.parse(updatedObject.id!),
+              id: updatedObject.id!,
               containerName: 'docs',
               directoryName: directoryName,
             );
@@ -266,7 +357,7 @@ class ObjectRepository extends GetxController {
       debugPrint('User Image URL before updating: $imageUrl');
 
       final result = await _objectService.updateObjectDetails(
-        int.parse(updatedObject.id!),
+        updatedObject.id!,
         updatedObject.name!,
         updatedObject.street!,
         updatedObject.zipCode!,
@@ -288,6 +379,151 @@ class ObjectRepository extends GetxController {
       return false;
     }
   }
+
+  /// Function to update user data in mysql.
+  Future<bool> updateObject(ObjectModel updatedObject) async {
+    // display debugPrint of the updated object
+    debugPrint('Updated Object: ${updatedObject.toJson()}');
+
+    // get editcontroller instance
+    final controller = Get.put(EditObjectController());
+
+    debugPrint(controller.hasImageChanged.value.toString());
+
+    try {
+      if (updatedObject.id == null  ) {
+        debugPrint('Object ID not found.');
+        return false;
+      }
+
+      // first check if image has changed or been updated
+
+      String imageUrl = updatedObject.imgUrl ?? '';
+
+      // if (controller.hasImageChanged.value == true) {
+      //   try {
+      //     final directoryName =
+      //         "agencies/${updatedObject.agencyId}/buildings/${updatedObject.id}"; // Set the directory for storage
+
+      //     final tempFile = await writeBytesToTempFile(
+      //       controller.memoryBytes.value!,
+      //       "building_${updatedBuilding.id}.jpg",
+      //     );
+
+      //     final imageResponse = await _buildingService.uploadAzureImage(
+      //       file: tempFile,
+      //       buildingId: int.parse(updatedBuilding.id!),
+      //       containerName: "media",
+      //       directoryName: directoryName,
+      //     );
+
+      //     if (imageResponse['success'] == false) {
+      //       debugPrint("Failed to upload image: ${imageResponse['message']}");
+      //     } else {
+      //       final imageData = jsonDecode(imageResponse['data']);
+      //       userImageUrl = imageData['url'];
+      //       debugPrint("Image URL: $userImageUrl");
+      //       updatedBuilding.imgUrl = userImageUrl;
+      //     }
+      //   } catch (error) {
+      //     debugPrint("Error uploading image: $error");
+      //   }
+      // }
+
+      if (controller.hasImageChanged.value) {
+        final directoryName =
+            "objects/${updatedObject.id}";
+
+        try {
+          late Map<String, dynamic> imageResponse;
+          final timestamp = DateTime.now().millisecondsSinceEpoch;
+          if (kIsWeb) {
+            // WEB: upload directly from bytes
+            // get datetime to add to filename
+            //${DateTime.now().millisecondsSinceEpoch}
+
+            final bytes = controller.memoryBytes.value!;
+            final filename = "object_${updatedObject.id}.jpg";
+            imageResponse = await _objectService.uploadAzureImage(
+              bytes: bytes,
+              filename: filename,
+              id: updatedObject.id!,
+              containerName: "docs",
+              directoryName: directoryName,
+            );
+          } else {
+            // MOBILE/DESKTOP: write to temp file then upload
+            final temp = await writeBytesToTempFile(
+              controller.memoryBytes.value!,
+              'object_${updatedObject.id}.jpg',
+            );
+            imageResponse = await _objectService.uploadAzureImage(
+              file: temp,
+              filename: p.basename(temp.path),
+              id: updatedObject.id!,
+              containerName: 'docs',
+              directoryName: directoryName,
+            );
+          }
+
+          if (imageResponse['success'] != true) {
+            debugPrint("Failed to upload image: ${imageResponse['message']}");
+          } else {
+            final data = jsonDecode(imageResponse['data']);
+            final userImageUrl = data['url'] as String;
+            debugPrint("Image URL: $userImageUrl");
+            updatedObject.imgUrl = userImageUrl;
+          }
+        } catch (error) {
+          debugPrint("Error uploading image: $error");
+        }
+      }
+
+      // Update the building details
+
+      debugPrint('User Image URL before updating: $imageUrl');
+
+      final result = await _objectService.updateObject(
+        updatedObject.id!,
+        updatedObject.companyId!,
+        updatedObject.name!,
+        updatedObject.street!,
+        updatedObject.zipCode!,
+        updatedObject.description ?? '',
+        updatedObject.city ?? '',
+        updatedObject.currency ?? '',
+        updatedObject.price ?? 0.0, 
+        updatedObject.totalUnits ?? 0,
+        updatedObject.totalFloors ?? 0,
+        updatedObject.occupancy ?? '',
+        updatedObject.zoning ?? '',
+     
+        updatedObject.country ?? '',
+        updatedObject.state ?? '',
+        updatedObject.address ?? '',
+        updatedObject.owner ?? 0,
+        updatedObject.status ?? 0,
+        updatedObject.type_ ?? '',
+        updatedObject.imgUrl ?? '',
+        updatedObject.yieldGross ?? 0.0,
+        updatedObject.yieldNet ?? 0.0,
+
+      );
+
+      if (result['success'] == false) {
+        debugPrint('Error updating object: ${result['message']}');
+        return false;
+      }
+
+      debugPrint('Update Object Result: $result');
+
+      return true;
+    } catch (e) {
+      debugPrint('Error updating object: $e');
+      return false;
+    }
+  }
+
 
   Future<File> writeBytesToTempFile(Uint8List bytes, String filename) async {
     final tempDir = await getTemporaryDirectory();
@@ -505,24 +741,45 @@ class ObjectRepository extends GetxController {
   Future<bool> createObject(
     String objectName,
     String street,
-    String objectNumber,
     String zipCode,
-    String location,
-
+    String description,
+    String? city,
+    String? currency,
+    double? price,    
+    int companyId,
     int totalUnits,
     int totalFloors,
+    String occupancy,
+    String zoning,
+    String country,
+    String type,
+    String imageUrl,
+    int? ownerId,
+    int? statusId
   ) async {
-    final companyId = AuthenticationRepository.instance.currentUser!.companyId;
+    //final companyId = AuthenticationRepository.instance.currentUser!.companyId;
     try {
+      debugPrint('[Create Object] Creating object: $objectName');
+
+
       final response = await _objectService.createObject(
-        int.parse(companyId),
+        companyId,
         objectName,
         street,
-        objectNumber,
         zipCode,
-        location,
+        description,
+        city,
+        currency,
+        price,
         totalUnits,
         totalFloors,
+        occupancy,
+        zoning,
+        country,
+        type,
+        imageUrl,
+        ownerId,
+        statusId
       );
 
       debugPrint('Create Object Response: $response');
@@ -531,7 +788,7 @@ class ObjectRepository extends GetxController {
         return false;
       }
 
-      final objectId = response['data'][0]['objectId'];
+      final objectId = response['data'][0]['id'];
 
       final users =
           await UserController.instance.fetchUsersAndTranslateFields();
@@ -554,11 +811,13 @@ class ObjectRepository extends GetxController {
 
       return true;
     } catch (error) {
-      debugPrint("Error in creatObject: $error");
+      debugPrint("Error in createObject: $error");
       return false;
     }
   }
 
+
+  
   Future<List<UnitModel>> fetchCompanyObjectsUnits(String companyId) async {
     //   debugPrint('Building ID: $buildingId');
 

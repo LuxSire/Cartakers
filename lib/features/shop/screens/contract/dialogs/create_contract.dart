@@ -6,7 +6,10 @@ import 'package:iconsax/iconsax.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
+import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
+//import 'package:xm_frontend/features/personalization/controllers/object_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/object/object_controller.dart';
 import 'package:xm_frontend/features/shop/screens/user/dialogs/create_user.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 import 'package:xm_frontend/utils/popups/loaders.dart';
@@ -30,15 +33,27 @@ class CreateContractDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ContractController());
+    final controller = Get.put(PermissionController());
+   if (!Get.isRegistered<ObjectController>()) {
+    Get.put(ObjectController(), permanent: true);
+  }
+  final  o_controller = Get.find<ObjectController>();
+   
+   
+   if (!Get.isRegistered<UserController>()) {
+    Get.put(UserController(), permanent: true);
+  }
+  final  u_controller = Get.find<UserController>();
+
     controller.contractReferenceController.clear();
     controller.startDateController.clear();
     controller.selectedUsers.value = [];
     controller.users.value = [];
     controller.selectedUnitId.value = 0;
     controller.selectedObjectId.value = 0;
-    controller.loadselectedObjectNonContractUsers(objectId);
-    controller.loadAllObjects();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.loadAllObjects();
+    });
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -58,7 +73,7 @@ class CreateContractDialog extends StatelessWidget {
                   Text(
                     AppLocalization.of(
                       context,
-                    ).translate('create_contract_screen.lbl_new_contract'),
+                    ).translate('create_contract_screen.lbl_create_new_permission'),
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   IconButton(
@@ -78,35 +93,6 @@ class CreateContractDialog extends StatelessWidget {
                   ).translate('unit_detail_screen.lbl_contract_reference'),
                   prefixIcon: Icon(Icons.description),
                 ),
-                validator:
-                    (value) => TValidator.validateEmptyText(
-                      AppLocalization.of(
-                        context,
-                      ).translate('unit_detail_screen.lbl_contract_reference'),
-                      value,
-                    ),
-              ),
-              const SizedBox(height: TSizes.spaceBtwInputFields),
-
-              /// Start Date
-              TextFormField(
-                controller: controller.startDateController,
-
-                readOnly: true,
-                onTap: () => controller.pickStartDate(context),
-                decoration: InputDecoration(
-                  labelText: AppLocalization.of(
-                    context,
-                  ).translate('create_contract_screen.lbl_start_date'),
-                  prefixIcon: Icon(Icons.date_range),
-                ),
-                validator:
-                    (value) => TValidator.validateEmptyText(
-                      AppLocalization.of(
-                        context,
-                      ).translate('create_contract_screen.lbl_start_date'),
-                      value,
-                    ),
               ),
               const SizedBox(height: TSizes.spaceBtwInputFields),
 
@@ -125,10 +111,9 @@ class CreateContractDialog extends StatelessWidget {
                         onChanged: (value) {
                           if (value != null) {
                             controller.selectedObjectId.value = value;
-                            controller.loadAllObjectUnits(value);
-                            controller.loadNonContractUsers(value);
-                            controller.selectedUnitId.value =
-                                0; // Reset unit selection
+                            o_controller.loadAllObjects();
+                            u_controller.loadUsers(); // Load users for the selected object
+                            
                           }
                         },
                         validator: (value) {
@@ -142,7 +127,7 @@ class CreateContractDialog extends StatelessWidget {
                         decoration: InputDecoration(
                           labelText: AppLocalization.of(
                             context,
-                          ).translate('contract_screen.lbl_select_object'),
+                          ).translate('create_contract_screen.lbl_select_object'),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12.0),
                           ),
@@ -156,13 +141,13 @@ class CreateContractDialog extends StatelessWidget {
                             value: 0,
                             child: Text(
                               AppLocalization.of(context).translate(
-                                "contract_screen.lbl_select_building",
+                                "create_contract_screen.lbl_select_object",
                               ),
                             ),
                           ),
-                          ...controller.objectsList.map(
+                          ...o_controller.allObjects.map(
                             (object) => DropdownMenuItem<int>(
-                              value: int.parse(object.id!),
+                              value: object.id!,
                               child: Text(object.name!),
                             ),
                           ),
@@ -174,134 +159,40 @@ class CreateContractDialog extends StatelessWidget {
 
                 const SizedBox(height: TSizes.spaceBtwInputFields),
 
-                Obx(() {
-                  return DropdownButtonHideUnderline(
-                    child: ButtonTheme(
-                      alignedDropdown: true,
-                      child: DropdownButtonFormField<int>(
-                        isExpanded: true,
-                        value:
-                            controller.selectedUnitId.value != 0
-                                ? controller.selectedUnitId.value
-                                : null,
-                        onChanged: (value) {
-                          if (value != null) {
-                            controller.selectedUnitId.value = value;
-                          }
-                        },
-                        validator: (value) {
-                          if (value == null || value == 0) {
-                            return AppLocalization.of(
-                              context,
-                            ).translate('contract_screen.msg_unit_required');
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          labelText: AppLocalization.of(
-                            context,
-                          ).translate('contract_screen.lbl_select_unit'),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 14,
-                          ),
-                        ),
-                        items: [
-                          DropdownMenuItem<int>(
-                            value: 0,
-                            child: Text(
-                              AppLocalization.of(
-                                context,
-                              ).translate("contract_screen.lbl_select_unit"),
-                            ),
-                          ),
-                          ...controller.unitsList.map(
-                            (unit) => DropdownMenuItem<int>(
-                              value: int.parse(unit.id!),
-                              child: Text(unit.unitNumber!),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }),
-              ],
-
-              const SizedBox(height: TSizes.spaceBtwInputFields),
-
-              /// Multi-select Tenants
-              /// Multi-select Tenants (inside Form)
+              /// Single-select User (Dropdown)
               Obx(() {
-                return Theme(
-                  data: Theme.of(context).copyWith(
-                    primaryColor: TColors.primary,
-                    dialogBackgroundColor:
-                        Theme.of(context).dialogBackgroundColor,
-                    checkboxTheme: CheckboxThemeData(
-                      fillColor: MaterialStateProperty.all(TColors.primary),
+                // Set user list to match object list using UserController
+                final userList = u_controller.allUsers;
+                return DropdownButtonFormField<UserModel>(
+                  isExpanded: true,
+                  value: controller.selectedUsers.isNotEmpty ? controller.selectedUsers.first : null,
+                  onChanged: (user) {
+                    if (user != null) {
+                      controller.selectedUserId.value = int.parse(user.id!);
+                    }
+                  },
+                  validator: (user) {
+                    if (user == null) {
+                      return AppLocalization.of(context).translate('create_contract_screen.lbl_select_users');
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    labelText: AppLocalization.of(context).translate('create_contract_screen.lbl_select_users'),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 14,
                     ),
                   ),
-                  child: MultiSelectDialogField<UserModel>(
-                    title: Text(
-                      AppLocalization.of(
-                        context,
-                      ).translate('create_contract_screen.lbl_select_tenants'),
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    buttonText: Text(
-                      AppLocalization.of(
-                        context,
-                      ).translate('create_contract_screen.lbl_select_tenants'),
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    separateSelectedItems: true,
-                    searchable: true,
-                    listType: MultiSelectListType.LIST,
-                    selectedColor: TColors.primary, // Checkboxes color
-                    itemsTextStyle: Theme.of(context).textTheme.bodyLarge,
-                    dialogHeight: 500,
-                    dialogWidth: 600, // Optional for desktop
-
-                    items:
-                        controller.users
-                            .map(
-                              (t) => MultiSelectItem<UserModel>(
-                                t,
-                                '${t.displayName}\n${t.email}',
-                              ),
-                            )
-                            .toList(),
-                    initialValue: controller.selectedUsers,
-                    onConfirm: (values) {
-                      controller.selectedUsers.value = values;
-                    },
-                    chipDisplay: MultiSelectChipDisplay(
-                      chipColor: TColors.primary.withOpacity(0.1),
-                      textStyle: Theme.of(context).textTheme.bodyMedium,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      items:
-                          controller.selectedUsers
-                              .map(
-                                (t) => MultiSelectItem<UserModel>(
-                                  t,
-                                  t.displayName,
-                                ),
-                              )
-                              .toList(),
-                    ),
-                    // validator: (values) {
-                    //   if (values == null || values.isEmpty) {
-                    //     return 'Please select at least one tenant';
-                    //   }
-                    //   return null;
-                    // },
-                  ),
+                  items: userList.map((user) {
+                    return DropdownMenuItem<UserModel>(
+                      value: user,
+                      child: Text('${user.displayName} (${user.email})'),
+                    );
+                  }).toList(),
                 );
               }),
 
@@ -317,25 +208,43 @@ class CreateContractDialog extends StatelessWidget {
                       return controller.loading.value
                           ? const Center(child: CircularProgressIndicator())
                           : SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                if (unitId != null) {
-                                  controller.submitContractFromUnitAssign(
-                                    unitId!,
-                                    objectId ?? 0,
-                                  );
-                                } else {
-                                  controller.submitContract();
-                                }
-                              },
-                              child: Text(
-                                AppLocalization.of(
-                                  context,
-                                ).translate('general_msgs.msg_add'),
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  // Validate form
+                                  if (controller.formKey.currentState?.validate() != true) return;
+
+                                  // Validate selected users
+                                  if (controller.selectedUsers.isEmpty) {
+                                    TLoaders.errorSnackBar(
+                                      title: AppLocalization.of(context).translate('general_msgs.msg_error'),
+                                      message: AppLocalization.of(context).translate('create_contract_screen.lbl_select_users'),
+                                    );
+                                    return;
+                                  }
+
+                                  // Only use selectedObjectId if it is not 0
+                                  if (controller.selectedObjectId.value != 0 && controller.selectedUserId.value != 0) {
+                                    int selectedUserId = controller.selectedUserId.value;
+                                    int selectedObjectId = controller.selectedObjectId.value;
+                                    controller.createPermission(
+                                      selectedUserId,
+                                      selectedObjectId,
+                                    );
+                                  } else {
+                                    TLoaders.errorSnackBar(
+                                      title: AppLocalization.of(context).translate('general_msgs.msg_error'),
+                                      message: AppLocalization.of(context).translate('contract_screen.lbl_please_select_a_object'),
+                                    );
+                                  }
+                                },
+                                child: Text(
+                                  AppLocalization.of(
+                                    context,
+                                  ).translate('general_msgs.msg_add'),
+                                ),
                               ),
-                            ),
-                          );
+                            );
                     }),
                   ),
                   const SizedBox(width: TSizes.spaceBtwItems),
@@ -363,7 +272,8 @@ class CreateContractDialog extends StatelessWidget {
                           }
                         }
 
-                        final result = await showDialog<bool>(
+                        final result = await showDialog<bool>
+                        (
                           context: context,
                           barrierDismissible: false,
                           builder: (BuildContext context) {
@@ -379,15 +289,6 @@ class CreateContractDialog extends StatelessWidget {
 
                         // If the tenant was created (e.g., result == true), reload the list
 
-                        debugPrint('CreateTenantDialog result: $result');
-                        if (result!) {
-                          debugPrint('CreateUserDialog result 2: $result');
-                          controller.loadNonContractUsers(
-                            useSelectedObject
-                                ? controller.selectedObjectId.value
-                                : objectId,
-                          ); //
-                        }
                       },
 
                       icon: const Icon(Icons.person_add),
@@ -401,9 +302,11 @@ class CreateContractDialog extends StatelessWidget {
                 ],
               ),
             ],
+            ],
           ),
         ),
       ),
     );
   }
 }
+  

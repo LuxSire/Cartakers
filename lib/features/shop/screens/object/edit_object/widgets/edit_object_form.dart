@@ -6,6 +6,7 @@ import 'package:xm_frontend/data/models/object_model.dart';
 //import 'package:xm_frontend/features/personalization/models/user_model.dart';
 import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
+import 'package:xm_frontend/features/personalization/controllers/company_controller.dart';
 import 'package:xm_frontend/utils/device/device_utility.dart';
 //import 'package:xm_frontend/utils/helpers/helper_functions.dart';
 
@@ -61,18 +62,12 @@ class EditObjectForm extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Heading
-              const SizedBox(height: TSizes.sm),
-              Text(
-                AppLocalization.of(
-                  context,
-                ).translate('edit_object_screen.lbl_update_object'),
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
+
               const SizedBox(height: TSizes.spaceBtwSections),
               Center(
                 child: TImageUploader(
                   width: 110,
-                  height: 110,
+                  height: 220,
                   image:
                       controller.imageURL.value.isNotEmpty
                           ? controller.imageURL.value
@@ -105,7 +100,7 @@ class EditObjectForm extends StatelessWidget {
                   return const SizedBox.shrink();
                 }
                 return SizedBox(
-                  height: 140,
+                  height: 250,
                   child: PageView.builder(
                     itemCount: controller.objectImages.length,
                     controller: PageController(viewportFraction: 0.7),
@@ -146,7 +141,7 @@ class EditObjectForm extends StatelessWidget {
                   value,
                 ),
                 minLines: 2,
-                maxLines: 10,
+                maxLines: 12,
                 decoration: InputDecoration(
                   labelText: AppLocalization.of(context).translate('objects_screen.lbl_object_description'),
                   prefixIcon: Icon(Iconsax.building),
@@ -154,41 +149,25 @@ class EditObjectForm extends StatelessWidget {
                 readOnly: !canEdit,
               ),
               const SizedBox(height: TSizes.spaceBtwInputFields),
-              TextFormField(
-                controller: controller.street,
-                validator: (value) => TValidator.validateEmptyText(
-                  AppLocalization.of(context).translate('objects_screen.lbl_street'),
-                  value,
-                ),
-                decoration: InputDecoration(
-                  labelText: AppLocalization.of(context).translate('objects_screen.lbl_street'),
-                  prefixIcon: Icon(Icons.location_on_outlined),
-                ),
-              ),
-              const SizedBox(height: TSizes.spaceBtwInputFields),
-              TextFormField(
-                controller: controller.price,
-                validator: (value) => TValidator.validateEmptyText(
-                  AppLocalization.of(context).translate('objects_screen.lbl_price'),
-                  value,
-                ),
-                decoration: InputDecoration(
-                  labelText: AppLocalization.of(context).translate('objects_screen.lbl_price'),
-                  prefixIcon: Icon(Icons.money),
-                ),
-              ),
-              TextFormField(
-                initialValue: object.owner?.toString() ?? '',
-                readOnly: canEdit ? false : true,
-                decoration: InputDecoration(
-                  labelText: AppLocalization.of(context).translate('objects_screen.lbl_owner'),
-                  prefixIcon: Icon(Icons.person_outline),
-                ),
-              ),
-              const SizedBox(height: TSizes.spaceBtwInputFields),
               Row(
                 children: [
                   Expanded(
+                    flex: 2,
+                    child: TextFormField(
+                      controller: controller.street,
+                      validator: (value) => TValidator.validateEmptyText(
+                        AppLocalization.of(context).translate('objects_screen.lbl_street'),
+                        value,
+                      ),
+                      decoration: InputDecoration(
+                        labelText: AppLocalization.of(context).translate('objects_screen.lbl_street'),
+                        prefixIcon: Icon(Icons.location_on_outlined),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: TSizes.spaceBtwInputFields),
+                  Expanded(
+                    flex: 1,
                     child: TextFormField(
                       controller: controller.zipCode,
                       validator: (value) => TValidator.validateEmptyText(
@@ -203,29 +182,132 @@ class EditObjectForm extends StatelessWidget {
                   ),
                   const SizedBox(width: TSizes.spaceBtwInputFields),
                   Expanded(
+                    flex: 1,
                     child: TextFormField(
-                      initialValue: object.city ?? '',
-                      readOnly: true,
+                      controller: controller.city,
+                      validator: (value) => TValidator.validateEmptyText(
+                        AppLocalization.of(context).translate('objects_screen.lbl_city'),
+                        value,
+                      ),
                       decoration: InputDecoration(
                         labelText: AppLocalization.of(context).translate('objects_screen.lbl_city'),
                         prefixIcon: Icon(Icons.location_city),
                       ),
                     ),
                   ),
+                  const SizedBox(width: TSizes.spaceBtwInputFields),
+                  Expanded(
+                    flex: 1,
+                    child: TextFormField(
+                      controller: controller.country,
+                      validator: (value) => TValidator.validateEmptyText(
+                        AppLocalization.of(context).translate('objects_screen.lbl_country'),
+                        value,
+                      ),
+                      decoration: InputDecoration(
+                        labelText: AppLocalization.of(context).translate('objects_screen.lbl_country'),
+                        prefixIcon: Icon(Icons.waves),
+                      ),
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(height: TSizes.spaceBtwInputFields),
-              TextFormField(
-                controller: controller.location,
-                validator: (value) => TValidator.validateEmptyText(
-                  AppLocalization.of(context).translate('objects_screen.lbl_location'),
-                  value,
-                ),
-                decoration: InputDecoration(
-                  labelText: AppLocalization.of(context).translate('objects_screen.lbl_location'),
-                  prefixIcon: Icon(Icons.location_on_outlined),
-                ),
+
+              Obx(() {
+                final companyController = Get.find<CompanyController>();
+                final companyItems = companyController.allItems;
+                return DropdownButtonFormField<int>(
+                  value: controller.selectedCompanyId.value != 0
+                      ? controller.selectedCompanyId.value
+                      : object.companyId ?? null,
+                  decoration: InputDecoration(
+                    labelText: AppLocalization.of(context).translate('objects_screen.lbl_owner'),
+                    prefixIcon: Icon(Icons.person_outline),
+                    border: OutlineInputBorder(),
+                  ),
+                  items: companyItems
+                      .map((company) => DropdownMenuItem<int>(
+                            value: company.id,
+                            child: Text(company.name),
+                          ))
+                      .toList(),
+                  onChanged: canEdit
+                      ? (value) {
+                          controller.selectedCompanyId.value = value ?? 0;
+                        }
+                      : null,
+                  validator: (value) {
+                    if (value == null || value == 0) {
+                      return AppLocalization.of(context).translate('objects_screen.lbl_select_company');
+                    }
+                    return null;
+                  },
+                );
+              }),
+              const SizedBox(height: TSizes.spaceBtwInputFields),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: controller.floors,
+                      validator: (value) => TValidator.validateEmptyText(
+                        AppLocalization.of(context).translate('objects_screen.lbl_floors'),
+                        value,
+                      ),
+                      decoration: InputDecoration(
+                        labelText: AppLocalization.of(context).translate('objects_screen.lbl_floors'),
+                        prefixIcon: Icon(Icons.location_on_outlined),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: TSizes.spaceBtwInputFields),
+                  Expanded(
+                    child: TextFormField(
+                      controller: controller.units,
+                      validator: (value) => TValidator.validateEmptyText(
+                        AppLocalization.of(context).translate('objects_screen.lbl_units'),
+                        value,
+                      ),
+                      decoration: InputDecoration(
+                        labelText: AppLocalization.of(context).translate('objects_screen.lbl_units'),
+                        prefixIcon: Icon(Icons.location_on_sharp),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: TextFormField(
+                      controller: controller.yieldNet,
+                      validator: (value) => TValidator.validateEmptyText(
+                        AppLocalization.of(context).translate('objects_screen.lbl_yieldnet'),
+                        value,
+                      ),
+                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                      decoration: InputDecoration(
+                        labelText: AppLocalization.of(context).translate('objects_screen.lbl_yieldnet'),
+                        prefixIcon: Icon(Icons.location_on_sharp),
+                        suffixText: '%',
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: TextFormField(
+                      controller: controller.yieldGross,
+                      validator: (value) => TValidator.validateEmptyText(
+                        AppLocalization.of(context).translate('objects_screen.lbl_yieldgross'),
+                        value,
+                      ),
+                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                      decoration: InputDecoration(
+                        labelText: AppLocalization.of(context).translate('objects_screen.lbl_yieldgross'),
+                        prefixIcon: Icon(Icons.location_on_sharp),
+                        suffixText: '%',
+                      ),
+                    ),
+                  ),
+                ],
               ),
+              
               const SizedBox(height: TSizes.spaceBtwInputFields),
               Row(
                 children: [
@@ -246,7 +328,7 @@ class EditObjectForm extends StatelessWidget {
                   Expanded(
                     child: TextFormField(
                       initialValue: object.currency ?? '',
-                      readOnly: true,
+                      readOnly: false,
                       decoration: InputDecoration(
                         labelText: AppLocalization.of(context).translate('objects_screen.lbl_currency'),
                         prefixIcon: Icon(Icons.attach_money),
@@ -258,38 +340,68 @@ class EditObjectForm extends StatelessWidget {
               const SizedBox(height: TSizes.spaceBtwInputFields * 2),
               // Occupancy, Zoning, Type_
               Row(
+
                 children: [
-                  Expanded(
-                    child: TextFormField(
-                      initialValue: object.occupancy?.toString() ?? '',
-                      readOnly: true,
+                          Expanded(
+                    child: Obx(() => DropdownButtonFormField<String>(
+                      value: object.occupancy?.toString().isNotEmpty == true ? object.occupancy?.toString() : null,
                       decoration: InputDecoration(
                         labelText: AppLocalization.of(context).translate('objects_screen.lbl_occupancy'),
                         prefixIcon: Icon(Icons.people_outline),
+                        border: OutlineInputBorder(),
                       ),
-                    ),
+                      items: controller.occupancyList
+                          .map((option) => DropdownMenuItem(
+                                value: option,
+                                child: Text(option),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        controller.occupancy.text = value ?? '';
+                      },
+                    )),
                   ),
+          
                   const SizedBox(width: TSizes.spaceBtwInputFields),
-                  Expanded(
-                    child: TextFormField(
-                      initialValue: object.zoning ?? '',
-                      readOnly: true,
+                   Expanded(
+                    child: Obx(() => DropdownButtonFormField<String>(
+                      value: object.zoning?.toString().isNotEmpty == true ? object.zoning?.toString() : null,
                       decoration: InputDecoration(
                         labelText: AppLocalization.of(context).translate('objects_screen.lbl_zoning'),
                         prefixIcon: Icon(Icons.map_outlined),
+                        border: OutlineInputBorder(),
                       ),
-                    ),
+                      items: controller.zoningList
+                          .map((option) => DropdownMenuItem(
+                                value: option,
+                                child: Text(option),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        controller.zoning.text = value ?? '';
+                      },
+                    )),
                   ),
+                  
                   const SizedBox(width: TSizes.spaceBtwInputFields),
-                  Expanded(
-                    child: TextFormField(
-                      initialValue: object.type_ ?? '',
-                      readOnly: true,
+                 Expanded(
+                    child: Obx(() => DropdownButtonFormField<String>(
+                      value: object.type_?.toString().isNotEmpty == true ? object.type_   ?.toString() : null,
                       decoration: InputDecoration(
                         labelText: AppLocalization.of(context).translate('objects_screen.lbl_type'),
-                        prefixIcon: Icon(Icons.category_outlined),
+                        prefixIcon: Icon(Icons.map_outlined),
+                        border: OutlineInputBorder(),
                       ),
-                    ),
+                      items: controller.typeList
+                          .map((option) => DropdownMenuItem(
+                                value: option,
+                                child: Text(option),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        controller.type_.text = value ?? '';
+                      },
+                    )),
                   ),
                 ],
               ),

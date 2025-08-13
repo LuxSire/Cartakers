@@ -5,8 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/common/widgets/containers/rounded_container.dart';
 import 'package:xm_frontend/common/widgets/loaders/animation_loader.dart';
-import 'package:xm_frontend/data/models/contract_model.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+import 'package:xm_frontend/data/models/permission_model.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 import 'package:xm_frontend/features/shop/screens/contract/dialogs/create_contract.dart';
 import 'package:xm_frontend/features/shop/screens/contract/dialogs/edit_contract.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
@@ -29,7 +29,7 @@ class AssignContractDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ContractController());
+    final controller = Get.put(PermissionController());
 
     //   WidgetsBinding.instance.addPostFrameCallback((_) {
 
@@ -37,9 +37,7 @@ class AssignContractDialog extends StatelessWidget {
 
     controller.fetchItems().then((contracts) {
       final pendingContracts =
-          contracts
-              .where((c) => c.statusId == 3 && c.unitId == unitId)
-              .toList();
+          contracts.toList();
       controller.filteredItems.assignAll(pendingContracts);
     });
 
@@ -117,7 +115,7 @@ class AssignContractDialog extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      contract.contractCode ?? '-',
+                                      contract.permissionId.toString() ?? '-',
                                       style: Theme.of(
                                         context,
                                       ).textTheme.titleMedium!.copyWith(
@@ -135,14 +133,7 @@ class AssignContractDialog extends StatelessWidget {
                                             .copyWith(color: TColors.txt666666),
                                       ),
                                     const SizedBox(height: 4),
-                                    if ((contract.userNames ?? '').isNotEmpty)
-                                      Text(
-                                        '${AppLocalization.of(context).translate('users_screen.lbl_users')}: ${contract.userNames}',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall!
-                                            .copyWith(color: TColors.txt666666),
-                                      ),
+                                  
                                   ],
                                 ),
                               ),
@@ -151,7 +142,7 @@ class AssignContractDialog extends StatelessWidget {
                               TextButton.icon(
                                 onPressed: () async {
                                   final updatedContract =
-                                      await showDialog<ContractModel>(
+                                      await showDialog<PermissionModel>(
                                         context: Get.context!,
                                         barrierDismissible: false,
                                         builder: (BuildContext context) {
@@ -168,11 +159,7 @@ class AssignContractDialog extends StatelessWidget {
                                     controller.fetchItems().then((contracts) {
                                       final pendingContracts =
                                           contracts
-                                              .where(
-                                                (c) =>
-                                                    c.statusId == 3 &&
-                                                    c.unitId == unitId,
-                                              )
+                                         
                                               .toList();
                                       controller.filteredItems.assignAll(
                                         pendingContracts,
@@ -196,50 +183,9 @@ class AssignContractDialog extends StatelessWidget {
                               TextButton.icon(
                                 onPressed: () async {
                                   // first check if contract has tenants
-                                  if (contract.userNames == null ||
-                                      contract.userNames!.isEmpty) {
-                                    TLoaders.errorSnackBar(
-                                      title: AppLocalization.of(
-                                        Get.context!,
-                                      ).translate('general_msgs.msg_error'),
-                                      message: AppLocalization.of(
-                                        Get.context!,
-                                      ).translate(
-                                        'dashboard_screen.error_contract_must_have_at_least_one_user',
-                                      ),
-                                    );
-                                    return;
-                                  }
+     
 
-                                  // Assign contract to unit
-                                  final controllerContract = Get.put(
-                                    ContractController(),
-                                  );
 
-                                  await controllerContract
-                                      .initializeContractData(
-                                        int.parse(contract.id!),
-                                      );
-
-                                  debugPrint(
-                                    'Assigning contract ${controllerContract.contractModel.value.contractCode} to object $objectId and unit $unitNumer',
-                                  );
-
-                                  // update the status
-
-                                  controllerContract
-                                      .contractModel
-                                      .value
-                                      .statusId = 1;
-
-                                  controllerContract
-                                      .contractModel
-                                      .value
-                                      .endDate = null;
-
-                                  await controllerContract.assignContract(
-                                    controllerContract.contractModel.value,
-                                  );
                                 },
                                 icon: const Icon(
                                   Iconsax.tick_circle,
@@ -268,7 +214,7 @@ class AssignContractDialog extends StatelessWidget {
                   width:
                       AppLocalization.of(context)
                           .translate(
-                            'create_contract_screen.lbl_create_new_contract',
+                            'create_contract_screen.lbl_create_new_permission',
                           )
                           .length *
                       10.0,
@@ -294,10 +240,7 @@ class AssignContractDialog extends StatelessWidget {
                         controller.fetchItems().then((contracts) {
                           final pendingContracts =
                               contracts
-                                  .where(
-                                    (c) =>
-                                        c.statusId == 3 && c.unitId == unitId,
-                                  )
+                                   
                                   .toList();
                           controller.filteredItems.assignAll(pendingContracts);
                         });

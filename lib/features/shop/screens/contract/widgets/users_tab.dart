@@ -5,9 +5,9 @@ import 'package:path/path.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/common/widgets/containers/rounded_container.dart';
 import 'package:xm_frontend/common/widgets/images/t_circular_image.dart';
-import 'package:xm_frontend/data/models/contract_model.dart';
+import 'package:xm_frontend/data/models/permission_model.dart';
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 import 'package:xm_frontend/features/shop/screens/contract/dialogs/create_contract.dart';
 import 'package:xm_frontend/features/shop/screens/contract/dialogs/edit_contract.dart';
 import 'package:xm_frontend/features/shop/screens/user/dialogs/create_user.dart';
@@ -24,7 +24,7 @@ class UsersTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controllerContract = Get.find<ContractController>();
+    final controllerContract = Get.find<PermissionController>();
 
     controllerContract.loadUsers();
 
@@ -55,13 +55,13 @@ class UsersTab extends StatelessWidget {
               // Button
               TextButton.icon(
                 onPressed: () async {
-                  final updatedContract = await showDialog<ContractModel>(
+                  final updatedContract = await showDialog<PermissionModel>(
                     context: Get.context!,
                     barrierDismissible: false,
                     builder: (BuildContext context) {
                       return EditContractDialog(
                         contractId: int.parse(
-                          controllerContract.contractModel.value.id!,
+                          controllerContract.permissionModel.value.id!,
                         ),
                         isShowFullDetailsBtn: false,
                         isAddTenant: true,
@@ -70,14 +70,10 @@ class UsersTab extends StatelessWidget {
                   );
 
                   if (updatedContract != null) {
-                    controllerContract.contractModel.value.userCount =
-                        updatedContract.userCount;
-                    controllerContract.contractModel.value.userNames =
-                        updatedContract.userNames;
-                    controllerContract.contractModel.value.users =
+                    controllerContract.permissionModel.value.users =
                         updatedContract.users;
 
-                    controllerContract.contractModel.refresh();
+                    controllerContract.permissionModel.refresh();
                     controllerContract.isDataUpdated.value = true;
                     controllerContract.loadingUsers.value = true;
 
@@ -90,7 +86,7 @@ class UsersTab extends StatelessWidget {
                   style: TextStyle(color: TColors.alterColor),
                   AppLocalization.of(
                     context,
-                  ).translate('dashboard_screen.lbl_add_tenant'),
+                  ).translate('dashboard_screen.lbl_add_user'),
                 ),
               ),
             ],
@@ -168,7 +164,7 @@ class UsersTab extends StatelessWidget {
     String userName,
     String userEmail,
     String userProfilePicture,
-    ContractController controller,
+    PermissionController controller,
     int isPrimaryUser,
     UserModel user,
     BuildContext context,
@@ -242,148 +238,6 @@ class UsersTab extends StatelessWidget {
             ),
           ),
 
-          // Popup menu button
-          Align(
-            alignment: Alignment.center,
-            child: PopupMenuButton<String>(
-              elevation: 8,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              offset: const Offset(0, 40),
-              color: Colors.white,
-              onSelected: (value) async {
-                if (value == 'primary') {
-                  final result = await controller.updateUserContractPrimary(
-                    int.parse(controller.contractModel.value.id!),
-                    int.parse(user.id!),
-                  );
-
-                  if (result) {
-                    controller.initializeContractData(
-                      int.parse(controller.contractModel.value.id!),
-                    );
-                    controller.loadingUsers.value = true;
-                    controller.isDataUpdated.value = true;
-
-                    controller.loadUsers();
-                  }
-                } else if (value == 'view') {
-                  final result = await showDialog<bool>(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext context) {
-                      return ViewUserDialog(
-                        user: user,
-                        contractCode: user.contractReference,
-                      );
-                    },
-                  );
-                } else if (value == 'remove') {
-                  // remove tenant from contract
-
-                  if (controller.contractModel.value.userCount! < 2) {
-                    TLoaders.warningSnackBar(
-                      title: AppLocalization.of(
-                        Get.context!,
-                      ).translate('general_msgs.msg_warning'),
-                      message: AppLocalization.of(Get.context!).translate(
-                        'unit_detail_screen.lbl_cannot_remove_last_tenant',
-                      ),
-                    );
-                    return;
-                  }
-
-                  // Remove handler
-                  final result = await controller.removeUserFromContract(
-                    int.parse(controller.contractModel.value.id!),
-                    int.parse(user.id!),
-                  );
-
-                  if (result) {
-                    await controller.initializeContractData(
-                      int.parse(controller.contractModel.value.id!),
-                    );
-
-                    if (controller.contractModel.value.userCount == 1) {
-                      // set to primary
-
-                      controller.updateUserContractPrimary(
-                        int.parse(controller.contractModel.value.id!),
-                        int.parse(
-                          controller.contractModel.value.users![0].id!,
-                        ),
-                      );
-
-                      user.isPrimaryUser = 1;
-                      // update the contract model
-                      controller
-                          .contractModel
-                          .value
-                          .users![0]
-                          .isPrimaryUser = 1;
-                      controller.contractModel.value.userCount = 1;
-                      controller.contractModel.refresh();
-                    }
-                    controller.loadingUsers.value = true;
-                    controller.isDataUpdated.value = true;
-
-                    controller.loadUsers();
-                  }
-                }
-              },
-
-              itemBuilder: (BuildContext context) {
-                return [
-                  PopupMenuItem<String>(
-                    value: 'view',
-                    child: Row(
-                      children: [
-                        const Icon(Icons.person, size: 20),
-                        const SizedBox(width: 8),
-                        Text(
-                          AppLocalization.of(
-                            Get.context!,
-                          ).translate('general_msgs.msg_view_details'),
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (user.isPrimaryUser == 0)
-                    PopupMenuItem<String>(
-                      value: 'primary',
-                      child: Row(
-                        children: [
-                          const Icon(Icons.star, size: 20),
-                          const SizedBox(width: 8),
-                          Text(
-                            AppLocalization.of(Get.context!).translate(
-                              'general_msgs.msg_set_as_primary_user',
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  PopupMenuItem<String>(
-                    value: 'remove',
-                    child: Row(
-                      children: [
-                        const Icon(Icons.close, size: 20, color: Colors.red),
-                        const SizedBox(width: 8),
-                        Text(
-                          AppLocalization.of(
-                            Get.context!,
-                          ).translate('general_msgs.msg_remove'),
-                          style: const TextStyle(color: Colors.red),
-                        ),
-                      ],
-                    ),
-                  ),
-                ];
-              },
-              icon: const Icon(Icons.more_vert),
-            ),
-          ),
         ],
       ),
     );

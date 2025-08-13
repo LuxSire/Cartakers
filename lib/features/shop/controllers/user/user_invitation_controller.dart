@@ -188,8 +188,9 @@ class UserInvitationController extends TBaseController<UserModel> {
       firstName.text,
       lastName.text,
       email.text,
-      selectedObjectFilterId.value,
-      int.parse(user!.id.toString()),
+      phoneNumber.text,
+      2, // Use the role ID from the logged-in user
+      1,  
     );
 
     loading.value = false;
@@ -373,7 +374,7 @@ class UserInvitationController extends TBaseController<UserModel> {
 
     if (selectedObjectFilterId.value != 0) {
       final selectedObject = objectsList.firstWhereOrNull(
-        (b) => int.parse(b.id!) == selectedObjectFilterId.value,
+        (b) => b.id! == selectedObjectFilterId.value,
       );
       if (selectedObject != null) {
         filters.add({
@@ -484,7 +485,7 @@ class UserInvitationController extends TBaseController<UserModel> {
             '${AppLocalization.of(Get.context!).translate('general_msgs.msg_mail_dear')} $fullName,';
         final bodyText = AppLocalization.of(
           Get.context!,
-        ).translate('general_msgs.msg_mail_body_text_tenant_invitation');
+        ).translate('general_msgs.msg_mail_body_text_user_invitation');
         final invitationCodeText = AppLocalization.of(
           Get.context!,
         ).translate('general_msgs.msg_mail_invitation_code_text');
@@ -499,7 +500,7 @@ class UserInvitationController extends TBaseController<UserModel> {
         ).translate('general_msgs.msg_mail_support_text');
         final subject = AppLocalization.of(
           Get.context!,
-        ).translate('general_msgs.msg_mail_subject_tenant_invitation_code');
+        ).translate('general_msgs.msg_mail_subject_user_invitation_code');
 
         final subjectCombo =
             '${AuthenticationRepository.instance.currentUser?.companyName ?? ''} - $subject';

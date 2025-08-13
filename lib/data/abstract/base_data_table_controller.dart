@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/data/models/object_model.dart';
-import 'package:xm_frontend/data/models/contract_model.dart';
+import 'package:xm_frontend/data/models/permission_model.dart';
 import 'package:xm_frontend/data/models/message_model.dart';
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
 
@@ -136,13 +136,19 @@ abstract class TBaseController<T> extends GetxController {
 
   /// Method for removing an item from the lists.
   void removeItemFromLists(T item) {
-    allItems.remove(item);
-    filteredItems.remove(item);
-    selectedRows.assignAll(
-      List.generate(allItems.length, (index) => false),
-    ); // Initialize selected rows
+      debugPrint('Trying to remove item: $item');
+  debugPrint('allItems contains item: ${allItems.contains(item)}');
+  debugPrint('filteredItems contains item: ${filteredItems.contains(item)}');
 
-    update(); // Trigger UI update
+  if (allItems.contains(item)) allItems.remove(item);
+  if (filteredItems.contains(item)) filteredItems.remove(item);
+
+  // Ensure selectedRows matches filteredItems length
+  selectedRows.assignAll(List.generate(filteredItems.length, (index) => false));
+
+  allItems.refresh();
+  filteredItems.refresh();
+  update(); // Trigger UI update
   }
 
   /// Common method for confirming deletion and performing the deletion.
@@ -154,8 +160,8 @@ abstract class TBaseController<T> extends GetxController {
       itemName = '${item.firstName} ${item.lastName}';
     }
 
-    if (item is ContractModel) {
-      itemName = '${item.contractCode}';
+    if (item is PermissionModel) {
+      itemName = '${item.permissionId}';
     }
 
     if (item is MessageModel) {
@@ -214,6 +220,7 @@ abstract class TBaseController<T> extends GetxController {
     }
   }
 
+
   /// Method to be implemented by subclasses for handling confirmation before deleting an item.
   Future<void> deleteOnConfirm(T item) async {
     try {
@@ -225,21 +232,10 @@ abstract class TBaseController<T> extends GetxController {
 
       final result = await deleteItem(item);
 
-      bool isBuilding = item is ObjectModel;
 
       if (result == false) {
         TFullScreenLoader.stopLoading();
 
-        if (isBuilding) {
-          TLoaders.errorSnackBar(
-            title: AppLocalization.of(
-              Get.context!,
-            ).translate('general_msgs.msg_error'),
-            message: AppLocalization.of(Get.context!).translate(
-              'general_msgs.msg_error_building_cannot_be_delete_with_active_and_terminated_contracts',
-            ),
-          );
-        } else {
           TLoaders.errorSnackBar(
             title: AppLocalization.of(
               Get.context!,
@@ -248,16 +244,18 @@ abstract class TBaseController<T> extends GetxController {
               Get.context!,
             ).translate('general_msgs.msg_item_not_deleted'),
           );
+              return;
         }
-
-        return;
-      }
-
+      debugPrint('Item deleted successfully: ${item.toString()}');
       removeItemFromLists(item);
+      debugPrint('Item removed successfully: ${item.toString()}');
 
       update();
+      debugPrint('Item updated successfully: ${item.toString()}');
 
       TFullScreenLoader.stopLoading();
+      debugPrint('Screen not loaded: ${item.toString()}');
+
       TLoaders.successSnackBar(
         title: AppLocalization.of(
           Get.context!,

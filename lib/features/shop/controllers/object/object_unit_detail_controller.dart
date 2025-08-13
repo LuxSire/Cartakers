@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:xm_frontend/data/models/contract_model.dart';
+import 'package:xm_frontend/data/models/permission_model.dart';
 import 'package:xm_frontend/data/models/unit_model.dart';
 import 'package:xm_frontend/data/repositories/object/object_repository.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 
 import '../../../../data/repositories/user/user_repository.dart';
 import '../../../../utils/popups/loaders.dart';
@@ -28,8 +28,8 @@ class ObjectUnitDetailController extends GetxController {
   Rx<UnitModel> unit = UnitModel.empty().obs;
   //final addressRepository = Get.put(AddressRepository());
   final searchTextController = TextEditingController();
-  RxList<ContractModel> allObjectUnitContracts = <ContractModel>[].obs;
-  RxList<ContractModel> filteredObjectUnitContracts = <ContractModel>[].obs;
+  RxList<PermissionModel> allObjectUnitContracts = <PermissionModel>[].obs;
+  RxList<PermissionModel> filteredObjectUnitContracts = <PermissionModel>[].obs;
 
   /// -- Load customer orders
   Future<void> getUsersOfCurrentUnit() async {
@@ -76,7 +76,7 @@ class ObjectUnitDetailController extends GetxController {
       allObjectUnitContracts.where(
         (contract) =>
             contract.id!.toLowerCase().contains(query.toLowerCase()) ||
-            contract.contractCode.toString().contains(query.toLowerCase()),
+            contract.permissionId.toString().contains(query.toLowerCase()),
       ),
     );
 
@@ -88,12 +88,12 @@ class ObjectUnitDetailController extends GetxController {
     sortAscending.value = ascending;
     filteredObjectUnitContracts.sort((a, b) {
       if (ascending) {
-        return a.contractCode!.toLowerCase().compareTo(
-          b.contractCode!.toLowerCase(),
+        return a.permissionId!.compareTo(
+          b.permissionId!,
         );
       } else {
-        return b.contractCode!.toLowerCase().compareTo(
-          a.contractCode!.toLowerCase(),
+        return b.permissionId!.compareTo(
+          a.permissionId!,
         );
       }
     });

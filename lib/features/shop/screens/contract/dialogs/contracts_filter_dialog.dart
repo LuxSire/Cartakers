@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 
 class ContractsFilterDialog extends StatelessWidget {
@@ -11,7 +11,7 @@ class ContractsFilterDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<ContractController>();
+    final controller = Get.find<PermissionController>();
     final theme = Theme.of(context);
 
     final RxInt tempStatusId = controller.selectedStatusId.value.obs;
@@ -121,7 +121,7 @@ class ContractsFilterDialog extends StatelessWidget {
                     controller.objectsList
                         .map(
                           (b) => DropdownMenuItem<int>(
-                            value: int.parse(b.id!),
+                            value: b.id!,
                             child: Text(b.name!),
                           ),
                         )

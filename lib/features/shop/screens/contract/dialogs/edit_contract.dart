@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
-//import 'package:xm_frontend/data/models/contract_model.dart';
+//import 'package:xm_frontend/data/models/permission_model.dart';
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 import 'package:xm_frontend/features/shop/screens/user/dialogs/create_user.dart';
 import 'package:xm_frontend/routes/routes.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
@@ -29,7 +29,7 @@ class EditContractDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ContractController());
+    final controller = Get.put(PermissionController());
 
     return FutureBuilder<void>(
       future: controller.initializeContractData(contractId),
@@ -105,7 +105,7 @@ class EditContractDialog extends StatelessWidget {
                       onTap:
                           () => controller.editPickStartDate(
                             context,
-                            controller.contractModel.value.startDate ??
+                            controller.permissionModel.value.startDate ??
                                 DateTime.now(),
                           ),
                       decoration: InputDecoration(
@@ -132,7 +132,7 @@ class EditContractDialog extends StatelessWidget {
                         onTap:
                             () => controller.editPickEndDate(
                               context,
-                              controller.contractModel.value.endDate ??
+                              controller.permissionModel.value.endDate ??
                                   DateTime.now(),
                             ),
                         decoration: InputDecoration(
@@ -146,7 +146,7 @@ class EditContractDialog extends StatelessWidget {
                                     icon: const Icon(Icons.clear),
                                     onPressed: () {
                                       controller.endDateController.clear();
-                                      controller.contractModel.value.endDate =
+                                      controller.permissionModel.value.endDate =
                                           null;
                                     },
                                   )
@@ -291,7 +291,7 @@ class EditContractDialog extends StatelessWidget {
                                 child: ElevatedButton(
                                   onPressed: () {
                                     controller.submitContractUpdate(
-                                      controller.contractModel.value,
+                                      controller.permissionModel.value,
                                     );
                                   },
                                   child: Text(
@@ -312,8 +312,8 @@ class EditContractDialog extends StatelessWidget {
                               Get.back(); // Close the dialog first
 
                               Get.toNamed(
-                                Routes.contractDetails,
-                                arguments: controller.contractModel.value,
+                                Routes.permissionDetails,
+                                arguments: controller.permissionModel.value,
                               )?.then((result) async {
                                 if (result == true) {
                                   controller.initializeContractData(contractId);
@@ -338,7 +338,7 @@ class EditContractDialog extends StatelessWidget {
                                 return CreateUserDialog(
                                   displayObjects: false,
                                   objectId:
-                                      controller.contractModel.value.objectId,
+                                      controller.permissionModel.value.objectId,
                                 );
                               },
                             );

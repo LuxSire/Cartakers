@@ -33,7 +33,7 @@ class ObjectUnitsTableHeader extends StatelessWidget {
                     AmenityAssignmentController(),
                   );
 
-                  controllerAssign.objectId.value = int.parse(object.id!);
+                  controllerAssign.objectId.value = object.id!;
 
                   controllerAssign.loadData();
 
@@ -42,7 +42,7 @@ class ObjectUnitsTableHeader extends StatelessWidget {
                     barrierDismissible: false,
                     builder: (BuildContext context) {
                       return AssignAmenityZoneDialog(
-                        objectId: int.parse(object.id!),
+                        objectId: object.id!,
                       );
                     },
                   );
@@ -78,40 +78,6 @@ class ObjectUnitsTableHeader extends StatelessWidget {
           // Side by side
           return Row(
             children: [
-              TextButton.icon(
-                onPressed: () async {
-                  final controllerAssign = Get.put(
-                    AmenityAssignmentController(),
-                  );
-
-                  controllerAssign.objectId.value = int.parse(object.id!);
-
-                  controllerAssign.loadData();
-
-                  final result = await showDialog<bool>(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext context) {
-                      return AssignAmenityZoneDialog(
-                        objectId: int.parse(object.id!),
-                      );
-                    },
-                  );
-                  if (result == true) {
-                    controller.getUsersOfCurrentUnit();
-                  }
-                },
-                icon: const Icon(
-                  Iconsax.tick_circle,
-                  color: TColors.alterColor,
-                ),
-                label: Text(
-                  AppLocalization.of(
-                    context,
-                  ).translate('edit_object_screen.lbl_assign_amenity_zone'),
-                  style: const TextStyle(color: TColors.alterColor),
-                ),
-              ),
               const SizedBox(width: 16),
               Expanded(
                 child: TextFormField(

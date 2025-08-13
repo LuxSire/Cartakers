@@ -7,6 +7,8 @@ import 'package:xm_frontend/data/repositories/object/object_repository.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 
 class ObjectController extends TBaseController<ObjectModel> {
+  RxList<ObjectModel> allObjects = <ObjectModel>[].obs;
+  RxList<ObjectModel> filteredObjects = <ObjectModel>[].obs;
   static ObjectController get instance => Get.find();
 
   final _objectRepository = Get.put(ObjectRepository());
@@ -44,8 +46,11 @@ class ObjectController extends TBaseController<ObjectModel> {
       return restrictionIds.contains(objectIdStr);
     }).toList();
 
+    allObjects.assignAll(result);
+    filteredObjects.assignAll(filteredObjects);
 
     filteredItems.value = filteredObjects;
+    selectedRows.value = List<bool>.filled(allObjects.length, false);
     // debugPrint('Filtered buildings: ${filteredItems.length}');
   }
 
@@ -104,13 +109,15 @@ class ObjectController extends TBaseController<ObjectModel> {
 
     if (isDeleted) {
       final companyId = AuthenticationRepository.instance.currentUser!.companyId;
-      final containerName = 'media';
-      final directory = 'companies/$companyId/objects/${item.id}';
+      final containerName = 'docs';
+      final directory = 'objects/${item.id}';
 
       await _objectRepository.deleteObjectDirectory(
         containerName,
         directory,
       );
+      // Reload objects after deletion
+      await loadAllObjects();
     }
 
     return isDeleted;

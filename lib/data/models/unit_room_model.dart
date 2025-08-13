@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:xm_frontend/data/api/translation_api.dart';
-import 'package:xm_frontend/data/models/contract_model.dart';
+import 'package:xm_frontend/data/models/permission_model.dart';
 import 'package:xm_frontend/utils/formatters/formatter.dart';
 
 class UnitRoomModel {

@@ -21,7 +21,7 @@ class ViewBookingsDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<BookingController>(tag: 'agency_bookings');
+    final controller = Get.find<BookingController>(tag: 'company_bookings');
 
     final theme = Theme.of(context);
 

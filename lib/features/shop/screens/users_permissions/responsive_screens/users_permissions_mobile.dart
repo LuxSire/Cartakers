@@ -65,33 +65,28 @@ class UsersPermissionsMobileScreen extends StatelessWidget {
                               ), // Color for inactive tabs
 
                               tabs: [
-                                Tab(
-                                  text: AppLocalization.of(
-                                    context,
-                                  ).translate('users_screen.lbl_users'),
-                                  icon: Icon(Iconsax.profile_2user),
-                                ),
-                                Tab(
-                                  text: AppLocalization.of(
-                                    context,
-                                  ).translate('profile_screen.lbl_permissions'),
-                                  icon: Icon(Iconsax.note_2),
-                                ),
-                              ],
+                                                        Tab(
+                              text: AppLocalization.of(
+                                context,
+                              ).translate('users_screen.lbl_companies'),
+                              icon: const Icon(Iconsax.building1),
+                            ),
+
+                            Tab(
+                              text: AppLocalization.of(
+                                context,
+                              ).translate('users_screen.lbl_users'),
+                              icon: const Icon(Iconsax.profile_2user),
+                            ),                     ],
                             ),
                             const SizedBox(height: TSizes.defaultSpace),
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.7,
                               child: TabBarView(
                                 children: [
-                                  // Users Tab
-                                  UsersPermissionsDetailTab(
-                                    tabType: 'users',
-                                  ),
-                                  // contracts Tab
-                                  UsersPermissionsDetailTab(
-                                    tabType: 'permissions',
-                                  ),
+                                
+                              UsersPermissionsDetailTab(tabType: 'companies'),
+                              UsersPermissionsDetailTab(tabType: 'users') 
                                 ],
                               ),
                             ),

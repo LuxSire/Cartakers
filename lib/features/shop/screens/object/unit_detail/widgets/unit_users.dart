@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/features/shop/controllers/object/object_unit_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/object/object_unit_detail_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 import 'package:xm_frontend/features/shop/screens/user/dialogs/view_user.dart';
 import 'package:xm_frontend/utils/popups/loaders.dart';
 
@@ -24,7 +24,7 @@ class UnitUsers extends StatelessWidget {
 
       final unitFromParent = Get.find<ObjectUnitController>().unit.value;
 
-      final contractController = Get.put(ContractController());
+      final contractController = Get.put(PermissionController());
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (unitFromParent.id != null &&
@@ -181,7 +181,7 @@ class UnitUsers extends StatelessWidget {
 
                                       // Remove handler
                                       final result = await contractController
-                                          .removeUserFromContract(
+                                          .removeUserFromObject(
                                             unitFromParent.currentContractId!,
                                             int.parse(user.id!),
                                           );

@@ -121,7 +121,7 @@ class UsersFilterInvitationDialog extends StatelessWidget {
                     controller.objectsList
                         .map(
                           (b) => DropdownMenuItem<int>(
-                            value: int.parse(b.id!),
+                            value: b.id!,
                             child: Text(b.name!),
                           ),
                         )

@@ -7,7 +7,7 @@ import 'package:xm_frontend/common/widgets/images/image_uploader.dart';
 import 'package:xm_frontend/common/widgets/images/t_rounded_image.dart';
 import 'package:xm_frontend/common/widgets/loaders/animation_loader.dart';
 import 'package:xm_frontend/data/models/request_model.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/request/request_controller.dart';
 import 'package:xm_frontend/features/shop/screens/contract/dialogs/bookings_filter_dialog.dart';
 import 'package:xm_frontend/features/shop/screens/contract/dialogs/requests_filter_dialog.dart';
@@ -24,7 +24,7 @@ class RequestsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controllerContract = Get.find<ContractController>();
+    final controllerContract = Get.find<PermissionController>();
 
     final controller = Get.find<RequestController>(tag: 'contract_requests');
 

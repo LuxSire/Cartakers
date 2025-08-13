@@ -13,6 +13,15 @@ class ApiEndpoints {
   static const String getUsersByCompany = 'api/users/get-users-by-company';
   static const String getAllObjects = 'api/objects/get-all-objects';
   static const String getAllUsers = 'api/users/get-all-users';
+  static const String getAllCompanies = 'api/users/get-all-companies';
+  static const String getAllPermissions = 'api/objects/get-all-permissions';
+  static const String getAllZonings = 'api/objects/get-all-zonings';
+  static const String getAllOccupancies = 'api/objects/get-all-occupancies';
+  static const String removePermission = 'api/objects/remove-permission';
+  static const String createPermission = 'api/objects/create-permission';
+  static const String getAllBookingCategories = 'api/objects/get-all-booking-categories';
+
+  static const String getAllTypes = 'api/objects/get-all-types';
   static const String getObjectsLastAnnouncement =
       'api/objects/get-object-last-announcement';
   static const String getObjectDocUrls =
@@ -91,6 +100,10 @@ class ApiEndpoints {
       'api/users/update-user-reset-password-code';
   static const String updateUserDeviceToken =
       'api/users/update-user-device-token';
+
+  static const String updateTokenByUser =
+      'api/users/update-token-by-user';
+
   static const String getUserByResetCode =
       'api/users/get-user-by-reset-code';
   static const String updateUserPassword = 'api/users/update-user-password';
@@ -141,11 +154,13 @@ class ApiEndpoints {
       'api/objects/get-object-unit-contracts-by-unit-id';
   static const String getObjectNonContractUsersByObjectId =
       'api/objects/get-object-non-contract-users-by-object-id';
-  static const String getContractById = 'api/objects/get-contract-by-id';
-  static const String updateContractDetails =
-      'api/objects/update-contract-details';
+  static const String getPermissionById = 'api/objects/get-permission-by-id';
+  static const String updatePermissionDetails =
+      'api/objects/update-permission-details';
   static const String createQuickNewUser =
       'api/users/create-quick-new-user';
+  static const String createQuickNewCompany =
+      'api/users/create-quick-new-company';
   static const String addUserToContract =
       'api/objects/add-user-to-contract';
   static const String deleteUsersFromContract =
@@ -163,13 +178,15 @@ class ApiEndpoints {
 
   static const String assignUnitsBatch = 'api/objects/assign-units-batch';
   static const String createAmenityZone = 'api/objects/create-amenity-zone';
-  static const String removeUserFromContract =
-      'api/objects/remove-user-from-contract';
+  static const String removeUserFromObject =
+      'api/objects/remove-user-from-object';
 
   static const String updateUserContractPrimary =
       'api/users/update-user-contract-primary';
   static const String createObjectMedia =
       'api/objects/create-object-media';
+  static const String updateObject =
+      'api/objects/update-object';
 //  static const String deleteUserMedia = 'api/users/delete-profile-file';
 
   static const String deleteDocumentById =
@@ -193,8 +210,10 @@ class ApiEndpoints {
   static const String deleteUserObjectUser =
       'api/users/delete-user-object-user';
 
-  static const String getAllObjectContracts =
-      'api/objects/get-all-object-contracts';
+  static const String getAllObjectPermissions =
+      'api/objects/get-all-object-permissions';
+  static const String getAllUserPermissions =
+      'api/users/get-all-user-permissions';
 
   static const String deleteContractById =
       'api/objects/delete-contract-by-id';
@@ -231,7 +250,8 @@ class ApiEndpoints {
       'api/companies/create-company-message';
   static const String deleteCompanyMessage =
       'api/companies/delete-company-message';
-
+  static const String deleteCompanyById =
+      'api/companies/delete-company-by-id';
   static const String getObjectUnitRoomList =
       'api/objects/get-object-unit-room-list';
   static const String updateObjectUnitRoom =
@@ -249,8 +269,9 @@ class ApiEndpoints {
   static const String getAllUsersByAgency = 'api/users/get-all-users-by-agency';
   static const String getUserRolesByRoleId =
       'api/users/get-user-roles-by-role-id';
-
-  static const String createNewUser = 'api/users/create-new-user';
+  static const String getAllUserRoles =
+      'api/users/get-all-user-roles';
+  static const String createNewUser = 'api/users/create-quick-new-user';
 
   static const String assignUserToObjectsBatch =
       'api/users/assign-user-to-object-batch';
@@ -263,7 +284,7 @@ class ApiEndpoints {
   static const String deleteUserById = 'api/users/delete-user-by-id';
   static const String deleteUserDirectory = 'api/users/delete-user-directory';
   static const String createUserInvitationCode =
-      'api/users/create-user-invitation-code';
+      'api/users/get-user-invitation-code';
   static const String sendUserInvitationEmail =
       'api/mailing/send-user-invitation-email';
   static const String updateUserInvitationStatus =
@@ -276,5 +297,6 @@ class ApiEndpoints {
 
   static const String deleteObjectById =
       'api/objects/delete-object-by-id';
-
+  static const String updateQuickCompany =
+      'api/users/update-quick-company';
 }

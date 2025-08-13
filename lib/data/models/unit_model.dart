@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:xm_frontend/data/api/translation_api.dart';
-import 'package:xm_frontend/data/models/contract_model.dart';
+import 'package:xm_frontend/data/models/permission_model.dart';
 import 'package:xm_frontend/utils/formatters/formatter.dart';
 
 class UnitModel {
@@ -9,9 +9,9 @@ class UnitModel {
   final String? unitNumber;
   DateTime? createdAt;
   DateTime? updatedAt;
-
+  String? description; // Added description field
   String? floorNumber;
-  int? statusId; // 1 - vacant, 2 -  ocuppied
+  int? statusId; // 1 - vacant, 2 -  occupied
   String? statusText; // Make it mutable
   String? pieceId;
   String? pieceName;
@@ -22,7 +22,7 @@ class UnitModel {
 
   String? objectName; // building name
 
-  List<ContractModel>? contracts; // tenats
+  List<PermissionModel>? contracts; // tenats
 
   UnitModel({
     this.id,
@@ -40,6 +40,7 @@ class UnitModel {
     this.currentContractId,
     this.userNames,
     this.objectName ,
+    this.description,
   });
 
   // Convert JSON response to UnitModel
@@ -66,6 +67,7 @@ class UnitModel {
       currentContractId: json['current_contract_id'] ?? 0,
       userNames: json['user_names'] ?? '',
       objectName: json['object_name'] ?? '',
+      description: json['description'] ?? '', // Added description parsing
     );
   }
 
@@ -87,6 +89,7 @@ class UnitModel {
       'current_contract_id': currentContractId,
       'user_names': userNames,
       'object_name': objectName,
+      'description' : description, // Added description to JSON
     };
   }
 

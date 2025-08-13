@@ -125,7 +125,7 @@ class UserTabPanel extends StatelessWidget {
           const SizedBox(height: TSizes.spaceBtwSections),
           // Tenant Details Tabs
           DefaultTabController(
-            length: 4, // Number of tabs
+            length: 5, // Number of tabs
             child: Column(
               children: [
                 // TabBar with left alignment
@@ -147,6 +147,13 @@ class UserTabPanel extends StatelessWidget {
                       ).translate('user_screen.lbl_profile_information'),
                       icon: Icon(Iconsax.user),
                     ),
+                     Tab(
+                      text: AppLocalization.of(
+                        context,
+                      ).translate('user_screen.lbl_permissions'),
+                      icon: Icon(Iconsax.pen_remove),
+                    ),
+
                     Tab(
                       text: AppLocalization.of(
                         context,
@@ -175,8 +182,10 @@ class UserTabPanel extends StatelessWidget {
                   height: 600,
                   child: TabBarView(
                     children: [
-                      // Tenant Tab
+                      // User Tab
                       UserDetailsTab(tabType: 'user'),
+
+                       UserDetailsTab(tabType: 'permissions'),
                       // Documents Tab
                       UserDetailsTab(tabType: 'documents'),
                       // Booking History Tab

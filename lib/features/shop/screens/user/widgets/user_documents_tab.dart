@@ -5,7 +5,7 @@ import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/common/widgets/loaders/animation_loader.dart';
 //import 'package:xm_frontend/data/models/contract_model.dart';
 import 'package:xm_frontend/data/models/docs_model.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/document/document_controller.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 //import 'package:xm_frontend/features/shop/screens/contract/dialogs/edit_contract.dart';

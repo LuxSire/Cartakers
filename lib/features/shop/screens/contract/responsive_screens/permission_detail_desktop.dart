@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/data/models/contract_model.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+import 'package:xm_frontend/data/models/permission_model.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/request/request_controller.dart';
 import 'package:xm_frontend/features/shop/screens/contract/widgets/contract_detail_tab.dart';
 import 'package:xm_frontend/features/shop/screens/contract/widgets/contract_tab_panel.dart';
@@ -11,14 +11,14 @@ import '../../../../../../routes/routes.dart';
 import '../../../../../../utils/constants/sizes.dart';
 import '../widgets/contract_info.dart';
 
-class ContractDetailDesktopScreen extends StatelessWidget {
-  const ContractDetailDesktopScreen({super.key, required this.contract});
+class PermissionDetailDesktopScreen extends StatelessWidget {
+  const PermissionDetailDesktopScreen({super.key, required this.contract});
 
-  final ContractModel contract;
+  final PermissionModel contract;
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ContractController());
+    final controller = Get.put(PermissionController());
 
     controller.initializeContractData(int.parse(contract.id!));
 
@@ -50,7 +50,7 @@ class ContractDetailDesktopScreen extends StatelessWidget {
               TBreadcrumbsWithHeading(
                 onreturnUpdated: () => controller.isDataUpdated.value,
                 returnToPreviousScreen: true,
-                heading: contract.contractCode ?? '',
+                heading: contract.permissionId.toString() ?? '',
                 breadcrumbItems: const [
                   // Routes.buildingsUnits,
                   // 'Building Unit Details',
@@ -70,7 +70,7 @@ class ContractDetailDesktopScreen extends StatelessWidget {
                         const ContractInfo(),
                         const SizedBox(height: TSizes.spaceBtwSections),
                         // Contract Details Tabs
-                        const ContractTabPanel(),
+                        //const ContractTabPanel(),
                       ],
                     ),
                   ),

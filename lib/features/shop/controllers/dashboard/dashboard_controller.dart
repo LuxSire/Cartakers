@@ -7,7 +7,7 @@ import 'package:xm_frontend/data/models/unit_model.dart';
 import 'package:xm_frontend/data/repositories/company/company_repository.dart';
 import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
 import 'package:xm_frontend/data/repositories/object/object_repository.dart';
-import 'package:xm_frontend/data/repositories/contract/contract_repository.dart';
+import 'package:xm_frontend/data/repositories/contract/permission_repository.dart';
 import 'package:xm_frontend/data/repositories/user/user_repository.dart';
 import 'package:xm_frontend/features/personalization/controllers/settings_controller.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
@@ -116,17 +116,11 @@ Future<void> fetchTotalObjectUsers() async {
     final objectPermissionIds = user.objectPermissionIds ?? [];
 
     //debugPrint('User Object Restrictions: $objectPermissionIds');
-  /*
-    final filteredObjects =
-        result
-            .where(
-              (object) => objectPermissionIds.contains(
-                int.parse(object.id.toString()),
-              ),
-            )
-            .toList();
-*/
-    totalObjects.value = objectPermissionIds.length;
+  
+    final _totalObjects =
+        result.toList();
+
+    totalObjects.value = _totalObjects.length;
   }
 
   Future<void> fetchTotalUsers() async {
@@ -175,7 +169,7 @@ Future<void> fetchTotalObjectUsers() async {
   }
 
   Future<void> fetchTotalContracts() async {
-    final controller = Get.put(ContractRepository());
+    final controller = Get.put(PermissionRepository());
 
     final result = await controller.getAllCompanyObjectsContracts();
 

@@ -7,7 +7,7 @@ import 'package:xm_frontend/common/widgets/chips/rounded_choice_chips.dart';
 import 'package:xm_frontend/common/widgets/images/image_uploader.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 //import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 import 'package:xm_frontend/utils/constants/enums.dart';
@@ -266,7 +266,7 @@ class EditUserDialog extends StatelessWidget {
                         children:
                             controller.objectsList.map((object) {
                               final selected = controller.selectedObjectIds
-                                  .contains(int.parse(object.id!));
+                                  .contains(object.id!);
 
                               return Padding(
                                 padding: const EdgeInsets.only(
@@ -277,7 +277,7 @@ class EditUserDialog extends StatelessWidget {
                                   selected: selected,
                                   onSelected:
                                       (_) => controller.toggleObject(
-                                        int.parse(object.id!),
+                                        object.id!,
                                       ),
                                 ),
                               );

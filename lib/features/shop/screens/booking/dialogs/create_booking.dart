@@ -105,12 +105,12 @@ class CreateBookingDialog extends StatelessWidget {
                                   labelText: AppLocalization.of(
                                     context,
                                   ).translate(
-                                    'bookings_screen.lbl_amenity_category',
+                                    'bookings_screen.lbl_booking_category',
                                   ),
                                   border: OutlineInputBorder(),
                                 ),
                                 items:
-                                    c.createCategories
+                                    c.bookingCategories
                                         .map(
                                           (cat) => DropdownMenuItem<int>(
                                             value: cat.id,
@@ -131,72 +131,20 @@ class CreateBookingDialog extends StatelessWidget {
                                 decoration: InputDecoration(
                                   labelText: AppLocalization.of(
                                     context,
-                                  ).translate('bookings_screen.lbl_building'),
+                                  ).translate('bookings_screen.lbl_object'),
                                   border: OutlineInputBorder(),
                                 ),
                                 items:
                                     c.objectsList
                                         .map(
                                           (b) => DropdownMenuItem<int>(
-                                            value: int.parse(b.id!),
+                                            value: b.id!,
                                             child: Text(b.name!),
                                           ),
                                         )
                                         .toList(),
                                 value: c.createObjectId.value,
                                 onChanged: c.onCreateObjectChanged,
-                                validator: (v) => v == null ? 'Required' : null,
-                              ),
-                              const SizedBox(
-                                height: TSizes.spaceBtwInputFields,
-                              ),
-
-                              // 3) Tenant
-                              DropdownButtonFormField<int>(
-                                decoration: InputDecoration(
-                                  labelText: AppLocalization.of(
-                                    context,
-                                  ).translate('bookings_screen.lbl_tenant'),
-                                  border: OutlineInputBorder(),
-                                ),
-                                items:
-                                    c.createUsers
-                                        .map<DropdownMenuItem<int>>(
-                                          (t) => DropdownMenuItem<int>(
-                                            value: int.parse(t.id!),
-                                            child: Text(t.fullName),
-                                          ),
-                                        )
-                                        .toList(),
-                                value: c.createUserId.value,
-                                onChanged: c.onCreateUserChanged,
-                                validator: (v) => v == null ? 'Required' : null,
-                              ),
-                              const SizedBox(
-                                height: TSizes.spaceBtwInputFields,
-                              ),
-
-                              // 4) Amenity Unit
-                              DropdownButtonFormField<int>(
-                                decoration: InputDecoration(
-                                  labelText: AppLocalization.of(
-                                    context,
-                                  ).translate(
-                                    'bookings_screen.lbl_amenity_unit',
-                                  ),
-                                  border: OutlineInputBorder(),
-                                ),
-                                items:
-                                    c.createUnits
-                                        .map(
-                                          (u) => DropdownMenuItem<int>(
-                                            value: u.id,
-                                            child: Text(u.name),
-                                          ),
-                                        )
-                                        .toList(),
-                                value: c.createUnitId.value,
-                                onChanged: c.onCreateUnitChanged,
                                 validator: (v) => v == null ? 'Required' : null,
                               ),
                               const SizedBox(

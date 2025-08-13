@@ -57,7 +57,7 @@ class BookingsRequestsTabPanel extends StatelessWidget {
                       // Users Tab
                       UsersPermissionsDetailTab(tabType: 'users'),
                       // contracts Tab
-                      UsersPermissionsDetailTab(tabType: 'contracts'),
+                      UsersPermissionsDetailTab(tabType: 'permissions'),
                     ],
                   ),
                 ),

@@ -9,7 +9,7 @@ import 'package:xm_frontend/data/models/object_model.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http_parser/http_parser.dart'; // Import MediaType
-import 'package:xm_frontend/data/models/contract_model.dart';
+import 'package:xm_frontend/data/models/permission_model.dart';
 import 'package:get/get.dart'; // Import for RxList
 import 'package:xm_frontend/data/repositories/media/media_repository.dart';
 import 'dart:typed_data';
@@ -46,8 +46,32 @@ Future<List<Map<String, dynamic>>> fetchObjectImages(int objectId) async {
   }
   return [];
 }
+Future<List<Map<String, dynamic>>> fetchObjectDocs(int objectId) async {
+  final response = await post(ApiEndpoints.getObjectDocs, {
+    'object_id': objectId,
+  });
+  if (response is Map<String, dynamic> && response['success'] == true) {  
+    if (response['data'] is List) {
+      final allowedTypes = [
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/vnd.ms-excel',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      ];
+      return (response['data'] as List<dynamic>)
+        .where((doc) =>
+          doc is Map<String, dynamic> &&
+          allowedTypes.contains((doc['contentType'] ?? '').toLowerCase())
+        )
+        .map((doc) => doc as Map<String, dynamic>)
+        .toList();
+    }
+  }
+  return [];
+}
 
-  Future<List<Map<String, dynamic>>> fetchObjectDocs(int objectId) async {
+  Future<List<Map<String, dynamic>>> fetchObjectAllFiles(int objectId) async {
   final response = await post(ApiEndpoints.getObjectDocs, {
     'object_id': objectId,
   });
@@ -364,6 +388,119 @@ Future<List<Map<String, dynamic>>> fetchObjectImages(int objectId) async {
     }
   }
 
+  Future<List<Map<String, dynamic>>> getAllBookingCategories
+
+  () async {
+    try {
+      final response = await post(ApiEndpoints.getAllBookingCategories, {});
+
+        debugPrint('Raw response: $response');
+
+      if (response is Map<String, dynamic> && response.containsKey('success')) {
+        if (response['success'] == true && response['data'] is List) {
+          return List<Map<String, dynamic>>.from(response['data']);
+        } else {
+          return [];
+        }
+      } else {        return [];
+      }
+    } catch (error) {
+      
+      return [];
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getAllPermissions(
+
+  ) async {
+    try {
+      final response = await post(ApiEndpoints.getAllPermissions, {});
+
+        debugPrint('Raw response: $response');
+
+      if (response is Map<String, dynamic> && response.containsKey('success')) {
+        if (response['success'] == true && response['data'] is List) {
+          return List<Map<String, dynamic>>.from(response['data']);
+        } else {
+          return [];
+        }
+      } else {        return [];
+      }
+    } catch (error) {
+      
+      return [];
+    }
+  }
+
+    Future<List<Map<String, dynamic>>> getAllZonings(
+
+  ) async {
+    try {
+      final response = await post(ApiEndpoints.getAllZonings, {});
+
+        debugPrint('Raw response: $response');
+
+      if (response is Map<String, dynamic> && response.containsKey('success')) {
+        if (response['success'] == true && response['data'] is List) {
+          return List<Map<String, dynamic>>.from(response['data']);
+        } else {
+          return [];
+        }
+      } else {        return [];
+      }
+    } catch (error) {
+      
+      return [];
+    }
+  }
+
+
+    Future<List<Map<String, dynamic>>> getAllOccupancies(
+
+  ) async {
+    try {
+      final response = await post(ApiEndpoints.getAllOccupancies, {});
+
+        debugPrint('Raw response: $response');
+
+      if (response is Map<String, dynamic> && response.containsKey('success')) {
+        if (response['success'] == true && response['data'] is List) {
+          return List<Map<String, dynamic>>.from(response['data']);
+        } else {
+          return [];
+        }
+      } else {        return [];
+      }
+    } catch (error) {
+      
+      return [];
+    }
+  }
+
+
+    Future<List<Map<String, dynamic>>> getAllTypes(
+
+  ) async {
+    try {
+      final response = await post(ApiEndpoints.getAllTypes, {});
+
+        debugPrint('Raw response: $response');
+
+      if (response is Map<String, dynamic> && response.containsKey('success')) {
+        if (response['success'] == true && response['data'] is List) {
+          return List<Map<String, dynamic>>.from(response['data']);
+        } else {
+          return [];
+        }
+      } else {        return [];
+      }
+    } catch (error) {
+      
+      return [];
+    }
+  }
+
+
   Future<Map<String, dynamic>> updateObjectDetails(
     int objectId  ,
     String name,
@@ -501,15 +638,39 @@ Future<List<Map<String, dynamic>>> fetchObjectImages(int objectId) async {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getAllObjectContracts(
+  Future<List<Map<String, dynamic>>> getAllObjectPermissions(
     int objectId,
   ) async {
     try {
-      final response = await post(ApiEndpoints.getAllObjectContracts, {
+      final response = await post(ApiEndpoints.getAllObjectPermissions, {
         'object_id': objectId,
       });
 
-      debugPrint('getAllObjectContracts Raw response: $response');
+      debugPrint('getAllObjectPermissions Raw response: $response');
+
+      if (response is Map<String, dynamic> && response.containsKey('success')) {
+        if (response['success'] == true && response['data'] is List) {
+          return List<Map<String, dynamic>>.from(response['data']);
+        } else {
+          return [];
+        }
+      } else {
+        //   debugPrint('Unexpected response format: $response');
+        return [];
+      }
+    } catch (error) {
+      return [];
+    }
+  }
+  Future<List<Map<String, dynamic>>> getAllUserPermissions(
+    int userId,
+  ) async {
+    try {
+      final response = await post(ApiEndpoints.getAllUserPermissions, {
+        'user_id': userId,
+      });
+
+      debugPrint('getAllUserPermissions Raw response: $response');
 
       if (response is Map<String, dynamic> && response.containsKey('success')) {
         if (response['success'] == true && response['data'] is List) {
@@ -718,10 +879,10 @@ Future<List<Map<String, dynamic>>> fetchObjectImages(int objectId) async {
     }
   }
 
-  Future<ContractModel?> fetchContractById(int contractId) async {
+  Future<PermissionModel?> fetchPermissionById(int permissionId) async {
     try {
-      final response = await post(ApiEndpoints.getContractById, {
-        'contract_id': contractId,
+      final response = await post(ApiEndpoints.getPermissionById, {
+        'permission_id': permissionId,
       });
 
       // Debugging log
@@ -731,7 +892,7 @@ Future<List<Map<String, dynamic>>> fetchObjectImages(int objectId) async {
         if (response['success'] == true &&
             response['data'] is List &&
             response['data'].isNotEmpty) {
-          return ContractModel.fromJson(
+          return PermissionModel.fromJson(
             response['data'][0],
           ); // Extract the first item from the list
         } else {
@@ -748,7 +909,7 @@ Future<List<Map<String, dynamic>>> fetchObjectImages(int objectId) async {
     }
   }
 
-  Future<ContractModel?> fetchActiveContractByUnitId(int unitId) async {
+  Future<PermissionModel?> fetchActiveContractByUnitId(int unitId) async {
     try {
       final response = await post(ApiEndpoints.getActiveContractByUnitId, {
         'unit_id': unitId,
@@ -758,7 +919,7 @@ Future<List<Map<String, dynamic>>> fetchObjectImages(int objectId) async {
         if (response['success'] == true &&
             response['data'] is List &&
             response['data'].isNotEmpty) {
-          return ContractModel.fromJson(response['data'][0]);
+          return PermissionModel.fromJson(response['data'][0]);
         } else {
           debugPrint(
             'No active contract found (handled gracefully): ${response['message']}',
@@ -783,20 +944,16 @@ Future<List<Map<String, dynamic>>> fetchObjectImages(int objectId) async {
     }
   }
 
-  Future<Map<String, dynamic>> updateContractDetails(
-    int contractId,
-    String contractCode,
+  Future<Map<String, dynamic>> updatePermissionDetails(
+    int permissionId,
     DateTime? startDate,
     DateTime? endDate,
-    int statusId,
   ) async {
     try {
-      final response = await post(ApiEndpoints.updateContractDetails, {
-        'contract_id': contractId,
-        'contract_code': contractCode,
+      final response = await post(ApiEndpoints.updatePermissionDetails, {
+        'permission_id': permissionId,
         'start_date': startDate?.toIso8601String(),
         'end_date': endDate?.toIso8601String(),
-        'status_id': statusId,
       });
 
       // debugPrint('Update building contract response: $response');
@@ -811,26 +968,22 @@ Future<List<Map<String, dynamic>>> fetchObjectImages(int objectId) async {
     }
   }
 
-  Future<Map<String, dynamic>> createContract(
-    String contractCode,
-    DateTime? startDate,
-    int statusId,
-    int unitId,
-    int buildingId,
+  Future<Map<String, dynamic>> createPermission(
+      
+    int userId,
+    int objectId,
   ) async {
     try {
-      final response = await post(ApiEndpoints.createContract, {
-        'contract_code': contractCode,
-        'start_date': startDate?.toIso8601String(),
-        'status_id': statusId,
-        'unit_id': unitId,
-        'building_id': buildingId,
+      final response = await post(ApiEndpoints.createPermission, {
+     
+        'user_id': userId,
+        'object_id': objectId,
       });
 
       return response;
     } catch (error) {
-      debugPrint("Error in createContract: $error");
-      return {"success": false, "message": "Failed to create new contract"};
+      debugPrint("Error in createPermission: $error");
+      return {"success": false, "message": "Failed to create new permission"};
     }
   }
 
@@ -925,13 +1078,13 @@ Future<List<Map<String, dynamic>>> fetchObjectImages(int objectId) async {
     }
   }
 
-  Future<Map<String, dynamic>> removeUserFromContract(
-    int contractId,
+  Future<Map<String, dynamic>> removeUserFromObject(
+    int objectId,
     int userId,
   ) async {
     try {
-      final response = await post(ApiEndpoints.removeUserFromContract, {
-        'contract_id': contractId,
+      final response = await post(ApiEndpoints.removeUserFromObject, {
+        'object_id': objectId,
         'user_id': userId,
       });
 
@@ -944,6 +1097,25 @@ Future<List<Map<String, dynamic>>> fetchObjectImages(int objectId) async {
       };
     }
   }
+
+  Future<Map<String, dynamic>> removePermission(
+    int permissionId,
+  ) async {
+    try {
+      final response = await post(ApiEndpoints.removePermission, {
+        'id': permissionId,
+      });
+
+      return response;
+    } catch (error) {
+      debugPrint("Error in removePermission: $error");
+      return {
+        "success": false,
+        "message": "Failed to remove permission",
+      };
+    }
+  }
+
 
   Future<Map<String, dynamic>> createAmenityZone(
     int buildingId,
@@ -1041,7 +1213,7 @@ Future<List<Map<String, dynamic>>> fetchObjectImages(int objectId) async {
       final String baseUrl = dotenv.get('BASE_URL');
       String? mimeType = lookupMimeType(file.name ?? ''); // Get the correct MIME type
       String fileExtension = path.extension(file.name ?? '').replaceAll('.', '');
-      String newFileName = "${objectId}_${DateTime.now().millisecondsSinceEpoch}";
+      String newFileName = "${objectId}_${file.name}";
 
       mimeType ??= 'application/pdf';
 
@@ -1284,28 +1456,120 @@ Future<List<Map<String, dynamic>>> fetchObjectImages(int objectId) async {
     int companyId,
     String name,
     String street,
-    String objectNumber,
     String zipCode,
-    String location,
+    String? description,
+    String? city,
+    String? currency,
+    double? price,
     int totalUnits,
     int totalFloors,
+    String? occupancy,
+    String? zoning,
+    String? country,
+    String? type,
+    String? imageUrl,
+    int? ownerId,
+    int? statusId
   ) async {
     try {
+
+      debugPrint('Creating object with: '
+          'companyId: $companyId, name: $name, street: $street, '
+           'zipCode: $zipCode, '
+          'description: $description, '
+          'city: $city, price: $price, totalUnits: $totalUnits, '
+          'totalFloors: $totalFloors');
+
       final response = await post(ApiEndpoints.createObject, {
         'company_id': companyId,
         'name': name,
         'street': street,
-        'object_number': objectNumber,
         'zip_code': zipCode,
-        'location': location,
+        'description': description,
+        'city': city,
+        'price': price,
+        'currency': currency,
         'total_units': totalUnits,
         'total_floors': totalFloors,
+        'occupancy': occupancy,
+        'zoning': zoning,
+        'country': country,
+        'type': type,
+        'img_url': imageUrl,
+        'owner_id': ownerId,
+        'status_id': statusId,
       });
 
       return response;
     } catch (error) {
-      debugPrint("Error in createBuilding: $error");
-      return {"success": false, "message": "Failed to create new building"};
+      debugPrint("Error in createObject: $error");
+      return {"success": false, "message": "Failed to create new object"};
+    }
+  }
+  Future<Map<String, dynamic>> updateObject(
+    int id,
+    int companyId,
+    String name,
+    String street,
+    String zipCode,
+    String? description,
+    String? city,
+    String? currency,
+    double? price,
+    int totalUnits,
+    int totalFloors,
+    String? occupancy,
+    String? zoning,
+    String? country,
+    String? state,
+    String? address,
+    int owner,
+    int status,
+    String type,
+    String imgUrl,
+    double yield_gross,
+    double yield_net
+
+  ) async {
+    try {
+
+      debugPrint('Creating object with: '
+          'id: $id,   '
+          'companyId: $companyId, name: $name, street: $street, '
+           'zipCode: $zipCode, '
+          'description: $description, '
+          'city: $city, price: $price, totalUnits: $totalUnits, '
+          'totalFloors: $totalFloors');
+
+      final response = await post(ApiEndpoints.updateObject, {
+        'id': id,
+        'company_id': companyId,
+        'name': name,
+        'street': street,
+        'zip_code': zipCode,
+        'description': description,
+        'city': city,
+        'price': price,
+        'currency': currency,
+        'total_units': totalUnits,
+        'total_floors': totalFloors,
+        'img_url': imgUrl,
+        'occupancy': occupancy,
+        'zoning': zoning,
+        'country': country,
+        'state': state,
+        'address': address,
+        'owner': owner,
+        'status': status,
+        'type': type,
+        'yield_gross': yield_gross,
+        'yield_net': yield_net,
+      });
+
+      return response;
+    } catch (error) {
+      debugPrint("Error in updateObject: $error");
+      return {"success": false, "message": "Failed to update object"};
     }
   }
 

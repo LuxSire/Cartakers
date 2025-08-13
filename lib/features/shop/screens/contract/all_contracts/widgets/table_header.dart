@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 import 'package:xm_frontend/features/shop/screens/contract/dialogs/contracts_filter_dialog.dart';
 import 'package:xm_frontend/features/shop/screens/contract/dialogs/create_contract.dart';
 import 'package:xm_frontend/features/shop/screens/user/dialogs/create_user.dart';
@@ -10,16 +10,16 @@ import 'package:xm_frontend/utils/constants/colors.dart';
 import 'package:xm_frontend/utils/device/device_utility.dart';
 import 'package:xm_frontend/utils/popups/loaders.dart';
 
-class ContractTableHeader extends StatelessWidget {
-  const ContractTableHeader({super.key});
+class PermissionTableHeader extends StatelessWidget {
+  const PermissionTableHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ContractController());
+    final controller = Get.put(PermissionController());
     final isDesktop = TDeviceUtils.isDesktopScreen(context);
     final width = MediaQuery.of(context).size.width;
 
-    final int objectId = controller.contractModel.value.objectId ?? 0;
+    final int objectId = controller.permissionModel.value.objectId ?? 0;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -53,7 +53,7 @@ class ContractTableHeader extends StatelessWidget {
                 label: Text(
                   AppLocalization.of(
                     context,
-                  ).translate('unit_detail_screen.lbl_create_new_contract'),
+                  ).translate('permission_screen.lbl_create_new_permission'),
                   style: const TextStyle(color: TColors.alterColor),
                 ),
               ),

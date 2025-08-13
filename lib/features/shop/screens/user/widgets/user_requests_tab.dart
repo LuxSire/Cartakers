@@ -6,7 +6,7 @@ import 'package:xm_frontend/common/widgets/containers/rounded_container.dart';
 import 'package:xm_frontend/common/widgets/images/t_rounded_image.dart';
 import 'package:xm_frontend/common/widgets/loaders/animation_loader.dart';
 import 'package:xm_frontend/data/models/request_model.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/request/request_controller.dart';
 //import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';

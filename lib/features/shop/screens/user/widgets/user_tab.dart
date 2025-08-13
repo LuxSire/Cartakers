@@ -5,9 +5,9 @@ import 'package:path/path.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/common/widgets/containers/rounded_container.dart';
 import 'package:xm_frontend/common/widgets/images/t_circular_image.dart';
-import 'package:xm_frontend/data/models/contract_model.dart';
+import 'package:xm_frontend/data/models/permission_model.dart';
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 //import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 import 'package:xm_frontend/features/shop/screens/contract/dialogs/create_contract.dart';
@@ -133,6 +133,32 @@ class UserTab extends StatelessWidget {
               context,
             ).translate('users_screen.lbl_phone_no'),
             user.phoneNumber.toString(),
+          ),
+          const Divider(),
+          Row(
+            children: [
+              Expanded(
+                child: _buildInfoRow(
+                  AppLocalization.of(
+                    context,
+                  ).translate('users_screen.lbl_company'),
+                  user.companyName.toString(),
+                ),
+              ),
+            ],
+          ),
+           const Divider(),
+          Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.refresh, color: TColors.primary, size: 20),
+                tooltip: 'Update Token',
+                onPressed: () {
+                  final controllerUser = Get.find<UserController>();
+                  controllerUser.updateTokenByUser(user);
+                },
+              ),
+            ],
           ),
           const Divider(),
           _buildInfoRow(

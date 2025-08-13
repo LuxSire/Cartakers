@@ -8,12 +8,12 @@ import 'package:intl/intl.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/data/abstract/base_data_table_controller.dart';
 import 'package:xm_frontend/data/models/object_model.dart';
-import 'package:xm_frontend/data/models/contract_model.dart';
+import 'package:xm_frontend/data/models/permission_model.dart';
 import 'package:xm_frontend/data/models/unit_model.dart';
 import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
 import 'package:xm_frontend/data/repositories/object/object_repository.dart';
 
-import 'package:xm_frontend/data/repositories/contract/contract_repository.dart';
+import 'package:xm_frontend/data/repositories/contract/permission_repository.dart';
 import 'package:xm_frontend/data/repositories/unit/unit_repository.dart';
 import 'package:xm_frontend/data/repositories/user/user_repository.dart';
 import 'package:xm_frontend/features/personalization/controllers/settings_controller.dart';
@@ -26,10 +26,25 @@ import 'package:xm_frontend/utils/helpers/network_manager.dart';
 import 'package:xm_frontend/utils/popups/full_screen_loader.dart';
 import 'package:xm_frontend/utils/popups/loaders.dart';
 
-class ContractController extends TBaseController<ContractModel> {
-  static ContractController get instance => Get.find();
+class PermissionController extends TBaseController<PermissionModel> {
+  static PermissionController get instance => Get.find();
 
-  final _contractRepository = Get.put(ContractRepository());
+  @override
+  bool containsSearchQuery(PermissionModel item, String query) {
+    // Example implementation: search by contractCode, objectName, or user names/emails
+    final lowerQuery = query.toLowerCase();
+    final contractCode = item.permissionId ?? 0;
+    final objectName = item.objectName?.toLowerCase() ?? '';
+    final userMatches = (item.users ?? []).any((user) =>
+      user.displayName.toLowerCase().contains(lowerQuery) ||
+      user.email.toLowerCase().contains(lowerQuery)
+    );
+    return contractCode.toString().contains(lowerQuery) ||
+           objectName.contains(lowerQuery) ||
+           userMatches;
+  }
+
+  final _permissionRepository = Get.put(PermissionRepository());
   final _unitRepository = Get.put(UnitRepository());
   final _objectRepository = Get.put(ObjectRepository());
 
@@ -37,7 +52,6 @@ class ContractController extends TBaseController<ContractModel> {
 
   RxBool isDataUpdated = false.obs;
 
-  final RxList<ContractModel> pendingContracts = <ContractModel>[].obs;
 
   final contractReferenceController = TextEditingController();
   final startDateController = TextEditingController();
@@ -48,7 +62,10 @@ class ContractController extends TBaseController<ContractModel> {
 
   RxBool filtersApplied = false.obs; // Track if filters are applied
 
-  var contractModel = ContractModel.empty().obs; // Make it observable
+  final Rx<PermissionModel> _permissionModel = PermissionModel.empty().obs;
+
+  Rx<PermissionModel> get permissionModel => _permissionModel;
+
   final paginatedPage = 0.obs;
 
   var loading = false.obs;
@@ -56,7 +73,7 @@ class ContractController extends TBaseController<ContractModel> {
   var searchQueryValue = "".obs;
 
   RxBool loadingUsers = true.obs;
-
+  RxBool loadingPermissions = true.obs;
   // This will be used to filter users by name or email
   var filteredUsers = <UserModel>[].obs;
   RxList<UnitModel> unitsList = <UnitModel>[].obs;
@@ -65,9 +82,19 @@ class ContractController extends TBaseController<ContractModel> {
   // this is for when creating a new contract from all contracts table
   RxInt selectedUnitId = 0.obs;
   RxInt selectedObjectId = 0.obs;
+  RxInt selectedUserId = 0.obs;
 
-  RxList<ContractModel> allContracts = <ContractModel>[].obs;
-  RxList<ContractModel> filteredContracts = <ContractModel>[].obs;
+  RxList<PermissionModel> allPermissions = <PermissionModel>[].obs;
+  RxList<PermissionModel> filteredPermissions = <PermissionModel>[].obs;
+  RxList<PermissionModel> userPermissions = <PermissionModel>[].obs;
+  RxList<bool> selectedRows = <bool>[].obs;
+
+  // Ensure the table source uses this getter
+  @override
+  RxList<PermissionModel> get filteredItems => filteredPermissions;
+
+ 
+  RxList<PermissionModel> get userItems => userPermissions;
 
   Rx<DateTime?> startDate = Rx<DateTime?>(null);
   Rx<DateTime?> endDate = Rx<DateTime?>(null);
@@ -80,36 +107,30 @@ class ContractController extends TBaseController<ContractModel> {
   @override
   void onInit() {
     // Retrieve stored email and password if "Remember Me" is selected
+    debugPrint('PermissionController initialized');
     super.onInit();
-    //
-    loadUsers();
-    loadAllObjects();
-    //loadContracts();
+    //loadUsers();
+    //loadAllObjects();
+    loadPermissions();
+    debugPrint('[PermissionController]: filteredPermissions.length: ${filteredPermissions.length} ');
+    ever(filteredPermissions, (_) {
+      selectedRows.value = List<bool>.filled(filteredPermissions.length, false);
+    });
   }
-/*
-  Future<void> loadContracts() async {
+
+  Future<void> loadPermissions() async {
     loading.value = true;
     try {
-      final contracts =
-          await _contractRepository.getAllCompanyObjectsContracts();
+      final permissions =
+          await _permissionRepository.getAllPermissions();
 
-      final updatedUser = await userController.fetchUserDetails();
+      debugPrint('Loaded Permissions: ${permissions.length}');
 
-      final userObjectRestrictions = updatedUser.objectPermissionIds ?? [];
+      allPermissions.assignAll(permissions);
+      userPermissions.assignAll(permissions);
+      selectedRows.value = List<bool>.filled(userPermissions.length, false);
+      debugPrint('[PermissionController]: userPermissions.length: ${userPermissions.length}');
 
-      debugPrint('User object restrictions: $userObjectRestrictions');
-
-      final filteredContractsData =
-          contracts
-              .where(
-                (contract) => userObjectRestrictions.contains(
-                  int.parse(contract.objectId.toString()),
-                ),
-              )
-              .toList();
-
-      allContracts.assignAll(filteredContractsData);
-      filteredContracts.assignAll(filteredContractsData);
     } catch (e) {
       TLoaders.errorSnackBar(
         title: AppLocalization.of(
@@ -121,7 +142,7 @@ class ContractController extends TBaseController<ContractModel> {
       loading.value = false;
     }
   }
-*/
+
   // Load tenants and update state
   void loadUsers() async {
     try {
@@ -129,11 +150,10 @@ class ContractController extends TBaseController<ContractModel> {
       // Simulate a delay or actual data fetching logic
       await Future.delayed(Duration(seconds: 1)); // Mock async fetch
 
-      debugPrint(contractModel.value.toJson().toString());
-      debugPrint('Contract ID: ${contractModel.value.id}');
+      debugPrint(_permissionModel.value.toJson().toString());
 
-      // Assuming contractModel is already populated
-      filteredUsers.value = contractModel.value.users ?? [];
+      // Assuming permissionModel is already populated  
+      filteredUsers.value = _permissionModel.value.users ?? [];
 
       debugPrint('Filtered Users: ${filteredUsers.length}');
 
@@ -148,11 +168,10 @@ class ContractController extends TBaseController<ContractModel> {
       );
     }
   }
-
   void loadAllObjectUnits(int objectId) async {
     try {
       final result = await _objectRepository.fetchObjectUnits(
-        objectId.toString(),
+        objectId,
       );
 
       unitsList.assignAll(result);
@@ -170,6 +189,18 @@ class ContractController extends TBaseController<ContractModel> {
       loading.value = false;
     }
   }
+
+  void filterPermissionsByUserId(int userId) {
+
+  final results = allPermissions.where((perm) => perm.userId == userId).toList();
+
+  debugPrint('Filtered Permissions for user ID $userId: ${results.length}');  
+  userPermissions.assignAll(results);
+  debugPrint('Filtered Permissions for user ID $userId: ${userPermissions.length}');  
+
+  selectedRows.value = List<bool>.filled(userPermissions.length, false);
+  }
+
 
   void loadAllObjects() async {
     try {
@@ -209,53 +240,27 @@ class ContractController extends TBaseController<ContractModel> {
     // ); // Status 3 = pending
   }
 
-  Future<void> initializeContractData(int contractId) async {
-    contractModel.value = await _contractRepository.fetchContractById(
-      contractId,
+  Future<void> initializeContractData(int permissionId) async {
+    _permissionModel.value = await _permissionRepository.fetchPermissionById(
+      permissionId,
     );
 
     // Fetch assigned tenants
+    /*
     final assignedUsers = await UserRepository.instance
-        .fetchUsersByContractId(int.parse(contractModel.value.id!));
-    contractModel.value.users = assignedUsers;
+        .fetchUsersByContractId(int.parse(_permissionModel.value.id!));
+    _permissionModel.value.users = assignedUsers;
 
-    contractModel.value.userCount = assignedUsers.length;
 
     // Pre-fill form
-    contractReferenceController.text = contractModel.value.contractCode ?? '';
+    contractReferenceController.text = _permissionModel.value.contractCode ?? '';
 
-    if (contractModel.value.startDate != null) {
-      startDateController.text = DateFormat(
-        'dd.MM.yyyy',
-      ).format(contractModel.value.startDate!);
-    } else {
-      startDateController.text = '';
-    }
-
-    if (contractModel.value.endDate != null) {
-      endDateController.text = DateFormat(
-        'dd.MM.yyyy',
-      ).format(contractModel.value.endDate!);
-    } else {
-      endDateController.text = '';
-    }
-
-    selectedStatus.value = contractModel.value.statusId!;
-
-    // Load unassigned + merge
-    final unassigned = await _contractRepository.getAllNonContractUsers(
-      contractModel.value.objectId!,
-    );
-
-    final mergedUsers = [
-      ...unassigned,
-      ...assignedUsers.where((a) => !unassigned.any((u) => u.id == a.id)),
-    ];
-    users.assignAll(mergedUsers);
 
     // Pre-select assigned users
     selectedUsers.value =
         users.where((t) => assignedUsers.any((a) => a.id == t.id)).toList();
+
+        */
   }
 
   String statusIdToLocalizedText(BuildContext context, int statusId) {
@@ -401,11 +406,7 @@ class ContractController extends TBaseController<ContractModel> {
         objectId = oId;
       }
 
-      final result = await _contractRepository.getAllNonContractUsers(
-        int.parse(objectId.toString()),
-      );
-
-      users.assignAll(result);
+ 
     } catch (e) {
       TLoaders.errorSnackBar(
         title: AppLocalization.of(
@@ -425,11 +426,6 @@ class ContractController extends TBaseController<ContractModel> {
       debugPrint(
         'loadselectedObjectNonContractUsers Object ID: $objectId',
       );
-      final result = await _contractRepository.getAllNonContractUsers(
-        int.parse(objectId.toString()),
-      );
-
-      users.assignAll(result);
     } catch (e) {
       TLoaders.errorSnackBar(
         title: AppLocalization.of(
@@ -442,7 +438,7 @@ class ContractController extends TBaseController<ContractModel> {
     }
   }
 
-  Future<void> loadNonContractUsersMerged(ContractModel contract) async {
+  Future<void> loadNonContractUsersMerged(PermissionModel contract) async {
     try {
       loading.value = true;
 
@@ -451,28 +447,12 @@ class ContractController extends TBaseController<ContractModel> {
 
       debugPrint('loadNonContractUsers Object ID: $objectId');
 
-      // Load unassigned users
-      final unassigned = await _contractRepository.getAllNonContractUsers(
-        int.parse(objectId.toString()),
-      );
 
       // Merge with assigned users from the contract
       final assigned = contract.users ?? [];
 
       debugPrint('assigned Users: ${assigned.length}');
 
-      // Add assigned users only if not already in unassigned list
-      final merged = [
-        ...unassigned,
-        ...assigned.where(
-          (assignedUser) =>
-              !unassigned.any(
-                (t) => t.id.toString() == assignedUser.id.toString(),
-              ),
-        ),
-      ];
-
-      users.assignAll(merged);
 
       debugPrint('Merged Users: ${users.length}');
 
@@ -519,58 +499,21 @@ class ContractController extends TBaseController<ContractModel> {
       debugPrint('Selected Unit ID: ${selectedUnitId.value}');
       debugPrint('Selected Object ID: ${selectedObjectId.value}');
 
-      // Map Data
-      contractModel.value.contractCode =
-          contractReferenceController.text.trim();
-
+      
       if (startDateController.text.isNotEmpty) {
-        contractModel.value.startDate = DateFormat(
+        _permissionModel.value.startDate = DateFormat(
           'dd.MM.yyyy',
         ).parse(startDateController.text.trim());
       } else {
-        contractModel.value.startDate = null;
+        _permissionModel.value.startDate = null;
       }
 
-      contractModel.value.statusId = 3;
-      contractModel.value.users = selectedUsers;
-      contractModel.value.userCount = selectedUsers.length;
-      contractModel.value.userNames = selectedUsers
-          .map((user) => user.displayName)
-          .join(', ');
+      _permissionModel.value.users = selectedUsers;
 
-      if (selectedUnitId.value != 0) {
-        contractModel.value.unitId =
-            selectedUnitId
-                .value; // Use selected unit ID from All contracts table
-      } else {
-        contractModel.value.unitId = int.parse(
-          ObjectUnitDetailController.instance.unit.value.id!,
-        );
-      }
-
-      if (selectedObjectId.value != 0) {
-        contractModel.value.objectId = selectedObjectId.value;
-      } else {
-        contractModel.value.objectId = int.parse(
-          ObjectUnitDetailController.instance.unit.value.id!,
-        );
-      }
-
-      //
-      bool isContractCreated = false;
-      isContractCreated = await _contractRepository.createContract(
-        contractModel.value,
-      );
-
+    
       // Remove Loader
       loading.value = false;
-
-      if (isContractCreated) {
-        if (selectedUnitId.value != 0) {
-          Get.back(result: true);
-        } else {
-          Get.back(result: contractModel.value);
-        }
+ 
 
         TLoaders.successSnackBar(
           title: AppLocalization.of(
@@ -580,18 +523,6 @@ class ContractController extends TBaseController<ContractModel> {
             Get.context!,
           ).translate('general_msgs.msg_data_submitted'),
         );
-      } else {
-        TLoaders.errorSnackBar(
-          title: AppLocalization.of(
-            Get.context!,
-          ).translate('general_msgs.msg_error'),
-          message: AppLocalization.of(
-            Get.context!,
-          ).translate('general_msgs.msg_data_failed'),
-        );
-      }
-
-      // Update UI Listeners
       update();
     } catch (e) {
       debugPrint('Error from catch submit contrat: $e');
@@ -633,51 +564,6 @@ class ContractController extends TBaseController<ContractModel> {
 
       debugPrint('Selected Object ID: ${selectedObjectId.value}');
 
-      // Map Data
-      contractModel.value.contractCode =
-          contractReferenceController.text.trim();
-
-      if (startDateController.text.isNotEmpty) {
-        contractModel.value.startDate = DateFormat(
-          'dd.MM.yyyy',
-        ).parse(startDateController.text.trim());
-      } else {
-        contractModel.value.startDate = null;
-      }
-
-      contractModel.value.statusId = 3;
-      contractModel.value.users = selectedUsers;
-      contractModel.value.userCount = selectedUsers.length;
-      contractModel.value.userNames = selectedUsers
-          .map((user) => user.displayName)
-          .join(', ');
-
-      contractModel.value.objectId = selectedObjectId.value;
-
-      if (selectedUnitId.value != 0) {
-        contractModel.value.unitId =
-            selectedUnitId.value; // Use selected unit ID from All contracts table
-      } else {
-        contractModel.value.unitId = int.parse(
-          ObjectUnitDetailController.instance.unit.value.id!,
-        );
-      }
-
-      //
-      bool isContractCreated = false;
-      isContractCreated = await _contractRepository.createContract(
-        contractModel.value,
-      );
-
-      // Remove Loader
-      loading.value = false;
-
-      if (isContractCreated) {
-        if (selectedUnitId.value != 0) {
-          Get.back(result: true);
-        } else {
-          Get.back(result: contractModel.value);
-        }
 
         TLoaders.successSnackBar(
           title: AppLocalization.of(
@@ -687,16 +573,6 @@ class ContractController extends TBaseController<ContractModel> {
             Get.context!,
           ).translate('general_msgs.msg_data_submitted'),
         );
-      } else {
-        TLoaders.errorSnackBar(
-          title: AppLocalization.of(
-            Get.context!,
-          ).translate('general_msgs.msg_error'),
-          message: AppLocalization.of(
-            Get.context!,
-          ).translate('general_msgs.msg_data_failed'),
-        );
-      }
 
       // Update UI Listeners
       update();
@@ -713,7 +589,7 @@ class ContractController extends TBaseController<ContractModel> {
     }
   }
 
-  Future<void> submitContractUpdate(ContractModel contract) async {
+  Future<void> submitContractUpdate(PermissionModel contract) async {
     try {
       // Start Loading
       loading.value = true;
@@ -750,64 +626,7 @@ class ContractController extends TBaseController<ContractModel> {
       var newUnitStatus = 0;
 
       // Check for active contract and handle accordingly
-      if (selectedStatus.value == 1) {
-        final activeContract = await _contractRepository
-            .fetchActiveContractsByUnitId(
-              int.parse(contract.unitId.toString()),
-            );
 
-        if (!activeContract.isEmpty && activeContract.id != contract.id) {
-          TLoaders.errorSnackBar(
-            title: AppLocalization.of(
-              Get.context!,
-            ).translate('general_msgs.msg_error'),
-            message: AppLocalization.of(Get.context!).translate(
-              'edit_contract_screen.error_msg_another_active_contract_exists',
-            ),
-          );
-          loading.value = false;
-          return;
-        } else {
-          updateUnitStatus = true;
-          newUnitStatus = 2; // Set to 2 - occupied
-        }
-      }
-
-      if (selectedStatus.value == 2) {
-        final activeContract = await _contractRepository
-            .fetchActiveContractsByUnitId(
-              int.parse(contract.unitId.toString()),
-            );
-
-        if (activeContract.id == contract.id) {
-          updateUnitStatus = true;
-          newUnitStatus = 1; // Set to 1 - available
-        }
-      }
-
-      if (selectedStatus.value == 3) {
-        final activeContract = await _contractRepository
-            .fetchActiveContractsByUnitId(
-              int.parse(contract.unitId.toString()),
-            );
-
-        if (!activeContract.isEmpty && activeContract.id == contract.id) {
-          TLoaders.errorSnackBar(
-            title: AppLocalization.of(
-              Get.context!,
-            ).translate('general_msgs.msg_error'),
-            message: AppLocalization.of(Get.context!).translate(
-              'edit_contract_screen.error_msg_cannot_set_to_pending_when_active',
-            ),
-          );
-
-          loading.value = false;
-          return;
-        } else {
-          updateUnitStatus = true;
-          newUnitStatus = 1; // Set to 1 - vacant
-        }
-      }
 
       debugPrint(
         'updateUnitStatus: $updateUnitStatus, newUnitStatus: $newUnitStatus',
@@ -826,87 +645,10 @@ class ContractController extends TBaseController<ContractModel> {
               ? DateFormat('dd.MM.yyyy').parse(endDateController.text.trim())
               : null;
 
-      if (contract.contractCode != contractReferenceController.text.trim() ||
-          contract.startDate?.toIso8601String() !=
-              parsedStartDate?.toIso8601String() ||
-          contract.endDate?.toIso8601String() !=
-              parsedEndDate?.toIso8601String() ||
-          contract.userCount != selectedUsers.length ||
-          contract.statusId != selectedStatus ||
-          contract.users != selectedUsers) {
-        isContractUpdated = true;
-
-        // Map Data
-        contractModel.value.contractCode =
-            contractReferenceController.text.trim();
-
-        if (startDateController.text.isNotEmpty) {
-          contractModel.value.startDate = DateFormat(
-            'dd.MM.yyyy',
-          ).parse(startDateController.text.trim());
-        } else {
-          contractModel.value.startDate = null;
-        }
-
-        if (endDateController.text.isNotEmpty) {
-          contractModel.value.endDate = DateFormat(
-            'dd.MM.yyyy',
-          ).parse(endDateController.text.trim());
-        } else {
-          if (newUnitStatus == 1) {
-            if (selectedStatus.value == 3) {
-              // Do nothing
-            } else {
-              contractModel.value.endDate = DateTime.now();
-            }
-          } else {
-            contractModel.value.endDate = null;
-          }
-        }
-
-        contractModel.value.statusId = selectedStatus.value;
-        contractModel.value.users = selectedUsers;
-        contractModel.value.userCount = selectedUsers.length;
-        contractModel.value.userNames = selectedUsers
-            .map((user) => user.displayName)
-            .join(', ');
-
-        // Call Repository to Update
-        isContractUpdatedSuccessfully = await _contractRepository
-            .updateContractDetails(contractModel.value);
-
-        if (updateUnitStatus && isContractUpdatedSuccessfully) {
-          await _unitRepository.updateUnitStatus(
-            int.parse(contract.unitId.toString()),
-            newUnitStatus,
-          );
-        }
-      }
-
+   
       // Remove Loader
       loading.value = false;
-
-      if (isContractUpdated && isContractUpdatedSuccessfully) {
-        Get.back(result: contractModel.value);
-
-        TLoaders.successSnackBar(
-          title: AppLocalization.of(
-            Get.context!,
-          ).translate('general_msgs.msg_info'),
-          message: AppLocalization.of(
-            Get.context!,
-          ).translate('general_msgs.msg_data_updated'),
-        );
-      } else {
-        TLoaders.errorSnackBar(
-          title: AppLocalization.of(
-            Get.context!,
-          ).translate('general_msgs.msg_error'),
-          message: AppLocalization.of(
-            Get.context!,
-          ).translate('general_msgs.msg_data_failed'),
-        );
-      }
+ 
 
       update();
     } catch (e) {
@@ -922,171 +664,8 @@ class ContractController extends TBaseController<ContractModel> {
     }
   }
 
-  Future<void> assignContract(ContractModel contract) async {
-    try {
-      // Start Loading
-      loading.value = true;
 
-      // Check Internet Connectivity
-      final isConnected = await NetworkManager.instance.isConnected();
-      if (!isConnected) {
-        loading.value = false;
-        return;
-      }
-
-      var updateUnitStatus = false;
-      var newUnitStatus = 0;
-
-      // Check for active contract and handle accordingly
-
-      final activeContract = await _contractRepository
-          .fetchActiveContractsByUnitId(int.parse(contract.unitId.toString()));
-
-      if (!activeContract.isEmpty && activeContract.id != contract.id) {
-        TLoaders.errorSnackBar(
-          title: AppLocalization.of(
-            Get.context!,
-          ).translate('general_msgs.msg_error'),
-          message: AppLocalization.of(Get.context!).translate(
-            'edit_contract_screen.error_msg_another_active_contract_exists',
-          ),
-        );
-        loading.value = false;
-        return;
-      } else {
-        updateUnitStatus = true;
-        newUnitStatus = 2; // Set to 2 - occupied
-      }
-
-      debugPrint(
-        'updateUnitStatus: $updateUnitStatus, newUnitStatus: $newUnitStatus',
-      );
-
-      bool isContractUpdatedSuccessfully = false;
-
-      // Call Repository to Update
-      isContractUpdatedSuccessfully = await _contractRepository
-          .updateContractDetails(contractModel.value);
-
-      if (updateUnitStatus && isContractUpdatedSuccessfully) {
-        await _unitRepository.updateUnitStatus(
-          int.parse(contract.unitId.toString()),
-          newUnitStatus,
-        );
-      }
-      // Remove Loader
-      loading.value = false;
-
-      if (isContractUpdatedSuccessfully) {
-        Get.back(result: true);
-
-        TLoaders.successSnackBar(
-          title: AppLocalization.of(
-            Get.context!,
-          ).translate('general_msgs.msg_info'),
-          message: AppLocalization.of(
-            Get.context!,
-          ).translate('general_msgs.msg_data_updated'),
-        );
-      } else {
-        TLoaders.errorSnackBar(
-          title: AppLocalization.of(
-            Get.context!,
-          ).translate('general_msgs.msg_error'),
-          message: AppLocalization.of(
-            Get.context!,
-          ).translate('general_msgs.msg_data_failed'),
-        );
-      }
-
-      update();
-    } catch (e) {
-      debugPrint('Error from catch submitContractUpdate: $e');
-      loading.value = false;
-      TFullScreenLoader.stopLoading();
-      TLoaders.errorSnackBar(
-        title: AppLocalization.of(
-          Get.context!,
-        ).translate('general_msgs.msg_error'),
-        message: e.toString(),
-      );
-    }
-  }
-
-  Future<bool> submitContractTerminate(ContractModel contract) async {
-    try {
-      // Start Loading
-      loading.value = true;
-
-      // Check Internet Connectivity
-      final isConnected = await NetworkManager.instance.isConnected();
-      if (!isConnected) {
-        loading.value = false;
-        return false;
-      }
-      bool isContractUpdatedSuccessfuly = false;
-
-      contractModel.value = contract;
-
-      isContractUpdatedSuccessfuly = await _contractRepository
-          .updateContractDetails(contractModel.value);
-
-      if (isContractUpdatedSuccessfuly) {
-        debugPrint('Contract updated successfully');
-        debugPrint(contract.unitId.toString());
-        debugPrint('Unit ID: ${contract.unitId}');
-        debugPrint(
-          'Unit ID: ${int.parse(contractModel.value.unitId.toString())}',
-        );
-        // update unit status
-        await _unitRepository.updateUnitStatus(
-          int.parse(contract.unitId.toString()),
-          1, // set to available
-        );
-      }
-
-      // Remove Loader
-      loading.value = false;
-
-      if (isContractUpdatedSuccessfuly) {
-        TLoaders.successSnackBar(
-          title: AppLocalization.of(
-            Get.context!,
-          ).translate('general_msgs.msg_info'),
-          message: AppLocalization.of(
-            Get.context!,
-          ).translate('general_msgs.msg_data_updated'),
-        );
-      } else {
-        TLoaders.errorSnackBar(
-          title: AppLocalization.of(
-            Get.context!,
-          ).translate('general_msgs.msg_error'),
-          message: AppLocalization.of(
-            Get.context!,
-          ).translate('general_msgs.msg_data_failed'),
-        );
-        return false;
-      }
-
-      // Update UI Listeners
-      update();
-      return true;
-    } catch (e) {
-      debugPrint('Error from catch submitContractTerminate: $e');
-      loading.value = false;
-      TFullScreenLoader.stopLoading();
-      TLoaders.errorSnackBar(
-        title: AppLocalization.of(
-          Get.context!,
-        ).translate('general_msgs.msg_error'),
-        message: e.toString(),
-      );
-      return false;
-    }
-  }
-
-  Future<bool> removeUserFromContract(int contractId, int userId) async {
+  Future<bool> removeUserFromObject(int objectId, int userId) async {
     try {
       // Start Loading
       loading.value = true;
@@ -1099,8 +678,8 @@ class ContractController extends TBaseController<ContractModel> {
       }
       bool isRemoved = false;
 
-      isRemoved = await _contractRepository.removeUserFromContract(
-        contractId,
+      isRemoved = await _permissionRepository.removeUserFromObject(
+        objectId,
         userId,
       );
 
@@ -1145,12 +724,10 @@ class ContractController extends TBaseController<ContractModel> {
     }
   }
 
-  Future<bool> updateUserContractPrimary(int contractId, int userId) async {
+  Future<bool> createPermission(int userId, int objectId) async {
     try {
       // Start Loading
       loading.value = true;
-
-      debugPrint('updateUserContractPrimary: $contractId, $userId');
 
       // Check Internet Connectivity
       final isConnected = await NetworkManager.instance.isConnected();
@@ -1158,17 +735,17 @@ class ContractController extends TBaseController<ContractModel> {
         loading.value = false;
         return false;
       }
-      bool isUpdated = false;
+      bool isRemoved = false;
 
-      isUpdated = await _contractRepository.updateUserContractPrimary(
-        contractId,
+      isRemoved = await _permissionRepository.createPermission(
         userId,
+        objectId
       );
 
       // Remove Loader
       loading.value = false;
 
-      if (isUpdated) {
+      if (isRemoved) {
         TLoaders.successSnackBar(
           title: AppLocalization.of(
             Get.context!,
@@ -1193,7 +770,66 @@ class ContractController extends TBaseController<ContractModel> {
       update();
       return true;
     } catch (e) {
-      debugPrint('Error from catch updateUserContractPrimary: $e');
+      debugPrint('Error from catch createPermission: $e');
+      loading.value = false;
+      TFullScreenLoader.stopLoading();
+      TLoaders.errorSnackBar(
+        title: AppLocalization.of(
+          Get.context!,
+        ).translate('general_msgs.msg_error'),
+        message: e.toString(),
+      );
+      return false;
+    }
+  }
+
+
+  Future<bool> removePermission(PermissionModel permission) async {
+    try {
+      // Start Loading
+      loading.value = true;
+
+      // Check Internet Connectivity
+      final isConnected = await NetworkManager.instance.isConnected();
+      if (!isConnected) {
+        loading.value = false;
+        return false;
+      }
+      bool isRemoved = false;
+
+      isRemoved = await _permissionRepository.removePermission(
+        permission,
+      );
+
+      // Remove Loader
+      loading.value = false;
+
+      if (isRemoved) {
+        TLoaders.successSnackBar(
+          title: AppLocalization.of(
+            Get.context!,
+          ).translate('general_msgs.msg_info'),
+          message: AppLocalization.of(
+            Get.context!,
+          ).translate('general_msgs.msg_data_updated'),
+        );
+      } else {
+        TLoaders.errorSnackBar(
+          title: AppLocalization.of(
+            Get.context!,
+          ).translate('general_msgs.msg_error'),
+          message: AppLocalization.of(
+            Get.context!,
+          ).translate('general_msgs.msg_data_failed'),
+        );
+        return false;
+      }
+
+      // Update UI Listeners
+      update();
+      return true;
+    } catch (e) {
+      debugPrint('Error from catch removeUserFromContract: $e');
       loading.value = false;
       TFullScreenLoader.stopLoading();
       TLoaders.errorSnackBar(
@@ -1210,10 +846,10 @@ class ContractController extends TBaseController<ContractModel> {
     searchQueryValue.value = query;
 
     if (query.isEmpty) {
-      filteredUsers.value = contractModel.value.users ?? [];
+      filteredUsers.value = _permissionModel.value.users ?? [];
     } else {
       filteredUsers.value =
-          contractModel.value.users?.where((user) {
+          _permissionModel.value.users?.where((user) {
             return user.displayName.toLowerCase().contains(
                   query.toLowerCase(),
                 ) ||
@@ -1256,7 +892,7 @@ class ContractController extends TBaseController<ContractModel> {
       }
       bool isFileDeleted = false;
 
-      isFileDeleted = await _contractRepository.deleteDocument(
+      isFileDeleted = await _permissionRepository.deleteDocument(
         fileName,
         containerName,
         documentId,
@@ -1324,7 +960,7 @@ class ContractController extends TBaseController<ContractModel> {
       }
       bool isFileUploaded = false;
 
-      isFileUploaded = await _contractRepository.uploadNewDocument(
+      isFileUploaded = await _permissionRepository.uploadNewDocument(
         contractId,
         directoryName,
         pickedFile,
@@ -1384,7 +1020,7 @@ class ContractController extends TBaseController<ContractModel> {
       }
       bool isRenameFileUpdatedSuccessfuly = false;
 
-      isRenameFileUpdatedSuccessfuly = await _contractRepository.updateFileName(
+      isRenameFileUpdatedSuccessfuly = await _permissionRepository.updateFileName(
         documentId,
         newFileName,
       );
@@ -1503,13 +1139,6 @@ class ContractController extends TBaseController<ContractModel> {
         allItems.where((item) {
           final matchesSearch = containsSearchQuery(item, query);
 
-          final matchesStatus =
-              selectedStatusId.value == -1 || // All
-              (selectedStatusId.value == 4 &&
-                  (item.statusId == null ||
-                      item.statusId == 0)) || // Unassigned
-              (item.statusId != null &&
-                  item.statusId == selectedStatusId.value);
 
           final matchesObject =
               selectedObjectFilterId.value == 0 ||
@@ -1529,13 +1158,14 @@ class ContractController extends TBaseController<ContractModel> {
           // }
 
           return matchesSearch &&
-              matchesStatus &&
+  
               matchesObject &&
               matchesStartDate &&
               matchesEndDate;
         }).toList();
 
     filteredItems.assignAll(results);
+    selectedRows.value = List<bool>.filled(filteredItems.length, false);
   }
 
   List<Map<String, VoidCallback>> getActiveFilters() {
@@ -1557,7 +1187,7 @@ class ContractController extends TBaseController<ContractModel> {
 
     if (selectedObjectFilterId.value != 0) {
       final selectedObject = objectsList.firstWhereOrNull(
-        (b) => int.parse(b.id!) == selectedObjectFilterId.value,
+        (b) => b.id! == selectedObjectFilterId.value,
       );
       if (selectedObject != null) {
         filters.add({
@@ -1608,10 +1238,10 @@ class ContractController extends TBaseController<ContractModel> {
   }
 
   @override
-  Future<List<ContractModel>> fetchItems() async {
+  Future<List<PermissionModel>> fetchItems() async {
     // return await _contractRepository.getAllBuildingContracts();
 
-    final result = await _contractRepository.getAllCompanyObjectsContracts();
+    final result = await _permissionRepository.getAllCompanyObjectsContracts();
 
     final updatedUser = await userController.fetchUserDetails();
 
@@ -1635,7 +1265,7 @@ class ContractController extends TBaseController<ContractModel> {
     sortByProperty(
       sortColumnIndex,
       ascending,
-      (ContractModel b) => b.contractCode.toString().toLowerCase(),
+      (PermissionModel b) => b.permissionId.toString().toLowerCase(),
     );
   }
 
@@ -1643,15 +1273,7 @@ class ContractController extends TBaseController<ContractModel> {
     sortByProperty(
       sortColumnIndex,
       ascending,
-      (ContractModel b) => b.objectName.toString().toLowerCase(),
-    );
-  }
-
-  void sortByUnit(int sortColumnIndex, bool ascending) {
-    sortByProperty(
-      sortColumnIndex,
-      ascending,
-      (ContractModel b) => b.unitNumber.toString().toLowerCase(),
+      (PermissionModel b) => b.objectName.toString().toLowerCase(),
     );
   }
 
@@ -1659,7 +1281,7 @@ class ContractController extends TBaseController<ContractModel> {
     sortByProperty(
       sortColumnIndex,
       ascending,
-      (ContractModel b) => b.startDate?.toIso8601String() ?? '',
+      (PermissionModel b) => b.startDate?.toIso8601String() ?? '',
     );
   }
 
@@ -1667,27 +1289,12 @@ class ContractController extends TBaseController<ContractModel> {
     sortByProperty(
       sortColumnIndex,
       ascending,
-      (ContractModel b) => b.endDate?.toIso8601String() ?? '',
-    );
-  }
-
-  void sortByStatus(int sortColumnIndex, bool ascending) {
-    sortByProperty(
-      sortColumnIndex,
-      ascending,
-      (ContractModel b) => b.statusId.toString().toLowerCase(),
+      (PermissionModel b) => b.endDate?.toIso8601String() ?? '',
     );
   }
 
   @override
-  bool containsSearchQuery(ContractModel item, String query) {
-    return item.userNames!.toLowerCase().contains(query.toLowerCase()) ||
-        item.contractCode!.toLowerCase().contains(query.toLowerCase()) ||
-        item.unitNumber.toString().toLowerCase().contains(query.toLowerCase());
-  }
-
-  @override
-  Future<bool> deleteItem(ContractModel item) async {
-    return await _contractRepository.deleteContract(int.parse(item.id!));
+  Future<bool> deleteItem(PermissionModel item) async {
+    return await _permissionRepository.deleteContract(int.parse(item.id!));
   }
 }

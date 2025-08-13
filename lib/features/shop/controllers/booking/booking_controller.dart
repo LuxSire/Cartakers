@@ -67,7 +67,7 @@ class BookingController extends TBaseController<BookingModel> {
   RxBool createLoading = false.obs;
 
   // 1) categories to choose from
-  RxList<CategoryModel> createCategories = <CategoryModel>[].obs;
+  RxList<CategoryModel> bookingCategories = <CategoryModel>[].obs;
   RxnInt createCategoryId = RxnInt();
 
   // 2) buildings (you already have buildingsList)
@@ -99,7 +99,7 @@ class BookingController extends TBaseController<BookingModel> {
   void onInit() {
     super.onInit();
     loadData(); // Load data when the controller is initialized
-    loadCreateCategories();
+    bookingCategories();
 
     loadAllObjects(); // Load all objects when the controller is initialized
   }
@@ -132,9 +132,9 @@ class BookingController extends TBaseController<BookingModel> {
     }
   }
 
-  Future<void> loadCreateCategories() async {
-    final cats = await _objectRepository.getAllCompanyAmenityCategories();
-    createCategories.assignAll(cats);
+  Future<void> loadBookingCategories() async {
+    final cats = await _objectRepository.getAllBookingCategories();
+    bookingCategories.assignAll(cats);
   }
 
   // void onCreateCategoryChanged(int? catId) {
@@ -569,7 +569,7 @@ class BookingController extends TBaseController<BookingModel> {
 
     if (selectedObjectFilterId.value != 0) {
       final selectedObject = objectsList.firstWhereOrNull(
-        (o) => int.parse(o.id!) == selectedObjectFilterId.value,
+        (o) => o.id! == selectedObjectFilterId.value,
       );
       if (selectedObject != null) {
         filters.add({

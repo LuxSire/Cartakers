@@ -72,7 +72,7 @@ class ObjectUnitsRows extends DataTableSource {
           }),
         ),
 
-        DataCell(Text('${unit.userNames}')),
+        DataCell(Text('${unit.description}')),
         DataCell(
           TRoundedContainer(
             radius: TSizes.cardRadiusSm,
@@ -91,14 +91,13 @@ class ObjectUnitsRows extends DataTableSource {
             ),
           ),
         ),
-        DataCell(Text(unit.contractCode!)),
 
         DataCell(Text(unit.formattedDate)),
         DataCell(
           TTableActionButtons(
             view: true,
             edit: false,
-            delete: false,
+            delete: true,
             onViewPressed: () {
               Get.toNamed(Routes.unitDetails, arguments: unit)?.then((result) {
                 // debugPrint('Result from unit detail screen: $result');

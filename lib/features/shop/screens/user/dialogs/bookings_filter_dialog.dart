@@ -12,7 +12,7 @@ class BookingsFilterDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //final controller = Get.find<BookingController>();
-    final controller = Get.find<BookingController>(tag: 'tenant_bookings');
+    final controller = Get.find<BookingController>(tag: 'user_bookings');
 
     final theme = Theme.of(context);
 

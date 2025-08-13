@@ -56,32 +56,28 @@ class UsersPermissionsTabletScreen extends StatelessWidget {
                               unselectedLabelColor: Colors.black.withOpacity(
                                 0.6,
                               ),
-                              tabs: [
-                                Tab(
-                                  text: AppLocalization.of(
-                                    context,
-                                  ).translate('users_screen.lbl_users'),
-                                  icon: const Icon(Iconsax.profile_2user),
-                                ),
-                                Tab(
-                                  text: AppLocalization.of(
-                                    context,
-                                  ).translate('profile_screen.lbl_permissions'),
-                                  icon: const Icon(Iconsax.note_2),
-                                ),
-                              ],
+ tabs: [
+                                                        Tab(
+                              text: AppLocalization.of(
+                                context,
+                              ).translate('users_screen.lbl_companies'),
+                              icon: const Icon(Iconsax.building1),
                             ),
+
+                            Tab(
+                              text: AppLocalization.of(
+                                context,
+                              ).translate('users_screen.lbl_users'),
+                              icon: const Icon(Iconsax.profile_2user),
+                            ),                     ],                            ),
                             const SizedBox(height: TSizes.defaultSpace),
                             SizedBox(
                               height: tabViewHeight,
                               child: const TabBarView(
                                 children: [
-                                  UsersPermissionsDetailTab(
-                                    tabType: 'users',
-                                  ),
-                                  UsersPermissionsDetailTab(
-                                    tabType: 'permissions',
-                                  ),
+                                  
+                              UsersPermissionsDetailTab(tabType: 'companies'),
+                              UsersPermissionsDetailTab(tabType: 'users')
                                 ],
                               ),
                             ),

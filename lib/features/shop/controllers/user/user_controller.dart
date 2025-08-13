@@ -10,7 +10,7 @@ import 'package:xm_frontend/features/personalization/controllers/settings_contro
 // Removed ambiguous import of personalization UserController
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
 import 'package:xm_frontend/features/shop/controllers/object/object_unit_detail_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 import 'package:xm_frontend/utils/helpers/helper_functions.dart';
 
 import '../../../../data/repositories/authentication/authentication_repository.dart';
@@ -195,8 +195,9 @@ class UserController extends TBaseController<UserModel> {
       firstName.text,
       lastName.text,
       email.text,
-      selectedObjectId.value,
-      int.parse(user!.id.toString()),
+      phoneNumber.text,
+      2,
+      1
     );
 
     loading.value = false;
@@ -468,7 +469,7 @@ class UserController extends TBaseController<UserModel> {
 
     if (selectedObjectFilterId.value != 0) {
       final selectedObject = objectsList.firstWhereOrNull(
-        (b) => int.parse(b.id!) == selectedObjectFilterId.value,
+        (b) => b.id! == selectedObjectFilterId.value,
       );
       if (selectedObject != null) {
         filters.add({
@@ -539,7 +540,7 @@ class UserController extends TBaseController<UserModel> {
 
     if (selectedInvitationObjectFilterId.value != 0) {
       final selectedObject = objectsList.firstWhereOrNull(
-        (b) => int.parse(b.id!) == selectedInvitationObjectFilterId.value,
+        (b) => b.id! == selectedInvitationObjectFilterId.value,
       );
       if (selectedObject != null) {
         filters.add({

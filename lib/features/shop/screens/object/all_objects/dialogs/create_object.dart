@@ -7,6 +7,7 @@ import 'package:xm_frontend/features/shop/controllers/object/edit_object_control
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../utils/constants/sizes.dart';
 import '../../../../../../utils/validators/validation.dart';
+import 'package:xm_frontend/features/personalization/controllers/company_controller.dart';
 
 class CreateObjectDialog extends StatelessWidget {
   const CreateObjectDialog({super.key});
@@ -62,8 +63,79 @@ class CreateObjectDialog extends StatelessWidget {
                   prefixIcon: Icon(Iconsax.building),
                 ),
               ),
+              const SizedBox(height: TSizes.spaceBtwInputFields),
 
-              // const SizedBox(height: TSizes.spaceBtwInputFields),
+              // City Text Field
+              TextFormField(
+                controller: controller.city,
+                validator: (value) => TValidator.validateEmptyText(
+                  AppLocalization.of(context).translate('objects_screen.lbl_city'),
+                  value,
+                ),
+                decoration: InputDecoration(
+                  labelText: AppLocalization.of(context).translate('objects_screen.lbl_city'),
+                  prefixIcon: Icon(Icons.location_city),
+                ),
+              ),
+              const SizedBox(height: TSizes.spaceBtwInputFields),
+
+              // Price Text Field
+              TextFormField(
+                controller: controller.price,
+                validator: (value) => TValidator.validateEmptyText(
+                  AppLocalization.of(context).translate('objects_screen.lbl_price'),
+                  value,
+                ),
+                decoration: InputDecoration(
+                  labelText: AppLocalization.of(context).translate('objects_screen.lbl_price'),
+                  prefixIcon: Icon(Icons.money),
+                ),
+              ),
+              const SizedBox(height: TSizes.spaceBtwInputFields),
+
+              // Street Text Field
+              TextFormField(
+                controller: controller.street,
+                validator: (value) => TValidator.validateEmptyText(
+                  AppLocalization.of(context).translate('objects_screen.lbl_street'),
+                  value,
+                ),
+                decoration: InputDecoration(
+                  labelText: AppLocalization.of(context).translate('objects_screen.lbl_street'),
+                  prefixIcon: Icon(Icons.location_on_outlined),
+                ),
+              ),
+              const SizedBox(height: TSizes.spaceBtwInputFields),
+
+              // Zip Code Text Field
+              TextFormField(
+                controller: controller.zipCode,
+                validator: (value) => TValidator.validateEmptyText(
+                  AppLocalization.of(context).translate('objects_screen.lbl_zip_code'),
+                  value,
+                ),
+                decoration: InputDecoration(
+                  labelText: AppLocalization.of(context).translate('objects_screen.lbl_zip_code'),
+                  prefixIcon: Icon(Icons.location_on_outlined),
+                ),
+              ),
+              const SizedBox(height: TSizes.spaceBtwInputFields),
+
+              // Description Text Field
+              TextFormField(
+                controller: controller.description,
+                validator: (value) => TValidator.validateEmptyText(
+                  AppLocalization.of(context).translate('objects_screen.lbl_object_description'),
+                  value,
+                ),
+                minLines: 2,
+                maxLines: 10,
+                decoration: InputDecoration(
+                  labelText: AppLocalization.of(context).translate('objects_screen.lbl_object_description'),
+                  prefixIcon: Icon(Iconsax.building),
+                ),
+              ),
+              const SizedBox(height: TSizes.spaceBtwInputFields),
 
               // TextFormField(
               //   controller: controller.street,
@@ -189,6 +261,62 @@ class CreateObjectDialog extends StatelessWidget {
 
               const SizedBox(height: TSizes.spaceBtwInputFields),
 
+              // Company Dropdown
+              Obx(() {
+                final companyController = Get.find<CompanyController>();
+                return DropdownButtonHideUnderline(
+                  child: ButtonTheme(
+                    alignedDropdown: true,
+                    child: DropdownButtonFormField<int>(
+                      isExpanded: true,
+                      onChanged: (value) {
+                        if (controller.selectedCompanyId != null) {
+                          controller.selectedCompanyId!.value = value ?? 0;
+                        }
+                      },
+                      validator: (value) {
+                        if (value == null || value == 0) {
+                          return AppLocalization.of(
+                            context,
+                          ).translate('companies_screen.lbl_select_company');
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        labelText: AppLocalization.of(
+                          context,
+                        ).translate('companies_screen.lbl_select_company'),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 14,
+                        ),
+                      ),
+                      items: [
+                        DropdownMenuItem<int>(
+                          value: 0,
+                          child: Text(
+                            AppLocalization.of(
+                              context,
+                            ).translate("companies_screen.lbl_select_company"),
+                          ),
+                        ),
+                        ...companyController.allcompanies.map(
+                          (company) => DropdownMenuItem<int>(
+                            value: company.id ?? 1,
+                            child: Text(company.name),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }),
+
+              const SizedBox(height: TSizes.spaceBtwInputFields),
+
               /// Submit Button
               Obx(() {
                 return controller.loading.value
@@ -197,7 +325,6 @@ class CreateObjectDialog extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: controller.submitObject,
-                        //  onPressed: () {},
                         child: Text(
                           AppLocalization.of(
                             context,

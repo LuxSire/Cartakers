@@ -8,15 +8,18 @@ import 'package:get_storage/get_storage.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:xm_frontend/app/app_controller.dart';
 import 'package:xm_frontend/data/repositories/company/company_repository.dart';
+
 import 'package:xm_frontend/features/personalization/controllers/settings_controller.dart';
 import 'package:xm_frontend/utils/helpers/network_manager.dart';
 import 'package:xm_frontend/data/repositories/media/media_repository.dart';
 import 'app.dart';
 import 'data/repositories/authentication/authentication_repository.dart';
 import 'features/personalization/controllers/user_controller.dart';
+import 'features/personalization/controllers/company_controller.dart';
 import 'features/shop/controllers/dashboard/dashboard_controller.dart';
 import 'package:xm_frontend/data/repositories/user/user_repository.dart';
 import 'features/shop/controllers/document/document_controller.dart';
+import 'features/shop/controllers/contract/permission_controller.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,13 +38,28 @@ Future<void> main() async {
   // Register Dependencies
   Get.put(AppController());
   Get.put(AuthenticationRepository());
-  Get.put(CompanyRepository());
-  Get.put(UserController()); // personalization version ONLY
-  Get.put(SettingsController());
-  Get.put(DashboardController());
+  debugPrint('AuthenticationRepository instance created');
   Get.put(UserRepository());
+  debugPrint('UserRepository instance created');
+
+
+  Get.put(UserController()); // personalization version ONLY
+  debugPrint('UserController instance created');
+
+  Get.put(SettingsController());
+  debugPrint('SettingsController instance created');
+  Get.put(DashboardController());
+  debugPrint('DashboardController instance created');
   Get.put(MediaRepository());
-//  Get.put(DocumentController());
+  debugPrint('MediaRepository  instance created');
+  Get.put(CompanyRepository());
+  debugPrint('CompanyRepository instance created');
+  Get.put(CompanyController());
+  debugPrint('CompanyController instance created');
+  Get.put(PermissionController()); // shop version ONLY
+  debugPrint('PermissionController instance created');
+  Get.put(DocumentController());
+  debugPrint('DocumentController instance created');
 
   
   AuthenticationRepository.instance.restoreSession();

@@ -40,7 +40,7 @@ class UsersPermissionsDesktopScreen extends StatelessWidget {
 
                 return TRoundedContainer(
                   child: DefaultTabController(
-                    length: 3,
+                    length: 2,
                     child: Column(
                       children: [
                         // TabBar with left alignment
@@ -52,36 +52,29 @@ class UsersPermissionsDesktopScreen extends StatelessWidget {
                           indicatorWeight: 1,
                           unselectedLabelColor: Colors.black.withOpacity(0.6),
                           tabs: [
+                                                        Tab(
+                              text: AppLocalization.of(
+                                context,
+                              ).translate('users_screen.lbl_companies'),
+                              icon: const Icon(Iconsax.building1),
+                            ),
+
                             Tab(
                               text: AppLocalization.of(
                                 context,
                               ).translate('users_screen.lbl_users'),
                               icon: const Icon(Iconsax.profile_2user),
-                            ),
-                            Tab(
-                              text: AppLocalization.of(
-                                context,
-                              ).translate('users_screen.lbl_permissions'),
-                              icon: const Icon(Iconsax.note_2),
-                            ),
-                            Tab(
-                              text: AppLocalization.of(context).translate(
-                                'tab_app_invitation_screen.lbl_app_invitation',
-                              ),
-                              icon: const Icon(Iconsax.device_message),
-                            ),
-                          ],
+                            ),                     ],
                         ),
                         const SizedBox(height: TSizes.defaultSpace),
                         // Tab content
                         Expanded(
                           child: TabBarView(
                             children: [
+
+                              UsersPermissionsDetailTab(tabType: 'companies'),
                               UsersPermissionsDetailTab(tabType: 'users'),
-                              UsersPermissionsDetailTab(tabType: 'permissions'),
-                              UsersPermissionsDetailTab(
-                                tabType: 'app_invitation',
-                              ),
+                          
                             ],
                           ),
                         ),

@@ -87,7 +87,7 @@ class UserService extends BaseService {
         'user': registrationData,
       });
 
-      // debugPrint('User Service: registerTenant: $response');
+      debugPrint('User Service: registerUser: $response');
 
       if (response is Map<String, dynamic> && response.containsKey('success')) {
         if (response['success'] == true) {
@@ -98,7 +98,7 @@ class UserService extends BaseService {
             return {}; // Return an empty object if no data is provided
           }
         } else {
-          throw Exception(response['message'] ?? 'Failed to register tenant');
+          throw Exception(response['message'] ?? 'Failed to register user');
         }
       }
 
@@ -263,7 +263,6 @@ class UserService extends BaseService {
     }
   }
 
-  // get tenant upcoming booking
 
   Future<Map<String, dynamic>> getUserUpcomingBooking(int contractId) async {
     try {
@@ -1264,6 +1263,26 @@ class UserService extends BaseService {
     }
   }
 
+  Future<Map<String, dynamic>> updateTokenByUser(
+    int userId,
+    String email,
+  ) async {
+    try {
+      final response = await post(ApiEndpoints.updateTokenByUser, {
+        'user_id': userId,
+        'email': email,
+      });
+
+      return response;
+    } catch (error) {
+      debugPrint("Error in updateTokenByUser: $error");
+      return {
+        "success": false,
+        "message": "Failed to update token by user",
+      };
+    }
+  }
+
   Future<Map<String, dynamic>> getUserByResetCode(
     String email,
     resetCode,
@@ -1729,20 +1748,50 @@ class UserService extends BaseService {
       return [];
     }
   }
+    Future<List<Map<String, dynamic>>> getAllUserRoles(
+  ) async {
+    try {
+      final response = await post(ApiEndpoints.getAllUserRoles,{} );
+
+
+
+      if (response is Map<String, dynamic> && response.containsKey('success')) {
+        if (response['success'] == true && response['data'] is List) {
+          // debugPrint('Upcoming bookings: ${response['data']}');
+          return List<Map<String, dynamic>>.from(response['data']);
+        } else {
+          return [];
+        }
+      } else if (response is List) {
+        // If the backend is returning a raw list instead of a JSON object
+        return List<Map<String, dynamic>>.from(response);
+      } else {
+        //   debugPrint('Unexpected response format: $response');
+        return [];
+      }
+    } catch (error) {
+      debugPrint('Failed to get all user roles: $error');
+      return [];
+    }
+  }
   Future<Map<String, dynamic>> createQuickNewUser(
     String firstName,
     String lastName,
     String email,
-    int objectId,
-    int createdById,
+    String phone_number,
+    int roleId,
+    int companyId,
+    {String token = ''}
   ) async {
     try {
       final response = await post(ApiEndpoints.createQuickNewUser, {
         'first_name': firstName,
         'last_name': lastName,
         'email': email,
-        'object_id': objectId,
-        'created_by_id': createdById,
+        'phone_number': phone_number,
+        'role_id': roleId ?? 2,
+        'company_id': companyId ?? 1,
+        'token': token,
       });
 
       return response;
@@ -1751,6 +1800,31 @@ class UserService extends BaseService {
       return {"success": false, "message": "Failed to create new user"};
     }
   }
+  Future<Map<String, dynamic>> createQuickNewCompany(
+    String name,
+    String email,
+    String phone_number,
+    int roleId
+   
+   
+  ) async {
+    try {
+      final response = await post(ApiEndpoints.createQuickNewCompany, {
+        'name': name,
+        'email': email,
+        'phone_number': phone_number,
+        'role_id': roleId ?? 2,
+       
+      });
+
+      return response;
+    } catch (error) {
+      debugPrint("Error in quickCreateNewCompany: $error");
+      return {"success": false, "message": "Failed to create new company"};
+    }
+  }
+ 
+
 
   Future<Map<String, dynamic>> updateQuickUser(
     String firstName,
@@ -2028,8 +2102,9 @@ class UserService extends BaseService {
 
   Future<Map<String, dynamic>> deleteUserById(int userId) async {
     try {
+      debugPrint("Deleting user with ID: $userId");
       final response = await post(ApiEndpoints.deleteUserById, {
-        'user_id': userId,
+        'user_id': userId.toString(),
       });
 
       return response;
@@ -2061,9 +2136,10 @@ class UserService extends BaseService {
     int userId,
   ) async {
     try {
+      debugPrint("Creating user invitation code for email: $email, userId: $userId");
       final response = await post(ApiEndpoints.createUserInvitationCode, {
         'email': email,
-        'user_id': userId,
+        'user_id': userId.toString(),
       });
 
       return response;

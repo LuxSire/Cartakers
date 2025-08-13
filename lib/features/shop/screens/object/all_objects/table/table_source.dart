@@ -16,7 +16,7 @@ class ObjectRows extends DataTableSource {
 
   @override
   DataRow? getRow(int index) {
-    final object = controller.filteredItems[index];
+    final object = controller.allObjects[index];
     return DataRow2(
       onTap: () {
         Get.toNamed(Routes.editObject, arguments: object)?.then((result) {
@@ -59,7 +59,7 @@ class ObjectRows extends DataTableSource {
           ),
         ),
         DataCell(Text(object.street ?? '')),
-DataCell(Text(object.objectNumber?.toString() ?? '')),
+DataCell(Text(object.city?.toString() ?? '')),
 DataCell(Text(object.zipCode ?? '')),
 DataCell(Text(object.location ?? '')),
 DataCell(Text(object.totalUnits?.toString() ?? '')),
@@ -78,7 +78,7 @@ DataCell(Text(object.createdAt == null ? '' : object.formattedDate)),
                 }
               });
             },
-            onDeletePressed: () => controller.confirmAndDeleteItem(object),
+            onDeletePressed: () => controller.deleteItem(object),
           ),
         ),
       ],
@@ -89,7 +89,7 @@ DataCell(Text(object.createdAt == null ? '' : object.formattedDate)),
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => controller.filteredItems.length;
+  int get rowCount => controller.allObjects.length;
 
   @override
   int get selectedRowCount =>

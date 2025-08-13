@@ -3,7 +3,7 @@ import 'package:xm_frontend/features/shop/screens/user/widgets/bookings_tab.dart
 import 'package:xm_frontend/features/shop/screens/user/widgets/user_documents_tab.dart';
 import 'package:xm_frontend/features/shop/screens/user/widgets/user_requests_tab.dart';
 import 'package:xm_frontend/features/shop/screens/user/widgets/user_tab.dart';
-
+import 'package:xm_frontend/features/shop/screens/users_permissions/widgets/permissions_tab.dart';
 class UserDetailsTab extends StatelessWidget {
   final String tabType;
 
@@ -14,6 +14,8 @@ class UserDetailsTab extends StatelessWidget {
     switch (tabType) {
       case 'user':
         return UserTab();
+      case 'permissions':
+        return PermissionsTab();
       case 'documents':
         return UserDocumentsTab();
       case 'bookings':

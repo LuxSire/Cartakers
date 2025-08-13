@@ -6,7 +6,7 @@ import 'package:xm_frontend/common/widgets/containers/rounded_container.dart';
 import 'package:xm_frontend/common/widgets/images/t_circular_image.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 //import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 import 'package:xm_frontend/features/shop/screens/settings_managements/dialogs/edit_user.dart';
 //import 'package:xm_frontend/features/shop/screens/user/dialogs/edit_user.dart';
@@ -145,11 +145,13 @@ class UserRows extends DataTableSource {
         ),
 
         DataCell(Text(user.createdAt == null ? '' : user.formattedDate)),
-        DataCell(
-          TTableActionButtons(
+        DataCell( SizedBox(
+              width: 180, // Adjust this value as needed for your icons
+              child: TTableActionButtons(
             view: false,
             edit: true,
             sendUserInvitation: true,
+            
 
             onSendUserInvitationPressed:
                 () => controller.sendUserInvitation(user),
@@ -199,6 +201,7 @@ class UserRows extends DataTableSource {
             },
             onDeletePressed: () => controller.confirmAndDeleteItem(user),
           ),
+        ),
         ),
       ],
     );

@@ -28,7 +28,7 @@ class UserModel {
   String? unitNumber; // tenant assigned unit number
   int? contractStatus;
   int? zoneId; // zone id for the tenant which comes from the contract unit
-
+  String? token; // Text representation of contract status
   String? roleNameExt;
   String? status; // status of user, invited, active, disabled
   List<Map<String, dynamic>> objectPermissions = const []; // object permission for the user
@@ -49,6 +49,7 @@ class UserModel {
   /// Constructor for UserModel.
   UserModel({
     this.id,
+    this.token = '',  
     required this.email,
     this.firstName = '',
     this.lastName = '',
@@ -137,7 +138,8 @@ class UserModel {
   // Convert JSON back to UserModel
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json['id']?.toString() ?? '',
+      id: json['id']?.toString(),
+      token: json['token'] ?? '',
       email: json['email'] ?? '',
       firstName: json['first_name'] ?? '',
       lastName: json['last_name'] ?? '',

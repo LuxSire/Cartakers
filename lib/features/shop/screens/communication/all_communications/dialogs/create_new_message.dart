@@ -99,7 +99,7 @@ class CreateMessageDialog extends StatelessWidget {
                             ),
                             ...controller.objectsList.map(
                               (b) => DropdownMenuItem(
-                                value: int.parse(b.id!),
+                                value: b.id!,
                                 child: Text(b.name ?? ''),
                               ),
                             ),
@@ -148,10 +148,10 @@ class CreateMessageDialog extends StatelessWidget {
                           ...contracts.map((c) {
                             final id = int.parse(c.id!);
                             return CheckboxListTile(
-                              title: Text(c.userNames ?? ''),
+                              title: Text(c.objectName ?? ''),
                               subtitle:
-                                  c.userNames != null
-                                      ? Text(c.contractCode!)
+                                  c.objectName != null
+                                      ? Text(c.permissionId!.toString())
                                       : null,
                               value: controller.selectedContractIds.contains(
                                 id,

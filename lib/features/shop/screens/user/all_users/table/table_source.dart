@@ -10,7 +10,7 @@ import 'package:xm_frontend/common/widgets/images/t_circular_image.dart';
 //import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
 //import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
-import 'package:xm_frontend/features/shop/screens/user/dialogs/edit_user.dart';
+import 'package:xm_frontend/features/shop/screens/settings_managements/dialogs/edit_user.dart';
 import 'package:xm_frontend/routes/routes.dart';
 import 'package:xm_frontend/utils/constants/image_strings.dart';
 //import 'package:xm_frontend/utils/helpers/helper_functions.dart';
@@ -108,53 +108,68 @@ class UsersRows extends DataTableSource {
             ],
           ),
         ),
-        // 2. Object Name
-        DataCell(Text(user.objectName ?? '')), // <-- Added cell for object name
+        // 2. Company Name
+        DataCell(Text(user.companyName ?? '')), // <-- Added cell for company name
         // 3. Email
         DataCell(Text(user.email)),
         // 4. Phone
         DataCell(Text(user.phoneNumber)),
         // 5. Date Created
-        DataCell(Text(user.createdAt == null ? '' : user.formattedDate)),
+        DataCell(Text(user.updatedAt == null ? '' : user.formattedDate)),
         // 6. Actions
         DataCell(
-          TTableActionButtons(
-            view: true,
-            edit: true,
-            onViewPressed: () async {
-              debugPrint('User FULL Name: ${user.fullName}');
-              final result = await Get.toNamed(
-                Routes.userDetails,
-                arguments: user,
-              );
-              if (result == true) {
-                final updatedUser = controller.userModel.value;
-                final index = controller.filteredUsers.indexWhere(
-                  (t) => t.id == updatedUser.id,
-                );
-                if (index != -1) {
-                  controller.filteredUsers[index] = updatedUser;
-                  controller.filteredUsers.refresh();
-                }
-              }
-            },
-            onEditPressed: () async {
-              controller.userModel.value = user;
-              final result = await showDialog<bool>(
-                context: Get.context!,
-                barrierDismissible: false,
-                builder: (BuildContext context) {
-                  return const EditUserDialog();
-                },
-              );
-              if (result == true) {
-                controller.refreshData();
-                controller.userModel.refresh();
-              } else {
-                debugPrint('User update failed');
-              }
-            },
-            onDeletePressed: () => controller.confirmAndDeleteItem(user),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                TTableActionButtons(
+                  view: true,
+                  edit: true,
+                  sendUserInvitation: true,
+                  onSendUserInvitationPressed: () async {
+                    await controller.sendUserInvitation(user);
+                    controller.refreshData();
+                  },
+                  onViewPressed: () async {
+                    debugPrint('User FULL Name: ${user.fullName}');
+                    final result = await Get.toNamed(
+                      Routes.userDetails,
+                      arguments: user,
+                    );
+                    if (result == true) {
+                      final updatedUser = controller.userModel.value;
+                      final index = controller.filteredUsers.indexWhere(
+                        (t) => t.id == updatedUser.id,
+                      );
+                      if (index != -1) {
+                        controller.filteredUsers[index] = updatedUser;
+                        controller.filteredUsers.refresh();
+                      }
+                    }
+                  },
+                  onEditPressed: () async {
+                    controller.userModel.value = user;
+                    final result = await showDialog<bool>(
+                      context: Get.context!,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return const EditUserDialog(showExtraFields: false);
+                      },
+                    );
+                    if (result == true) {
+                      controller.refreshData();
+                      controller.userModel.refresh();
+                    } else {
+                      debugPrint('User update failed');
+                    }
+                  },
+                  onDeletePressed: () async {
+                    await controller.confirmAndDeleteItem(user);
+                    controller.refreshData();
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ],

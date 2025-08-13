@@ -499,7 +499,7 @@ class RequestController extends TBaseController<RequestModel> {
 
     if (selectedObjectFilterId.value != 0) {
       final selectedObject = objectsList.firstWhereOrNull(
-        (o) => int.parse(o.id!) == selectedObjectFilterId.value,
+        (o) => o.id! == selectedObjectFilterId.value,
       );
       if (selectedObject != null) {
         filters.add({

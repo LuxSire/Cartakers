@@ -4,7 +4,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/common/widgets/loaders/animation_loader.dart';
 import 'package:xm_frontend/data/models/object_model.dart';
-import 'package:xm_frontend/data/models/contract_model.dart';
+import 'package:xm_frontend/data/models/permission_model.dart';
 import 'package:xm_frontend/data/models/unit_model.dart';
 import 'package:xm_frontend/features/shop/controllers/object/object_unit_detail_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
@@ -44,7 +44,7 @@ class UnitContracts extends StatelessWidget {
               const SizedBox(height: TSizes.spaceBtwInputFields),
               TextButton.icon(
                 onPressed: () async {
-                  final newContract = await showDialog<ContractModel>(
+                  final newContract = await showDialog<PermissionModel>(
                     context: Get.context!,
                     barrierDismissible: false,
                     builder: (BuildContext context) {

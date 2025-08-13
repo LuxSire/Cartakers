@@ -51,7 +51,7 @@ class UsersInvitationTableHeader extends StatelessWidget {
                                     message: AppLocalization.of(
                                       context,
                                     ).translate(
-                                      'general_msgs.msg_no_tenants_selected',
+                                      'general_msgs.msg_no_users_selected',
                                     ),
                                   );
                                   return;

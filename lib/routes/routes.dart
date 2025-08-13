@@ -40,7 +40,7 @@ class Routes {
 
   static const objectsUnits = '/objectsUnits';
   static const usersPermissions = '/usersPermissions';
-  static const contractDetails = '/contractDetails';
+  static const permissionDetails = '/permissionDetails';
   static const userDetails = '/userDetails';
 
   static const maintenanceTasks = '/maintenanceTasks';
@@ -78,7 +78,7 @@ class Routes {
     invitation,
     registerAdmin,
     editObject,
-    contractDetails,
+    permissionDetails,
     userDetails,
     bookingsRequests,
     tasks,

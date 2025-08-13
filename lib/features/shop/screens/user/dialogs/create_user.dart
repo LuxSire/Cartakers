@@ -150,69 +150,70 @@ class CreateUserDialog extends StatelessWidget {
                 ),
               ),
 
+
               const SizedBox(height: TSizes.spaceBtwInputFields),
 
-              if (displayObjects == true) ...[
-                Obx(() {
-                  return DropdownButtonHideUnderline(
-                    child: ButtonTheme(
-                      alignedDropdown: true,
-                      child: DropdownButtonFormField<int>(
-                        isExpanded: true,
-                        value:
-                            controller.selectedObjectId.value != 0
-                                ? controller.selectedObjectId.value
-                                : null,
-                        onChanged: (value) {
-                          if (value != null) {
-                            controller.selectedObjectId.value = value;
-                          } else {
-                            controller.selectedObjectId.value = 0;
-                          }
-                        },
-                        validator: (value) {
-                          if (value == null || value == 0) {
-                            return AppLocalization.of(context).translate(
-                              'contract_screen.msg_object_required',
-                            );
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          labelText: AppLocalization.of(
+
+              Obx(() {
+                // Only allow value if present in the list or if 0
+                final allowedIds = [
+                  0,
+                  ...controller.userRolesList.map((role) => role.id),
+                ];
+                final currentValue =
+                    allowedIds.contains(controller.selectedRoleId.value)
+                        ? controller.selectedRoleId.value
+                        : 0;
+
+                return DropdownButtonHideUnderline(
+                  child: ButtonTheme(
+                    alignedDropdown: true,
+                    child: DropdownButtonFormField<int>(
+                      isExpanded: true,
+                      value: currentValue == 0 ? null : currentValue,
+                      onChanged: (value) {
+                        controller.selectedRoleId.value = value ?? 0;
+                      },
+                      validator: (value) {
+                        if (value == null || value == 0) {
+                          return AppLocalization.of(
                             context,
-                          ).translate('contract_screen.lbl_select_object'),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 14,
+                          ).translate('tab_users_screen.lbl_role_is_required');
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        labelText: AppLocalization.of(
+                          context,
+                        ).translate('tab_users_screen.lbl_select_role'),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 14,
+                        ),
+                      ),
+                      items: [
+                        DropdownMenuItem<int>(
+                          value: 0,
+                          child: Text(
+                            AppLocalization.of(
+                              context,
+                            ).translate("tab_users_screen.lbl_select_role"),
                           ),
                         ),
-                        items: [
-                          DropdownMenuItem<int>(
-                            value: 0,
-                            child: Text(
-                              AppLocalization.of(context).translate(
-                                "contract_screen.lbl_select_object",
-                              ),
-                            ),
+                        ...controller.userRolesList.map(
+                          (role) => DropdownMenuItem<int>(
+                            value: role.id,
+                            child: Text(role.nameTranslated!),
                           ),
-                          ...controller.objectsList.map(
-                            (object) => DropdownMenuItem<int>(
-                              value: int.parse(object.id!),
-                              child: Text(object.name!),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  );
-                }),
-
-                const SizedBox(height: TSizes.spaceBtwInputFields),
-              ],
+                  ),
+                );
+              }),
 
               /// Submit Button
               Obx(() {

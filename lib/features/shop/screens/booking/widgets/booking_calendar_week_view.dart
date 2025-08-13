@@ -33,7 +33,7 @@ class BookingWeekView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ctrl = Get.find<BookingController>(tag: 'agency_bookings');
+    final ctrl = Get.find<BookingController>(tag: 'company_bookings');
 
     // calculate Monday + the next 6 days
     // final monday = weekReference.subtract(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/document/document_controller.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 
@@ -84,7 +84,7 @@ class RenameFileDialog extends StatelessWidget {
                 controller.renameDocumentController.text.trim();
 
             if (newFileName.isNotEmpty) {
-              final contractController = ContractController.instance;
+              final contractController = PermissionController.instance;
               // close dialog
 
               contractController.renameFile(documentId, newFileName);

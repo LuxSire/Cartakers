@@ -287,16 +287,18 @@ class UserRepository extends GetxController {
     String firstName,
     String lastName,
     String email,
-    int objectId,
-    int createdById,
+    String phone_number,
+    int roleId,
+    int companyId,
   ) async {
     try {
       final response = await _userService.createQuickNewUser(
         firstName,
         lastName,
         email,
-        objectId,
-        createdById,
+        phone_number,
+        roleId,
+        companyId,
       );
 
       debugPrint('Response from quickUserInsert: $response');
@@ -306,8 +308,16 @@ class UserRepository extends GetxController {
       return 2;
     }
   }
-
-  Future<bool> quickUserUpdate(
+  Future<int> quickCompanyInsert(Map<String, dynamic> registrationData) async {
+    try {
+      final response = await _userService.registerCompany(registrationData);
+      debugPrint('Response from Quickregister Company: $response');
+      return response['status'];
+    } catch (e) {
+      return 2;
+    }
+  }
+   Future<bool> quickUserUpdate(
     String firstName,
     String lastName,
     int objectId,
@@ -485,9 +495,8 @@ class UserRepository extends GetxController {
   /// Delete User Data
   Future<bool> deleteUserById(int id, [int? objectId]) async {
     try {
-      final response = await _userService.deleteUserObjectUser(
-        id,
-        objectId,
+      final response = await _userService.deleteUserById(
+        id 
       );
 
       if (response['success'] != true) {
@@ -552,10 +561,10 @@ class UserRepository extends GetxController {
   }
 
   Future<List<UserRoleModel>> getAllUserRoles() async {
-    try {
-      final roleId = 2;
+        try {
+          final roleId = 2;
 
-      final response = await _userService.getUserRolesByRoleId(roleId);
+      final response = await _userService.getAllUserRoles();
 
       return response
           .map((userRoleData) => UserRoleModel.fromJson(userRoleData))
@@ -570,18 +579,20 @@ class UserRepository extends GetxController {
     String firstName,
     String lastName,
     String email,
+    String phoneNumber, 
     int roleId,
-    int roleExtId,
     int companyId,
+    {String token = ''}
   ) async {
     try {
-      final response = await _userService.createNewUser(
+      final response = await _userService.createQuickNewUser(
         firstName,
         lastName,
         email,
+        phoneNumber,  
         roleId,
-        roleExtId,
         companyId,
+        token: token,
       );
 
       // debugPrint('Response from createNewUser: $response');
@@ -679,6 +690,19 @@ class UserRepository extends GetxController {
         email,
         userId,
       );
+
+      return response['data'][0]['token'] ?? '';
+    } catch (e) {
+      return '';
+    }
+  }
+  Future<String> updateTokenByUser(String email, int userId) async {
+    try {
+      final response = await _userService.updateTokenByUser(
+        userId,
+        email
+       
+      );  
 
       return response['data'][0]['token'] ?? '';
     } catch (e) {

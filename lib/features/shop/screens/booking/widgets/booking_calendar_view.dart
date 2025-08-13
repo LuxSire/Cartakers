@@ -15,7 +15,7 @@ class BookingCalendarView extends StatefulWidget {
 }
 
 class _BookingCalendarViewState extends State<BookingCalendarView> {
-  final controller = Get.find<BookingController>(tag: 'agency_bookings');
+  final controller = Get.find<BookingController>(tag: 'company_bookings');
 
   DateTime? _lastTapDay;
   DateTime? _lastTapTime;

@@ -2,12 +2,12 @@ import 'package:xm_frontend/data/models/unit_model.dart';
 import 'package:xm_frontend/utils/formatters/formatter.dart';
 
 class ObjectModel {
-  String? id;
+  int? id;
   int? companyId;
   String? name;
   String? street;
   String? zipCode;
-  String? objectNumber;
+  String? country;
   String? state;
   String? address;
   String? occupancy;
@@ -19,8 +19,10 @@ class ObjectModel {
   int? status;
   String? type_;
   double? price;
-  final int? totalUnits;
-  final int? totalFloors;
+  double? yieldGross;
+  double? yieldNet;
+  int? totalUnits;
+  int? totalFloors;
   String? imgUrl;
   final DateTime? createdAt;
   DateTime? updatedAt;
@@ -34,9 +36,9 @@ class ObjectModel {
     this.companyId,
     this.name,
     this.street,
-    this.zipCode,
-    this.objectNumber,
+    this.zipCode, 
     this.state,
+    this.country  ,
     this.occupancy,
     this.zoning,
     this.city,
@@ -46,6 +48,8 @@ class ObjectModel {
     this.status,
     this.type_,
     this.price,
+    this.yieldGross,
+    this.yieldNet,
     this.address,
     this.totalUnits,
     this.totalFloors,
@@ -61,21 +65,22 @@ class ObjectModel {
 
   /// Static function to create an empty building model.
   static ObjectModel empty() =>
-      ObjectModel(id: ''); // Default createdAt to current time
+      ObjectModel(id: 1); // Default createdAt to current time
 
   // Convert JSON response to RequestModel
   factory ObjectModel.fromJson(Map<String, dynamic> json) {
     return ObjectModel(
-      id: json['id']?.toString() ?? '',
+      id: json['id'] ?? 0,
       companyId: json['company'] ?? 0,
       occupancy: json['occupancy'] ?? 0,
       zoning: json['zoning'] ?? '',
       city: json['city'] ?? '',
+      country: json['country'] ?? '',
       description: json['description'] ?? '',
-      owner: json['owner'] ?? '',
-      status: json['status'] ?? '',
-      type_: json['type'] ?? '',
-      price: json['price'] ?? '',
+      owner: json['owner'] ?? 1,
+      status: json['status'] ?? 1,
+      type_: json['type_'] ?? '',
+      price: double.tryParse(json['price']?.toString() ?? '') ?? 0.0,
       currency: json['currency'] ?? '',
       name: json['name'] ?? '',
       imgUrl: json['img_url'] ?? '',
@@ -83,8 +88,8 @@ class ObjectModel {
       zipCode: json['zip_code'] ?? '',
       state: json['state'] ?? '',
       address: json['address'] ?? '',
-      totalUnits: json['total_units'] ?? 0,
-      totalFloors: json['total_floors'] ?? 0,
+      totalUnits: json['units'] ?? 0,
+      totalFloors: json['Floors'] ?? 0,
       updatedAt:
           json['updated_at'] != null
               ? DateTime.parse(json['updated_at'])
@@ -97,6 +102,8 @@ class ObjectModel {
       location: json['location'] ?? '',
       totalUsers: json['total_users'] ?? 0,
       totalContracts: json['total_contracts'] ?? 0,
+      yieldGross: json['yield_gross'] ?? 0.0,
+      yieldNet: json['yield_net'] ?? 0.0,
     );
   }
 
@@ -109,8 +116,8 @@ class ObjectModel {
       'img_url': imgUrl,
       'street': street,
       'zip_code': zipCode,
-      'object_number': objectNumber,
-      'sate': state,
+      'state': state,
+      'country': country,
       'address': address,
       'total_units': totalUnits,
       'total_floors': totalFloors,
@@ -128,6 +135,8 @@ class ObjectModel {
       'status': status,
       'type': type_,
       'price': price,
+      'yield_gross': yieldGross,
+      'yield_net': yieldNet,
     };
   }
 }

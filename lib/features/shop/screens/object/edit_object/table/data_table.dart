@@ -66,7 +66,7 @@ class ObjectUnitTable extends StatelessWidget {
                 label: Text(
                   AppLocalization.of(
                     context,
-                  ).translate('edit_object_screen.lbl_tenants'),
+                  ).translate('edit_object_screen.lbl_description'),
                 ),
               ),
               DataColumn2(
@@ -75,13 +75,6 @@ class ObjectUnitTable extends StatelessWidget {
                   AppLocalization.of(
                     context,
                   ).translate('edit_object_screen.lbl_status'),
-                ),
-              ),
-              DataColumn2(
-                label: Text(
-                  AppLocalization.of(
-                    context,
-                  ).translate('edit_object_screen.lbl_contract_reference'),
                 ),
               ),
               DataColumn2(

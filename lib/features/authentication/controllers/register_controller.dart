@@ -96,15 +96,21 @@ class RegisterController extends GetxController {
       String plainPassword = password.text;
       String hashedPassword = Helpers.hashPassword(plainPassword);
 
+      final userJson = { 
+      'email': email.text,
+      'password': hashedPassword,
+      'first_name': firstName.text,
+      'last_name': lastName.text,
+      'company_id': companyId.value.toString(),
+      };
+
       // Login user using Email & Password Authentication
       final registerResponse = await AuthenticationRepository.instance
-          .registerAdmin(
-            email.text.trim().toLowerCase(),
-            hashedPassword,
-            firstName.text,
-            lastName.text,
-            companyId.value.toString(),
+          .registerUser(
+           userJson
           );
+
+      debugPrint('[Register Controller] Register Admin Register Response: $registerResponse'); 
 
       // Remove Loader
       TFullScreenLoader.stopLoading();
@@ -127,7 +133,7 @@ class RegisterController extends GetxController {
 
           // update flags
           final userController = UserController.instance;
-
+/*
           await userController.userRepository.updateUserInvitationStatus(
             invitationId.value,
             2, // 2 accepted invitation
@@ -136,7 +142,7 @@ class RegisterController extends GetxController {
             companyId.value,
             2, // 2 Active
           );
-
+*/
           await UserPreferences.saveUser(user);
         } catch (e) {
           debugPrint('Error saving user: $e');

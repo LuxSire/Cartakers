@@ -36,8 +36,9 @@ class UserController extends TBaseController<UserModel> {
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final phoneController = TextEditingController();
-  final emailController = TextEditingController();
+    final emailController = TextEditingController();
 
+    final tokenController = TextEditingController();
   final searchController = TextEditingController();
 
   final selectedObjectId = 0.obs;
@@ -50,7 +51,7 @@ class UserController extends TBaseController<UserModel> {
   var userModel = UserModel.empty().obs; // Make it observable
 
   // Dependencies
-  final userRepository = Get.put(UserRepository());
+  final userRepository = Get.find<UserRepository>();
   final _objectRepository = Get.put(ObjectRepository());
 
   RxList<ObjectModel> objectsList = <ObjectModel>[].obs;
@@ -76,7 +77,7 @@ class UserController extends TBaseController<UserModel> {
   @override
   void onInit() {
     super.onInit();
-
+    AuthenticationRepository.instance.refreshCurrentUserDetails();
     // Get users
     loadUsers();
     ever(filteredUsers, (_) {
@@ -231,7 +232,7 @@ class UserController extends TBaseController<UserModel> {
 
       // get list of user assigned objects
       final assignedObjects = await userRepository.getUserAssignedObjects(
-        int.parse(userRetrived.value.id ?? '0'),
+        int.parse(userRetrived.value.id?.toString() ?? '0'),
       );
 
       selectedObjectIds.clear(); // Clear previous selections
@@ -558,16 +559,16 @@ class UserController extends TBaseController<UserModel> {
 
       var statusCode = 0; // 0 means exists, 1 created new tenant , 2 failed
 
-      var roleId = 2; // default for agency users
+      var roleId = 2; // default for company users
 
       final companyId = AuthenticationRepository.instance.currentUser!.companyId;
       final response = await UserRepository.instance.createNewUser(
         firstNameController.text,
         lastNameController.text,
         emailController.text,
+        phoneController.text,
         roleId,
-        selectedRoleId.value, // role extension id
-        int.parse(companyId),
+        int.tryParse(companyId.toString()) ?? 2
       );
 
       statusCode = response['status'];
@@ -685,6 +686,26 @@ class UserController extends TBaseController<UserModel> {
     selectedObjectId.value = 0; // Reset selected object ID
 
   }
+  Future<void> updateTokenByUser(UserModel user) async {
+    try {
+      loading.value = true;
+
+      // Check Internet Connectivity
+
+      final invitationCode = await UserRepository.instance
+          .updateTokenByUser(user.email.trim(), int.parse(user.id!));
+
+      debugPrint('Invitation Code: $invitationCode');
+      loading.value = false;
+        }
+     catch (e) {
+      loading.value = false;
+      TLoaders.errorSnackBar(
+        title: AppLocalization.of(Get.context!).translate('general_msgs.msg_error'),
+        message: e.toString(),
+      );
+    }
+  }
 
   Future<void> sendUserInvitation(UserModel user) async {
     try {
@@ -775,7 +796,7 @@ class UserController extends TBaseController<UserModel> {
   }
 
   Future<List<UserModel>> fetchUsersAndTranslateFields() async {
-    final users = await userRepository.getAllCompanyUsers();
+    final users = await userRepository.getAllUsers();
 
     for (final user in users) {
       user.translatedStatus = await TranslationApi.smartTranslate(
@@ -801,7 +822,7 @@ class UserController extends TBaseController<UserModel> {
     try {
       final users = await userRepository.getAllUsers();
 
-      debugPrint('Load Users: ${users.length}');
+      debugPrint('[User Controller] Load Users: ${users.length}');
       for (final user in users) {
         user.translatedStatus = await TranslationApi.smartTranslate(
           user.status ?? '',
@@ -899,15 +920,17 @@ class UserController extends TBaseController<UserModel> {
   @override
   Future<bool> deleteItem(UserModel item) async {
     final isDeleted = await userRepository.deleteUserById(int.parse(item.id!));
-
+    debugPrint('User Deleted by User Controller');
+/*
     if (isDeleted) {
       // deletes user directory for the images
       final companyId = AuthenticationRepository.instance.currentUser!.companyId;
-      final containerName = 'media';
-      final directory = 'companies/$companyId/users/${item.id}';
+      final containerName = 'docs';
+      final directory = 'users/${item.id}';
 
       await userRepository.deleteUserDirectory(containerName, directory);
     }
+    */
 
     return isDeleted;
   }

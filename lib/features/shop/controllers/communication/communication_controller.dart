@@ -5,12 +5,12 @@ import 'package:intl/intl.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/data/abstract/base_data_table_controller.dart';
 import 'package:xm_frontend/data/models/object_model.dart';
-import 'package:xm_frontend/data/models/contract_model.dart';
+import 'package:xm_frontend/data/models/permission_model.dart';
 import 'package:xm_frontend/data/models/message_model.dart';
 import 'package:xm_frontend/data/repositories/company/company_repository.dart';
 import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
 import 'package:xm_frontend/data/repositories/object/object_repository.dart';
-import 'package:xm_frontend/data/repositories/contract/contract_repository.dart';
+import 'package:xm_frontend/data/repositories/contract/permission_repository.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 import 'package:xm_frontend/utils/helpers/helper_functions.dart';
 import 'package:xm_frontend/utils/popups/loaders.dart';
@@ -20,7 +20,7 @@ class CommunicationController extends TBaseController<MessageModel> {
 
   final _objectRepo = Get.put(ObjectRepository());
   final _companyRepo = Get.put(CompanyRepository());
-  final _contractRepo = Get.put(ContractRepository());
+  final _contractRepo = Get.put(PermissionRepository());
 
   /// Messages
   RxList<MessageModel> allMessages = <MessageModel>[].obs;
@@ -30,7 +30,7 @@ class CommunicationController extends TBaseController<MessageModel> {
   /// -1 = All Objects
   RxInt selectedObjectId = RxInt(-1);
   RxList<ObjectModel> objectsList = <ObjectModel>[].obs;
-  RxList<ContractModel> contractsByObject = <ContractModel>[].obs;
+  RxList<PermissionModel> contractsByObject = <PermissionModel>[].obs;
   RxList<int> selectedContractIds = <int>[].obs;
   RxList<String> selectedChannels = <String>[].obs;
 
@@ -68,7 +68,7 @@ class CommunicationController extends TBaseController<MessageModel> {
             : contractsByObject
                 .where((c) => selectedContractIds.contains(int.parse(c.id!)))
                 .toList();
-    return list.fold(0, (sum, c) => sum + (c.userCount ?? 0));
+    return list.fold(0, (sum, c) => sum );
   }
 
   /// Computed: all contracts selected
@@ -93,20 +93,17 @@ class CommunicationController extends TBaseController<MessageModel> {
     }
   }
 
-  Future<void> loadContractsForObject(int objectId) async {
+  Future<void> loadPermissionsForObject(int objectId) async {
     try {
       selectedObjectId.value = objectId;
       selectedContractIds.clear();
 
-      // fetch contracts by object   or all
+      // fetch permissions by object   or all
       final list =
           objectId == -1
               ? await _contractRepo.getAllCompanyObjectsContracts()
               : await _contractRepo.getContractsByObjectId(objectId);
-      // only active
-      list.removeWhere((c) => c.statusId != 1);
-      contractsByObject.assignAll(list);
-
+   
       // auto-select all
       selectedContractIds.assignAll(list.map((c) => int.parse(c.id!)));
     } catch (e) {
@@ -116,7 +113,7 @@ class CommunicationController extends TBaseController<MessageModel> {
 
   /// Select object (or all)
   void selectObject(int objectId) {
-    loadContractsForObject(objectId);
+    loadPermissionsForObject(objectId);
   }
 
   void toggleContractSelection(int contractId) {
@@ -286,7 +283,7 @@ class CommunicationController extends TBaseController<MessageModel> {
     // 2) All objects AND all contracts selected => per-object  
     if (oId == -1 && selectedContractIds.length == allContractIds.length) {
       return objectsList
-          .map((o) => {'type': 'object', 'id': int.parse(o.id!)})
+          .map((o) => {'type': 'object', 'id': o.id!})
           .toList();
     }
 
@@ -300,7 +297,7 @@ class CommunicationController extends TBaseController<MessageModel> {
     // 4) All objects but no contracts selected => per-object
     if (oId == -1) {
       return objectsList
-          .map((o) => {'type': 'object', 'id': int.parse(o.id!)})
+          .map((o) => {'type': 'object', 'id': o.id!})
           .toList();
     }
 
@@ -408,7 +405,7 @@ class CommunicationController extends TBaseController<MessageModel> {
 
     if (selectedObjectFilterId.value != 0) {
       final selectedObject = objectsList.firstWhereOrNull(
-        (o) => int.parse(o.id!) == selectedObjectFilterId.value,
+        (o) => o.id! == selectedObjectFilterId.value,
       );
       if (selectedObject != null) {
         filters.add({

@@ -14,56 +14,58 @@ class ObjectDocsWidget extends StatelessWidget {
   final int objectId;
   const ObjectDocsWidget({super.key, required this.objectId});
 
+
   @override
   Widget build(BuildContext context) {
     DocumentController controller = Get.put(DocumentController());
+    final RxInt reloadKey = 0.obs;
 
     return TRoundedContainer(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Document List',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Expanded(
-                flex: 2,
-                child: TextFormField(
-                  onChanged: (query) {
-                    // You may want to connect this to a controller if you have one for objects
-                  },
-                  decoration: InputDecoration(
-                    hintText: AppLocalization.of(context).translate('contract_screen.lbl_search_documents'),
-                    prefixIcon: Icon(Iconsax.search_normal),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Text(
+              'Document List',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: TextFormField(
+                    onChanged: (query) {
+                      // You may want to connect this to a controller if you have one for objects
+                    },
+                    decoration: InputDecoration(
+                      hintText: AppLocalization.of(context).translate('contract_screen.lbl_search_documents'),
+                      prefixIcon: Icon(Iconsax.search_normal),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 16),
-              TextButton.icon(
-                onPressed: () async {
-                  final controller = Get.find<EditObjectController>();
-                  final pickedFile = await controller.pickFile();
-                  if (pickedFile != null) {
-                    await controller.uploadDocumentToAzure(pickedFile, objectId);
-                  }
-                },
-                icon: const Icon(Icons.upload, color: Colors.blue),
-                label: Text(
-                  AppLocalization.of(context).translate('contract_screen.lbl_upload_new_document'),
-                  style: const TextStyle(color: Colors.blue),
+                const SizedBox(width: 16),
+                TextButton.icon(
+                  onPressed: () async {
+                    final controller = Get.find<EditObjectController>();
+                    final pickedFile = await controller.pickFile();
+                    if (pickedFile != null) {
+                      await controller.uploadDocumentToAzure(pickedFile, objectId);
+                    }
+                  },
+                  icon: const Icon(Icons.upload, color: Colors.blue),
+                  label: Text(
+                    AppLocalization.of(context).translate('contract_screen.lbl_upload_new_document'),
+                    style: const TextStyle(color: Colors.blue),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Expanded(
-            child: FutureBuilder<List<DocsModel>>(
+              ],
+            ),
+            const SizedBox(height: 16),
+            Obx(() => FutureBuilder<List<DocsModel>>(
+              key: ValueKey(reloadKey.value),
               future: ObjectRepository.instance.fetchObjectDocs(objectId),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -81,63 +83,62 @@ class ObjectDocsWidget extends StatelessWidget {
                     ),
                   );
                 }
-                return ListView.separated(
-                  itemCount: docs.length,
-                  separatorBuilder: (_, __) => const Divider(),
-                  itemBuilder: (context, index) {
-                    final doc = docs[index];
-                    return ListTile(
-                      leading: Icon(Iconsax.document),
-                      title: Text(doc.fileName.value),
-                      subtitle: Text(doc.createdAt.toString()),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.visibility),
-                            tooltip: AppLocalization.of(context).translate('general_msgs.msg_view_details'),
-                            onPressed: () {
-                              doc.view(context);
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.edit),
-                            tooltip: AppLocalization.of(context).translate('general_msgs.msg_rename'),
-                            onPressed: () async {
-                              //doc.rename(context);
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.delete, color: Colors.red),
-                            tooltip: AppLocalization.of(context).translate('general_msgs.msg_delete'),
-                            onPressed: () async {
-
-                          final deleteResponse = await controller
-                            .deleteDocumentFromAzure(
-                              doc.fileName.value.toString(),
-                                'docs',
-                                doc.fileUrl,
-                              );
-
-
-
-                  if (deleteResponse) {
-                    controller.loadData();
-                  }
-
-
-                                                      },
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                return SizedBox(
+                  height: 300, // Adjust height as needed
+                  child: ListView.separated(
+                    itemCount: docs.length,
+                    separatorBuilder: (context, index) => const Divider(),
+                    itemBuilder: (context, index) {
+                      final doc = docs[index];
+                      return ListTile(
+                        leading: Icon(Iconsax.document),
+                        title: Text(doc.fileName.value),
+                        subtitle: Text(doc.createdAt.toString()),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.visibility),
+                              tooltip: AppLocalization.of(context).translate('general_msgs.msg_view_details'),
+                              onPressed: () {
+                                doc.view(context);
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.edit),
+                              tooltip: AppLocalization.of(context).translate('general_msgs.msg_rename'),
+                              onPressed: () async {
+                                //doc.rename(context);
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.delete, color: Colors.red),
+                              tooltip: AppLocalization.of(context).translate('general_msgs.msg_delete'),
+                              onPressed: () async {
+                                final deleteResponse = await controller
+                                    .deleteDocumentFromAzure(
+                                  doc.fileName.value.toString(),
+                                  'docs',
+                                  doc.fileUrl,
+                                );
+                                if (deleteResponse) {
+                                  controller.loadData();
+                                  reloadKey.value++; // This will trigger a rebuild
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 );
               },
-            ),
-          ),
-        ],
+            )),
+          ],
+        ),
       ),
     );
   }
 }
+                            //

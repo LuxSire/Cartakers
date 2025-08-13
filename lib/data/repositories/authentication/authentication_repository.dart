@@ -29,7 +29,7 @@ class AuthenticationRepository extends GetxController {
   void onInit() {
     super.onInit();
     // Always refresh permissions when the instance is created
-    refreshCurrentUserDetails();
+    //refreshCurrentUserDetails();
   }
 
   @override
@@ -164,6 +164,14 @@ class AuthenticationRepository extends GetxController {
       return {};
     }
   }
+Future<Map<String, dynamic>> registerUser(Map<String, dynamic> userJson) async {
+  try {
+    // Send userJson as needed (body or query param)
+    return await _userService.registerUser(userJson);
+  } catch (e) {
+    return {};
+  }
+}
 
   Future<void> reset() async {
     _currentUser.value = UserModel.empty();

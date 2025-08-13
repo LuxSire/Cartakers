@@ -180,7 +180,7 @@ class RequestsFilterDialog extends StatelessWidget {
                       ),
                       ...controller.objectsList.map(
                         (o) => DropdownMenuItem<int>(
-                          value: int.parse(o.id!),
+                          value: o.id!,
                           child: Text(o.name!),
                         ),
                       ),

@@ -332,7 +332,7 @@
         "msg_mail_subject_reset_password": "Reset Password",
         "msg_no_data_found": "No data found",
         "msg_for_admins_login": "Login",
-        "msg_login_description": "Where Sellers meet Buyers",
+        "msg_login_description": "The power of a platform that puts in contact sellers and buyers",
         "msg_invitation_description": "With your invitation code, you gain access to a powerful platform designed for a community of real estate professionals, and operational efficiency.",
         "msg_for_admins_invitation": "Invitation",
         "msg_for_admins_register": "Register",
@@ -555,7 +555,7 @@
         "err_msg_dialog_title_failed_token": "Token Validation Failed",
         "err_msg_dialog_content_failed_token": "The token you entered is invalid or has expired. Please try again or request a new token.",
         "lbl_welcome_title": "XM Dashboard - Where Buyers meet Sellers",
-        "lbl_welcome_content": "With your invitation code, you gain access to a powerful platform designed for seamless property management, user communication, and operational efficiency.",
+        "lbl_welcome_content": "Get access to our platform with your exclusive invitation code",
         "lbl_validating_your_code": "Validating your code..."
     },
     "language_selection": {
@@ -607,7 +607,8 @@
     },
     "objects_screen": {
         "lbl_objects": "Objects",
-        "lbl_price":" Price",
+        "lbl_types": "Types",
+        "lbl_price": "Price",
         "lbl_search_objects": "Search Objects",
         "lbl_create_new_object": "Create New Object",
         "lbl_object_name": "Object Name",
@@ -633,12 +634,26 @@
           
         "lbl_total_floors": "Total Floors",
         "tooltip_total_floors": "Enter the total number of floors the object has, including ground and basement if applicable.",
-        "lbl_new_object": "New Object"
+        "lbl_new_object": "New Object",
+
+        "lbl_yieldgross": "Gross Yield",
+      "lbl_yieldnet": "Net Yield",
+      "lbl_assign_amenity_zone": "Assign Amenity Zone",
+      "lbl_object_information": "Object Information",
+      "lbl_no_objects_found": "No Objects Found",
+        "lbl_no_units_found": "No Units Found",
+    "lbl_no_floors_found": "No Floors Found",
+        "lbl_no_rooms_found": "No Rooms Found",
+        "lbl_no_users_found": "No Users Found",
+    "lbl_no_amenity_zones_found": "No Amenity Zones Found"
+
     },
     "edit_object_screen": {
         "lbl_object_details": "Object Details",
         "lbl_update_object": "Update Object",
         "lbl_units": "Units",
+        "lbl_yieldnet": "Net yield",
+        "lbl_yieldgross": "Gross yield",
         "lbl_search_units": "Search Units",
         "lbl_date_created": "Date Created",
         "lbl_update": "Update",
@@ -684,8 +699,19 @@
         "error_msg_another_active_contract_exists": "Another active contract exists for this unit. Please end the existing contract before activating a new one.",
         "error_msg_cannot_set_to_pending_when_active": "Cannot set to pending when active"
     },
+    "companies_screen": {
+        "lbl_new_company": "Create New Company",
+        "lbl_name": "Name",
+        "lbl_description": "Description",
+        "lbl_email": "Email",
+        "lbl_phone_no": "Phone No",
+        "lbl_address": "Address",
+        "lbl_select_company": "Select Company"
+    },
+
     "users_screen": {
         "lbl_users": "Users",
+        "lbl_companies": "Companies",   
         "lbl_search_users": "Search Users",
         "lbl_create_new_user": "Create New User",
         "lbl_first_name": "First Name",
@@ -709,15 +735,16 @@
         "lbl_permissions": "Permissions"
     },
     "create_contract_screen": {
-        "lbl_new_contract": "New Contract",
+        "lbl_new_permission": "New Permission",
+        "lbl_select_object": "Select Object",
         "lbl_start_date": "Start Date",
         "lbl_end_date": "End Date",
         "lbl_status": "Status",
         "lbl_users": "Users",
-        "lbl_create_new_contract": "Create New Contract",
-        "lbl_end_contract": "End Contract",
-        "lbl_contracts": "Permissions",
-        "lbl_search_contracts": "Search Permissions",
+        "lbl_create_new_permission": "Create New Permission",
+        "lbl_end_permission": "End Permission",
+        "lbl_permissions": "Permissions",
+        "lbl_search_permissions": "Search Permissions",
         "lbl_select_users": "Select Users",
         "error_msg_please_select_at_least_one_user": "Please select at least one user"
     },
@@ -799,8 +826,9 @@
     },
     "user_screen": {
       "lbl_user_details": "User Details",
-      "lbl_profile_information": "Profile Information"
-
+      "lbl_profile_information": "Profile Information",
+      "lbl_companies": "Companies",
+      "lbl_permissions": "Permissions"
     }, 
 
     "bookings_screen":{
@@ -897,9 +925,22 @@
         "lbl_notifications": "Notifications"
 
     },
-
+    "permission_screen": {
+        "lbl_permissions": "Permissions",
+        "lbl_create_new_permission": "Create New Permission",
+        "lbl_permission_name": "Permission Name",
+        "lbl_permission_description": "Permission Description",
+        "lbl_select_users": "Select Users",
+        "lbl_select_objects": "Select Objects",
+        "lbl_select_contracts": "Select Contracts",
+        "lbl_date_created": "Date Created",
+        "lbl_actions": "Actions",
+        "lbl_no_permissions_found": "No permissions found",
+        "lbl_update_permission": "Update Permission"
+    },
     "tab_users_screen" : {
         "lbl_users": "Users",
+        "lbl_company": "Company",
         "lbl_search_users": "Search Users",
         "lbl_create_new_user": "Create New User",
         "lbl_first_name": "First Name",
@@ -924,8 +965,8 @@
         "lbl_invited" : "Invited",
         "lbl_active": "Active",
         "lbl_disabled": "Disabled",
-        "lbl_pending_invitation": "Pending Invitation"
-
+        "lbl_pending_invitation": "Pending Invitation",
+        "lbl_companies": "Companies"
 
 
 
