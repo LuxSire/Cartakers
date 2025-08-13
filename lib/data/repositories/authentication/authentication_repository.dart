@@ -151,12 +151,13 @@ class AuthenticationRepository extends GetxController {
     String firstName,
     String lastName,
     String companyid,
+    String companyName,
   ) async {
     try {
-      return await _userService.registerCompany({
+      return await _userService.registerupdateCompany({
         'email': email,
         'password': hashedPassword,
-        'first_name': firstName,
+        'name':companyName,
         'last_name': lastName,
         'company_id': companyid,
       });

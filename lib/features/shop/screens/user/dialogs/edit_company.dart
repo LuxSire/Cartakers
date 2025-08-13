@@ -21,6 +21,13 @@ class EditCompanyDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<CompanyController>();
+    final u_controller = Get.find<UserController>();
+    controller.resetFields();
+
+
+
+    //  controller.loadAllBuildings();
+
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: TRoundedContainer(
@@ -39,7 +46,7 @@ class EditCompanyDialog extends StatelessWidget {
                   Text(
                     AppLocalization.of(
                       context,
-                    ).translate('company_screen.lbl_update_company'),
+                    ).translate('companies_screen.lbl_new_company'),
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   IconButton(
@@ -59,11 +66,11 @@ class EditCompanyDialog extends StatelessWidget {
                       decoration: InputDecoration(
                         hintText: AppLocalization.of(
                           context,
-                        ).translate('register_screen.lbl_first_name'),
+                        ).translate('companies_screen.lbl_name'),
                         label: Text(
                           AppLocalization.of(
                             context,
-                          ).translate('register_screen.lbl_first_name'),
+                          ).translate('companies_screen.lbl_name'),
                         ),
                         prefixIcon: Icon(Iconsax.user),
                       ),
@@ -71,32 +78,127 @@ class EditCompanyDialog extends StatelessWidget {
                           (value) => TValidator.validateEmptyText(
                             AppLocalization.of(
                               context,
-                            ).translate('register_screen.lbl_first_name'),
+                            ).translate('companies_screen.lbl_name'),
                             value,
                           ),
                     ),
                   ),
                   const SizedBox(width: TSizes.spaceBtwInputFields),
-                  // Last Name
+                  
                 ],
               ),
 
+               const SizedBox(height: TSizes.spaceBtwInputFields),
+              /// Phone Number
+              TextFormField(
+                controller: controller.phoneController,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Iconsax.call),
+                  labelText: AppLocalization.of(
+                    context,
+                  ).translate('register_screen.lbl_phone_no'),
+                ),
+                validator: (value) => TValidator.validateEmptyText(
+                  AppLocalization.of(context).translate('register_screen.lbl_phone_no'),
+                  value,
+                ),
+              ),
+
+              const SizedBox(height: TSizes.spaceBtwInputFields),
+
               /// Email
               TextFormField(
-                readOnly: true,
-
                 controller: controller.emailController,
                 validator: TValidator.validateEmail,
 
                 decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.grey.withOpacity(0.1),
                   prefixIcon: Icon(Iconsax.direct_right),
                   labelText: AppLocalization.of(
                     context,
-                  ).translate('register_screen.lbl_email'),
+                  ).translate('tab_users_screen.lbl_email'),
                 ),
               ),
+
+              const SizedBox(height: TSizes.spaceBtwInputFields),
+
+              /// Token
+              TextFormField(
+                controller: controller.cityController,
+             
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Iconsax.key),
+                  labelText:  'City',
+                ),
+              ),
+                   const SizedBox(height: TSizes.spaceBtwInputFields),
+              TextFormField(
+                controller: controller.countryController,
+
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Iconsax.key),
+                  labelText:  'Country',
+                ),
+              ),
+              Obx(() {
+                // Only allow value if present in the list or if 0
+                final allowedIds = [
+                  0,
+                  ...controller.companyRolesList.map((role) => role.id),
+                ];
+                final currentValue =
+                    allowedIds.contains(controller.selectedRoleId.value)
+                        ? controller.selectedRoleId.value
+                        : 0;
+
+                return DropdownButtonHideUnderline(
+                  child: ButtonTheme(
+                    alignedDropdown: true,
+                    child: DropdownButtonFormField<int>(
+                      isExpanded: true,
+                      value: currentValue == 0 ? null : currentValue,
+                      onChanged: (value) {
+                        controller.selectedRoleId.value = value ?? 0;
+                      },
+                      validator: (value) {
+                        if (value == null || value == 0) {
+                          return AppLocalization.of(
+                            context,
+                          ).translate('tab_users_screen.lbl_role_is_required');
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        labelText: AppLocalization.of(
+                          context,
+                        ).translate('tab_users_screen.lbl_select_role'),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 14,
+                        ),
+                      ),
+                      items: [
+                        DropdownMenuItem<int>(
+                          value: 0,
+                          child: Text(
+                            AppLocalization.of(
+                              context,
+                            ).translate("tab_users_screen.lbl_select_role"),
+                          ),
+                        ),
+                        ...u_controller.userRolesList.map(
+                          (role) => DropdownMenuItem<int>(
+                            value: role.id,
+                            child: Text(role.nameTranslated!),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }),
 
               const SizedBox(height: TSizes.spaceBtwInputFields),
 
@@ -107,7 +209,7 @@ class EditCompanyDialog extends StatelessWidget {
                     : SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: controller.submitcompany,
+                        onPressed: controller.registerupdateCompany,
                         child: Text(
                           AppLocalization.of(
                             context,

@@ -20,18 +20,22 @@ import '../../../../../../utils/constants/enums.dart';
 import '../../../../../../utils/constants/sizes.dart';
 
 class CompanyRows extends DataTableSource {
-  final controller = UserController.instance;
-  final companyController = CompanyController.instance;
+  final u_controller = UserController.instance;
+  final controller = Get.find<CompanyController>();
+
   @override
   DataRow? getRow(int index) {
-    if (companyController.selectedRows.length != companyController.filteredItems.length) {
+    print('getRow called with index: $index');
+    print('filteredItems.length: ${controller.filteredItems.length}');
+    print('selectedRows.length: ${controller.selectedRows.length}');
+    if (controller.selectedRows.length != controller.filteredItems.length) {
       print(
-        "selectedRows.length (${companyController.selectedRows.length}) != filteredItems.length (${companyController.filteredItems.length})",
+        "selectedRows.length (${controller.selectedRows.length}) != filteredItems.length (${controller.filteredItems.length})",
       );
       return null;
     }
 
-    var company = companyController.filteredcompanies[index];
+    var company = controller.filteredItems[index];
     return DataRow2(
       onTap: () async {
         final companyId = company.id.toString();
@@ -43,7 +47,7 @@ class CompanyRows extends DataTableSource {
         // Fetch the company BEFORE opening the dialog
         await controller.fetchCompanyDetailsById(int.parse(companyId));
 
-        controller.loadAllObjects();
+        
 
         // await showDialog(
         //   context: Get.context!,
@@ -61,12 +65,12 @@ class CompanyRows extends DataTableSource {
         if (updatedCompany != null) {
           // Update the user in the filteredItems list
 
-          final index = controller.filteredcompanies.indexWhere(
+          final index = controller.filteredItems.indexWhere(
             (u) => u.id == updatedCompany.id,
           );
           if (index != -1) {
-            controller.filteredcompanies[index] = updatedCompany;
-            controller.filteredcompanies.refresh();
+            controller.filteredItems[index] = updatedCompany;
+            controller.filteredItems.refresh();
 
             controller.refreshData();
           }
@@ -113,7 +117,7 @@ class CompanyRows extends DataTableSource {
           ),
         ),
         DataCell(Text(company.email!)),
-        DataCell(Text(company.phoneNumber.toString())),
+        DataCell(Text(company.phone.toString())),
        
 
         DataCell(
@@ -153,7 +157,7 @@ class CompanyRows extends DataTableSource {
               //controller.resetUserDetails();
 
               // Fetch the user BEFORE opening the dialog
-              await controller.fetchCompanyDetailsById(int.parse(userId));
+             
 
               controller.loadAllObjects();
              // controller.loadAllUserRoles();
@@ -162,7 +166,8 @@ class CompanyRows extends DataTableSource {
               //   context: Get.context!,
               //   builder: (context) => EditUserDialog(showExtraFields: true),
               // );
-
+              controller.companyModel.value = company; // or whatever Rx<CompanyModel> you use
+            await controller.fetchCompanyDetailsById(int.parse(userId));
               final updatedCompany = await showDialog<CompanyModel>(
                 context: Get.context!,
                 barrierDismissible: false,
@@ -180,8 +185,8 @@ class CompanyRows extends DataTableSource {
                 // Update the user in the filteredItems list
 
                 if (index != -1) {
-                  controller.filteredcompanies[index] = updatedCompany;
-                  controller.filteredcompanies.refresh();
+                  controller.filteredItems[index] = updatedCompany;
+                  controller.filteredItems.refresh();
 
                   controller.refreshData();
                 }
@@ -199,9 +204,9 @@ class CompanyRows extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => companyController.filteredcompanies.length;
+  int get rowCount => controller.filteredItems.length;
 
   @override
   int get selectedRowCount =>
-      companyController.selectedRows.where((selected) => selected).length;
+      controller.selectedRows.where((selected) => selected).length;
 }

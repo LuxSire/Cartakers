@@ -6,6 +6,7 @@ import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/common/widgets/chips/rounded_choice_chips.dart';
 import 'package:xm_frontend/common/widgets/images/image_uploader.dart';
 import 'package:xm_frontend/features/personalization/controllers/company_controller.dart';
+import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
 import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 //import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
@@ -17,20 +18,35 @@ import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../utils/constants/sizes.dart';
 import '../../../../../../utils/validators/validation.dart';
 
-class EditCompanyDialog extends StatelessWidget {
+class EditCompanyDialog extends StatefulWidget {
+  final bool showExtraFields;
   const EditCompanyDialog({super.key, required this.showExtraFields});
 
-  final bool showExtraFields;
+  @override
+  State<EditCompanyDialog> createState() => _EditCompanyDialogState();
+}
+
+class _EditCompanyDialogState extends State<EditCompanyDialog> {
+  late final CompanyController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = Get.find<CompanyController>();
+    final company = controller.companyRetrived.value;
+    controller.nameController.text = company.name ?? '';
+    controller.emailController.text = company.email ?? '';
+    controller.phoneController.text = company.phone ?? '';
+    controller.cityController.text = company.city ?? '';
+    controller.countryController.text = company.country ?? '';
+    controller.selectedRoleId.value =  company.roleId ?? 0;
+  }
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<CompanyController>();
-    controller.emailController.text = controller.company.value.email ?? '';
-    controller.nameController.text = controller.company.value.name ?? '';
-    controller.displayNameController.text =
-        controller.company.value.displayName ?? '';
-
-        
+    final u_controller = Get.find<UserController>();
+   
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: TRoundedContainer(
@@ -78,139 +94,166 @@ class EditCompanyDialog extends StatelessWidget {
 
               const SizedBox(height: TSizes.spaceBtwSections),
 
-              // Name
+              Row(
+                children: [
+                  // First Name
+                  Expanded(
+                    child: TextFormField(
+                      controller: controller.nameController,
+                      decoration: InputDecoration(
+                        hintText: AppLocalization.of(
+                          context,
+                        ).translate('companies_screen.lbl_name'),
+                        label: Text(
+                          AppLocalization.of(
+                            context,
+                          ).translate('companies_screen.lbl_name'),
+                        ),
+                        prefixIcon: Icon(Iconsax.user),
+                      ),
+                      validator:
+                          (value) => TValidator.validateEmptyText(
+                            AppLocalization.of(
+                              context,
+                            ).translate('companies_screen.lbl_name'),
+                            value,
+                          ),
+                    ),
+                  ),
+                  const SizedBox(width: TSizes.spaceBtwInputFields),
+                  
+                ],
+              ),
+
+               const SizedBox(height: TSizes.spaceBtwInputFields),
+              /// Phone Number
               TextFormField(
-                controller: controller.nameController,
+                controller: controller.phoneController,
                 decoration: InputDecoration(
-                  hintText: AppLocalization.of(context).translate('register_screen.lbl_first_name'),
-                  label: Text(AppLocalization.of(context).translate('register_screen.lbl_first_name')),
-                  prefixIcon: Icon(Iconsax.user),
+                  prefixIcon: Icon(Iconsax.call),
+                  labelText: AppLocalization.of(
+                    context,
+                  ).translate('register_screen.lbl_phone_no'),
                 ),
                 validator: (value) => TValidator.validateEmptyText(
-                  AppLocalization.of(context).translate('register_screen.lbl_first_name'),
+                  AppLocalization.of(context).translate('register_screen.lbl_phone_no'),
                   value,
                 ),
               ),
 
               const SizedBox(height: TSizes.spaceBtwInputFields),
 
-              // Display Name
+              /// Email
               TextFormField(
-                controller: controller.displayNameController,
-                decoration: InputDecoration(
-                  hintText: AppLocalization.of(context).translate('register_screen.lbl_display_name'),
-                  label: Text(AppLocalization.of(context).translate('register_screen.lbl_display_name')),
-                  prefixIcon: Icon(Iconsax.user),
-                ),
-                validator: (value) => TValidator.validateEmptyText(
-                  AppLocalization.of(context).translate('register_screen.lbl_display_name'),
-                  value,
-                ),
-              ),
-
-              const SizedBox(height: TSizes.spaceBtwInputFields),
-
-              // Email
-              TextFormField(
-                readOnly: true,
                 controller: controller.emailController,
                 validator: TValidator.validateEmail,
+
                 decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.grey.withOpacity(0.1),
                   prefixIcon: Icon(Iconsax.direct_right),
-                  labelText: AppLocalization.of(context).translate('register_screen.lbl_email'),
+                  labelText: AppLocalization.of(
+                    context,
+                  ).translate('tab_users_screen.lbl_email'),
                 ),
               ),
 
               const SizedBox(height: TSizes.spaceBtwInputFields),
 
-              // Role selection (if admin)
-              if (controller.company.value.roleExtId == 1) ...[
-                Obx(() {
-                  final allowedIds = [0, ...controller.companyRolesList.map((role) => role.id)];
-                  final currentValue = allowedIds.contains(controller.selectedRoleId.value)
-                      ? controller.selectedRoleId.value
-                      : 0;
-                  return DropdownButtonHideUnderline(
-                    child: ButtonTheme(
-                      alignedDropdown: true,
-                      child: DropdownButtonFormField<int>(
-                        isExpanded: true,
-                        value: currentValue == 0 ? null : currentValue,
-                        onChanged: (value) {
-                          controller.selectedRoleId.value = value ?? 0;
-                        },
-                        validator: (value) {
-                          if (value == null || value == 0) {
-                            return AppLocalization.of(context).translate('tab_users_screen.lbl_role_is_required');
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          labelText: AppLocalization.of(context).translate('tab_users_screen.lbl_select_role'),
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+              /// Token
+              TextFormField(
+                controller: controller.cityController,
+             
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Iconsax.key),
+                  labelText:  'City',
+                ),
+              ),
+                   const SizedBox(height: TSizes.spaceBtwInputFields),
+              TextFormField(
+                controller: controller.countryController,
+
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Iconsax.key),
+                  labelText:  'Country',
+                ),
+              ),
+              Obx(() {
+                // Only allow value if present in the list or if 0
+                final allowedIds = [
+                  0,
+                  ...controller.companyRolesList.map((role) => role.id),
+                ];
+                final currentValue =
+                    allowedIds.contains(controller.selectedRoleId.value)
+                        ? controller.selectedRoleId.value
+                        : 0;
+
+                return DropdownButtonHideUnderline(
+                  child: ButtonTheme(
+                    alignedDropdown: true,
+                    child: DropdownButtonFormField<int>(
+                      isExpanded: true,
+                      value: currentValue == 0 ? null : currentValue,
+                      onChanged: (value) {
+                        controller.selectedRoleId.value = value ?? 0;
+                      },
+                      validator: (value) {
+                        if (value == null || value == 0) {
+                          return AppLocalization.of(
+                            context,
+                          ).translate('tab_users_screen.lbl_role_is_required');
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        labelText: AppLocalization.of(
+                          context,
+                        ).translate('tab_users_screen.lbl_select_role'),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0),
                         ),
-                        items: [
-                          DropdownMenuItem<int>(
-                            value: 0,
-                            child: Text(AppLocalization.of(context).translate("tab_users_screen.lbl_select_role")),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 14,
+                        ),
+                      ),
+                      items: [
+                        DropdownMenuItem<int>(
+                          value: 0,
+                          child: Text(
+                            AppLocalization.of(
+                              context,
+                            ).translate("tab_users_screen.lbl_select_role"),
                           ),
-                          ...controller.companyRolesList.map((role) => DropdownMenuItem<int>(
+                        ),
+                        ...u_controller.userRolesList.map(
+                          (role) => DropdownMenuItem<int>(
                             value: role.id,
                             child: Text(role.nameTranslated!),
-                          )),
-                        ],
-                      ),
-                    ),
-                  );
-                }),
-
-                const SizedBox(height: TSizes.spaceBtwInputFields),
-
-                Obx(() => Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      AppLocalization.of(context).translate('tab_users_screen.lbl_object_permission'),
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    const SizedBox(height: 8),
-                    Wrap(
-                      spacing: TSizes.sm,
-                      runSpacing: TSizes.sm,
-                      children: controller.objectsList.map((object) {
-                        final selected = controller.selectedObjectIds.contains(object.id!);
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: TSizes.sm),
-                          child: TChoiceChip(
-                            text: object.name ?? '',
-                            selected: selected,
-                            onSelected: (_) => controller.toggleObject(object.id!),
                           ),
-                        );
-                      }).toList(),
+                        ),
+                      ],
                     ),
-                  ],
-                )),
-              ],
+                  ),
+                );
+              }),
 
               const SizedBox(height: TSizes.spaceBtwInputFields),
 
-              // Submit Button
+              /// Submit Button
               Obx(() {
                 return controller.loading.value
                     ? const Center(child: CircularProgressIndicator())
                     : SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            // controller.updateCompanyInformation();
-                          },
-                          child: Text(AppLocalization.of(context).translate('general_msgs.msg_update')),
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: controller.registerupdateCompany,
+                        child: Text(
+                          AppLocalization.of(
+                            context,
+                          ).translate('general_msgs.msg_update'),
                         ),
-                      );
+                      ),
+                    );
               }),
             ],
           ),

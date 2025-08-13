@@ -42,7 +42,8 @@ class CompanyController extends TBaseController<CompanyModel  > {
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
     final emailController = TextEditingController();
-
+    final cityController = TextEditingController();
+      final countryController = TextEditingController();
     final tokenController = TextEditingController();
   final searchController = TextEditingController();
 
@@ -77,7 +78,7 @@ class CompanyController extends TBaseController<CompanyModel  > {
   RxInt selectedStatusFilterId = (-1).obs; // 0 = All
 
   RxList<CompanyModel> allcompanies = <CompanyModel>[].obs;
-  RxList<CompanyModel> filteredcompanies = <CompanyModel>[].obs;
+
 
   @override
   void onInit() {
@@ -85,9 +86,9 @@ class CompanyController extends TBaseController<CompanyModel  > {
 
     // Get companys
     loadcompanies();
-    ever(filteredcompanies, (_) {
-      selectedRows.value = List<bool>.filled(filteredcompanies.length, false);
-    });
+      ever(filteredItems, (_) {
+        selectedRows.value = List<bool>.filled(filteredItems.length, false);
+          });
     //  fetchcompanysAndTranslateFields();
   }
 
@@ -96,6 +97,8 @@ class CompanyController extends TBaseController<CompanyModel  > {
     emailController.clear();
     phoneController.clear();
     emailController.clear();
+    cityController.clear();
+    countryController.clear();
     selectedObjectId.value = 0; // Reset selected object ID
 
   }
@@ -124,7 +127,7 @@ class CompanyController extends TBaseController<CompanyModel  > {
       company.update((val) => val?.translatedRoleNameExt = translatedRoleName);
 
       nameController.text = company.value.name;
-      displayNameController.text = company.value.displayName;
+
 
       loading.value = false;
 
@@ -195,7 +198,7 @@ class CompanyController extends TBaseController<CompanyModel  > {
             val?.id = company.id;
             val?.name = company.name;
    
-            val?.phoneNumber = company.phoneNumber;
+            val?.phone = company.phone;
             val?.displayName = company.displayName;
             val?.profilePicture = company.profilePicture;
             val?.email = company.email;
@@ -209,13 +212,15 @@ class CompanyController extends TBaseController<CompanyModel  > {
             val?.status = company.status;
             val?.statusId = company.statusId;
             val?.roleExtId = company.roleExtId;
+            val?.city=company.city;
+            val?.country = company.country;
           });
         }
       }
 
       // Populate form fields safely (empty string fallback)
       nameController.text = companyRetrived.value.name ?? '';
-      phoneController.text = companyRetrived.value.phoneNumber ?? '';
+      phoneController.text = companyRetrived.value.phone ?? '';
       displayNameController.text = companyRetrived.value.displayName ?? '';
       companyRetrivedProfileUrl.value = companyRetrived.value.profilePicture ?? '';
       emailController.text = companyRetrived.value.email ?? '';
@@ -253,6 +258,8 @@ class CompanyController extends TBaseController<CompanyModel  > {
     hasImageChanged.value = false;
     selectedObjectIds.clear();
     selectedRoleId.value = 0;
+    cityController.clear();
+    countryController.clear();
   }
 
   Map<int, String> getTranslatedcompanyStatuses() {
@@ -342,7 +349,7 @@ class CompanyController extends TBaseController<CompanyModel  > {
     // });
 
     final results =
-        allItems.where((item) {
+        allcompanies.where((item) {
           // 1. Search query: allow empty (show all)
           final matchesSearch =
               query.isEmpty || containsSearchQuery(item, query);
@@ -379,7 +386,9 @@ class CompanyController extends TBaseController<CompanyModel  > {
         }).toList();
 
     filteredItems.assignAll(results);
-  }
+  selectedRows.value = List<bool>.filled(filteredItems.length, false); // <-- Add this line
+}
+
 
   bool _getStatusFilter(int? status) {
     return selectedStatusId.value == -1 || status == selectedStatusId.value;
@@ -412,7 +421,7 @@ class CompanyController extends TBaseController<CompanyModel  > {
     endDate.value = null;
   }
 
-  void updatecompanyInformation() async {
+  void registerupdateCompany() async {
     try {
       loading.value = true;
       // Check Internet Connectivity
@@ -440,21 +449,26 @@ class CompanyController extends TBaseController<CompanyModel  > {
         //  TFullScreenLoader.stopLoading();
         return;
       }
-      company.value.name = nameController.text.trim();
-      company.value.displayName = displayNameController.text.trim();
       company.value.profilePicture = companyRetrivedProfileUrl.value;
       //company.value.roleExtId = selectedRoleId.value;
 
       // debugPrint('company Details: ${company.value.toJson()}');
 
-      //final iscompanyUpdated = await companyRepository.quickCompanyUpdate(company.value);
+      final iscompanyUpdated = await companyRepository.registerupdateCompany(company.value);
 
       company.value = savedcompany;
 
       company.refresh();
 
       loading.value = false;
-      
+      TLoaders.successSnackBar(
+          title: AppLocalization.of(
+            Get.context!,
+          ).translate('general_msgs.msg_info'),
+          message: AppLocalization.of(
+            Get.context!,
+          ).translate('general_msgs.msg_data_submitted'),
+        );
 
     } catch (e) {
       loading.value = false;
@@ -467,10 +481,73 @@ class CompanyController extends TBaseController<CompanyModel  > {
     }
   }
 
-  Future<void> submitcompany() async {
-    
+  Future<void> submitCompany() async {
+    try {
+      if (!formKey.currentState!.validate()) return;
 
+      loading.value = true;
+
+      var statusCode = 0; // 0 means exists, 1 created new tenant , 2 failed
+
+      var roleId = 2; // default for company users
+
+      final response = await CompanyRepository.instance.createNewCompany(
+        nameController.text,
+        emailController.text,
+        phoneController.text,
+        cityController.text,
+        countryController.text,
+        selectedRoleId.value
+      );
+
+      statusCode = response['status'];
+
+      loading.value = false;
+      
+      
+      Get.back(result: true); //  Return `true` to indicate user was created
+
+      if (statusCode == 1) {  
+          await loadcompanies(); // <-- This will fetch the updated list and sync selectedRows
+
+        TLoaders.successSnackBar(
+          title: AppLocalization.of(
+            Get.context!,
+          ).translate('general_msgs.msg_info'),
+          message: AppLocalization.of(
+            Get.context!,
+          ).translate('general_msgs.msg_data_submitted'),
+        );
+      } else if (statusCode == 0) {
+        TLoaders.errorSnackBar(
+          title: AppLocalization.of(
+            Get.context!,
+          ).translate('general_msgs.msg_error'),
+          message: AppLocalization.of(
+            Get.context!,
+          ).translate('general_msgs.msg_data_exists'),
+        );
+      } else {
+        TLoaders.errorSnackBar(
+          title: AppLocalization.of(
+            Get.context!,
+          ).translate('general_msgs.msg_error'),
+          message: AppLocalization.of(
+            Get.context!,
+          ).translate('general_msgs.msg_data_failed_to_add'),
+        );
+      }
+    } catch (e) {
+      loading.value = false;
+      TLoaders.errorSnackBar(
+        title: AppLocalization.of(
+          Get.context!,
+        ).translate('general_msgs.msg_error'),
+        message: e.toString(),
+      );
+    }
   }
+
   void sortByPropertyName<T>(
     int sortColumnIndex,
     bool ascending,
@@ -490,13 +567,13 @@ class CompanyController extends TBaseController<CompanyModel  > {
         company.translatedStatus = await TranslationApi.smartTranslate(
           company.status ?? '',
         );
-
       }
-      
       allcompanies.assignAll(companies);
-      filteredcompanies.assignAll(companies);
+      filteredItems.assignAll(companies);
+      // Ensure selectedRows matches filteredItems length
+      selectedRows.value = List<bool>.filled(filteredItems.length, false);
     } catch (e) {
-      TLoaders.errorSnackBar(title: "Error", message: "Failed to load companys.");
+      TLoaders.errorSnackBar(title: "Error", message: "Failed to load companies.");
     } finally {
       loading.value = false;
     }
@@ -531,7 +608,7 @@ class CompanyController extends TBaseController<CompanyModel  > {
     sortByProperty(
       sortColumnIndex,
       ascending,
-      (CompanyModel b) => b.phoneNumber.toString().toLowerCase(),
+      (CompanyModel b) => b.phone.toString().toLowerCase(),
     );
   }
 

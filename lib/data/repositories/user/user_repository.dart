@@ -308,9 +308,9 @@ class UserRepository extends GetxController {
       return 2;
     }
   }
-  Future<int> quickCompanyInsert(Map<String, dynamic> registrationData) async {
+  Future<int> registerupdateCompany(Map<String, dynamic> registrationData) async {
     try {
-      final response = await _userService.registerCompany(registrationData);
+      final response = await _userService.registerupdateCompany(registrationData);
       debugPrint('Response from Quickregister Company: $response');
       return response['status'];
     } catch (e) {

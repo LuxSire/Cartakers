@@ -67,29 +67,24 @@ abstract class TBaseController<T> extends GetxController {
     }
   }
 
-  Future<void> refreshData() async {
-    try {
-      isLoading.value = true;
-
-      final fetchedItems = await fetchItems(); // Force fresh fetch
-      allItems.assignAll(fetchedItems);
-      filteredItems.assignAll(fetchedItems);
-      selectedRows.assignAll(
-        List.generate(fetchedItems.length, (index) => false),
-      );
-    } catch (e) {
-      // Optionally handle
-    } finally {
-      isLoading.value = false;
-    }
+Future<void> refreshData() async {
+  try {
+    isLoading.value = true;
+    final fetchedItems = await fetchItems();
+    allItems.assignAll(fetchedItems);
+    filteredItems.assignAll(fetchedItems);
+    selectedRows.value = List<bool>.filled(fetchedItems.length, false); // Use fetchedItems.length
+  } finally {
+    isLoading.value = false;
   }
+}
 
   /// Common method for searching based on a query
   void searchQuery(String query) {
     filteredItems.assignAll(
       allItems.where((item) => containsSearchQuery(item, query)),
     );
-
+    selectedRows.assignAll(List.generate(filteredItems.length, (index) => false));
     // Notify listeners about the change
     update();
   }
@@ -109,7 +104,7 @@ abstract class TBaseController<T> extends GetxController {
       }
     });
     this.sortColumnIndex.value = sortColumnIndex;
-
+    selectedRows.assignAll(List.generate(filteredItems.length, (index) => false));
     update();
   }
 

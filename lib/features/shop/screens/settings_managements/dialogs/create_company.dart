@@ -4,6 +4,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/common/widgets/chips/rounded_choice_chips.dart';
+import 'package:xm_frontend/features/personalization/controllers/company_controller.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
 import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
@@ -19,13 +20,10 @@ class CreateCompanyDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<UserController>();
-    controller.resetUserDetails();
+    final controller = Get.find<CompanyController>();
+    final u_controller = Get.find<UserController>();
+    controller.resetFields();
 
-    controller.loadAllObjects();
-    controller.loadAllUserRoles();
-  // Debug print user roles
-    debugPrint('User roles loaded: ${controller.userRolesList.map((r) => '${r.id}:${r.nameTranslated}').toList()}');
 
 
     //  controller.loadAllBuildings();
@@ -64,7 +62,7 @@ class CreateCompanyDialog extends StatelessWidget {
                   // First Name
                   Expanded(
                     child: TextFormField(
-                      controller: controller.firstNameController,
+                      controller: controller.nameController,
                       decoration: InputDecoration(
                         hintText: AppLocalization.of(
                           context,
@@ -90,7 +88,7 @@ class CreateCompanyDialog extends StatelessWidget {
                 ],
               ),
 
-
+               const SizedBox(height: TSizes.spaceBtwInputFields),
               /// Phone Number
               TextFormField(
                 controller: controller.phoneController,
@@ -125,18 +123,27 @@ class CreateCompanyDialog extends StatelessWidget {
 
               /// Token
               TextFormField(
-                controller: controller.tokenController,
+                controller: controller.cityController,
              
                 decoration: InputDecoration(
                   prefixIcon: Icon(Iconsax.key),
-                  labelText:  'Token',
+                  labelText:  'City',
+                ),
+              ),
+                   const SizedBox(height: TSizes.spaceBtwInputFields),
+              TextFormField(
+                controller: controller.countryController,
+
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Iconsax.key),
+                  labelText:  'Country',
                 ),
               ),
               Obx(() {
                 // Only allow value if present in the list or if 0
                 final allowedIds = [
                   0,
-                  ...controller.userRolesList.map((role) => role.id),
+                  ...controller.companyRolesList.map((role) => role.id),
                 ];
                 final currentValue =
                     allowedIds.contains(controller.selectedRoleId.value)
@@ -181,7 +188,7 @@ class CreateCompanyDialog extends StatelessWidget {
                             ).translate("tab_users_screen.lbl_select_role"),
                           ),
                         ),
-                        ...controller.userRolesList.map(
+                        ...u_controller.userRolesList.map(
                           (role) => DropdownMenuItem<int>(
                             value: role.id,
                             child: Text(role.nameTranslated!),
@@ -202,7 +209,7 @@ class CreateCompanyDialog extends StatelessWidget {
                     : SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: controller.submitUser,
+                        onPressed: () => controller.submitCompany(),
                         child: Text(
                           AppLocalization.of(
                             context,

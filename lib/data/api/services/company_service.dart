@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xm_frontend/features/personalization/models/company_model.dart';
 
 import 'base_service.dart';
 import '../api_endpoints.dart';
@@ -146,34 +147,62 @@ class CompanyService extends BaseService {
     }
   }
 
-
-  Future<Map<String, dynamic>> registerCompany(
-        String firstName,
-    String lastName,
+  Future<Map<String, dynamic>> createQuickNewCompany(
+    String name,
     String email,
     String phone_number,
-    int roleId,
-    int companyId,
-    {String token = ''}
+    String city,
+    String country,
+    int roleId
   ) async {
     try {
-      final response = await post(ApiEndpoints.registerCompany, {
-        'first_name': firstName,
-        'last_name': lastName,
+      final response = await post(ApiEndpoints.createQuickNewCompany, {
+        'name': name,
         'email': email,
         'phone_number': phone_number,
+        'city': city,
+        'country': country,
         'role_id': roleId ?? 2,
-        'company_id': companyId ?? 1,
-        'token': token,
       });
 
       return response;
     } catch (error) {
-      debugPrint("Error in quickCreateNewUser: $error");
-      return {"success": false, "message": "Failed to create new user"};
+      debugPrint("Error in quickCreateNewCompany: $error");
+      return {"success": false, "message": "Failed to create new company"};
     }
   }
 
+   
+
+
+  Future<Map<String, dynamic>> registerupdateCompany(
+    CompanyModel registrationData,
+  ) async {
+    try {
+      final response = await post(ApiEndpoints.registerupdateCompany, {
+        'company': registrationData.toJson(),
+      });
+
+      // debugPrint('User Service: registerTenant: $response');
+
+      if (response is Map<String, dynamic> && response.containsKey('success')) {
+        if (response['success'] == true) {
+          // Return data only if it's present
+          if (response.containsKey('data') && response['data'] != null) {
+            return response['data'];
+          } else {
+            return {}; // Return an empty object if no data is provided
+          }
+        } else {
+          throw Exception(response['message'] ?? 'Failed to register company');
+        }
+      }
+
+      throw Exception('Unexpected response format');
+    } catch (error) {
+      throw Exception('Failed to register company: $error');
+    }
+  }
   Future<Map<String, dynamic>> deleteCompanyById(int companyId  ) async {
     try {
       debugPrint("Deleting company with ID: $companyId");

@@ -378,8 +378,10 @@ class CommunicationController extends TBaseController<MessageModel> {
               matchesStartDate &&
               matchesEndDate;
         }).toList();
-
+  
     filteredItems.assignAll(results);
+  selectedRows.value = List<bool>.filled(filteredItems.length, false); // <-- Add 
+
   }
 
   bool _getStatusFilter(int? status) {

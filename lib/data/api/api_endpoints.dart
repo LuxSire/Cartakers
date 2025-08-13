@@ -139,7 +139,7 @@ class ApiEndpoints {
   ///////////// Agency Endpoints //////////////
   static const String validateCompanyInvitationToken =
       'api/users/validate-company-invitation-token';
-  static const String registerCompany = 'api/users/register-company';
+  static const String registerupdateCompany = 'api/users/register-update-company';
   static const String getCompanyByEmail = 'api/users/get-company-by-email';
   static const String getCompanyById = 'api/users/get-company-by-id';
   static const String getObjectsByCompanyId =

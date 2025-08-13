@@ -80,6 +80,7 @@ class UserController extends TBaseController<UserModel> {
     AuthenticationRepository.instance.refreshCurrentUserDetails();
     // Get users
     loadUsers();
+    loadAllUserRoles();
     ever(filteredUsers, (_) {
       selectedRows.value = List<bool>.filled(filteredUsers.length, false);
     });
@@ -392,6 +393,8 @@ class UserController extends TBaseController<UserModel> {
         }).toList();
 
     filteredItems.assignAll(results);
+
+  selectedRows.value = List<bool>.filled(filteredItems.length, false); // <-- Add 
   }
 
   bool _getStatusFilter(int? status) {

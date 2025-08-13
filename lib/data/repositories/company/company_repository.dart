@@ -46,23 +46,50 @@ class CompanyRepository extends GetxController {
     }
   }
   Future<Map<String, dynamic>> createNewCompany(
-    String firstName,
-    String lastName,
+    String Name,
+    String email,
+    String phoneNumber, 
+    String city,
+    String country,
+    int roleId
+
+  ) async {
+    try {
+      final response = await _companyService.createQuickNewCompany(
+        Name,
+        email,
+        phoneNumber,
+        city,
+        country,
+        roleId
+        
+      );
+
+      return response;
+    } catch (e) {
+      return {
+        'success': false,
+        'status': 2,
+        'message': 'Error creating new company: $e',
+      };
+    }
+  } 
+  
+/*
+  Future<Map<String, dynamic>> createNewCompany(
+    String Name,
     String email,
     String phoneNumber, 
     int roleId,
-    int companyId,
-    {String token = ''}
+    int companyId
   ) async {
     try {
       final response = await _companyService.registerCompany(
-        firstName,
-        lastName,
+        Name,
         email,
         phoneNumber,  
         roleId,
-        companyId,
-        token: token,
+        companyId
       );
 
       // debugPrint('Response from createNewUser: $response');
@@ -75,7 +102,7 @@ class CompanyRepository extends GetxController {
       };
     }
   }
-
+*/
 
     /// Function to fetch user details based on user ID.
   Future<CompanyModel> fetchCompanyDetails() async {
@@ -101,6 +128,15 @@ class CompanyRepository extends GetxController {
       return CompanyModel.fromJson(userMap);
     } else {
       return CompanyModel.empty();
+    }
+  }
+  Future<int> registerupdateCompany(CompanyModel companyModel) async {
+    try {
+      final response = await _companyService.registerupdateCompany(companyModel);
+      debugPrint('Response from register Company: $response');
+      return response['status'];
+    } catch (e) {
+      return 2;
     }
   }
 

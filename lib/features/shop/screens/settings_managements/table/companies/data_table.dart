@@ -17,14 +17,14 @@ class CompaniesTable extends StatelessWidget {
     final controller = Get.find<CompanyController>();
 
     // add post frame callback to ensure data is loaded after first build
-    //  WidgetsBinding.instance.addPostFrameCallback((_) {
-    if (controller.filteredItems.isEmpty) {
-      controller.refreshData();
-    }
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (controller.filteredItems.isEmpty) {
+        controller.refreshData();
+      }
+    });
 
     return Obx(() {
-      // Force Obx update when tenant list or selection changes
+      // Force Obx update when company list or selection changes
       Visibility(
         visible: false,
         child: Text(controller.filteredItems.length.toString()),
@@ -33,7 +33,13 @@ class CompaniesTable extends StatelessWidget {
         visible: false,
         child: Text(controller.selectedRows.length.toString()),
       );
+       print('Building CompaniesTable: filteredItems.length=${controller.filteredItems.length}, selectedRows.length=${controller.selectedRows.length}');
 
+  if (controller.filteredItems.length != controller.selectedRows.length) {
+    // Wait until both lists are in sync before building the table
+        print('Lengths do not match, showing spinner');
+    return const Center(child: CircularProgressIndicator());
+  }
       return TPaginatedDataTable(
         minWidth: 1100, // Match with BuildingTable or use 700 if more compact
         sortAscending: controller.sortAscending.value,
@@ -72,12 +78,12 @@ class CompaniesTable extends StatelessWidget {
 DataColumn2(
   size: ColumnSize.M,
   label: Text(
-    AppLocalization.of(context).translate('tab_users_screen.lbl_phone'),
+    AppLocalization.of(context).translate('tab_users_screen.lbl_phone_no'),
   ),
   onSort: (columnIndex, ascending) => controller.sortByPropertyName(
     columnIndex,
     ascending,
-    (u) => u.phoneNumber.toString(),
+    (u) => u.phone.toString(),
   ),
 ),
 DataColumn2(

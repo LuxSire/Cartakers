@@ -413,6 +413,8 @@ class UserController extends TBaseController<UserModel> {
         }).toList();
 
     filteredItems.assignAll(results);
+
+  selectedRows.value = List<bool>.filled(filteredItems.length, false); // <-- Add 
   }
 
   void filterItemsInvitationWithSearch([String query = '']) {

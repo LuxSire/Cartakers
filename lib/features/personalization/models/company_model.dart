@@ -9,10 +9,11 @@ class CompanyModel {
   String displayName;
   String userName;
   String email;
-  String phoneNumber;
+  String phone;
   String profilePicture;
-  String roleId;
+  int roleId;
   String countryCode; // Added country code
+  String country;
   String roleName;
   String lang;
   int companyId;
@@ -28,6 +29,7 @@ class CompanyModel {
   int? contractStatus;
   int? zoneId; // zone id for the tenant which comes from the contract unit
   String? token; // Text representation of contract status
+  String? city;
   String? roleNameExt;
   String? status; // status of user, invited, active, disabled
   List<Map<String, dynamic>> objectPermissions = const []; // object permission for the user
@@ -52,10 +54,10 @@ class CompanyModel {
     required this.email,
     this.name = '',
     this.userName = '',
-    this.phoneNumber = '',
+    this.phone = '',
     this.profilePicture = '',
     this.displayName = '',
-    this.roleId = '',
+    this.roleId = 1,
     this.roleName = '',
     this.lang = '',
     this.companyId = 1,
@@ -80,12 +82,14 @@ class CompanyModel {
     this.statusId,
     this.roleExtId,
     this.objectPermissionIds,
+    this.city,
+    this.country=''
   });
 
   /// Helper methods
   String get fullName => '$name';
 
-  String get formattedPhoneNo => TFormatter.formatPhoneNumber(phoneNumber);
+  String get formattedPhoneNo => TFormatter.formatPhoneNumber(phone);
 
   String get formattedDate => TFormatter.formatDate(createdAt);
 
@@ -100,13 +104,14 @@ class CompanyModel {
       'id': id,
       'email': email,
       'name': name,
-      
+      'city': city,
+      'country': country, // Added country code'
       'display_name': displayName,
       'user_name': userName,
-      'phone_number': phoneNumber,
+      'phone_number': phone,
       'profile_pic': profilePicture,
       'role_id': roleId,
-      'country_code': countryCode, // Added country code  
+      'country': country, // Added country code  
       'role_name': roleName,
       'lang': lang,
       'company_id': companyId,
@@ -140,11 +145,12 @@ class CompanyModel {
       token: json['token'] ?? '',
       email: json['email'] ?? '',
       name: json['name'] ?? '',
+      country: json['country'] ?? '',
       displayName: json['display_name'] ?? '',
       userName: json['user_name'] ?? '',
-      phoneNumber: json['phone_number']?.toString() ?? '',
+      phone: json['phone']?.toString() ?? '',
       profilePicture: json['profile_pic'] ?? '',
-      roleId: json['role_id']?.toString() ?? '',
+      roleId: json['role_id']?.toInt() ?? 0,
       roleName: json['role_name'] ?? '',
       lang: json['lang'] ?? '',
       companyId: (json['company_id'] ?? json['company']) ?? 0,  // handle both 'company' and 'company_id' fields

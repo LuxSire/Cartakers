@@ -353,6 +353,8 @@ class UserInvitationController extends TBaseController<UserModel> {
         }).toList();
 
     filteredItems.assignAll(results);
+
+  selectedRows.value = List<bool>.filled(filteredItems.length, false); // <-- Add 
   }
 
   List<Map<String, VoidCallback>> getActiveFilters() {

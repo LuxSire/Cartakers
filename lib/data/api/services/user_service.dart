@@ -108,11 +108,11 @@ class UserService extends BaseService {
     }
   }
 
-  Future<Map<String, dynamic>> registerCompany(
+  Future<Map<String, dynamic>> registerupdateCompany(
     Map<String, dynamic> registrationData,
   ) async {
     try {
-      final response = await post(ApiEndpoints.registerCompany, {
+      final response = await post(ApiEndpoints.registerupdateCompany, {
         'company': registrationData,
       });
 
