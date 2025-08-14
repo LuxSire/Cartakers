@@ -114,8 +114,8 @@ flutter:
     - assets/translations/it.json
     - assets/translations/de.json
     - assets/translations/en.json
-    - assets/.env.dev
-    - assets/.env.prod
+   # - assets/.env.dev
+   # - assets/.env.prod
     - assets/images/app_icon.png
 
   fonts: 
