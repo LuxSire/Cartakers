@@ -63,7 +63,7 @@ class ObjectTable extends StatelessWidget {
             label: Text(
               AppLocalization.of(
                 context,
-              ).translate('objects_screen.lbl_object_number'),
+              ).translate('objects_screen.lbl_city'),
             ),
           ),
           DataColumn2(
@@ -79,7 +79,7 @@ class ObjectTable extends StatelessWidget {
             label: Text(
               AppLocalization.of(
                 context,
-              ).translate('objects_screen.lbl_location'),
+              ).translate('objects_screen.lbl_country'),
             ),
           ),
           DataColumn2(
@@ -87,7 +87,7 @@ class ObjectTable extends StatelessWidget {
             label: Text(
               AppLocalization.of(
                 context,
-              ).translate('objects_screen.lbl_units'),
+              ).translate('objects_screen.lbl_type'),
             ),
           ),
           DataColumn2(
@@ -95,7 +95,7 @@ class ObjectTable extends StatelessWidget {
             label: Text(
               AppLocalization.of(
                 context,
-              ).translate('objects_screen.lbl_floors'),
+              ).translate('objects_screen.lbl_zoning'),
             ),
           ),
           DataColumn2(
@@ -103,7 +103,7 @@ class ObjectTable extends StatelessWidget {
             label: Text(
               AppLocalization.of(
                 context,
-              ).translate('objects_screen.lbl_date_created'),
+              ).translate('objects_screen.lbl_price'),
             ),
           ),
           DataColumn2(

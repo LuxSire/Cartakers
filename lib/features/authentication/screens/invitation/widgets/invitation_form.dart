@@ -28,53 +28,7 @@ class TInvitationForm extends StatelessWidget {
         child: Column(
           children: [
             /// invitation
-            TextFormField(
-              controller: controller.invitation,
-              validator:
-                  (value) => TValidator.validateEmptyText(
-                    AppLocalization.of(
-                      context,
-                    ).translate('invitation_screen.lbl_invitation_code'),
-                    value,
-                  ),
-              decoration: InputDecoration(
-                prefixIcon: Icon(Iconsax.text_block),
-                labelText: AppLocalization.of(
-                  context,
-                ).translate('invitation_screen.lbl_invitation_code'),
-              ),
-            ),
-            const SizedBox(height: TSizes.spaceBtwInputFields),
-
-            /// Already have an account
-            TextButton(
-              onPressed: () => Get.toNamed(Routes.login),
-              child: Text(
-                AppLocalization.of(
-                  context,
-                ).translate('invitation_screen.lbl_already_have_an_account'),
-              ),
-            ),
-            const SizedBox(height: TSizes.spaceBtwSections),
-
-            /// Sign In Button
-            SizedBox(
-              width: double.infinity,
-              // Un Comment this line to register admin
-              // child: ElevatedButton(onPressed: () => controller.registerAdmin(), child: const Text('Register Admin')),
-              child: ElevatedButton(
-                onPressed: () => controller.validateCode(),
-                child: Text(
-                  AppLocalization.of(
-                    context,
-                  ).translate('invitation_screen.lbl_validate'),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: TSizes.spaceBtwSections),
-
-            Align(
+                      Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 16.0),
@@ -145,6 +99,54 @@ class TInvitationForm extends StatelessWidget {
                 ),
               ),
             ),
+            /// Invitation Code
+            TextFormField(
+              controller: controller.invitation,
+              validator:
+                  (value) => TValidator.validateEmptyText(
+                    AppLocalization.of(
+                      context,
+                    ).translate('invitation_screen.lbl_invitation_code'),
+                    value,
+                  ),
+              decoration: InputDecoration(
+                prefixIcon: Icon(Iconsax.text_block),
+                labelText: AppLocalization.of(
+                  context,
+                ).translate('invitation_screen.lbl_invitation_code'),
+              ),
+            ),
+            const SizedBox(height: TSizes.spaceBtwInputFields),
+
+            /// Already have an account
+            TextButton(
+              onPressed: () => Get.toNamed(Routes.login),
+              child: Text(
+                AppLocalization.of(
+                  context,
+                ).translate('invitation_screen.lbl_already_have_an_account'),
+              ),
+            ),
+            const SizedBox(height: TSizes.spaceBtwSections),
+
+            /// Sign In Button
+            SizedBox(
+              width: double.infinity,
+              // Un Comment this line to register admin
+              // child: ElevatedButton(onPressed: () => controller.registerAdmin(), child: const Text('Register Admin')),
+              child: ElevatedButton(
+                onPressed: () => controller.validateCode(),
+                child: Text(
+                  AppLocalization.of(
+                    context,
+                  ).translate('invitation_screen.lbl_validate'),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: TSizes.spaceBtwSections),
+
+
           ],
         ),
       ),

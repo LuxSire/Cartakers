@@ -190,13 +190,13 @@ class ObjectRepository extends GetxController {
       // Assuming you already have access to the agencyId from somewhere (e.g. logged-in user)
       final companyId = UserController.instance.user.value.companyId;
 
-      if (companyId == null || companyId.isEmpty) {
+      if (companyId == null ) {
         debugPrint('Company ID not found.');
         return [];
       }
 
       final response = await _objectService.getMaintenanceServicers(
-        int.parse(companyId),
+        companyId,
       );
 
       return response.map((data) => OrganizationModel.fromJson(data)).toList();
@@ -705,7 +705,7 @@ class ObjectRepository extends GetxController {
 
     try {
       final List<Map<String, dynamic>> responseList = await _objectService
-          .getCompanyObjectsAllRequests(int.parse(companyId));
+          .getCompanyObjectsAllRequests(companyId);
 
       if (responseList.isEmpty) return [];
 
@@ -725,7 +725,7 @@ class ObjectRepository extends GetxController {
       final companyId = AuthenticationRepository.instance.currentUser!.companyId;
 
       final List<Map<String, dynamic>> responseList = await _objectService
-          .getCompanyObjectsAllBookings(int.parse(companyId));
+          .getCompanyObjectsAllBookings(companyId);
 
       if (responseList.isEmpty) return [];
 
@@ -862,13 +862,13 @@ class ObjectRepository extends GetxController {
     try {
       final companyId = UserController.instance.user.value.companyId;
 
-      if (companyId == null || companyId.isEmpty) {
+      if (companyId == null ) {
         debugPrint('Company ID not found.');
         return [];
       }
 
       final response = await _objectService.getAllCompanyAmenityCategories(
-        int.parse(companyId),
+        companyId,
       );
 
       return response.map((data) => CategoryModel.fromJson(data)).toList();
@@ -918,14 +918,16 @@ class ObjectRepository extends GetxController {
         directoryName:
             directoryName, // Set the directory path for Azure Blob Storage
       );
-
-      // final get file name
-      final fileName = path.basename(pickedFile.path ?? ''  );
-      // remove the extension
-      final fileNameWithoutExtension = fileName.substring(
-        0,
-        fileName.lastIndexOf('.'),
+      debugPrint(
+        'Document upload response: ${documentResponse.toString()}',
       );
+      // final get file name
+      final fileName = path.basename(pickedFile.path ?? '');
+      final dotIndex = fileName.lastIndexOf('.');
+      final fileNameWithoutExtension = (dotIndex != -1)
+          ? fileName.substring(0, dotIndex)
+          : fileName;
+    // fallback to full name if no extension
       // final fileExtension = fileName.substring(fileName.lastIndexOf('.'));
       final creatorId = AuthenticationRepository.instance.currentUser!.id;
       if (creatorId == null) {
@@ -936,7 +938,8 @@ class ObjectRepository extends GetxController {
       if (documentResponse['success'] == false) {
         debugPrint("Failed to upload document: ${documentResponse['message']}");
         return false;
-      } else {
+      } 
+      /*else {
         final documentData = jsonDecode(documentResponse['data']);
         final docUrl =
             documentData['url']; // Retrieve the URL of the uploaded document
@@ -945,10 +948,10 @@ class ObjectRepository extends GetxController {
           docUrl,
           fileNameWithoutExtension,
           int.parse(creatorId),
-          'agency_user',
+          'company_user',
         );
       }
-
+*/
       return true;
     } catch (e) {
       debugPrint('Error uploading document: $e');

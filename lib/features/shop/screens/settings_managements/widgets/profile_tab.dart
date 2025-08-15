@@ -113,26 +113,30 @@ class ProfileTab extends StatelessWidget {
                         ),
                       ),
                       onPressed: () async {
-                        final userId =
-                            AuthenticationRepository.instance.currentUser?.id!;
-                        final controller = Get.find<UserController>();
+                        final user =
+                            AuthenticationRepository.instance.currentUser;
+                        if (user != null) {
+                          final userId = user.id;
+                        
+                          final controller = Get.find<UserController>();
 
                         controller.resetUserDetails();
 
                         // Fetch the user BEFORE opening the dialog
                         await controller.fetchUserDetailsById(
-                          int.parse(userId!),
+                          int.parse(user.id!),
                         );
-
+                      
                         controller.loadAllObjects();
                         controller.loadAllUserRoles();
-
+                        
                         await showDialog(
                           context: context,
                           builder:
                               (context) =>
                                   EditUserDialog(showExtraFields: false),
-                        );
+                          );
+                        }
                       },
 
                       icon: const Icon(Iconsax.edit, color: TColors.primary),
@@ -186,7 +190,8 @@ class ProfileTab extends StatelessWidget {
                           ).translate('users_screen.lbl_last_name'),
                           value: user.lastName ?? '',
                         ),
-                        if (user.fullPhoneNumber?.isNotEmpty ?? false)
+                        
+                        if (user.phoneNumber?.isNotEmpty ?? false)
                           _InfoItem(
                             label: AppLocalization.of(
                               context,
@@ -199,6 +204,14 @@ class ProfileTab extends StatelessWidget {
                           ).translate('users_screen.lbl_email'),
                           value: user.email ?? '',
                         ),
+                          if (user.companyName?.isNotEmpty ?? false)
+                        _InfoItem(
+                          label: AppLocalization.of(
+                            context,
+                          ).translate('users_screen.lbl_company'),
+                          value: user.companyName ?? '',
+                        ),
+
                         if ((user.lang ?? '').isNotEmpty)
                           _InfoItem(
                             label: AppLocalization.of(context).translate(

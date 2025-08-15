@@ -16,12 +16,12 @@ class RequestsTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final agencyId = AuthenticationRepository.instance.currentUser?.companyId;
+    final companyId = AuthenticationRepository.instance.currentUser?.companyId;
 
     final controller = Get.put(
       RequestController(
         sourceType: RequestSourceType.company,
-        id: int.parse(agencyId!),
+        id: companyId,
       ),
       tag: 'company_requests',
     );

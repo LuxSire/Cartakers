@@ -150,7 +150,7 @@ class CompanyRows extends DataTableSource {
 
             onViewPressed: () async {},
             onEditPressed: () async {
-              final userId = company.id.toString();
+              final companyId = company.id.toString();
               final controller = Get.find<CompanyController>();
 
               // reset the values before fetching
@@ -167,7 +167,7 @@ class CompanyRows extends DataTableSource {
               //   builder: (context) => EditUserDialog(showExtraFields: true),
               // );
               controller.companyModel.value = company; // or whatever Rx<CompanyModel> you use
-            await controller.fetchCompanyDetailsById(int.parse(userId));
+            await controller.fetchCompanyDetailsById(int.parse(companyId));
               final updatedCompany = await showDialog<CompanyModel>(
                 context: Get.context!,
                 barrierDismissible: false,

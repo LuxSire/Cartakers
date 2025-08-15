@@ -11,7 +11,7 @@ import 'package:xm_frontend/data/models/user_role_model.dart';
 import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
 import 'package:xm_frontend/data/repositories/object/object_repository.dart';
 import 'package:xm_frontend/utils/helpers/helper_functions.dart';
-
+import 'package:flutter/scheduler.dart';
 import '../../../data/repositories/user/user_repository.dart';
 import '../../../utils/helpers/network_manager.dart';
 import '../../../utils/popups/full_screen_loader.dart';
@@ -29,16 +29,16 @@ class UserController extends TBaseController<UserModel> {
   Rx<UserModel> user = UserModel.empty().obs;
   Rx<UserModel> userRetrived = UserModel.empty().obs;
 
-  RxString userRetrivedProfileUrl = ''.obs;
+  RxString userProfileUrl = ''.obs;
   final displayNameController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final phoneController = TextEditingController();
-    final emailController = TextEditingController();
+  final emailController = TextEditingController();
 
-    final tokenController = TextEditingController();
+  final tokenController = TextEditingController();
   final searchController = TextEditingController();
 
   final selectedObjectId = 0.obs;
@@ -179,7 +179,7 @@ class UserController extends TBaseController<UserModel> {
       memoryBytes.value = file.bytes;
       hasImageChanged.value = true;
 
-      userRetrivedProfileUrl.value = file.name;
+      userProfileUrl.value = file.name;
     }
   }
 
@@ -224,7 +224,7 @@ class UserController extends TBaseController<UserModel> {
       lastNameController.text = userRetrived.value.lastName ?? '';
       phoneController.text = userRetrived.value.phoneNumber ?? '';
       displayNameController.text = userRetrived.value.displayName ?? '';
-      userRetrivedProfileUrl.value = userRetrived.value.profilePicture ?? '';
+      userProfileUrl.value = userRetrived.value.profilePicture ?? '';
       emailController.text = userRetrived.value.email ?? '';
       selectedRoleId.value =
           userRetrived.value.roleExtId ?? 0; // Default to 0 if null
@@ -241,7 +241,7 @@ class UserController extends TBaseController<UserModel> {
         assignedObjects.map((b) => int.parse(b.id.toString())),
       );
       debugPrint('Selected Object IDs: $selectedObjectIds');
-
+      userModel.value=userRetrived.value;
       return userRetrived.value;
     } catch (e) {
       debugPrint('Error fetching user details: $e');
@@ -261,7 +261,7 @@ class UserController extends TBaseController<UserModel> {
     displayNameController.clear();
     phoneController.clear();
     displayNameController.clear();
-    userRetrivedProfileUrl.value = '';
+    userProfileUrl.value = '';
     emailController.clear();
     memoryBytes.value = null;
     hasImageChanged.value = false;
@@ -427,9 +427,8 @@ class UserController extends TBaseController<UserModel> {
   void clearEndDate() {
     endDate.value = null;
   }
-
-  void updateUserInformation() async {
-    try {
+  void updateUserInformation( ) async 
+  {
       loading.value = true;
       // Check Internet Connectivity
       final isConnected = await NetworkManager.instance.isConnected();
@@ -447,69 +446,46 @@ class UserController extends TBaseController<UserModel> {
         user.value = userRetrived.value;
         //    debugPrint('User Retrieved: ${user.value.toJson()}');
       }
-
+      updateUserInfo(user.value);
+  }
+  void updateUserInfo(UserModel u_user) async {
+    try {
       // user.update((val) {
       //   val = userRetrived.value;
       // });
 
       // Form Validation
-      if (!formKey.currentState!.validate()) {
-        //  TFullScreenLoader.stopLoading();
-        return;
-      }
-      user.value.firstName = firstNameController.text.trim();
-      user.value.lastName = lastNameController.text.trim();
-      user.value.displayName = displayNameController.text.trim();
-      user.value.profilePicture = userRetrivedProfileUrl.value;
-      //user.value.roleExtId = selectedRoleId.value;
+if (!formKey.currentState!.validate()) {
+  loading.value = false; // <-- Add this line
+  return;
+}
+      u_user.firstName = firstNameController.text.trim();
+      u_user.lastName = lastNameController.text.trim();
+      u_user.displayName = displayNameController.text.trim();
+      u_user.profilePicture = userProfileUrl.value;
+      u_user.phoneNumber = phoneController.text.trim();
+       
+      //user.roleExtId = selectedRoleId.value;
 
-      // debugPrint('User Details: ${user.value.toJson()}');
+      // debugPrint('User Details: ${user.toJson()}');
 
-      final isUserUpdated = await userRepository.updateUserDetails(user.value);
+      final isUserUpdated = await userRepository.updateUserDetails(u_user);
+      
+      debugPrint('Is User Updated: $isUserUpdated');
 
-      user.value = savedUser;
-
-      user.refresh();
+      user.value=u_user;
+      //user.refresh();
 
       loading.value = false;
-      
-      if (isUserUpdated) {
-        final updatedUser = await userRepository.fetchUserDetailsById(
-          int.parse(userRetrived.value.id!),
-        );
-      /*
-        // update BuildingsUnits controller
-        final userId = userRetrived.value.id;
-        if (selectedObjectIds.isNotEmpty) {
-          // first delete all buildings assigned to the user
-          await userRepository.deleteAllUserAssignedObjects(
-            int.parse(userId!),
-          );
+      debugPrint('Is User Refreshed: $isUserUpdated');
 
-          //    debugPrint('User ID: $userId');
 
-          await userRepository.assignUserToObjectsBatch(
-            int.parse(userId!),
-            selectedObjectIds,
-          );
-        } else {
-          // delete all incase no buildings are selected
-          await userRepository.deleteAllUserAssignedObjects(
-            int.parse(userId!),
-          );
-        }
-        
-        //   debugPrint('Updated User: ${updatedUser.toJson()}');
-
-        updatedUser.translatedStatus = await TranslationApi.smartTranslate(
-          updatedUser.status ?? '',
-        );
-        updatedUser.translatedRoleNameExt = await TranslationApi.smartTranslate(
-          updatedUser.roleNameExt ?? '',
-        );
-        */
-        Get.back(result: updatedUser);
-
+      if (isUserUpdated)   {
+ 
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          debugPrint('User Updated: ${user.value.toJson()}');
+          Get.back(result: user);
+        });
         TLoaders.successSnackBar(
           title: AppLocalization.of(
             Get.context!,
@@ -529,8 +505,6 @@ class UserController extends TBaseController<UserModel> {
         );
       }
 
-      // Update UI Listeners
-      update();
     } catch (e) {
       loading.value = false;
       TLoaders.errorSnackBar(

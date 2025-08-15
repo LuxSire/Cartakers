@@ -133,6 +133,17 @@ class EditObjectForm extends StatelessWidget {
                   ),
                 );
               }),
+
+      const SizedBox(height: TSizes.spaceBtwInputFields*2),
+              
+  Row(
+    children: [
+      Text(
+      AppLocalization.of(context).translate('objects_screen.lbl_information'),
+      style: Theme.of(context).textTheme.headlineLarge?.copyWith(fontWeight: FontWeight.bold),
+    ),
+  ],
+),
               const SizedBox(height: TSizes.spaceBtwInputFields),
               TextFormField(
                 controller: controller.description,
@@ -275,71 +286,13 @@ class EditObjectForm extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Expanded(
-                    child: TextFormField(
-                      controller: controller.yieldNet,
-                      validator: (value) => TValidator.validateEmptyText(
-                        AppLocalization.of(context).translate('objects_screen.lbl_yieldnet'),
-                        value,
-                      ),
-                      keyboardType: TextInputType.numberWithOptions(decimal: true),
-                      decoration: InputDecoration(
-                        labelText: AppLocalization.of(context).translate('objects_screen.lbl_yieldnet'),
-                        prefixIcon: Icon(Icons.location_on_sharp),
-                        suffixText: '%',
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: TextFormField(
-                      controller: controller.yieldGross,
-                      validator: (value) => TValidator.validateEmptyText(
-                        AppLocalization.of(context).translate('objects_screen.lbl_yieldgross'),
-                        value,
-                      ),
-                      keyboardType: TextInputType.numberWithOptions(decimal: true),
-                      decoration: InputDecoration(
-                        labelText: AppLocalization.of(context).translate('objects_screen.lbl_yieldgross'),
-                        prefixIcon: Icon(Icons.location_on_sharp),
-                        suffixText: '%',
-                      ),
-                    ),
-                  ),
+
                 ],
               ),
               
-              const SizedBox(height: TSizes.spaceBtwInputFields),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: controller.price,
-                      validator: (value) => TValidator.validateEmptyText(
-                        AppLocalization.of(context).translate('objects_screen.lbl_price'),
-                        value,
-                      ),
-                      decoration: InputDecoration(
-                        labelText: AppLocalization.of(context).translate('objects_screen.lbl_price'),
-                        prefixIcon: Icon(Icons.money),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: TSizes.spaceBtwInputFields),
-                  Expanded(
-                    child: TextFormField(
-                      initialValue: object.currency ?? '',
-                      readOnly: false,
-                      decoration: InputDecoration(
-                        labelText: AppLocalization.of(context).translate('objects_screen.lbl_currency'),
-                        prefixIcon: Icon(Icons.attach_money),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: TSizes.spaceBtwInputFields * 2),
-              // Occupancy, Zoning, Type_
-              Row(
+                 const SizedBox(height: TSizes.spaceBtwInputFields),
+
+                            Row(
 
                 children: [
                           Expanded(
@@ -405,6 +358,78 @@ class EditObjectForm extends StatelessWidget {
                   ),
                 ],
               ),
+
+                    const SizedBox(height: TSizes.spaceBtwInputFields*2),
+              
+  Row(
+    children: [
+      Text(
+      AppLocalization.of(context).translate('objects_screen.lbl_financials'),
+            style: Theme.of(context).textTheme.headlineLarge?.copyWith(fontWeight: FontWeight.bold),
+    ),
+  ],
+),
+
+              const SizedBox(height: TSizes.spaceBtwInputFields),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: controller.price,
+                      validator: (value) => TValidator.validateEmptyText(
+                        AppLocalization.of(context).translate('objects_screen.lbl_price'),
+                        value,
+                      ),
+                      decoration: InputDecoration(
+                        labelText: AppLocalization.of(context).translate('objects_screen.lbl_price'),
+                        prefixIcon: Icon(Icons.money),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: TSizes.spaceBtwInputFields),
+                  Expanded(
+                    child: TextFormField(
+                      initialValue: object.currency ?? '',
+                      readOnly: false,
+                      decoration: InputDecoration(
+                        labelText: AppLocalization.of(context).translate('objects_screen.lbl_currency'),
+                        prefixIcon: Icon(Icons.attach_money),
+                      ),
+                    ),
+                  ),
+                                    Expanded(
+                    child: TextFormField(
+                      controller: controller.yieldNet,
+                      validator: (value) => TValidator.validateEmptyText(
+                        AppLocalization.of(context).translate('objects_screen.lbl_yieldnet'),
+                        value,
+                      ),
+                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                      decoration: InputDecoration(
+                        labelText: AppLocalization.of(context).translate('objects_screen.lbl_yieldnet'),
+                        prefixIcon: Icon(Icons.location_on_sharp),
+                        suffixText: '%',
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: TextFormField(
+                      controller: controller.yieldGross,
+                      validator: (value) => TValidator.validateEmptyText(
+                        AppLocalization.of(context).translate('objects_screen.lbl_yieldgross'),
+                        value,
+                      ),
+                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                      decoration: InputDecoration(
+                        labelText: AppLocalization.of(context).translate('objects_screen.lbl_yieldgross'),
+                        prefixIcon: Icon(Icons.location_on_sharp),
+                        suffixText: '%',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              // Occupancy, Zoning, Type_
               const SizedBox(height: TSizes.spaceBtwInputFields * 2),
               Obx(() {
                 return AnimatedSwitcher(

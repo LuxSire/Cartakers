@@ -573,6 +573,7 @@
     },
     "sidebar": {
         "lbl_dashboard": "Dashboard",
+        "lbl_administration": "Amministrazione",
         "lbl_objects_and_units": "Oggetti & unità",
         "lbl_users_and_contracts": "Utenti & contratti",
         "lbl_maintenance_and_tasks": "Manutenzione & attività",
@@ -612,6 +613,8 @@
     "objects_screen": {
         "lbl_objects": "Oggetti",
         "lbl_types": "Tipologie",
+        "lbl_information": "Informazioni",
+        "lbl_financials": "Finanze",
         "lbl_price": "Prezzo",
         "lbl_search_objects": "Cerca oggetti",
         "lbl_create_new_object": "Crea nuovo oggetto",

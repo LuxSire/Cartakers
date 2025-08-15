@@ -8,7 +8,7 @@ import 'package:xm_frontend/features/personalization/models/user_model.dart';
 import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 //import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/user/user_invitation_controller.dart';
-import 'package:xm_frontend/features/shop/screens/user/dialogs/edit_user.dart';
+//import 'package:xm_frontend/features/shop/screens/user/dialogs/dep_edit_user.dart';
 import 'package:xm_frontend/routes/routes.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 import 'package:xm_frontend/utils/constants/sizes.dart';

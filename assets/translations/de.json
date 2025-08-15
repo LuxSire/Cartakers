@@ -575,6 +575,7 @@
   },
   "sidebar": {
     "lbl_dashboard": "Dashboard",
+    "lbl_administration": "Administration",
     "lbl_objects_and_units": "Gebäude & Einheiten",
     "lbl_users_and_contracts": "Mieter & Verträge",
     "lbl_maintenance_and_tasks": "Wartung & Aufgaben",
@@ -614,6 +615,8 @@
   "objects_screen": {
     "lbl_objects": "Objekte",
     "lbl_types": "Typen",
+    "lbl_information": "Information",
+    "lbl_financials": "Finanzen",
     "lbl_price": "Preis",
     "lbl_search_objects": "Objekte suchen",
     "lbl_create_new_object": "Neues Objekt erstellen",

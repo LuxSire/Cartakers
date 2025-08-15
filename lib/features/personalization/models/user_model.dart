@@ -16,7 +16,7 @@ class UserModel {
   String countryCode; // Added country code
   String roleName;
   String lang;
-  String companyId;
+  int companyId;
   String companyName;
   int? isPrimaryUser;
   DateTime? createdAt;
@@ -60,7 +60,7 @@ class UserModel {
     this.roleId = '',
     this.roleName = '',
     this.lang = '',
-    this.companyId = '',
+    this.companyId = 1,
     this.companyName = '',
     this.createdAt,
     this.updatedAt,
@@ -150,7 +150,7 @@ class UserModel {
       roleId: json['role_id']?.toString() ?? '',
       roleName: json['role_name'] ?? '',
       lang: json['lang'] ?? '',
-      companyId: json['company_id']?.toString() ?? '',
+      companyId: json['company_id']?.toInt() ?? 0,
       companyName: json['company_name'] ?? '',
       createdAt:
           json['created_at'] != null

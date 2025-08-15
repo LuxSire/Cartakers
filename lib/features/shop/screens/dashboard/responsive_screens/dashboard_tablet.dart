@@ -233,7 +233,7 @@ class DashboardTabletScreen extends StatelessWidget {
               ),
 
               const SizedBox(height: TSizes.spaceBtwSections),
-
+/*
               TRoundedContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -260,7 +260,7 @@ class DashboardTabletScreen extends StatelessWidget {
                   ],
                 ),
               ),
-
+*/
               const SizedBox(height: TSizes.spaceBtwSections),
               TRoundedContainer(
                 child: Column(

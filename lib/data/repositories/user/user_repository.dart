@@ -64,13 +64,13 @@ class UserRepository extends GetxController {
     try {
       final companyId = AuthenticationRepository.instance.currentUser!.companyId;
 
-      if (companyId == null || companyId.isEmpty) {
+      if (companyId == null ) {
         debugPrint('Company ID not found.');
         return [];
       }
 
       final response = await _userService.getUsersByCompanyId(
-        int.parse(companyId),
+        companyId,
       );
        debugPrint('Raw response: $response');
       return response
@@ -86,13 +86,13 @@ class UserRepository extends GetxController {
     try {
       final companyId = AuthenticationRepository.instance.currentUser!.companyId;
 
-      if (companyId == null || companyId.isEmpty) {
+      if (companyId == null  ) {
         debugPrint('Company ID not found.');
         return [];
       }
 
       final response = await _userService.getUsersByCompanyId(
-        int.parse(companyId),
+         companyId,
       );
       debugPrint('Raw response: $response');
       return response.map((userData) => UserModel.fromJson(userData)).toList();

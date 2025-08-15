@@ -26,7 +26,7 @@ class RequestsCard extends StatelessWidget {
     final controllerRequest = Get.put(
       RequestController(
         sourceType: RequestSourceType.company,
-        id: int.parse(companyId!),
+        id: companyId,
       ),
       tag: 'company_requests',
     );

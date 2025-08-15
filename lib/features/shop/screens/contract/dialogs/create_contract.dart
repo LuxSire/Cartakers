@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
+import 'package:xm_frontend/data/models/user_role_model.dart';
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
 import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
@@ -96,8 +97,8 @@ class CreateContractDialog extends StatelessWidget {
               ),
               const SizedBox(height: TSizes.spaceBtwInputFields),
 
-              // display units, add drop down
-              if (displayUnits == true) ...[
+              
+              
                 Obx(() {
                   return DropdownButtonHideUnderline(
                     child: ButtonTheme(
@@ -198,6 +199,48 @@ class CreateContractDialog extends StatelessWidget {
 
               const SizedBox(height: TSizes.spaceBtwInputFields * 2),
 
+              Obx(() {
+                // Set role list
+                final roleList = u_controller.userRolesList;
+                  // Find the selected UserRoleModel by id
+                final selectedRole = roleList.firstWhereOrNull(
+                (role) => role.id == u_controller.selectedRoleId.value,
+                  );
+                return DropdownButtonFormField(
+                  isExpanded: true,
+                  value: selectedRole,
+                  onChanged: (role) {
+                    if (role != null) {
+                      u_controller.selectedRoleId.value = role.id;
+                    }
+                  },
+                  validator: (role) {
+                    if (role == null) {
+                      return AppLocalization.of(context).translate('create_contract_screen.lbl_select_role');
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    labelText: AppLocalization.of(context).translate('create_contract_screen.lbl_select_role'),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 14,
+                    ),
+                  ),
+                  items: roleList.map((role) {
+                    return DropdownMenuItem<UserRoleModel>(
+                      value: role,
+                      child: Text(role.nameTranslated ?? role.name),
+                    );
+                  }).toList(),
+                );
+              }),
+
+            const SizedBox(height: TSizes.spaceBtwInputFields * 2),
+
               /// Actions
               Row(
                 children: [
@@ -247,6 +290,7 @@ class CreateContractDialog extends StatelessWidget {
                             );
                     }),
                   ),
+
                   const SizedBox(width: TSizes.spaceBtwItems),
 
                   Expanded(
@@ -301,7 +345,6 @@ class CreateContractDialog extends StatelessWidget {
                   ),
                 ],
               ),
-            ],
             ],
           ),
         ),

@@ -572,6 +572,7 @@
     },
     "sidebar": {
         "lbl_dashboard": "Dashboard",
+        "lbl_administration": "Administration",
         "lbl_objects_and_units": "Objects & Units",
         "lbl_users_and_contracts": "Users & Permissions",
         "lbl_maintenance_and_tasks": "Maintenance & Tasks",
@@ -607,6 +608,8 @@
     },
     "objects_screen": {
         "lbl_objects": "Objects",
+        "lbl_information": "Information",
+        "lbl_financials": "Financials",
         "lbl_types": "Types",
         "lbl_price": "Price",
         "lbl_search_objects": "Search Objects",
@@ -712,6 +715,7 @@
     "users_screen": {
         "lbl_users": "Users",
         "lbl_companies": "Companies",   
+        "lbl_company": "Company",  
         "lbl_search_users": "Search Users",
         "lbl_create_new_user": "Create New User",
         "lbl_first_name": "First Name",

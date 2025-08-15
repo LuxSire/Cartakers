@@ -22,10 +22,15 @@ class TSidebar extends StatelessWidget {
     return Drawer(
       shape: const BeveledRectangleBorder(),
       child: Container(
-        decoration: const BoxDecoration(
-          color: TColors.white,
-          border: Border(right: BorderSide(width: 1, color: TColors.grey)),
-        ),
+       decoration: BoxDecoration(
+  color: Theme.of(context).scaffoldBackgroundColor,
+  border: Border(
+    right: BorderSide(
+      width: 1,
+      color: Theme.of(context).dividerColor,
+    ),
+  ),
+),
         child: Stack(
           children: [
             //  Main Sidebar Content (Scrollable)
@@ -121,20 +126,6 @@ class TSidebar extends StatelessWidget {
                               context,
                             ).translate('objects_screen.lbl_objects'),
                           ),
-                          TMenuItem(
-                            route: Routes.usersPermissions,
-                            icon: Iconsax.profile_2user,
-                            itemName: AppLocalization.of(
-                              context,
-                            ).translate('sidebar.lbl_users_and_contracts'),
-                          ),
-                          TMenuItem(
-                            route: Routes.bookingsRequests,
-                            icon: Iconsax.calendar_search,
-                            itemName: AppLocalization.of(
-                              context,
-                            ).translate('sidebar.lbl_bookings_and_requests'),
-                          ),
 
                           // TMenuItem(
                           //   route: Routes.tasks,
@@ -150,6 +141,24 @@ class TSidebar extends StatelessWidget {
                               context,
                             ).translate('sidebar.lbl_communication'),
                           ),
+
+                          TMenuItem(
+                            route: Routes.bookingsRequests,
+                            icon: Iconsax.calendar_search,
+                            itemName: AppLocalization.of(
+                              context,
+                            ).translate('sidebar.lbl_bookings_and_requests'),
+                          ),
+
+
+                                                    TMenuItem(
+                            route: Routes.usersPermissions,
+                            icon: Iconsax.profile_2user,
+                            itemName: AppLocalization.of(
+                              context,
+                            ).translate('sidebar.lbl_administration'),
+                          ),
+
                           TMenuItem(
                             route: Routes.settingsManagement,
                             icon: Iconsax.setting,
@@ -182,9 +191,9 @@ class TSidebar extends StatelessWidget {
                   const SizedBox(height: 10),
                   Text(
                     'v.1.0.4', //  App Version
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodySmall?.copyWith(color: TColors.grey),
+                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).hintColor,
+              ),
                   ),
                 ],
               ),

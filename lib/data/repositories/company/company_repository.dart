@@ -33,7 +33,7 @@ class CompanyRepository extends GetxController {
       final companyId = AuthenticationRepository.instance.currentUser!.companyId;
 
       final List<Map<String, dynamic>> responseList = await _companyService
-          .getAllCompanyMessages(int.parse(companyId));
+          .getAllCompanyMessages( companyId);
 
       if (responseList.isEmpty) return [];
 
@@ -193,7 +193,7 @@ class CompanyRepository extends GetxController {
     try {
       // if your API needs companyId or userId in the URL, grab it here:
       final companyId = AuthenticationRepository.instance.currentUser!.companyId;
-      await _companyService.sendMessage(int.parse(companyId), payload);
+      await _companyService.sendMessage( companyId, payload);
     } catch (e, st) {
       debugPrint('Error in sendMessage: $e\n$st');
       rethrow;

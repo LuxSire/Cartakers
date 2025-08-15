@@ -82,37 +82,31 @@ class TMenuItem extends StatelessWidget {
     final menuController = Get.put(SidebarController());
 
     return InkWell(
-      // onTap: () => menuController.menuOnTap(route),
       onTap: () {
         debugPrint('Menu item tapped: $route');
         if (route == '/tasks') {
           TLoaders.successSnackBar(
-            title: AppLocalization.of(
-              context,
-            ).translate('general_msgs.msg_info'),
-            message: AppLocalization.of(
-              context,
-            ).translate('general_msgs.msg_new_feature_coming_soon'),
+            title: AppLocalization.of(context).translate('general_msgs.msg_info'),
+            message: AppLocalization.of(context).translate('general_msgs.msg_new_feature_coming_soon'),
           );
         } else {
           menuController.menuOnTap(route);
         }
       },
-      onHover:
-          (value) =>
-              value
-                  ? menuController.changeHoverItem(route)
-                  : menuController.changeHoverItem(''),
+      onHover: (value) =>
+          value ? menuController.changeHoverItem(route) : menuController.changeHoverItem(''),
       child: Obx(() {
+        final isActive = menuController.isActive(route);
+        final isHovering = menuController.isHovering(route);
+        final isSelected = isActive || isHovering;
+
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: TSizes.xs),
           child: Container(
             decoration: BoxDecoration(
-              color:
-                  menuController.isHovering(route) ||
-                          menuController.isActive(route)
-                      ? TColors.primary
-                      : Colors.transparent,
+              color: isSelected
+                  ? Theme.of(context).colorScheme.primary
+                  : Colors.transparent,
               borderRadius: BorderRadius.circular(TSizes.cardRadiusMd),
             ),
             child: Row(
@@ -128,23 +122,18 @@ class TMenuItem extends StatelessWidget {
                   child: Icon(
                     icon,
                     size: 22,
-                    color:
-                        menuController.isActive(route)
-                            ? TColors.white
-                            : menuController.isHovering(route)
-                            ? TColors.white
-                            : TColors.darkGrey,
+                    color: isSelected
+                        ? Theme.of(context).colorScheme.onPrimary
+                        : Theme.of(context).iconTheme.color,
                   ),
                 ),
                 Flexible(
                   child: Text(
                     itemName,
-                    style: Theme.of(context).textTheme.bodyMedium!.apply(
-                      color:
-                          menuController.isHovering(route) ||
-                                  menuController.isActive(route)
-                              ? TColors.white
-                              : TColors.darkGrey,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: isSelected
+                          ? Theme.of(context).colorScheme.onPrimary
+                          : Theme.of(context).textTheme.bodyMedium?.color,
                     ),
                   ),
                 ),

@@ -10,10 +10,11 @@ import 'package:xm_frontend/features/personalization/models/user_model.dart';
 import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 //import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
+import 'package:xm_frontend/features/personalization/controllers/company_controller.dart';
 import 'package:xm_frontend/features/shop/screens/contract/dialogs/create_contract.dart';
 import 'package:xm_frontend/features/shop/screens/contract/dialogs/edit_contract.dart';
 import 'package:xm_frontend/features/shop/screens/user/dialogs/create_user.dart';
-import 'package:xm_frontend/features/shop/screens/user/dialogs/edit_user.dart';
+import 'package:xm_frontend/features/shop/screens/settings_managements/dialogs/edit_user.dart';
 import 'package:xm_frontend/features/shop/screens/user/dialogs/view_user.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 import 'package:xm_frontend/utils/constants/enums.dart';
@@ -24,88 +25,20 @@ import 'package:xm_frontend/utils/popups/loaders.dart';
 
 class UserTab extends StatelessWidget {
   const UserTab({super.key});
-
+  
   @override
   Widget build(BuildContext context) {
     final controllerUser = Get.find<UserController>();
 
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Row for the search, button, and filter
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end, // Align to the right
-            children: [
-              TextButton.icon(
-                style: TextButton.styleFrom(
-                  backgroundColor: TColors.primary.withOpacity(0.1),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                onPressed: () async {
-                  final result = await showDialog<bool>(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext context) {
-                      return const EditUserDialog();
-                    },
-                  );
-
-                  if (result == true) {}
-                },
-                icon: const Icon(
-                  Iconsax.edit,
-                  size: 20,
-                  color: TColors.primary,
-                ),
-                label: Text(
-                  AppLocalization.of(
-                    context,
-                  ).translate('general_msgs.msg_edit'),
-                  style: TextStyle(color: TColors.primary),
-                ),
-              ),
-
-              const SizedBox(width: TSizes.spaceBtwInputFields),
-
-              // TextButton.icon(
-              //   style: TextButton.styleFrom(
-              //     backgroundColor: Colors.red.withOpacity(0.1),
-              //     shape: RoundedRectangleBorder(
-              //       borderRadius: BorderRadius.circular(8),
-              //     ),
-              //   ),
-              //   onPressed: () {
-              //     // Open filter options dialog
-              //   },
-              //   icon: const Icon(
-              //     Iconsax.profile_delete,
-              //     size: 20,
-              //     color: Colors.red,
-              //   ),
-              //   label: Text(
-              //     AppLocalization.of(
-              //       context,
-              //     ).translate('general_msgs.msg_delete'),
-              //     style: TextStyle(color: Colors.red),
-              //   ),
-              // ),
-            ],
-          ),
-
-          Obx(() {
-            // display just one user
-            final user = controllerUser.userModel.value;
-
-            return Expanded(child: _buildUserPage(user, context));
-          }),
-        ],
-      ),
-    );
-  }
+  return Padding(
+    padding: const EdgeInsets.all(16.0),
+    child: Obx(() {
+      final user = controllerUser.userModel.value;
+      // You may want to check if user is not empty/null here
+      return _buildUserPage(user, context);
+    }),
+  );
+}
 
   Widget _buildUserPage(UserModel user, BuildContext context) {
     return SizedBox(
@@ -135,30 +68,33 @@ class UserTab extends StatelessWidget {
             user.phoneNumber.toString(),
           ),
           const Divider(),
-          Row(
-            children: [
-              Expanded(
-                child: _buildInfoRow(
-                  AppLocalization.of(
-                    context,
-                  ).translate('users_screen.lbl_company'),
-                  user.companyName.toString(),
-                ),
-              ),
-            ],
+                        // Company Dropdown
+          _buildInfoRow(
+            AppLocalization.of(
+              context,
+            ).translate('tab_users_screen.lbl_company'),
+            user.companyName.toString(),
           ),
            const Divider(),
           Row(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.refresh, color: TColors.primary, size: 20),
-                tooltip: 'Update Token',
-                onPressed: () {
-                  final controllerUser = Get.find<UserController>();
-                  controllerUser.updateTokenByUser(user);
-                },
-              ),
-            ],
+           
+  children: [
+    Text(
+      'Refresh Token',
+      style: TextStyle(
+        fontWeight: FontWeight.w500,
+        color: Colors.black54,
+      ),
+    ),
+    IconButton(
+      icon: const Icon(Icons.refresh, color: TColors.primary, size: 20),
+      tooltip: 'Update Token',
+      onPressed: () {
+        final controllerUser = Get.find<UserController>();
+        controllerUser.updateTokenByUser(user);
+      },
+    ),
+  ],
           ),
           const Divider(),
           _buildInfoRow(

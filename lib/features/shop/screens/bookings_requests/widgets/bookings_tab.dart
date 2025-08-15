@@ -21,7 +21,7 @@ class BookingsTab extends StatelessWidget {
     final controller = Get.put(
       BookingController(
         sourceType: BookingSourceType.company,
-        id: int.parse(companyId!),
+        id: companyId,
       ),
       tag: 'company_bookings',
     );

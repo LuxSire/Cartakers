@@ -149,6 +149,8 @@ class CreateCompanyDialog extends StatelessWidget {
                     allowedIds.contains(controller.selectedRoleId.value)
                         ? controller.selectedRoleId.value
                         : 0;
+          
+              const SizedBox(height: TSizes.spaceBtwInputFields);
 
                 return DropdownButtonHideUnderline(
                   child: ButtonTheme(

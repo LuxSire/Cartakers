@@ -9,7 +9,7 @@ import 'package:xm_frontend/features/shop/screens/user/all_users/table/data_tabl
 import 'package:xm_frontend/features/shop/screens/user/all_users/table2/data_table.dart';
 import 'package:xm_frontend/features/shop/screens/user/all_users/widgets/table_header.dart';
 import 'package:xm_frontend/features/shop/screens/user/all_users/widgets/table_header_invitation.dart';
-import 'package:xm_frontend/features/shop/screens/user/dialogs/edit_user.dart';
+//import 'package:xm_frontend/features/shop/screens/settings_managements/dialogs/edit_user.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 
 import 'package:xm_frontend/utils/constants/sizes.dart';

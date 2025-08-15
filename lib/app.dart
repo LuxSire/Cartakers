@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
-
+import 'package:xm_frontend/services/theme_service.dart';
 import 'package:xm_frontend/app/app_controller.dart';
 import 'package:xm_frontend/app/localization/app_localization_delegate.dart';
 import 'package:xm_frontend/bindings/general_bindings.dart';
@@ -13,7 +13,7 @@ import 'package:xm_frontend/common/widgets/page_not_found/page_not_found.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 import 'package:xm_frontend/utils/constants/text_strings.dart';
 import 'package:xm_frontend/utils/device/web_material_scroll.dart';
-import 'package:xm_frontend/utils/theme/theme.dart';
+//import 'package:xm_frontend/utils/theme/theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +29,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     // find your controller once
     final appCtrl = Get.find<AppController>();
-
+    final themeService = Get.find<ThemeService>();
     // wrap your GetMaterialApp in Obx to react to changes
     return Obx(() {
       // keep Intl in sync
@@ -40,14 +40,9 @@ class App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
 
         // ─── THEMES ─────────────────────────────────────────
-        theme: TAppTheme.lightTheme,
-        darkTheme: TAppTheme.darkTheme,
-        themeMode:
-            appCtrl.themeMode.value == 'light'
-                ? ThemeMode.light
-                : appCtrl.themeMode.value == 'dark'
-                ? ThemeMode.dark
-                : ThemeMode.system,
+theme: themeService.lightTheme,
+darkTheme: themeService.darkTheme,
+  themeMode: themeService.isDarkMode.value ? ThemeMode.dark : ThemeMode.light,
 
         // ─── LOCALIZATION ────────────────────────────────────
         locale: appCtrl.locale.value,

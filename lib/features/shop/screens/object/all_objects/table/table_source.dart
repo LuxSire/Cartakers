@@ -61,10 +61,10 @@ class ObjectRows extends DataTableSource {
         DataCell(Text(object.street ?? '')),
 DataCell(Text(object.city?.toString() ?? '')),
 DataCell(Text(object.zipCode ?? '')),
-DataCell(Text(object.location ?? '')),
-DataCell(Text(object.totalUnits?.toString() ?? '')),
-DataCell(Text(object.totalFloors?.toString() ?? '')),
-DataCell(Text(object.createdAt == null ? '' : object.formattedDate)),
+DataCell(Text(object.country ?? '')),
+DataCell(Text(object.type_?.toString() ?? '')),
+DataCell(Text(object.zoning?.toString() ?? '')),
+DataCell(Text(object.price.toString() ?? '')),
         DataCell(
           TTableActionButtons(
             view: true,

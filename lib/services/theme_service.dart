@@ -3,14 +3,15 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xm_frontend/app/theme/colors.dart';
 import 'package:xm_frontend/app/theme/typography.dart';
+import 'package:get/get.dart';
 
-class ThemeService with ChangeNotifier {
+class ThemeService extends GetxService {
   static const String _themePreferenceKey = 'isDarkMode';
-  bool _isDarkMode = false;
+  //bool _isDarkMode = false;
+  final RxBool isDarkMode = false.obs;
+  //bool get isDarkMode => _isDarkMode;
 
-  bool get isDarkMode => _isDarkMode;
-
-  ThemeData get lightTheme => ThemeData(
+  ThemeData get lightTheme =>  ThemeData(
     tabBarTheme: const TabBarThemeData(
       indicator: BoxDecoration(
         border: Border(
@@ -25,11 +26,11 @@ class ThemeService with ChangeNotifier {
     brightness: Brightness.light,
     primaryColor: AppColors.primaryColor,
     scaffoldBackgroundColor: AppColors.backgroundLight,
-    bottomAppBarTheme: const BottomAppBarTheme(
+    bottomAppBarTheme: const BottomAppBarThemeData(
       color: AppColors.whiteA700, // Light theme bottom bar color
     ),
     appBarTheme: const AppBarTheme(
-      backgroundColor: AppColors.primaryColor,
+      backgroundColor: Colors.blue,
       foregroundColor: Colors.white,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent, // Transparent background
@@ -77,7 +78,7 @@ class ThemeService with ChangeNotifier {
     ),
   );
 
-  ThemeData get darkTheme => ThemeData(
+  ThemeData get darkTheme =>  ThemeData(
     tabBarTheme: const TabBarThemeData(
       indicator: BoxDecoration(
         border: Border(
@@ -91,7 +92,7 @@ class ThemeService with ChangeNotifier {
     brightness: Brightness.dark,
     primaryColor: AppColors.primaryColor,
     scaffoldBackgroundColor: AppColors.backgroundDark,
-    bottomAppBarTheme: const BottomAppBarTheme(
+    bottomAppBarTheme: const BottomAppBarThemeData(
       color: AppColors.blueGray90001, // Dark theme bottom bar color
     ),
     appBarTheme: AppBarTheme(
@@ -142,21 +143,22 @@ class ThemeService with ChangeNotifier {
   ThemeService() {
     _loadThemePreference();
   }
-
   void toggleTheme() {
-    _isDarkMode = !_isDarkMode;
-    notifyListeners();
+
+  debugPrint('Theme toggled before: ${isDarkMode.value}');   
+   isDarkMode.value = !isDarkMode.value;
+  debugPrint('Theme toggled after: ${isDarkMode.value}');
     _saveThemePreference();
   }
 
+
   Future<void> _loadThemePreference() async {
     final prefs = await SharedPreferences.getInstance();
-    _isDarkMode = prefs.getBool(_themePreferenceKey) ?? false;
-    notifyListeners();
+    isDarkMode.value = prefs.getBool(_themePreferenceKey) ?? false;
   }
 
   Future<void> _saveThemePreference() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setBool(_themePreferenceKey, _isDarkMode);
+    prefs.setBool(_themePreferenceKey, isDarkMode.value);
   }
 }

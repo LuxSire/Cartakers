@@ -70,24 +70,26 @@ class DashboardDesktopScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: TSizes.spaceBtwItems),
-                  Expanded(
+                                    Expanded(
                     child: Obx(
                       () => ADashboardCard(
-                        onTap: () => Get.toNamed(Routes.usersPermissions),
-
-                        headingIcon: Iconsax.profile_2user,
-                        headingIconColor: Colors.green,
-                        headingIconBgColor: Colors.green.withOpacity(0.1),
-                        stats: controller.totalUsers.value,
+                        onTap: () {
+                          Get.toNamed(Routes.communication);
+                        },
+                        headingIcon: Iconsax.direct,
+                        headingIconColor: Colors.deepOrange,
+                        headingIconBgColor: Colors.deepOrange.withOpacity(0.1),
                         context: context,
                         title: AppLocalization.of(
                           context,
-                        ).translate('sidebar.lbl_users_and_contracts'),
+                        ).translate('sidebar.lbl_communication'),
                         subTitle:
-                            ' ${controller.totalUsers.value.toString()}/${controller.totalUsers.value.toString()}',
+                            controller.totalObjectsMessages.value.toString(),
+                        stats: controller.totalObjectsMessages.value,
                       ),
                     ),
                   ),
+
                   const SizedBox(width: TSizes.spaceBtwItems),
                   Expanded(
                     child: Obx(
@@ -115,25 +117,25 @@ class DashboardDesktopScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: TSizes.spaceBtwItems),
-                  Expanded(
+                                    Expanded(
                     child: Obx(
                       () => ADashboardCard(
-                        onTap: () {
-                          Get.toNamed(Routes.communication);
-                        },
-                        headingIcon: Iconsax.direct,
-                        headingIconColor: Colors.deepOrange,
-                        headingIconBgColor: Colors.deepOrange.withOpacity(0.1),
+                        onTap: () => Get.toNamed(Routes.usersPermissions),
+
+                        headingIcon: Iconsax.profile_2user,
+                        headingIconColor: Colors.green,
+                        headingIconBgColor: Colors.green.withOpacity(0.1),
+                        stats: controller.totalUsers.value,
                         context: context,
                         title: AppLocalization.of(
                           context,
-                        ).translate('sidebar.lbl_communication'),
+                        ).translate('sidebar.lbl_administration'),
                         subTitle:
-                            controller.totalObjectsMessages.value.toString(),
-                        stats: controller.totalObjectsMessages.value,
+                            ' ${controller.totalUsers.value.toString()}/${controller.totalUsers.value.toString()}',
                       ),
                     ),
                   ),
+
                 ],
               ),
               const SizedBox(height: TSizes.spaceBtwSections),
@@ -193,8 +195,8 @@ class DashboardDesktopScreen extends StatelessWidget {
                                     children: [
                                       TCircularIcon(
                                         icon: Iconsax.building,
-                                        backgroundColor: TColors.alterColor
-                                            .withOpacity(0.1),
+                                       // backgroundColor: TColors.alterColor
+                                       //     .withOpacity(0.1),
                                         color: TColors.alterColor,
                                         size: TSizes.md,
                                       ),
@@ -251,6 +253,7 @@ class DashboardDesktopScreen extends StatelessWidget {
                         ),
 
                         const SizedBox(height: TSizes.spaceBtwSections),
+                        /*
                         TRoundedContainer(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -281,10 +284,11 @@ class DashboardDesktopScreen extends StatelessWidget {
                               const VacantCard(),
                             ],
                           ),
-                        ),
+                        ),*/
                       ],
                     ),
                   ),
+                
                   const SizedBox(width: TSizes.spaceBtwSections),
                   Expanded(
                     child: TRoundedContainer(
@@ -297,9 +301,10 @@ class DashboardDesktopScreen extends StatelessWidget {
                                 children: [
                                   TCircularIcon(
                                     icon: Iconsax.document,
-                                    backgroundColor: Colors.amber.withOpacity(
+                                    /*backgroundColor: 
+                                    Colors.amber.withOpacity(
                                       0.1,
-                                    ),
+                                    ),*/
                                     color: Colors.amber,
                                     size: TSizes.md,
                                   ),

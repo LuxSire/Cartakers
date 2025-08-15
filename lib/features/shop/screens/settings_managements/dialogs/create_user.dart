@@ -125,10 +125,6 @@ class CreateUserDialog extends StatelessWidget {
                     context,
                   ).translate('register_screen.lbl_phone_no'),
                 ),
-                validator: (value) => TValidator.validateEmptyText(
-                  AppLocalization.of(context).translate('register_screen.lbl_phone_no'),
-                  value,
-                ),
               ),
 
               const SizedBox(height: TSizes.spaceBtwInputFields),

@@ -97,18 +97,13 @@ class ViewUserDialog extends StatelessWidget {
                         ),
 
                         Text(
-                          user!.fullPhoneNumber!,
+                          user!.phoneNumber!,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                           style: Theme.of(context).textTheme.bodyMedium!
                               .copyWith(color: TColors.black.withOpacity(0.5)),
                         ),
-                        Text(
-                          contractCode!,
-                          style: Theme.of(context).textTheme.titleLarge,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                        ),
+                       
 
                         if (user!.isPrimaryUser == 1)
                           Column(

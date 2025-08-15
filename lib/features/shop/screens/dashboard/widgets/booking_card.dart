@@ -40,7 +40,7 @@ class BookingCard extends StatelessWidget {
     final controllerBooking = Get.put(
       BookingController(
         sourceType: BookingSourceType.company,
-        id: int.parse(companyId),
+        id: companyId!,
       ),
       tag: 'company_bookings',
     );

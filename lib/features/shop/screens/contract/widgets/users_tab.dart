@@ -118,7 +118,7 @@ class UsersTab extends StatelessWidget {
                     Text(
                       AppLocalization.of(
                         Get.context!,
-                      ).translate('unit_detail_screen.lbl_no_tenants_found'),
+                      ).translate('unit_detail_screen.lbl_no_users_found'),
                     ),
                   ],
                 ),

@@ -464,6 +464,7 @@ class EditObjectController extends GetxController {
       object.occupancy = occupancy.text.trim();
       object.zoning = zoning.text.trim();
       object.city = city.text.trim();
+      object.country=country.text.trim();
       object.currency=currency.text.trim();
       object.description = description.text.trim();
       object.owner = int.tryParse(owner.text.trim());

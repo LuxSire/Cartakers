@@ -50,7 +50,7 @@ class UserRows extends DataTableSource {
         //   context: Get.context!,
         //   builder: (context) => EditUserDialog(showExtraFields: true),
         // );
-
+        controller.userModel.value = user;
         final updatedUser = await showDialog<UserModel>(
           context: Get.context!,
           barrierDismissible: false,
@@ -174,7 +174,7 @@ class UserRows extends DataTableSource {
               //   context: Get.context!,
               //   builder: (context) => EditUserDialog(showExtraFields: true),
               // );
-
+              controller.userModel.value = user;
               final updatedUser = await showDialog<UserModel>(
                 context: Get.context!,
                 barrierDismissible: false,

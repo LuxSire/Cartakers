@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:xm_frontend/services/theme_service.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:xm_frontend/app/app_controller.dart';
 import 'package:xm_frontend/data/api/translation_api.dart';
@@ -18,23 +19,24 @@ const _flagEmojis = {'de': '🇩🇪', 'fr': '🇫🇷', 'it': '🇮🇹', 'en':
 /// Header widget for the application
 class THeader extends StatelessWidget implements PreferredSizeWidget {
   const THeader({super.key, required this.scaffoldKey});
-
+ 
   /// GlobalKey to access the Scaffold state
   final GlobalKey<ScaffoldState> scaffoldKey;
 
   @override
   Widget build(BuildContext context) {
     final controller = UserController.instance;
-
+    final themeService = Get.find<ThemeService>();
     final userCtrl = UserController.instance;
     // grab your localization‐controlling AppController
     final appCtrl = Get.find<AppController>();
+    // Obtain your ThemeService instance (adjust the type/class as needed)
     const langs = ['de', 'fr', 'it', 'en'];
     return Container(
       /// Background Color, Bottom Border
-      decoration: const BoxDecoration(
-        color: TColors.white,
-        border: Border(bottom: BorderSide(color: TColors.grey, width: 1)),
+      decoration: BoxDecoration(
+        color: Theme.of(context).appBarTheme.backgroundColor,
+        border: const Border(bottom: BorderSide(color: TColors.grey, width: 1)),
       ),
       padding: const EdgeInsets.symmetric(
         horizontal: TSizes.md,
@@ -74,11 +76,21 @@ class THeader extends StatelessWidget implements PreferredSizeWidget {
           // Notification Icon
           IconButton(icon: const Icon(Iconsax.notification), onPressed: () {}),
           const SizedBox(width: TSizes.spaceBtwItems / 2),
-
+          
           /// User Data
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
+                         
+
             children: [
+Obx(() => IconButton(
+  icon: Icon(
+    themeService.isDarkMode.value ? Icons.dark_mode : Icons.light_mode,
+    color: Theme.of(context).iconTheme.color,
+  ),
+  tooltip: themeService.isDarkMode.value ? 'Switch to Light Mode' : 'Switch to Dark Mode',
+  onPressed: () => themeService.toggleTheme(),
+)),
               // add a drop down button for language selection
 
               // ── LANGUAGE DROPDOWN ───────────────────────

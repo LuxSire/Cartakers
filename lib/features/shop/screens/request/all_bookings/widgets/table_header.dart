@@ -20,13 +20,13 @@ class RequestTableHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final agencyId = AuthenticationRepository.instance.currentUser?.companyId;
+    final companyId = AuthenticationRepository.instance.currentUser?.companyId;
     final controller = Get.put(
       RequestController(
         sourceType: RequestSourceType.company,
-        id: int.parse(agencyId!),
+        id: companyId,
       ),
-      tag: 'agency_requests',
+      tag: 'company_requests',
     );
     final isDesktop = TDeviceUtils.isDesktopScreen(context);
     final width = MediaQuery.of(context).size.width;

@@ -52,7 +52,7 @@ class ObjectCard extends StatelessWidget {
             itemCount: objects.length,
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 800, // max card width
-              mainAxisExtent: 100, // fixed height of each card
+              mainAxisExtent: 200, // fixed height of each card
               crossAxisSpacing: TSizes.spaceBtwItems,
               mainAxisSpacing: TSizes.spaceBtwItems,
             ),
@@ -126,12 +126,30 @@ class ObjectCard extends StatelessWidget {
                                 _StatIcon(
                                   icon: Iconsax.building,
                                   label:
-                                      '${object.street ?? 0} ${AppLocalization.of(context).translate('objects_screen.lbl_street').toLowerCase()}',
+                                      '${object.zoning ?? 0} ${AppLocalization.of(context).translate('objects_screen.lbl_zoning').toLowerCase()}',
                                 ),
                                 _StatIcon(
                                   icon: Iconsax.money,
                                   label:
                                       '${object.price ?? 0}' '${object.currency ?? ''}',
+                                ),
+                                
+                              ],
+                            ),
+                               const SizedBox(height: 8),
+                            Wrap(
+                              spacing: 12,
+                              runSpacing: 4,
+                              children: [
+                                _StatIcon(
+                                  icon: Iconsax.cards,
+                                  label:
+                                      '${object.city ?? 0} ${AppLocalization.of(context).translate('objects_screen.lbl_city').toLowerCase()}',
+                                ),
+                                _StatIcon(
+                                  icon: Iconsax.map,
+                                  label:
+                                      '${object.country}',
                                 ),
                                 
                               ],
