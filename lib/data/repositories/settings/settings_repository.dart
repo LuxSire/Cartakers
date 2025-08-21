@@ -16,7 +16,7 @@ class SettingsRepository extends GetxController {
   /// Function to fetch setting details based on setting ID.
   Future<SettingsModel> getSettings() async {
     return SettingsModel(
-      appName: 'XM Dashboard',
+      appName: 'XM',
       companyName: 'XM Real Estate AG',
       selectedObjectId: '1', // replace with selected object id
     );

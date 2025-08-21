@@ -13,23 +13,29 @@ import 'package:xm_frontend/utils/constants/sizes.dart';
 import 'package:xm_frontend/utils/constants/text_strings.dart';
 class ObjectCard extends StatelessWidget {
   const ObjectCard({super.key});
-
+ 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ObjectController());
-
+    final controller = Get.find<ObjectController>();
+   debugPrint('[ObjectCard] Constructor called');
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (controller.allObjects.isEmpty) {
+        controller.loadAllObjects();
+        //  controller.refreshData();
+      }
+    });
     //WidgetsBinding.instance.addPostFrameCallback((_) {
-    controller.loadAllObjects();
+    debugPrint('[ObjectCard] All Objects: ${controller.allObjects.length}');
     //  controller.refreshData();
     //   });
 
-    final objectList   = controller.allItems;
+  
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Obx(() {
-          final objects = objectList;
+           final objects = controller.allObjects;
 
           if (objects.isEmpty) {
             return Center(

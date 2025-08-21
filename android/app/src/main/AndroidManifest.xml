@@ -16,7 +16,7 @@
    
    
     <application
-        android:label="XM Dashboard"
+        android:label="XM"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -247,6 +247,8 @@ class DashboardDesktopScreen extends StatelessWidget {
                                 ],
                               ),
                               const SizedBox(height: TSizes.spaceBtwSections),
+                              
+
                               const ObjectCard(),
                             ],
                           ),

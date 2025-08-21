@@ -21,6 +21,7 @@ class ApiEndpoints {
   static const String createPermission = 'api/objects/create-permission';
   static const String getAllBookingCategories = 'api/objects/get-all-booking-categories';
 
+  static const String getAllUpdates = 'api/objects/get-all-updates';
   static const String getAllTypes = 'api/objects/get-all-types';
   static const String getObjectsLastAnnouncement =
       'api/objects/get-object-last-announcement';
@@ -168,6 +169,9 @@ class ApiEndpoints {
   static const String getActiveContractByUnitId =
       'api/objects/get-active-contract-by-unit-id';
   static const String updateUnitstatus = 'api/objects/update-unit-status';
+
+  static const String updateUnitDetails = 'api/objects/update-unit-details';
+  static const String createUnit = 'api/objects/create-unit';
   static const String createContract = 'api/objects/create-contract';
   static const String getObjectZonesById =
       'api/objects/get-object-zones-by-id';
@@ -246,8 +250,15 @@ class ApiEndpoints {
   static const String getAllCompanyMessages =
       'api/companies/get-all-company-messages';
 
-  static const String createCompanyMessage =
-      'api/companies/create-company-message';
+  static const String getAllMessages =
+      'api/objects/get-all-messages';
+
+  static const String getAllObjectMessages =
+      'api/objects/get-all-object-messages';
+  static const String createChatObjectMessage =
+      '/api/chatobject/send-message';
+  static const String createChatCompanyMessage =
+      '/api/chatcompany/send-message';
   static const String deleteCompanyMessage =
       'api/companies/delete-company-message';
   static const String deleteCompanyById =
@@ -297,6 +308,9 @@ class ApiEndpoints {
 
   static const String deleteObjectById =
       'api/objects/delete-object-by-id';
+
+  static const String deleteUnitById =
+      'api/objects/delete-unit-by-id';
   static const String updateQuickCompany =
       'api/users/update-quick-company';
 }

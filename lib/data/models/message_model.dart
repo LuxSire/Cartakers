@@ -6,8 +6,9 @@ class MessageModel {
   final String id;
   final String? title;
   final String? content;
-  final int? senderUserId;
+  final int? senderId;
   final int? companyId;
+  final int? objectId;  
   final DateTime? createdAt;
   final DateTime? scheduledAt;
   final List<MessageRecipient> recipients;
@@ -21,8 +22,9 @@ class MessageModel {
     required this.id,
     this.title,
     this.content,
-    this.senderUserId,
+    this.senderId,
     this.companyId,
+    this.objectId,
     this.createdAt,
     this.scheduledAt,
     this.recipients = const [],
@@ -37,12 +39,13 @@ class MessageModel {
     return MessageModel(
       id: json['id'] != null ? json['id'].toString() : '',
       title: json['title'] ?? '',
-      content: json['body'] ?? '',
-      senderUserId: json['created_by'] ?? 0,
-      companyId: json['company_id'],
+      content: json['content'] ?? '',
+      senderId: int.tryParse(json['created_by'] ?? '0') ?? 0,
+      companyId: int.tryParse(json['company_id'] ?? '0') ?? 0,
+      objectId: int.tryParse(json['object_id'] ?? '0') ?? 0,
       createdAt:
           json['created_at'] != null
-              ? DateTime.parse(json['created_at']).toLocal()
+              ? DateTime.parse(json['timestamp']).toLocal()
               : DateTime.now(),
       scheduledAt:
           json['scheduled_at'] != null
@@ -63,7 +66,7 @@ class MessageModel {
 
       channels:
           json['channels'] != null ? List<String>.from(json['channels']) : [],
-      statusId: json['status_id'],
+      statusId: json['status_id'] ?? 0,
       statusName: json['status_name'],
       objectIds:
           json['object_ids'] != null
@@ -79,7 +82,7 @@ class MessageModel {
     'id': id,
     'title': title,
     'body': content,
-    'created_by': senderUserId,
+    'created_by': senderId,
     'company_id': companyId,
     'created_at': createdAt!.toIso8601String(),
     'scheduled_at': scheduledAt?.toIso8601String(),

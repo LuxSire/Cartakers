@@ -653,16 +653,21 @@
     },
     "edit_object_screen": {
         "lbl_object_details": "Object Details",
+        "btn_create_unit": "Create Unit",
         "lbl_update_object": "Update Object",
+        "lbl_description": "Description",
         "lbl_units": "Units",
         "lbl_yieldnet": "Net yield",
         "lbl_yieldgross": "Gross yield",
+        "lbl_noi": "Net Operating Income",
+        "lbl_caprate": "Capitalization Rate",
         "lbl_search_units": "Search Units",
         "lbl_date_created": "Date Created",
         "lbl_update": "Update",
         "lbl_unit_#": "Unit #",
         "lbl_floor": "Floor",
         "lbl_room": "Room",
+        "lbl_sqm": "Sqm",
         "lbl_users": "Users",
         "lbl_status": "Status",
         "lbl_contract_reference": "Contract Reference",
@@ -740,6 +745,7 @@
     },
     "create_contract_screen": {
         "lbl_new_permission": "New Permission",
+        "lbl_select_role": "Select Role",
         "lbl_select_object": "Select Object",
         "lbl_start_date": "Start Date",
         "lbl_end_date": "End Date",
@@ -865,6 +871,8 @@
 
     "communication_screen": {
         "lbl_communication": "Communication",
+        "lbl_object":"Object",
+        "lbl_sender": "Sender",
         "lbl_messages": "Messages",
         "lbl_date": "Date",
         "lbl_title": "Title",

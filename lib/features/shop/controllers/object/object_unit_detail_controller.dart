@@ -31,6 +31,23 @@ class ObjectUnitDetailController extends GetxController {
   RxList<PermissionModel> allObjectUnitContracts = <PermissionModel>[].obs;
   RxList<PermissionModel> filteredObjectUnitContracts = <PermissionModel>[].obs;
 
+  @override
+  Future<bool> deleteItem(UnitModel item) async {
+    final _objectRepository = ObjectRepository.instance;
+    final isDeleted = await _objectRepository.deleteUnit(
+      int.parse(item.id.toString()),
+    );
+      if (isDeleted) {
+    await loadAllUnits(); // <-- Refresh the list after deletion
+  }
+  return isDeleted;
+  }
+Future<void> loadAllUnits() async {
+  // fetch units from repository and assign to your RxList
+  //final units = await ObjectRepository.instance.fetchUnits();
+  // assign to your observable list
+  // e.g., allUnits.assignAll(units);
+}
   /// -- Load customer orders
   Future<void> getUsersOfCurrentUnit() async {
     try {

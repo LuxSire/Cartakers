@@ -3,16 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/features/shop/controllers/communication/communication_controller.dart';
-
+import 'package:xm_frontend/data/models/object_model.dart';
 import '../../../../../../../common/widgets/data_table/paginated_data_table.dart';
 import 'table_source.dart';
 
 class MessageTable extends StatelessWidget {
-  const MessageTable({super.key});
+  const MessageTable({super.key,this.object});
+
+  final ObjectModel? object;
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(CommunicationController());
+    final controller = Get.find<CommunicationController>();
+    controller.selectedObjectId.value = object?.id ?? -1;
+
     return Obx(() {
       // Buildings & Selected Rows are Hidden => Just to update the UI => Obx => [ProductRows]
       Visibility(
@@ -35,7 +39,7 @@ class MessageTable extends StatelessWidget {
             label: Text(
               AppLocalization.of(
                 context,
-              ).translate('general_msgs.msg_sent_schduled'),
+              ).translate('communication_screen.lbl_date'),
             ),
             // onSort:
             //     (columnIndex, ascending) =>
@@ -54,7 +58,7 @@ class MessageTable extends StatelessWidget {
             label: Text(
               AppLocalization.of(
                 context,
-              ).translate('communication_screen.lbl_recipients'),
+              ).translate('communication_screen.lbl_sender'),
             ),
           ),
           DataColumn2(
@@ -62,7 +66,7 @@ class MessageTable extends StatelessWidget {
             label: Text(
               AppLocalization.of(
                 context,
-              ).translate('communication_screen.lbl_channels'),
+              ).translate('communication_screen.lbl_object'),
             ),
           ),
           DataColumn2(

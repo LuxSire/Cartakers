@@ -3,27 +3,31 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
-
+import 'package:xm_frontend/features/shop/controllers/object/object_unit_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/object/object_unit_detail_controller.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../utils/constants/sizes.dart';
 import '../../../../../../utils/validators/validation.dart';
 import 'package:xm_frontend/features/personalization/controllers/company_controller.dart';
 
-class CreateObjectDialog extends StatelessWidget {
-  const CreateObjectDialog({super.key});
+class CreateUnitDialog extends StatelessWidget {
+  const CreateUnitDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(EditObjectController());
-    controller.resetFields();
+    final unitDetailController = Get.find<ObjectUnitDetailController>();
+    //controller.resetFields();
+    final unitController = Get.put<ObjectUnitController>(ObjectUnitController());
 
+    // Set the unit into controller (only once when screen builds)
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: TRoundedContainer(
         width: 500,
         padding: const EdgeInsets.all(TSizes.defaultSpace),
         child: Form(
-          key: controller.formKey,
+          //key: controller.formKey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,7 +39,7 @@ class CreateObjectDialog extends StatelessWidget {
                   Text(
                     AppLocalization.of(
                       context,
-                    ).translate('objects_screen.lbl_new_object'),
+                    ).translate('objects_screen.lbl_new_unit'),
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   IconButton(
@@ -46,106 +50,19 @@ class CreateObjectDialog extends StatelessWidget {
               ),
               const SizedBox(height: TSizes.spaceBtwInputFields),
 
-              // Name Text Field
-              TextFormField(
-                controller: controller.name,
-                validator:
-                    (value) => TValidator.validateEmptyText(
-                      AppLocalization.of(
-                        context,
-                      ).translate('objects_screen.lbl_object_name'),
-                      value,
-                    ),
-                decoration: InputDecoration(
-                  labelText: AppLocalization.of(
-                    context,
-                  ).translate('objects_screen.lbl_object_name'),
-                  prefixIcon: Icon(Iconsax.building),
-                ),
-              ),
               const SizedBox(height: TSizes.spaceBtwInputFields),
-
-              // City Text Field
-              TextFormField(
-                controller: controller.city,
-                validator: (value) => TValidator.validateEmptyText(
-                  AppLocalization.of(context).translate('objects_screen.lbl_city'),
-                  value,
-                ),
-                decoration: InputDecoration(
-                  labelText: AppLocalization.of(context).translate('objects_screen.lbl_city'),
-                  prefixIcon: Icon(Icons.location_city),
-                ),
-              ),
-                  const SizedBox(height: TSizes.spaceBtwInputFields),
-
-              // Country Text Field
-              TextFormField(
-                controller: controller.country,
-                validator: (value) => TValidator.validateEmptyText(
-                  AppLocalization.of(context).translate('objects_screen.lbl_country'),
-                  value,
-                ),
-                decoration: InputDecoration(
-                  labelText: AppLocalization.of(context).translate('objects_screen.lbl_country'),
-                  prefixIcon: Icon(Icons.location_city),
-                ),
-              ),
-              const SizedBox(height: TSizes.spaceBtwInputFields),
-
-              // Price Text Field
-              TextFormField(
-                controller: controller.price,
-                validator: (value) => TValidator.validateEmptyText(
-                  AppLocalization.of(context).translate('objects_screen.lbl_price'),
-                  value,
-                ),
-                decoration: InputDecoration(
-                  labelText: AppLocalization.of(context).translate('objects_screen.lbl_price'),
-                  prefixIcon: Icon(Icons.money),
-                ),
-              ),
-              const SizedBox(height: TSizes.spaceBtwInputFields),
-
-              // Street Text Field
-              TextFormField(
-                controller: controller.street,
-                validator: (value) => TValidator.validateEmptyText(
-                  AppLocalization.of(context).translate('objects_screen.lbl_street'),
-                  value,
-                ),
-                decoration: InputDecoration(
-                  labelText: AppLocalization.of(context).translate('objects_screen.lbl_street'),
-                  prefixIcon: Icon(Icons.location_on_outlined),
-                ),
-              ),
-              const SizedBox(height: TSizes.spaceBtwInputFields),
-
-              // Zip Code Text Field
-              TextFormField(
-                controller: controller.zipCode,
-                validator: (value) => TValidator.validateEmptyText(
-                  AppLocalization.of(context).translate('objects_screen.lbl_zip_code'),
-                  value,
-                ),
-                decoration: InputDecoration(
-                  labelText: AppLocalization.of(context).translate('objects_screen.lbl_zip_code'),
-                  prefixIcon: Icon(Icons.location_on_outlined),
-                ),
-              ),
-              const SizedBox(height: TSizes.spaceBtwInputFields),
-
+ 
               // Description Text Field
               TextFormField(
-                controller: controller.description,
+                controller: controller.unitdescription,
                 validator: (value) => TValidator.validateEmptyText(
-                  AppLocalization.of(context).translate('objects_screen.lbl_object_description'),
+                  AppLocalization.of(context).translate('edit_object_screen.lbl_description'),
                   value,
                 ),
                 minLines: 2,
                 maxLines: 10,
                 decoration: InputDecoration(
-                  labelText: AppLocalization.of(context).translate('objects_screen.lbl_object_description'),
+                  labelText: AppLocalization.of(context).translate('edit_object_screen.lbl_description'),
                   prefixIcon: Icon(Iconsax.building),
                 ),
               ),

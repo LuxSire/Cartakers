@@ -12,7 +12,7 @@ class UserModel {
   String email;
   String phoneNumber;
   String profilePicture;
-  String roleId;
+  int? roleId;
   String countryCode; // Added country code
   String roleName;
   String lang;
@@ -57,7 +57,7 @@ class UserModel {
     this.phoneNumber = '',
     this.profilePicture = '',
     this.displayName = '',
-    this.roleId = '',
+    this.roleId = 1,
     this.roleName = '',
     this.lang = '',
     this.companyId = 1,
@@ -147,7 +147,7 @@ class UserModel {
       userName: json['user_name'] ?? '',
       phoneNumber: json['phone_number'] ?? '',
       profilePicture: json['profile_pic'] ?? '',
-      roleId: json['role_id']?.toString() ?? '',
+      roleId: json['role_id']?.toInt() ?? 0,
       roleName: json['role_name'] ?? '',
       lang: json['lang'] ?? '',
       companyId: json['company_id']?.toInt() ?? 0,

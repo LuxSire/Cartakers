@@ -8,7 +8,7 @@ import 'package:xm_frontend/data/repositories/authentication/authentication_repo
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 import 'package:xm_frontend/features/shop/screens/settings_managements/dialogs/edit_user.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
-import 'package:xm_frontend/utils/constants/enums.dart';
+import 'package:xm_frontend/features/shop/controllers/object/object_controller.dart';import 'package:xm_frontend/utils/constants/enums.dart';
 import 'package:xm_frontend/utils/constants/image_strings.dart';
 import 'package:xm_frontend/utils/constants/sizes.dart';
 
@@ -18,7 +18,7 @@ class ProfileTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userController = Get.find<UserController>();
-
+   final objectController = Get.find<ObjectController>();
     // add post frame callback to ensure the controller is initialized
     WidgetsBinding.instance.addPostFrameCallback((_) {
       int id=userController.user.value.id != null
@@ -126,8 +126,8 @@ class ProfileTab extends StatelessWidget {
                         await controller.fetchUserDetailsById(
                           int.parse(user.id!),
                         );
-                      
-                        controller.loadAllObjects();
+
+                        objectController.loadAllObjects();
                         controller.loadAllUserRoles();
                         
                         await showDialog(

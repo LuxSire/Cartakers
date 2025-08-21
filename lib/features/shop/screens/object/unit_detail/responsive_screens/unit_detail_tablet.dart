@@ -12,7 +12,7 @@ import '../widgets/unit_users.dart';
 import '../widgets/unit_info.dart';
 
 class UnitDetailTabletScreen extends StatelessWidget {
-  const UnitDetailTabletScreen({super.key, required this.unit});
+  const UnitDetailTabletScreen({super.key,required this.unit});
 
   final UnitModel unit;
 
@@ -21,11 +21,12 @@ class UnitDetailTabletScreen extends StatelessWidget {
     // final controller = Get.put(UnitDetailController());
     // controller.order.value = order;
 
-    final unitDetailController = Get.find<ObjectUnitDetailController>();
+    final unitController = Get.find<ObjectUnitController>();
 
+    final unit = unitController.unit.value;
     final objectId = unit.objectId;
 
-    final unitController = Get.put(ObjectUnitController());
+
 
     // Set the unit into controller (only once when screen builds)
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -48,8 +49,7 @@ class UnitDetailTabletScreen extends StatelessWidget {
                 children: [
                   // Breadcrumbs
                   TBreadcrumbsWithHeading(
-                    onreturnUpdated:
-                        () => unitDetailController.isDataUpdated.value,
+                    //onreturnUpdated:    () => unitDetailController.isDataUpdated.value,
 
                     returnToPreviousScreen: true,
                     heading: unit.unitNumber!,
@@ -71,11 +71,11 @@ class UnitDetailTabletScreen extends StatelessWidget {
                             child: Column(
                               children: [
                                 // Unit Info
-                                const UnitInfo(),
+                                UnitInfo(),
                                 const SizedBox(height: TSizes.spaceBtwSections),
 
                                 // Contract history
-                                UnitContracts(unit: unit),
+                          //      UnitContracts(unit: unit),
                                 const SizedBox(height: TSizes.spaceBtwSections),
                               ],
                             ),
@@ -87,7 +87,7 @@ class UnitDetailTabletScreen extends StatelessWidget {
                             child: Column(
                               children: [
                                 // Tenants Info
-                                const UnitUsers(),
+                              //  const UnitUsers(),
                                 const SizedBox(height: TSizes.spaceBtwSections),
                               ],
                             ),
@@ -98,7 +98,7 @@ class UnitDetailTabletScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // Unit Info
-                          const UnitInfo(),
+                          UnitInfo(),
                           const SizedBox(height: TSizes.spaceBtwSections),
 
                           // Users Info

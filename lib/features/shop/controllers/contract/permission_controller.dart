@@ -724,7 +724,7 @@ class PermissionController extends TBaseController<PermissionModel> {
     }
   }
 
-  Future<bool> createPermission(int userId, int objectId) async {
+  Future<bool> createPermission(int userId, int objectId,int roleId) async {
     try {
       // Start Loading
       loading.value = true;
@@ -739,7 +739,8 @@ class PermissionController extends TBaseController<PermissionModel> {
 
       isRemoved = await _permissionRepository.createPermission(
         userId,
-        objectId
+        objectId,
+        roleId
       );
 
       // Remove Loader

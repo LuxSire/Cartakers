@@ -27,7 +27,7 @@ class ObjectController extends TBaseController<ObjectModel> {
     // also get user object restrictions
     final updatedUser = await userController.fetchUserDetails();
 
-    debugPrint('Updated User in controller: ${updatedUser.toJson()}');
+    debugPrint('Updated objecs in controller: ${result }');
 
     final userObjectRestrictions = updatedUser.objectPermissionIds ?? [];
     
@@ -47,9 +47,8 @@ class ObjectController extends TBaseController<ObjectModel> {
     }).toList();
 
     allObjects.assignAll(result);
-    filteredObjects.assignAll(filteredObjects);
-
-    filteredItems.value = filteredObjects;
+    filteredObjects.assignAll(result);
+    filteredItems.assignAll(result);
     selectedRows.value = List<bool>.filled(allObjects.length, false);
     // debugPrint('Filtered buildings: ${filteredItems.length}');
   }

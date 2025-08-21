@@ -6,17 +6,19 @@ import 'package:xm_frontend/features/shop/screens/user/widgets/user_requests_tab
 import 'package:xm_frontend/features/shop/screens/user/widgets/user_tab.dart';
 import 'package:xm_frontend/features/shop/screens/users_permissions/widgets/permissions_tab.dart';
 import 'package:xm_frontend/features/shop/screens/users_permissions/widgets/users_tab.dart';
+import 'package:xm_frontend/data/models/object_model.dart';
 
 class CommunicationDetailsTab extends StatelessWidget {
   final String tabType;
+  final ObjectModel? object;
 
-  const CommunicationDetailsTab({super.key, required this.tabType});
+  const CommunicationDetailsTab({super.key, required this.tabType,this.object});
 
   @override
   Widget build(BuildContext context) {
     switch (tabType) {
       case 'messages':
-        return MessagesTab();
+        return MessagesTab(object: object);
       case 'permissions':
         return PermissionsTab();
 

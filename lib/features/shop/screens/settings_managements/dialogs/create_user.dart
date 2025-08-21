@@ -24,7 +24,7 @@ class CreateUserDialog extends StatelessWidget {
     final companyController = Get.find<CompanyController>();
     controller.resetUserDetails();
 
-    controller.loadAllObjects();
+    companyController.loadAllObjects();
     controller.loadAllUserRoles();
   // Debug print user roles
     debugPrint('User roles loaded: ${controller.userRolesList.map((r) => '${r.id}:${r.nameTranslated}').toList()}');

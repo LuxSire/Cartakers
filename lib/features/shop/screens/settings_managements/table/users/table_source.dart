@@ -8,6 +8,7 @@ import 'package:xm_frontend/features/personalization/controllers/user_controller
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
 import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 //import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/object/object_controller.dart';
 import 'package:xm_frontend/features/shop/screens/settings_managements/dialogs/edit_user.dart';
 //import 'package:xm_frontend/features/shop/screens/user/dialogs/edit_user.dart';
 import 'package:xm_frontend/routes/routes.dart';
@@ -36,14 +37,14 @@ class UserRows extends DataTableSource {
       onTap: () async {
         final userId = user.id.toString();
         final controller = Get.find<UserController>();
-
+        final objectController = Get.find<ObjectController>();
         // reset the values before fetching
         controller.resetUserDetails();
 
         // Fetch the user BEFORE opening the dialog
         await controller.fetchUserDetailsById(int.parse(userId));
 
-        controller.loadAllObjects();
+        objectController.loadAllObjects();
         controller.loadAllUserRoles();
 
         // await showDialog(
@@ -160,14 +161,14 @@ class UserRows extends DataTableSource {
             onEditPressed: () async {
               final userId = user.id.toString();
               final controller = Get.find<UserController>();
-
+              final objectController = Get.find<ObjectController>();
               // reset the values before fetching
               controller.resetUserDetails();
 
               // Fetch the user BEFORE opening the dialog
               await controller.fetchUserDetailsById(int.parse(userId));
 
-              controller.loadAllObjects();
+              objectController.loadAllObjects();
               controller.loadAllUserRoles();
 
               // await showDialog(

@@ -30,14 +30,18 @@ class App extends StatelessWidget {
     // find your controller once
     final appCtrl = Get.find<AppController>();
     final themeService = Get.find<ThemeService>();
+    debugPrint('App started with themes: ${themeService.lightTheme}, ${themeService.darkTheme}');
     // wrap your GetMaterialApp in Obx to react to changes
     return Obx(() {
       // keep Intl in sync
       Intl.defaultLocale = appCtrl.locale.value.toString();
-
+    
       return GetMaterialApp(
         title: TTexts.appName,
         debugShowCheckedModeBanner: false,
+
+    
+
 
         // ─── THEMES ─────────────────────────────────────────
 theme: themeService.lightTheme,

@@ -4,6 +4,7 @@ import 'package:iconsax/iconsax.dart';
 //import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/object/object_controller.dart';
 //import 'package:xm_frontend/features/personalization/models/user_model.dart';
 //import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
 //import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
@@ -27,12 +28,13 @@ class CreateUserDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<UserController>();
+    final object_controller=Get.find<ObjectController>();
     controller.resetFields();
 
     if (!displayObjects) {
       controller.selectedObjectId.value = objectId ?? 0;
     } else {
-      controller.loadAllObjects();
+      object_controller.loadAllObjects();
     }
 
     return Dialog(

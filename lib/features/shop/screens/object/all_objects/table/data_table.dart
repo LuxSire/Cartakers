@@ -12,7 +12,7 @@ class ObjectTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ObjectController());
+    final controller = Get.find<ObjectController>();
 
     // add post frame callback to ensure data is loaded after first build
     WidgetsBinding.instance.addPostFrameCallback((_) {

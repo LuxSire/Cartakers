@@ -270,9 +270,11 @@ class CreateContractDialog extends StatelessWidget {
                                   if (controller.selectedObjectId.value != 0 && controller.selectedUserId.value != 0) {
                                     int selectedUserId = controller.selectedUserId.value;
                                     int selectedObjectId = controller.selectedObjectId.value;
+                                    int selectedRoleId= u_controller.selectedRoleId.value;
                                     controller.createPermission(
                                       selectedUserId,
                                       selectedObjectId,
+                                      selectedRoleId,
                                     );
                                   } else {
                                     TLoaders.errorSnackBar(

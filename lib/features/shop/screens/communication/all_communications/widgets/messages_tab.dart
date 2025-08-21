@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:xm_frontend/features/shop/screens/communication/all_communications/table/message/data_table.dart';
 import 'package:xm_frontend/features/shop/screens/communication/all_communications/table/message/table_header.dart';
-
+import 'package:xm_frontend/data/models/object_model.dart';
 import 'package:xm_frontend/utils/constants/sizes.dart';
 
 class MessagesTab extends StatelessWidget {
-  const MessagesTab({super.key});
+  const MessagesTab({super.key,this.object});
+
+  final ObjectModel? object;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,9 @@ class MessagesTab extends StatelessWidget {
           SizedBox(height: TSizes.spaceBtwItems),
 
           // Table
-          MessageTable(),
+          Expanded(
+            child: MessageTable(object: object),
+          ),
         ],
       ),
     );

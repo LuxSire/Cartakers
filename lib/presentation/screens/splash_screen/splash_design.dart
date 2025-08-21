@@ -63,7 +63,7 @@ class _SplashDesignState extends State<SplashDesign> {
                 ),
                 const SizedBox(height: 20),
                 const Text(
-                  "XM Dashboard",
+                  "XM",
                   style: TextStyle(
                     fontSize: 32,
                     color: Colors.white,

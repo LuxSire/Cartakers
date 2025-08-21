@@ -77,6 +77,17 @@ class PermissionsTable extends StatelessWidget {
                 (columnIndex, ascending) =>
                     controller.sortByObject(columnIndex, ascending),
           ),
+                    DataColumn2(
+            fixedWidth: 180,
+            label: Text(
+              AppLocalization.of(
+                context,
+              ).translate('users_screen.lbl_role'),
+            ),
+            onSort:
+                (columnIndex, ascending) =>
+                    controller.sortByObject(columnIndex, ascending),
+          ),
           DataColumn2(
             fixedWidth: 150,
             label: Text(

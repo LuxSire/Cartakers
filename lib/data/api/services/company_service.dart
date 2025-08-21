@@ -56,7 +56,7 @@ class CompanyService extends BaseService {
       final body = {'company_id': companyId, ...payload};
 
       // POST to your create‐message endpoint
-      final response = await post(ApiEndpoints.createCompanyMessage, body);
+      final response = await post(ApiEndpoints.createChatCompanyMessage, body);
 
       return response as Map<String, dynamic>;
     } catch (error, stack) {

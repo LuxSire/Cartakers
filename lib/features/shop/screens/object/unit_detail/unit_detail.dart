@@ -14,9 +14,10 @@ class UnitDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final unit = Get.arguments;
-
+    debugPrint('UnitDetailDesktopScreen build called with unit: ${unit.unitNumber}');
     return unit != null
         ? TSiteTemplate(
+
           desktop: UnitDetailDesktopScreen(unit: unit),
           tablet: UnitDetailTabletScreen(unit: unit),
           mobile: UnitDetailMobileScreen(unit: unit),

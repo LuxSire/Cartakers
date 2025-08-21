@@ -18,6 +18,7 @@ import '../../../utils/popups/full_screen_loader.dart';
 import '../../../utils/popups/loaders.dart';
 import '../../media/models/image_model.dart';
 import '../models/user_model.dart';
+import '../models/company_model.dart';
 
 /// Controller for managing admin-related data and operations
 class UserController extends TBaseController<UserModel> {
@@ -51,15 +52,17 @@ class UserController extends TBaseController<UserModel> {
   var userModel = UserModel.empty().obs; // Make it observable
 
   // Dependencies
-  final userRepository = Get.find<UserRepository>();
-  final _objectRepository = Get.put(ObjectRepository());
+  final userRepository = Get.put(UserRepository());
+  //final _objectRepository = Get.find<ObjectRepository>();
 
   RxList<ObjectModel> objectsList = <ObjectModel>[].obs;
   RxList<UserRoleModel> userRolesList = <UserRoleModel>[].obs;
+  RxList<CompanyModel> companiesList = <CompanyModel>[].obs;
 
   var selectedObjectIds = <int>[].obs;
 
   final selectedRoleId = 0.obs;
+  final selectedCompanyId = 0.obs;
 
   RxBool filtersApplied = false.obs; // Track if filters are applied
 
@@ -119,10 +122,9 @@ class UserController extends TBaseController<UserModel> {
       debugPrint('User Details Refreshed: ${user.value.toJson()}');
       return userR;
     } catch (e) {
-      TLoaders.errorSnackBar(
-        title: 'Something went wrong.',
-        message: e.toString(),
-      );
+       debugPrint('Error fetching user details: $e');
+      //TLoaders.errorSnackBa    title: 'Something went wrong.',message: e.toString(),
+      
       return UserModel.empty();
     }
   }
@@ -144,7 +146,7 @@ class UserController extends TBaseController<UserModel> {
       //  loading.value = false;
     }
   }
-
+/*
   void loadAllObjects() async {
     try {
       final result = await _objectRepository.getAllObjects();
@@ -157,7 +159,7 @@ class UserController extends TBaseController<UserModel> {
       //  loading.value = false;
     }
   }
-
+*/
   void toggleObject(int id) {
     if (selectedObjectIds.contains(id)) {
       selectedObjectIds.remove(id);
@@ -480,21 +482,23 @@ if (!formKey.currentState!.validate()) {
       debugPrint('Is User Refreshed: $isUserUpdated');
 
 
-      if (isUserUpdated)   {
- 
-        SchedulerBinding.instance.addPostFrameCallback((_) {
-          debugPrint('User Updated: ${user.value.toJson()}');
-          Get.back(result: user);
-        });
+if (isUserUpdated) {
+  SchedulerBinding.instance.addPostFrameCallback((_) {
+    debugPrint('User Updated: ${user.value.toJson()}');
+    Get.back(result: user);
+
+    // Show snackbar after navigation and context is available
+    Future.delayed(const Duration(milliseconds: 200), () {
+      if (Get.context != null) {
         TLoaders.successSnackBar(
-          title: AppLocalization.of(
-            Get.context!,
-          ).translate('general_msgs.msg_info'),
-          message: AppLocalization.of(
-            Get.context!,
-          ).translate('general_msgs.msg_data_updated'),
+          title: AppLocalization.of(Get.context!).translate('general_msgs.msg_info'),
+          message: AppLocalization.of(Get.context!).translate('general_msgs.msg_data_updated'),
         );
-      } else {
+      }
+    });
+  });
+}
+ else {
         TLoaders.errorSnackBar(
           title: AppLocalization.of(
             Get.context!,

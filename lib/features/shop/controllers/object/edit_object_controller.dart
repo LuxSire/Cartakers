@@ -16,6 +16,7 @@ import 'package:xm_frontend/utils/popups/full_screen_loader.dart';
 import 'package:xm_frontend/data/repositories/media/media_repository.dart';
 import '../../../../utils/helpers/network_manager.dart';
 import '../../../../utils/popups/loaders.dart';
+import 'package:intl/intl.dart';
 //import '../../../media/models/image_model.dart';
 
 class EditObjectController extends GetxController {
@@ -66,6 +67,10 @@ class EditObjectController extends GetxController {
   final country = TextEditingController();
   final yieldNet = TextEditingController();
   final yieldGross = TextEditingController();
+  final unitdescription=TextEditingController();
+  final unitsqm=TextEditingController();
+  final noi=TextEditingController();
+  final caprate=TextEditingController();
 
   RxInt sortColumnIndex = 1.obs;
   RxBool sortAscending = true.obs;
@@ -108,6 +113,8 @@ class EditObjectController extends GetxController {
     occupancyList.assignAll((await repository.getAllOccupancies()).toSet().toList());
     zoningList.assignAll((await repository.getAllZonings()).toSet().toList());
     typeList.assignAll((await repository.getAllTypes()).toSet().toList());
+    debugPrint('Occupancy list: $occupancyList');
+    debugPrint('Zoning list: $zoningList');
   }
 
   /// Init Data
@@ -120,7 +127,7 @@ class EditObjectController extends GetxController {
     owner.text = object.owner?.toString() ?? '';
     status.text = object.status?.toString() ?? '';
     type_.text = object.type_ ?? 'Office';
-    price.text = object.price?.toString() ?? '';
+    price.text = NumberFormat('#,###').format(object.price) ?? '';
     street.text = object.street ?? '';
     zipCode.text = object.zipCode ?? '';
     location.text = object.location ?? '';
@@ -132,6 +139,8 @@ class EditObjectController extends GetxController {
     currency.text = object.currency ?? 'EUR';
     companyId.text=object.companyId.toString() ?? '';
     country.text = object.country ?? '';
+    noi.text=object.noi.toString() ??'';
+    caprate.text=object.caprate.toString() ?? '';
     // Fetch object images
     getObjectImages(object);
   } 
@@ -159,25 +168,53 @@ class EditObjectController extends GetxController {
     yieldGross.clear();
     yieldNet.clear();
     loading(false);
+    noi.clear();
+    caprate.clear();
   }
 
 
-  void updateUnitRoom(UnitModel unit, UnitRoomModel newRoom) {
+  void updateUnitRoom(UnitModel unit, UnitRoomModel newRoom) 
+  {
     unit.pieceId = newRoom.id; // or however you store ID
     unit.pieceName = newRoom.piece; // display name
     // trigger your API call if you want
-    repository.updateUnitRoom(int.parse(unit.id!), int.parse(newRoom.id!)).then(
-      (success) {
-        if (!success) {
-          // optionally show an error or revert
-        }
+    if (unit.id != null) {
+      repository.updateUnitRoom(unit.id!, int.parse(newRoom.id!)).then(
+        (success) {
+          if (!success) {
+            // optionally show an error or revert
+          }
       },
     );
     // tell the table to refresh
     update();
   }
+  }
 
-
+  Future<bool> updateUnitDetails(UnitModel unit) async {
+    unit.description = unitdescription.text;
+    debugPrint('Updating unit details: ${unit.description}');
+    // trigger your API call if you want
+    bool success = await repository.updateUnitDetails(unit);
+    if (!success) {
+      // optionally show an error or revert
+      return false;
+    }
+    // tell the table to refresh
+    debugPrint('Updated unit details: ${unit.description}');
+    refresh();
+    return true;
+  } 
+  Future<bool> CreateUnit(ObjectModel o) async {
+    // trigger your API call if you want
+    bool success = await repository.createUnit(o.id!);
+    if (!success) {
+      // optionally show an error or revert
+      return false;
+    }
+    refresh();
+    return true;
+  } 
   Future<void> getObjectUnits(ObjectModel object) async {
     try {
       // Show loader while loading categories
@@ -210,7 +247,8 @@ class EditObjectController extends GetxController {
       unitsLoading.value = false;
     }
   }
-  /// Fetch object images from repository
+  /// Fetch object image
+  /// s from repository
   Future<void> getObjectImages(ObjectModel object) async {
     try {
       if (object.id != null  ) {
@@ -253,7 +291,7 @@ class EditObjectController extends GetxController {
     filteredObjectUnits.assignAll(
       allObjectUnits.where(
         (unit) =>
-            unit.id!.toLowerCase().contains(query.toLowerCase()) ||
+            unit.description!.toLowerCase().contains(query.toLowerCase()) ||
             unit.unitNumber.toString().contains(query.toLowerCase()),
       ),
     );
@@ -280,7 +318,7 @@ class EditObjectController extends GetxController {
     update();
   }
 
-  void pickImage() async {
+  void pickImage(ObjectModel object) async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.image,
       allowMultiple: false,
@@ -294,6 +332,7 @@ class EditObjectController extends GetxController {
       hasImageChanged.value = true;
 
       imageURL.value = file.name;
+      _objectRepository.updateObjectDetails(object);
     }
   }
 
@@ -435,29 +474,60 @@ class EditObjectController extends GetxController {
       );
     }
   }
-
+  @override
+  Future<bool> deleteItem(UnitModel item) async {
+    final _objectRepository = ObjectRepository.instance;
+    final isDeleted = await _objectRepository.deleteUnit(
+      int.parse(item.id.toString()),
+    );
+    debugPrint('Deleting unit ${item.id} - Success: $isDeleted');
+      if (isDeleted) {
+          await loadAllUnits(); // <-- Refresh the list after deletion
+  }
+  return isDeleted;
+  }
+Future<void> loadAllUnits() async {
+  try {
+    unitsLoading.value = true;
+    // Fetch units for the current objectInstance
+    if (objectInstance.id != null) {
+      final units = await ObjectRepository.instance.fetchObjectUnits(objectInstance.id!);
+      allObjectUnits.assignAll(units ?? []);
+      filteredObjectUnits.assignAll(units ?? []);
+      // Update selectedRows as well if needed
+      selectedRows.assignAll(List.generate(units?.length ?? 0, (index) => false));
+    }
+  } catch (e) {
+    TLoaders.errorSnackBar(title: 'Error', message: e.toString());
+  } finally {
+    unitsLoading.value = false;
+  }
+}
   ///
   Future<void> updateObject(ObjectModel object) async {
     try {
       // Start Loading
       TFullScreenLoader.popUpCircular();
 
+      debugPrint('Updating object ${object.name}');
       // Check Internet Connectivity
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) {
         TFullScreenLoader.stopLoading();
         return;
       }
-
+      /*
       // Form Validation
       if (!formKey.currentState!.validate()) {
         TFullScreenLoader.stopLoading();
         return;
       }
+      */
+      debugPrint('Form Validated ${object.name}');
 
       // Is Data Updated
       bool isObjectUpdatedSuccessfully = false;
-
+      final rawPrice = price.text.replaceAll(RegExp(r'[^\d]'), '').trim();
       // Map Data
       object.companyId=int.tryParse(companyId.text.trim());
       object.name = name.text.trim();
@@ -470,7 +540,7 @@ class EditObjectController extends GetxController {
       object.owner = int.tryParse(owner.text.trim());
       object.status = int.tryParse(status.text.trim());
       object.type_ = type_.text.trim();
-      object.price = double.tryParse(price.text.trim());
+      object.price = double.tryParse(rawPrice);
       object.street = street.text.trim();
       object.zipCode = zipCode.text.trim();
       object.location = location.text.trim();
@@ -486,6 +556,8 @@ class EditObjectController extends GetxController {
 
       // Remove Loader
       TFullScreenLoader.stopLoading();
+
+      debugPrint('Updated object updated successfully ${isObjectUpdatedSuccessfully}');
 
       if (isObjectUpdatedSuccessfully) {
         // update ObjectUnits controller

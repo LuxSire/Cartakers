@@ -4,7 +4,7 @@ import 'package:xm_frontend/data/models/permission_model.dart';
 import 'package:xm_frontend/utils/formatters/formatter.dart';
 
 class UnitModel {
-  final String? id;
+  final int? id;
   final int? objectId;
   final String? unitNumber;
   DateTime? createdAt;
@@ -19,6 +19,7 @@ class UnitModel {
   String? contractCode;
   int? currentContractId;
   String? userNames;
+  int? sqm;
 
   String? objectName; // building name
 
@@ -41,12 +42,13 @@ class UnitModel {
     this.userNames,
     this.objectName ,
     this.description,
+    this.sqm
   });
 
   // Convert JSON response to UnitModel
   factory UnitModel.fromJson(Map<String, dynamic> json) {
     return UnitModel(
-      id: json['id']?.toString() ?? '',
+      id: json['id'] ?? 0,
       objectId: json['object_id'] ?? 0,
       unitNumber: json['unit_number']?.toString() ?? '',
       createdAt:
@@ -62,12 +64,13 @@ class UnitModel {
           json['updated_at'] != null
               ? DateTime.parse(json['updated_at'])
               : DateTime.now(),
-      userCount: json['user_count'] ?? 0,
+        
       contractCode: json['contract_code'] ?? '',
       currentContractId: json['current_contract_id'] ?? 0,
       userNames: json['user_names'] ?? '',
       objectName: json['object_name'] ?? '',
       description: json['description'] ?? '', // Added description parsing
+      sqm: json['sqm'] ?? 0,
     );
   }
 
@@ -90,6 +93,7 @@ class UnitModel {
       'user_names': userNames,
       'object_name': objectName,
       'description' : description, // Added description to JSON
+      'sqm': sqm, 
     };
   }
 
@@ -98,7 +102,7 @@ class UnitModel {
   /// Static function to create an empty request model.
   static UnitModel empty() => UnitModel(
     // unitNumber: 'B1-101',
-    id: '',
+    id: 0,
     // updatedAt: DateTime.parse('2025-01-01 00:00:00'),
     // floorNumber: '7',
     // statusId: 1,

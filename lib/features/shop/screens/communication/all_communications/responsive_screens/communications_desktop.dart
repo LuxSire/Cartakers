@@ -11,12 +11,13 @@ import 'package:xm_frontend/features/shop/screens/communication/all_communicatio
 import 'package:xm_frontend/features/shop/screens/user/all_users/widgets/table_header.dart';
 import 'package:xm_frontend/features/shop/screens/users_permissions/widgets/users_permissions_detail_tab.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
-
+import 'package:xm_frontend/data/models/object_model.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../utils/constants/sizes.dart';
 
 class CommunicationDesktopScreen extends StatelessWidget {
-  const CommunicationDesktopScreen({super.key});
+  final ObjectModel? object;
+  const CommunicationDesktopScreen({super.key, this.object});
 
   @override
   Widget build(BuildContext context) {

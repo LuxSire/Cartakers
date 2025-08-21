@@ -661,6 +661,9 @@
   },
   "edit_object_screen": {
     "lbl_object_details": "Objektdetails",
+    "lbl_noi": "Net Operating Income",
+    "lbl_caprate": "Capitalization Rate",
+    "btn_create_unit": "Einheit erstellen",
     "lbl_update_object": "Objekt aktualisieren",
     "lbl_description": "Beschreibung",
     "lbl_units": "Einheiten",
@@ -670,6 +673,7 @@
     "lbl_date_created": "Erstellungsdatum",
     "lbl_update": "Aktualisieren",
     "lbl_unit_#": "Einheit Nr.",
+    "lbl_sqm": "Vq",
     "lbl_floor": "Stock",
     "lbl_room": "Zimmer",
     "lbl_tenants": "Mieter",
@@ -752,6 +756,7 @@
     "lbl_contracts": "Verträge",
     "lbl_search_contracts": "Verträge suchen",
     "lbl_select_users": "Benutzer auswählen",
+    "lbl_select_role":"Rolle auswählen",
     "error_msg_please_select_at_least_one_user": "Bitte wählen Sie mindestens einen Benutzer aus"
   },
   "amenity_zone_screen": {
@@ -883,6 +888,7 @@
 "communication_screen": {
     "lbl_communication": "Kommunikation",
     "lbl_messages": "Nachrichten",
+    "lbl_sender": "Sender",
     "lbl_date": "Datum",
     "lbl_title": "Titel",
     "lbl_content": "Inhalt",

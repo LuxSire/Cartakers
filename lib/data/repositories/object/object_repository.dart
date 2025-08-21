@@ -26,6 +26,7 @@ import 'package:xm_frontend/features/shop/controllers/object/edit_object_control
 import 'package:path_provider/path_provider.dart';
 import 'package:xm_frontend/data/repositories/media/media_repository.dart';
 import 'package:path/path.dart' as p;
+import 'package:xm_frontend/data/models/message_model.dart';
 
 /// Repository class for user-related operations.
 class ObjectRepository extends GetxController {
@@ -94,6 +95,42 @@ class ObjectRepository extends GetxController {
     }
   }
 
+
+  Future<List<MessageModel>> fetchAllObjectMessages(int objectId) async {
+    try { 
+
+      final List<Map<String, dynamic>> responseList = await _objectService
+          .getAllObjectMessages(objectId);
+
+      if (responseList.isEmpty) return [];
+
+      return responseList
+          .map((data) => MessageModel.fromJson(data))
+          .toList();
+    } catch (e) {
+      debugPrint('Error in fetchAllMessages: $e');
+      return [];
+    }
+  }
+
+  Future<List<MessageModel>> fetchAllMessages() async {
+    try { 
+
+      debugPrint('Fetching all messages from object service');
+      final List<Map<String, dynamic>> responseList = await _objectService
+          .getAllMessages();
+
+      debugPrint('Fetching all messages from object service: $responseList');
+      if (responseList.isEmpty) return [];
+
+      return responseList
+          .map((data) => MessageModel.fromJson(data))
+          .toList();
+    } catch (e) {
+      debugPrint('Error in fetchAllMessages: $e');
+      return [];
+    }
+  }
   /// Function to fetch all buildings from mysql.
   Future<List<String>> getAllZonings() async {
     try {
@@ -127,10 +164,10 @@ class ObjectRepository extends GetxController {
         debugPrint('No objects found.');
         return [];
       } else if (response is String) {
-        debugPrint('Error fetching occupancie§: $response');
+        debugPrint('Error fetching occupancies: $response');
         return [];
       } else {
-        debugPrint('Fetched occupancie§: ${response.length}');
+        debugPrint('Fetched occupancies: ${response.length}');
       }
       return response.map((z) => z['name'].toString()).toList();
    
@@ -552,7 +589,21 @@ class ObjectRepository extends GetxController {
       //rethrow;
     }
   }
+  Future<bool> deleteUnit(int id) async {
+    try {
+      final response = await _objectService.deleteUnitById(id);
 
+      if (response['success'] != true) {
+        throw Exception('Failed to delete unit: ${response['message']}');
+      }
+
+      return true;  
+    } catch (e) {
+      debugPrint('Error deleting unit: $e');
+      return false;
+      }
+  }
+  
   Future<bool> deleteObjectDirectory(String container, directory) async {
     try {
       final response = await _objectService.deleteObjectDirectory(
@@ -571,6 +622,16 @@ class ObjectRepository extends GetxController {
       debugPrint('Error deleting user directory: $e');
       return false;
       //rethrow;
+    }
+  }
+
+  Future<void> sendMessage(Map<String, dynamic> payload) async {
+    try {
+      // if your API needs companyId or userId in the URL, grab it here:
+      await _objectService.sendMessage(  payload);
+    } catch (e, st) {
+      debugPrint('Error in sendMessage: $e\n$st');
+      rethrow;
     }
   }
 
@@ -854,6 +915,38 @@ class ObjectRepository extends GetxController {
       return true;
     } catch (e) {
       debugPrint('Error updating building unit room: $e');
+      return false;
+    }
+  }
+  Future<bool> updateUnitDetails(UnitModel unit) async {
+    try {
+      final result = await _objectService.updateUnitDetails(
+        unit.id,unit.description,unit.sqm // pieceId is the room ID
+      );
+
+      if (result['success'] == false) {
+        debugPrint('Error updating unit room : ${result['message']}');
+        return false;
+      }
+
+      return true;
+    } catch (e) {
+      debugPrint('Error updating unit details: $e');
+      return false;
+    }
+  }
+  Future<bool> createUnit(int objectId) async {
+    try {
+      final result = await _objectService.createUnit(objectId);
+
+      if (result['success'] == false) {
+        debugPrint('Error creating unit: ${result['message']}');
+        return false;
+      }
+
+      return true;
+    } catch (e) {
+      debugPrint('Error creating unit: $e');
       return false;
     }
   }

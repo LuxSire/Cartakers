@@ -15,7 +15,7 @@ class ObjectsDesktopScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ObjectController());
+    final controller = Get.find<ObjectController>();
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(

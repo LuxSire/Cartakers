@@ -16,9 +16,12 @@ class UnitDetailDesktopScreen extends StatelessWidget {
 
   final UnitModel unit;
 
+
+
   @override
   Widget build(BuildContext context) {
     final unitDetailController = Get.find<ObjectUnitDetailController>();
+    unitDetailController.unit.value = unit;
 
     final objectId = unit.objectId;
 
@@ -26,7 +29,7 @@ class UnitDetailDesktopScreen extends StatelessWidget {
     //   BuildingUnitController(buildingId: int.parse(buildingId.toString())),
     // );
 
-    final unitController = Get.put(ObjectUnitController());
+    final unitController = Get.put<ObjectUnitController>(ObjectUnitController());
 
     // Set the unit into controller (only once when screen builds)
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -59,12 +62,12 @@ class UnitDetailDesktopScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         // Unit Info
-                        const UnitInfo(),
+                        UnitInfo(),
                         const SizedBox(height: TSizes.spaceBtwSections),
 
                         // history
-                        UnitContracts(unit: unit),
-                        const SizedBox(height: TSizes.spaceBtwSections),
+                        //UnitContracts(unit: unit),
+                        //const SizedBox(height: TSizes.spaceBtwSections),
                       ],
                     ),
                   ),
@@ -74,8 +77,8 @@ class UnitDetailDesktopScreen extends StatelessWidget {
                   Expanded(
                     child: Column(
                       children: [
-                        // Tenants Info
-                        const UnitUsers(),
+                        // Users Info
+                        //const UnitUsers(),
                         const SizedBox(height: TSizes.spaceBtwSections),
                       ],
                     ),
@@ -88,4 +91,10 @@ class UnitDetailDesktopScreen extends StatelessWidget {
       ),
     );
   }
+  @override
+void dispose() {
+  //Get.delete<ObjectUnitController>();
+
+}
+
 }

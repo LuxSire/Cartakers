@@ -657,12 +657,16 @@
         },
     "edit_object_screen": {
         "lbl_object_details": "Détails de l'objet",
+        "lbl_noi": "Net Operating Income",
+        "lbl_caprate": "Capitalization Rate",
+        "btn_create_unit": "Créer une unité",
         "lbl_update_object": "Mettre à jour l'objet",
         "lbl_company": "Société",
         "lbl_units": "Unités",
         "lbl_description": "Description",
         "lbl_floors": "Étages",
         "lbl_rooms": "Chambres",
+        "lbl_sqm": "Mq",
         "lbl_yieldnet": "Rendement net",
         "lbl_yieldgross": "Rendement brut",
         "lbl_search_units": "Rechercher des unités",
@@ -740,6 +744,7 @@
     },
     "create_contract_screen": {
         "lbl_new_permission": "Nouveau droit",
+        "lbl_select_role": "Sélectionner un rôle",
         "lbl_start_date": "Date de début",
         "lbl_end_date": "Date de fin",
         "lbl_status": "Statut",
@@ -882,6 +887,7 @@
 "communication_screen": {
     "lbl_communication": "Communication",
     "lbl_messages": "Messages",
+    "lbl_sender": "Expéditeur",
     "lbl_date": "Date",
     "lbl_title": "Titre",
     "lbl_content": "Contenu",

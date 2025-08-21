@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/data/models/request_model.dart';
+import 'package:xm_frontend/data/models/message_model.dart';
 import 'package:xm_frontend/features/shop/controllers/communication/communication_controller.dart';
+import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
+import 'package:xm_frontend/features/personalization/controllers/company_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/object/object_controller.dart';
 import 'package:xm_frontend/features/shop/screens/communication/all_communications/dialogs/view_message.dart';
 import 'package:xm_frontend/routes/routes.dart';
 import 'package:xm_frontend/utils/formatters/formatter.dart';
@@ -15,11 +19,14 @@ import '../../../../../../../utils/constants/sizes.dart';
 
 class MessageRows extends DataTableSource {
   final controller = CommunicationController.instance;
+  final userController = Get.find<UserController>();
+  final companyController = Get.find<CompanyController>();
+  final objectController = Get.find<ObjectController>(); // or use objectsList from CommunicationController
 
   @override
   DataRow? getRow(int index) {
     final message = controller.filteredItems[index];
-
+    
     String displayDate;
     if (message.scheduledAt != null) {
       // Message is scheduled but not yet sent
@@ -80,39 +87,35 @@ class MessageRows extends DataTableSource {
 
         /// Recipients: Show up to 1 or 2 entries then ellipsis
         DataCell(
-          Tooltip(
-            message: message.recipients
-                .map(
-                  (r) =>
-                      r.recipientLabel ??
-                      '${r.recipientType} #${r.recipientId}',
-                )
-                .join(', '),
-            child: Text(
-              _buildRecipientPreview(message.recipients),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-            ),
+          Builder(
+            builder: (context) {
+              final u_name = getUsernameFromMessage(message);
+              return Tooltip(
+                message: u_name,
+                child: Text(
+                  u_name,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+              );
+            },
           ),
         ),
 
         /// Channels: use Chips or Icons
-        DataCell(
-          Wrap(
-            spacing: TSizes.xs,
-            children:
-                message.channels.map((channel) {
-                  return Chip(
-                    label: Text(channel),
-                    backgroundColor: THelperFunctions.getChannelColor(channel),
-                    labelStyle: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                    ),
-                    visualDensity: VisualDensity.compact,
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                  );
-                }).toList(),
+           DataCell(
+          Builder(
+            builder: (context) {
+              final o_name = getObjectNameFromMessage(message);
+              return Tooltip(
+                message: o_name,
+                child: Text(
+                  o_name,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+              );
+            },
           ),
         ),
 
@@ -184,4 +187,32 @@ class MessageRows extends DataTableSource {
     if (labels.length == 2) return '${labels[0]}, ${labels[1]}';
     return '${labels[0]}, ${labels[1]}...';
   }
+  String getUsernameFromMessage(MessageModel message) {
+  // If you have a list of users in userController
+  debugPrint('Fetching username for message: ${message.senderId}');
+  debugPrint('available users: ${userController.allItems.map((u) => u.id).toList()}');
+  final user = userController.allItems.firstWhereOrNull((u) => u.id == message.senderId.toString());
+  return user?.displayName ?? '—';
+}
+
+String getCompanyNameFromMessage(MessageModel message) {
+  // If you have a list of companies in companyController
+  final company = companyController.allItems.firstWhereOrNull((c) => c.id == message.companyId);
+  return company?.name ?? '—';
+}
+
+String getObjectNameFromMessage(MessageModel message) {
+  // If you have a list of objects (e.g., from CommunicationController)
+  debugPrint('Fetching object names for message: ${message.id}');
+  debugPrint('available objects: ${objectController.allItems.map((o) => o.id).toList()}');
+
+  if (message.objectIds.isEmpty) return '—';
+  // If multiple objectIds, you can join their names
+  final names = message.objectIds.map((oid) {
+    final obj = objectController.allItems.firstWhereOrNull((o) => o.id == oid);
+    return obj?.name;
+  }).whereType<String>().toList();
+  return names.isNotEmpty ? names.join(', ') : '—';
+}
+
 }

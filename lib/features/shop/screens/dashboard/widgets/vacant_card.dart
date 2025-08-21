@@ -111,7 +111,7 @@ class VacantCard extends StatelessWidget {
                                         objectId: unit.objectId!,
 
                                         unitNumer: unit.unitNumber ?? '',
-                                        unitId: int.parse(unit.id!),
+                                        unitId: unit.id!,
 
                                         objectName: unit.objectName ?? '',
                                       ),

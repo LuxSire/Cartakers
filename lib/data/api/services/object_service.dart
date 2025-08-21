@@ -46,6 +46,50 @@ Future<List<Map<String, dynamic>>> fetchObjectImages(int objectId) async {
   }
   return [];
 }
+
+  Future<List<Map<String, dynamic>>> getAllObjectMessages(int objectId) async {
+    try {
+      final response = await post(ApiEndpoints.getAllObjectMessages, {
+        'object_id': objectId,
+      });
+
+      if (response is Map<String, dynamic> && response.containsKey('success')) {
+        if (response['success'] == true && response['data'] is List) {
+          return List<Map<String, dynamic>>.from(response['data']);
+        } else {
+          return [];
+        }
+      } else {
+        //   debugPrint('Unexpected response format: $response');
+        return [];
+      }
+    } catch (error) {
+      return [];
+    }
+  }
+
+
+  Future<List<Map<String, dynamic>>> getAllMessages() async {
+    try {
+      final response = await post(ApiEndpoints.getAllMessages, {
+ 
+      });
+      debugPrint('Raw response: $response');
+      if (response is Map<String, dynamic> && response.containsKey('success')) {
+        if (response['success'] == true && response['data'] is List) {
+          return List<Map<String, dynamic>>.from(response['data']);
+        } else {
+          return [];
+        }
+      } else {
+        //   debugPrint('Unexpected response format: $response');
+        return [];
+      }
+    } catch (error) {
+      return [];
+    }
+  }
+
 Future<List<Map<String, dynamic>>> fetchObjectDocs(int objectId) async {
   final response = await post(ApiEndpoints.getObjectDocs, {
     'object_id': objectId,
@@ -87,7 +131,21 @@ Future<List<Map<String, dynamic>>> fetchObjectDocs(int objectId) async {
   return [];
     }
   
- 
+   Future<Map<String, dynamic>> sendMessage(
+
+    Map<String, dynamic> payload,
+  ) async {
+    try {
+
+      // POST to your create‐message endpoint
+      final response = await post(ApiEndpoints.createChatObjectMessage, payload);
+
+      return response as Map<String, dynamic>;
+    } catch (error, stack) {
+      debugPrint('Error in sendMessage: $error\n$stack');
+      rethrow;
+    }
+  }
 
 
 
@@ -972,12 +1030,14 @@ Future<List<Map<String, dynamic>>> fetchObjectDocs(int objectId) async {
       
     int userId,
     int objectId,
+    int roleId
   ) async {
     try {
       final response = await post(ApiEndpoints.createPermission, {
      
         'user_id': userId,
         'object_id': objectId,
+        'role_id': roleId
       });
 
       return response;
@@ -1003,7 +1063,34 @@ Future<List<Map<String, dynamic>>> fetchObjectDocs(int objectId) async {
       return {"success": false, "message": "Failed to update unit status"};
     }
   }
+  Future<Map<String, dynamic>> updateUnitDetails(
+   int? unit_Id, String? description,int? sqm
+  ) async {
+    try {
+      final response = await post(ApiEndpoints.updateUnitDetails, {
+        'unit_id': unit_Id,
+        'description': description,
+        'sqm': sqm
+      });
 
+      return response;
+    } catch (error) {
+      debugPrint("Error in updateUnitDetails: $error");
+      return {"success": false, "message": "Failed to update unit details"};
+    }
+  }
+  Future<Map<String, dynamic>> createUnit(int objectId) async {
+    try {
+      final response = await post(ApiEndpoints.createUnit, {
+        'object_id': objectId,
+      });
+
+      return response;
+    } catch (error) {
+      debugPrint("Error in createUnit: $error");
+      return {"success": false, "message": "Failed to create new unit"};
+    }
+  }
   Future<Map<String, dynamic>> assignUnitsToZone({
     required int zoneId,
     required List<int> unitIds,
@@ -1712,6 +1799,16 @@ Future<List<Map<String, dynamic>>> fetchObjectDocs(int objectId) async {
     }
   }
 
+  Future<Map<String, dynamic>> deleteUnitById(int id) async {
+    try {
+      final response = await post(ApiEndpoints.deleteUnitById, {'id': id});
+
+      return response;
+    } catch (error) {
+      debugPrint("Error in deleteUnitById: $error");
+      return {"success": false, "message": "Failed to delete unit by id"};
+    }
+  }
   Future<Map<String, dynamic>> deleteObjectDirectory(
     String container,
     String directory,

@@ -51,13 +51,13 @@ class UnitDetailMobileScreen extends StatelessWidget {
               const SizedBox(height: TSizes.spaceBtwSections),
 
               // Body
-              const UnitInfo(),
+              UnitInfo(),
               const SizedBox(height: TSizes.spaceBtwSections),
 
-              const UnitUsers(),
+              //const UnitUsers(),
 
               // history
-              UnitContracts(unit: unit),
+              //UnitContracts(unit: unit),
               const SizedBox(height: TSizes.spaceBtwSections),
             ],
           ),

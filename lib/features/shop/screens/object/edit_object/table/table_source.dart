@@ -37,6 +37,8 @@ class ObjectUnitsRows extends DataTableSource {
           ),
         ),
         DataCell(Text(unit.floorNumber!)),
+        DataCell(Text(unit.sqm.toString()!)),
+        /*
         DataCell(
           // wrap in Obx so it rebuilds when controller.unitListRooms changes
           Obx(() {
@@ -71,7 +73,7 @@ class ObjectUnitsRows extends DataTableSource {
             );
           }),
         ),
-
+*/
         DataCell(Text('${unit.description}')),
         DataCell(
           TRoundedContainer(
@@ -92,35 +94,34 @@ class ObjectUnitsRows extends DataTableSource {
           ),
         ),
 
-        DataCell(Text(unit.formattedDate)),
+      
         DataCell(
           TTableActionButtons(
-            view: true,
-            edit: false,
+            view: false,
+            edit: true,
             delete: true,
-            onViewPressed: () {
-              Get.toNamed(Routes.unitDetails, arguments: unit)?.then((result) {
+            onDeletePressed: () async {
+              debugPrint('Delete pressed for unit: ${unit.toJson()}');
+              final result = await controller.deleteItem(unit);
+              if (result == true) 
+                  {
+                  notifyListeners(); // <-- This will refresh the table
+                  }
+            },
+            onEditPressed: () {
+               debugPrint('Edit pressed for unit: ${unit.toJson()}');
+               Get.toNamed(Routes.unitDetails, arguments: unit)?.then((result) {
                 // debugPrint('Result from unit detail screen: $result');
                 if (result == true) {
                   //     debugPrint('Result is true, updating unit');
 
                   // update that row
-                  final controllerUnitDetail =
-                      ObjectUnitDetailController.instance;
-
-                  unit.userCount =
-                      controllerUnitDetail.unit.value.userCount;
-                  unit.userNames =
-                      controllerUnitDetail.unit.value.userNames;
-                  unit.statusId = controllerUnitDetail.unit.value.statusId;
-                  unit.contractCode =
-                      controllerUnitDetail.unit.value.contractCode;
-                  unit.updatedAt = controllerUnitDetail.unit.value.updatedAt;
                   debugPrint('Updated unit: ${unit.toJson()}');
                   notifyListeners();
                 }
               });
             },
+           
           ),
         ),
       ],

@@ -6,16 +6,28 @@ import 'package:xm_frontend/features/shop/controllers/object/edit_object_control
 import '../../../../../../common/widgets/data_table/paginated_data_table.dart';
 import 'table_source.dart';
 
-class ObjectUnitTable extends StatelessWidget {
+class ObjectUnitTable extends StatefulWidget {
   const ObjectUnitTable({super.key});
+  @override
+  State<ObjectUnitTable> createState() => _ObjectUnitTableState();
+}
 
+class _ObjectUnitTableState extends State<ObjectUnitTable> {
+  late final ObjectUnitsRows _dataSource;
+
+  @override
+  void initState() {
+    super.initState();
+    _dataSource = ObjectUnitsRows();
+  }
   @override
   Widget build(BuildContext context) {
     final controller = EditObjectController.instance;
 
+
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isWideScreen = constraints.maxWidth > 800;
+        final isWideScreen = constraints.maxWidth > 700;
 
         return Obx(() {
           // Hidden reactive watchers to trigger rebuilds
@@ -28,15 +40,38 @@ class ObjectUnitTable extends StatelessWidget {
             child: Text(controller.selectedRows.length.toString()),
           );
 
-          return TPaginatedDataTable(
-            minWidth: 600,
+        return Column
+        
+        (
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: ElevatedButton.icon(
+                icon: const Icon(Icons.add),
+                label: Text(AppLocalization.of(context).translate('edit_object_screen.btn_create_unit')),
+                onPressed: () async {
+                  // Call your create-unit logic here
+                  await controller.CreateUnit(controller.objectInstance);
+                  // Optionally refresh the table/list after creation
+                  await controller.loadAllUnits();
+                },
+              ),
+            ),
+
+          Expanded(  
+            child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            
+            child: TPaginatedDataTable(
+            minWidth: 1800,
             tableHeight: 640,
             dataRowHeight: kMinInteractiveDimension,
             sortAscending: controller.sortAscending.value,
             sortColumnIndex: controller.sortColumnIndex.value,
             columns: [
               DataColumn2(
-                fixedWidth: isWideScreen ? 100 : null,
+                fixedWidth: isWideScreen ? 100 : 80,
                 label: Text(
                   AppLocalization.of(
                     context,
@@ -47,7 +82,7 @@ class ObjectUnitTable extends StatelessWidget {
                         controller.sortById(columnIndex, ascending),
               ),
               DataColumn2(
-                fixedWidth: isWideScreen ? 80 : null,
+                fixedWidth: isWideScreen ? 80 : 60,
                 label: Text(
                   AppLocalization.of(
                     context,
@@ -55,7 +90,7 @@ class ObjectUnitTable extends StatelessWidget {
                 ),
               ),
               DataColumn2(
-                fixedWidth: isWideScreen ? 80 : null,
+                fixedWidth: isWideScreen ? 80 : 60,
                 label: Text(
                   AppLocalization.of(
                     context,
@@ -63,6 +98,7 @@ class ObjectUnitTable extends StatelessWidget {
                 ),
               ),
               DataColumn2(
+                fixedWidth: isWideScreen ? 500 : 400,
                 label: Text(
                   AppLocalization.of(
                     context,
@@ -70,22 +106,15 @@ class ObjectUnitTable extends StatelessWidget {
                 ),
               ),
               DataColumn2(
-                fixedWidth: isWideScreen ? 120 : null,
+                fixedWidth: isWideScreen ? 120 : 80,
                 label: Text(
                   AppLocalization.of(
                     context,
                   ).translate('edit_object_screen.lbl_status'),
                 ),
               ),
-              DataColumn2(
-                label: Text(
-                  AppLocalization.of(
-                    context,
-                  ).translate('edit_object_screen.lbl_updated_on'),
-                ),
-              ),
-              DataColumn2(
-                fixedWidth: isWideScreen ? 100 : null,
+                DataColumn2(
+                fixedWidth: isWideScreen ? 180 : 140,
                 label: Text(
                   AppLocalization.of(
                     context,
@@ -93,8 +122,12 @@ class ObjectUnitTable extends StatelessWidget {
                 ),
               ),
             ],
-            source: ObjectUnitsRows(),
-          );
+            source:  _dataSource, 
+            ),
+            ),
+          ),
+          ],
+        );
         });
       },
     );

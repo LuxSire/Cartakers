@@ -46,10 +46,9 @@ class SettingsController extends GetxController {
 
       return settings;
     } catch (e) {
-      TLoaders.errorSnackBar(
-        title: 'Something went wrong.',
-        message: e.toString(),
-      );
+       debugPrint('Error fetching company details: $e');
+      // TLoaders.errorSnackBar( title: 'Something went wrong.',message: e.toString(),
+       
       return SettingsModel();
     }
   }

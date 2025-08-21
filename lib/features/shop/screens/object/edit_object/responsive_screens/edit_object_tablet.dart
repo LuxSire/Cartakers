@@ -17,7 +17,7 @@ class EditObjectTabletScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(EditObjectController());
+    final controller = Get.find<EditObjectController>();
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(

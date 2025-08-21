@@ -9,7 +9,9 @@ class PermissionModel {
   int? objectId;
   int? permissionId ;
   int? userId;
+  int? roleId;
   String? userName;
+  String? roleName;
   DateTime? startDate;
   DateTime? endDate;
   List<UserModel>? users;
@@ -21,8 +23,10 @@ class PermissionModel {
     this.objectId,
     this.permissionId,
     this.userId,
+    this.roleId,
     this.startDate,
     this.endDate,
+    this.roleName,  
     this.objectName,
     this.userName,
     this.users,
@@ -35,8 +39,10 @@ class PermissionModel {
       objectId: json['object_id'] ?? 0,
       permissionId: json['permission_id'] ?? 0,
       userId: json['user_id'] ?? 0,
+      roleId: json['role_id'] ?? 0,
       userName: json['user_name']?.toString() ?? '',
       objectName: json['object_name']?.toString() ?? '',
+      roleName: json['role_name']?.toString() ?? '',
       startDate:
           json['start_date'] != null
               ? DateTime.parse(json['start_date']).toLocal()

@@ -81,9 +81,9 @@ class RequestController extends TBaseController<RequestModel> {
   @override
   void onInit() {
     super.onInit();
-    loadData(); // Load data when the controller is initialized
+    //loadData(); // Load data when the controller is initialized
     loadAllObjects(); // Load all buildings
-    loadAllMaintenanceServicers(); // Load all maintenance servicers
+    //loadAllMaintenanceServicers(); // Load all maintenance servicers
   }
 
   // Method to load data from UserRepository

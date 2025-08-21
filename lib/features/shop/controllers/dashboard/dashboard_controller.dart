@@ -61,8 +61,8 @@ class DashboardController extends GetxController {
     await fetchTotalObjects();
     await fetchTotalUsers();
     await fetchTotalPendingRequests();
-    await fetchTotalVacantUnits();
-    await fetchTotalContracts();
+    //await fetchTotalVacantUnits();
+    //await fetchTotalContracts();
     await fetchTotalBookings();
     await fetchTotalObjectsMessages();
     await fetchTotalObjectUsers();
@@ -85,7 +85,7 @@ Future<void> fetchTotalObjectUsers() async {
 }
 
   Future<void> fetchTotalObjectsMessages() async {
-    final result = await CompanyRepository.instance.fetchAllCompanyMessages();
+    final result = await ObjectRepository.instance.fetchAllMessages();
 
     // Get allowed object IDs for the user
     final user = userRetrived.value;

@@ -162,7 +162,7 @@ class AssignAmenityZoneDialog extends StatelessWidget {
                                     entry.value.map((unit) {
                                       final selected = controller
                                           .selectedUnitIds
-                                          .contains(int.parse(unit.id!));
+                                          .contains((unit.id!));
                                       return Padding(
                                         padding: const EdgeInsets.only(
                                           bottom: TSizes.sm,
@@ -172,7 +172,7 @@ class AssignAmenityZoneDialog extends StatelessWidget {
                                           selected: selected,
                                           onSelected:
                                               (_) => controller.toggleUnit(
-                                                int.parse(unit.id!),
+                                               unit.id!,
                                               ),
                                         ),
                                       );

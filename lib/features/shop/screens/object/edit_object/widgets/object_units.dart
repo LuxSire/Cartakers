@@ -13,16 +13,31 @@ import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../common/widgets/loaders/loader_animation.dart';
 import '../../../../../../utils/constants/sizes.dart';
 
-class ObjectUnits extends StatelessWidget {
+class ObjectUnits extends StatefulWidget {
   const ObjectUnits({super.key, required this.object});
 
   final ObjectModel object;
 
   @override
-  Widget build(BuildContext context) {
-    final controller = EditObjectController.instance;
+  State<ObjectUnits> createState() => _ObjectUnitsState();
+}
 
-    controller.getObjectUnits(object);
+class _ObjectUnitsState extends State<ObjectUnits> {
+  final controller = EditObjectController.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    controller.getObjectUnits(widget.object);
+  }
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    //final controller = EditObjectController.instance;
+
+    //controller.getObjectUnits(object);
     return TRoundedContainer(
       padding: const EdgeInsets.all(TSizes.defaultSpace),
       child: Obx(() {
@@ -61,7 +76,6 @@ class ObjectUnits extends StatelessWidget {
                 // ),
               ],
             ),
-            const SizedBox(height: TSizes.spaceBtwItems),
             // TextFormField(
             //   controller: controller.searchTextController,
             //   onChanged: (query) => controller.searchQuery(query),
@@ -72,10 +86,13 @@ class ObjectUnits extends StatelessWidget {
             //     prefixIcon: Icon(Iconsax.search_normal),
             //   ),
             // ),
-            ObjectUnitsTableHeader(object: object),
+            //  Expanded(
+            //    child: ObjectUnitsTableHeader(object: object),
+            //  ),
 
-            const SizedBox(height: TSizes.spaceBtwSections),
-            const ObjectUnitTable(),
+            Expanded(
+              child:  ObjectUnitTable(),
+            ),
           ],
         );
       }),

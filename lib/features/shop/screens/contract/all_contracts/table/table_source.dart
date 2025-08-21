@@ -31,11 +31,11 @@ class PermissionsRows extends DataTableSource {
     if (index >= controller.userPermissions.length)
       return null; // prevent overflow
 
-    final contract = controller.userPermissions[index];
+    final permission = controller.userPermissions[index];
     return DataRow2(
       specificRowHeight: 80,
       onTap: () {
-        Get.toNamed(Routes.permissionDetails, arguments: contract)?.then((
+        Get.toNamed(Routes.permissionDetails, arguments: permission)?.then((
           result,
         ) async {
           if (result == true) {
@@ -49,15 +49,16 @@ class PermissionsRows extends DataTableSource {
 
       selected: controller.selectedRows[index],
       cells: [
-        DataCell(Text(contract.permissionId.toString())),
-        DataCell(Text(contract.objectName!)),
-        DataCell(Text(contract.userName!)),
+        DataCell(Text(permission.permissionId.toString())),
+        DataCell(Text(permission.objectName!)),
+        DataCell(Text(permission.userName!)),
+        DataCell(Text(permission.roleName!)),
         DataCell(
           TTableActionButtons(
             edit: true,
             delete: true,
             onDeletePressed: () async {
-              await controller.removePermission(contract);
+              await controller.removePermission(permission);
               controller.refreshData();
             },
           ),

@@ -7,7 +7,8 @@ import 'package:xm_frontend/features/shop/screens/object/edit_object/widgets/obj
 import 'package:xm_frontend/features/shop/screens/object/edit_object/widgets/edit_object_form.dart';
 import '../widgets/object_docs.dart';
 import '../widgets/object_pics.dart';
-
+import 'package:xm_frontend/features/shop/screens/communication/all_communications/communications.dart';
+import 'package:xm_frontend/features/shop/screens/communication/all_communications/widgets/communication_detail_tab.dart';
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../utils/constants/sizes.dart';
 
@@ -19,13 +20,12 @@ class EditObjectDesktopScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // get edit controller
-    final controller = Get.put(EditObjectController());
+    final controller = Get.find<EditObjectController>();
 
     return DefaultTabController(
-      length: 2,
+      length: 5,
       child: Scaffold(
-        body: SingleChildScrollView(
-          child: Padding(
+        body:   Padding(
             padding: const EdgeInsets.all(TSizes.defaultSpace),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,43 +40,40 @@ class EditObjectDesktopScreen extends StatelessWidget {
                   breadcrumbItems: [],
                 ),
                 const SizedBox(height: TSizes.spaceBtwSections),
-
-                // Form on top, full width
-                EditObjectForm(object: object),
-                const SizedBox(height: TSizes.spaceBtwSections),
-
-                // Tabs for Documents and Images
-                TabBar(
-                  labelColor: Theme.of(context).colorScheme.primary,
-                  unselectedLabelColor: Colors.grey,
-                  tabs: const [
-                    Tab(text: 'Documents'),
-                    Tab(text: 'Images'),
+      // TabBar with 3 tabs
+              TabBar(
+                labelColor: Theme.of(context).colorScheme.primary,
+                unselectedLabelColor: Colors.grey,
+                tabs: const [
+                  Tab(text: 'Details'),
+                  Tab(text: 'Documents'),
+                  Tab(text: 'Images'),
+                  Tab(text: 'Units'),
+                  Tab(text: 'Communications'),
+                ],
+              ),
+            const SizedBox(height: TSizes.spaceBtwSections*2),
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    // Tab 1: EditObjectForm
+                    EditObjectForm(object: object),
+                    ObjectDocsWidget(objectId: object.id!), // Tab 2: Documents
+                    ObjectPicsWidget(objectId: object.id!), // Tab 3: Images
+                    ObjectUnits(object: object), // Tab 4: Units
+                    CommunicationDetailsTab(tabType: 'messages',object: object), // Tab 5: Communications
                   ],
                 ),
-                SizedBox(
-                  height: 370,
-                  child: TabBarView(
-                    children: [
-                      SizedBox(
-                        height: 350,
-                        child: ObjectDocsWidget(objectId: object.id!),
-                      ),
-                      SizedBox(
-                        height: 350,
-                        child: ObjectPicsWidget(objectId: object.id!),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: TSizes.spaceBtwSections),
+              ),
+
+                //CommunicationScreen(object: object),
                 // Units at the bottom, full width
                 //ObjectUnits(object: object),
               ],
             ),
           ),
         ),
-      ),
     );
   }
 }
+ 

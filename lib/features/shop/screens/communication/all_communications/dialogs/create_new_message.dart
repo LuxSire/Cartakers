@@ -109,64 +109,6 @@ class CreateMessageDialog extends StatelessWidget {
                     );
                   }),
                   const SizedBox(height: TSizes.md),
-                  Text(
-                    AppLocalization.of(
-                      context,
-                    ).translate('communication_screen.lbl_select_contracts'),
-                    style: Get.textTheme.titleMedium,
-                  ),
-                  const SizedBox(height: TSizes.xs),
-                  Expanded(
-                    child: Obx(() {
-                      final contracts = controller.contractsByObject;
-                      if (contracts.isEmpty) {
-                        return Center(
-                          child: Text(
-                            AppLocalization.of(context).translate(
-                              'communication_screen.lbl_no_contracts',
-                            ),
-                            style: Get.textTheme.bodySmall,
-                          ),
-                        );
-                      }
-                      return ListView(
-                        padding: EdgeInsets.zero,
-                        children: [
-                          CheckboxListTile(
-                            title: Text(
-                              AppLocalization.of(context).translate(
-                                'communication_screen.lbl_all_contracts',
-                              ),
-                            ),
-                            value: controller.allContractsSelected,
-                            onChanged:
-                                (v) =>
-                                    controller.toggleAllContractsSelection(v!),
-                            controlAffinity: ListTileControlAffinity.leading,
-                          ),
-                          const Divider(),
-                          ...contracts.map((c) {
-                            final id = int.parse(c.id!);
-                            return CheckboxListTile(
-                              title: Text(c.objectName ?? ''),
-                              subtitle:
-                                  c.objectName != null
-                                      ? Text(c.permissionId!.toString())
-                                      : null,
-                              value: controller.selectedContractIds.contains(
-                                id,
-                              ),
-                              onChanged:
-                                  (_) => controller.toggleContractSelection(id),
-                              controlAffinity: ListTileControlAffinity.leading,
-                              dense: true,
-                            );
-                          }),
-                        ],
-                      );
-                    }),
-                  ),
-                  const SizedBox(height: TSizes.sm),
                   Obx(
                     () => Text(
                       '${AppLocalization.of(context).translate('communication_screen.lbl_recipients')}: ${controller.totalRecipients}',

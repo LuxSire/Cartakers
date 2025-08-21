@@ -19,6 +19,8 @@ class ObjectModel {
   int? status;
   String? type_;
   double? price;
+  double? noi;
+  double? caprate;
   double? yieldGross;
   double? yieldNet;
   int? totalUnits;
@@ -49,6 +51,8 @@ class ObjectModel {
     this.type_,
     this.price,
     this.yieldGross,
+    this.noi,
+    this.caprate,
     this.yieldNet,
     this.address,
     this.totalUnits,
@@ -104,6 +108,8 @@ class ObjectModel {
       totalContracts: json['total_contracts'] ?? 0,
       yieldGross: json['yield_gross'] ?? 0.0,
       yieldNet: json['yield_net'] ?? 0.0,
+      noi: json['noi'] != null ? double.tryParse(json['noi'].toString()) : 0.0,
+      caprate: json['caprate'] != null ? double.tryParse(json['caprate'].toString()) : 0.0,
     );
   }
 
@@ -137,6 +143,8 @@ class ObjectModel {
       'price': price,
       'yield_gross': yieldGross,
       'yield_net': yieldNet,
+      'noi': noi,
+      'caprate': caprate,
     };
   }
 }

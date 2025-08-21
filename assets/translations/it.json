@@ -656,6 +656,9 @@
 
     "edit_object_screen": {
         "lbl_object_details": "Dettagli oggetto",
+        "btn_create_unit": "Crea unità",
+        "lbl_noi": "Net Operating Income",
+        "lbl_caprate": "Capitalization Rate",
         "lbl_update_object": "Aggiorna oggetto",
         "lbl_units": "Unità",
         "lbl_description": "Descrizione",
@@ -664,6 +667,7 @@
         "lbl_update": "Aggiorna",
         "lbl_unit_#": "Unità n°",
         "lbl_floor": "Piano",
+        "lbl_sqm": "Mq",
         "lbl_room": "Camera",
         "lbl_users": "Utenti",
         "lbl_status": "Stato",
@@ -738,6 +742,7 @@
     },
     "create_contract_screen": {
         "lbl_new_permission": "Nuovo permesso",
+        "lbl_select_role": "Seleziona un ruolo",
         "lbl_start_date": "Data di inizio",
         "lbl_end_date": "Data di fine",
         "lbl_status": "Stato",
@@ -880,6 +885,7 @@
 "communication_screen": {
     "lbl_communication": "Comunicazione",
     "lbl_messages": "Messaggi",
+    "lbl_sender": "Mittente",
     "lbl_date": "Data",
     "lbl_title": "Titolo",
     "lbl_content": "Contenuto",

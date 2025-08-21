@@ -5,6 +5,7 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/common/widgets/chips/rounded_choice_chips.dart';
 import 'package:xm_frontend/common/widgets/images/image_uploader.dart';
+import 'package:xm_frontend/features/personalization/controllers/company_controller.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 import 'package:xm_frontend/features/personalization/models/user_model.dart';
 import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
@@ -26,18 +27,21 @@ class EditUserDialog extends StatefulWidget {
 
 class _EditUserDialogState extends State<EditUserDialog> {
   late final UserController controller;
+  late final CompanyController company_controller;
   late final UserModel user;
   @override
   void initState() {
     super.initState();
     debugPrint('EditUserDialog initialized with showExtraFields: ${widget.showExtraFields}');
     controller = Get.find<UserController>();
+    company_controller=Get.find<CompanyController>();
     user = controller.userModel.value;
     controller.firstNameController.text = user.firstName;
     controller.lastNameController.text = user.lastName;
     controller.displayNameController.text = user.displayName;
     controller.emailController.text = user.email;
-    controller.selectedRoleId.value = user.roleExtId ?? 0;
+    controller.selectedRoleId.value = user.roleId ?? 0;
+    controller.selectedCompanyId.value = user.companyId ?? 0;
     
     // Add other initializations if needed
   }
@@ -175,6 +179,53 @@ Obx(() => Center(
                     labelText: AppLocalization.of(context).translate('register_screen.lbl_phone_no'),
                 ),
               ),
+
+                const SizedBox(height: TSizes.spaceBtwInputFields),
+
+                Obx(() {
+            
+
+                  return DropdownButtonHideUnderline(
+                    child: ButtonTheme(
+                      alignedDropdown: true,
+                      child: DropdownButtonFormField<int>(
+                        isExpanded: true,
+                        value: controller.selectedCompanyId.value == 0 ? null : controller.selectedCompanyId.value,
+                        onChanged: (value) {
+                          controller.selectedCompanyId.value = value ?? 0;
+                        },
+                        validator: (value) {
+                          if (value == null || value == 0) {
+                            return AppLocalization.of(context).translate('tab_users_screen.lbl_company_is_required');
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          labelText: AppLocalization.of(context).translate('tab_users_screen.lbl_company'),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 14,
+                          ),
+                        ),
+                        items: [
+                          DropdownMenuItem<int>(
+                            value: 0,
+                            child: Text(AppLocalization.of(context).translate("tab_users_screen.lbl_company")),
+                          ),
+                          ...company_controller.allcompanies.map(
+                            (company) => DropdownMenuItem<int>(
+                              value: company.id,
+                              child: Text(company.name!),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }),
 
                 const SizedBox(height: TSizes.spaceBtwInputFields),
 

@@ -9,14 +9,15 @@ import 'package:xm_frontend/features/personalization/controllers/user_controller
 import 'package:xm_frontend/features/shop/screens/communication/all_communications/widgets/communication_detail_tab.dart';
 import 'package:xm_frontend/features/shop/screens/users_permissions/widgets/users_permissions_detail_tab.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
-
+import 'package:xm_frontend/data/models/object_model.dart';
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../common/widgets/loaders/loader_animation.dart';
 import '../../../../../../utils/constants/sizes.dart';
 
 class CommunicationMobileScreen extends StatelessWidget {
-  const CommunicationMobileScreen({super.key});
+  final ObjectModel? object;
+  const CommunicationMobileScreen({super.key, this.object});
 
   @override
   Widget build(BuildContext context) {

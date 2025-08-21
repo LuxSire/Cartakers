@@ -93,7 +93,7 @@ class ObjectTableHeader extends StatelessWidget {
                     builder: (_) => const CreateObjectDialog(),
                   );
                   if (result == true) {
-                    controller.refreshData();
+                    controller.loadAllObjects();
                   }
                 },
                 icon: const Icon(Iconsax.add_circle, color: TColors.alterColor),

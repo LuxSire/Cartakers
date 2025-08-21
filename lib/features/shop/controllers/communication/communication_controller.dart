@@ -16,11 +16,20 @@ import 'package:xm_frontend/utils/helpers/helper_functions.dart';
 import 'package:xm_frontend/utils/popups/loaders.dart';
 
 class CommunicationController extends TBaseController<MessageModel> {
-  static CommunicationController get instance => Get.find();
 
+  final ObjectModel? object;
+
+  static CommunicationController get instance => Get.find();
+  
+  CommunicationController({ObjectModel? initialObject})
+      : object = initialObject {
+    if (initialObject != null) {
+      selectedObjectId.value = initialObject.id!;
+    }
+  }
   final _objectRepo = Get.put(ObjectRepository());
   final _companyRepo = Get.put(CompanyRepository());
-  final _contractRepo = Get.put(PermissionRepository());
+  final _permRepo = Get.put(PermissionRepository());
 
   /// Messages
   RxList<MessageModel> allMessages = <MessageModel>[].obs;
@@ -59,7 +68,7 @@ class CommunicationController extends TBaseController<MessageModel> {
 
   final userController = Get.find<UserController>();
 
-  /// Computed: total recipients (sum of tenants)
+  /// Computed: total recipients (sum of users)
   int get totalRecipients {
     if (contractsByObject.isEmpty) return 0;
     final list =
@@ -81,7 +90,16 @@ class CommunicationController extends TBaseController<MessageModel> {
   void onInit() {
     super.onInit();
     loadAllObjects();
-    loadMessages();
+   
+    if (object != null) {
+      selectedObjectId.value = object?.id ?? -1;
+    }
+    debugPrint("Communication Initiated: ${selectedObjectId.value}");
+    filterMessagesBySelectedObject();
+    ever(selectedObjectId, (id) {
+      debugPrint("Selected Object ID changed: $id");
+      filterMessagesBySelectedObject();
+    });
   }
 
   Future<void> loadAllObjects() async {
@@ -99,13 +117,9 @@ class CommunicationController extends TBaseController<MessageModel> {
       selectedContractIds.clear();
 
       // fetch permissions by object   or all
-      final list =
-          objectId == -1
-              ? await _contractRepo.getAllCompanyObjectsContracts()
-              : await _contractRepo.getContractsByObjectId(objectId);
-   
+      final list = await _permRepo.getAllPermissions();
       // auto-select all
-      selectedContractIds.assignAll(list.map((c) => int.parse(c.id!)));
+      //selectedContractIds.assignAll(list.map((c) => int.parse(c.id!)));
     } catch (e) {
       debugPrint('Error loading contracts: \$e');
     }
@@ -187,8 +201,8 @@ class CommunicationController extends TBaseController<MessageModel> {
   Future<void> loadMessages() async {
     isLoading.value = true;
     try {
-      final msgs = await _companyRepo.fetchAllCompanyMessages();
-
+      final msgs = await _objectRepo.fetchAllMessages();
+/*
       final updatedUser = await userController.fetchUserDetails();
 
       final userObjectRestrictions = updatedUser.objectPermissionIds ?? [];
@@ -202,16 +216,30 @@ class CommunicationController extends TBaseController<MessageModel> {
               (id) => userObjectRestrictions.contains(id),
             );
           }).toList();
-
-      allMessages.assignAll(filteredMessages);
-      filteredMessages.assignAll(filteredMessages);
+*/
+      allMessages.assignAll(msgs);
+      debugPrint('Loaded messages: ${msgs.length}');
     } catch (e) {
       debugPrint('Error loading messages: \$e');
     } finally {
       isLoading.value = false;
     }
   }
-
+  Future<void> filterMessagesBySelectedObject() async
+  {
+    await loadMessages();
+    debugPrint("Messages retrieved and Filtered: ${selectedObjectId.value}");
+    if (selectedObjectId.value == -1) {
+      filteredItems.assignAll(allMessages);
+    }  else {
+    filteredItems.assignAll(
+      allMessages.where((msg) => msg.objectId == selectedObjectId.value).toList(),
+    );
+    }
+      selectedRows.value = List<bool>.filled(filteredItems.length, false);
+      debugPrint("Messages retrieved and Filtered: ${filteredItems.value}");
+    }
+    
   Future<void> submitNewMessage() async {
     if (!formKey.currentState!.validate()) return;
 
@@ -242,18 +270,16 @@ class CommunicationController extends TBaseController<MessageModel> {
       'created_by': createdBy,
       'status_id': statusId,
       'targets': targets,
+      'id':selectedObjectId.value
     };
 
     isLoading.value = true;
     try {
-      await _companyRepo.sendMessage(payload);
+      await _objectRepo.sendMessage(payload);
 
       Get.back();
 
-      TLoaders.successSnackBar(
-        title: 'Success',
-        message: 'Message scheduled/sent successfully.',
-      );
+
       clearMessageForm();
       refreshData(); // Reload messages
     } catch (e) {
@@ -459,21 +485,19 @@ class CommunicationController extends TBaseController<MessageModel> {
 
   @override
   Future<List<MessageModel>> fetchItems() async {
-    final result = await _companyRepo.fetchAllCompanyMessages();
-
+    final result = await _objectRepo.fetchAllMessages();
+    final filteredMessages = result.toList();
+/*
     final updatedUser = await userController.fetchUserDetails();
     final userObjectRestrictions = updatedUser.objectPermissionIds ?? [];
 
     // Normalize both lists to String for comparison
     final restrictionIds = userObjectRestrictions.map((e) => e.toString()).toSet();
-
     final filteredMessages = result.where((message) {
       final objectIds = (message.objectIds ?? []).map((e) => e.toString());
       return objectIds.any((id) => restrictionIds.contains(id));
     }).toList();
-
-    debugPrint('User object restrictions: $userObjectRestrictions');
-    debugPrint('All object IDs: ${result.map((o) => o.id).toList()}');
+*/
     
     return filteredMessages;
   }
