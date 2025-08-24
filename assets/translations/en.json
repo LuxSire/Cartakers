@@ -640,6 +640,8 @@
         "lbl_new_object": "New Object",
 
         "lbl_yieldgross": "Gross Yield",
+        "lbl_noi": "Net Operating Income",
+        "lbl_caprate": "Capitalization Rate",
       "lbl_yieldnet": "Net Yield",
       "lbl_assign_amenity_zone": "Assign Amenity Zone",
       "lbl_object_information": "Object Information",
@@ -719,6 +721,7 @@
 
     "users_screen": {
         "lbl_users": "Users",
+        "lbl_role": "Role",
         "lbl_companies": "Companies",   
         "lbl_company": "Company",  
         "lbl_search_users": "Search Users",

@@ -10,10 +10,10 @@ import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../utils/constants/sizes.dart';
 
 class AssignRequestDialog extends StatelessWidget {
-  const AssignRequestDialog({super.key, this.requestId, required this.tag});
+  const AssignRequestDialog({super.key, this.requestId,  this.tag});
 
   final int? requestId;
-  final String tag;
+  final String? tag;
 
   @override
   Widget build(BuildContext context) {

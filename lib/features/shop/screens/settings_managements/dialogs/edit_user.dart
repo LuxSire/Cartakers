@@ -42,7 +42,9 @@ class _EditUserDialogState extends State<EditUserDialog> {
     controller.emailController.text = user.email;
     controller.selectedRoleId.value = user.roleId ?? 0;
     controller.selectedCompanyId.value = user.companyId ?? 0;
-    
+    controller.memoryBytes.value = null;
+    debugPrint('user edit : ${controller.userModel.value.profilePicture}');
+
     // Add other initializations if needed
   }
 
@@ -265,7 +267,7 @@ Obx(() => Center(
                           ...controller.userRolesList.map(
                             (role) => DropdownMenuItem<int>(
                               value: role.id,
-                              child: Text(role.nameTranslated!),
+                              child: Text(role.name),
                             ),
                           ),
                         ],
@@ -283,10 +285,18 @@ Obx(() => Center(
                     : SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {
-                               if (controller.formKey.currentState?.validate() ?? false) {
-                            controller.updateUserInfo(user);
-                          }
+                          onPressed: () async {
+                            if (controller.formKey.currentState?.validate() ?? false) {
+                              if (await controller.updateUserInfo(user)) {
+                                    final index = controller.filteredUsers.indexWhere((t) => t.id == user.id);
+                                    if (index != -1) {
+                                        controller.filteredUsers[index] = user;
+                                        controller.filteredUsers.refresh();
+                                    }   
+
+                                    }
+                              Get.back(result:true);
+                            }
                           },
                           child: Text(
                             AppLocalization.of(context).translate('general_msgs.msg_update'),

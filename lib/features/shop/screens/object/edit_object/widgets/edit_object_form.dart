@@ -338,20 +338,49 @@ Row(
                           ),
                           const SizedBox(width: TSizes.spaceBtwInputFields),
                           Expanded(
-                            flex: 1,
-                            child: TextFormField(
-                              controller: controller.country,
-                              validator: (value) => TValidator.validateEmptyText(
-                                AppLocalization.of(context).translate('objects_screen.lbl_country'),
-                                value,
-                              ),
-                              decoration: InputDecoration(
-                                labelText: AppLocalization.of(context).translate('objects_screen.lbl_country'),
-                                prefixIcon: Icon(Icons.waves),
-                              ),
-                              readOnly: !canEdit,
-                            ),
-                          ),
+  flex: 1,
+  child: Autocomplete<String>(
+    optionsBuilder: (TextEditingValue textEditingValue) {
+      if (textEditingValue.text == '') {
+        return const Iterable<String>.empty();
+      }
+      return controller.countryList.where((String option) {
+        return option.toLowerCase().contains(textEditingValue.text.toLowerCase());
+      });
+    },
+    onSelected: (String selection) {
+      controller.country.text = selection;
+    },
+    fieldViewBuilder: (context, textEditingController, focusNode, onFieldSubmitted) {
+      // Sync the controller's text with the Autocomplete's text controller
+      textEditingController.text = controller.country.text;
+      textEditingController.selection = TextSelection.fromPosition(
+        TextPosition(offset: textEditingController.text.length),
+      );
+      return TextFormField(
+        controller: textEditingController,
+        focusNode: focusNode,
+        decoration: InputDecoration(
+          labelText: AppLocalization.of(context).translate('objects_screen.lbl_country'),
+          prefixIcon: Icon(Icons.location_city),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return AppLocalization.of(context).translate('objects_screen.lbl_country');
+          }
+          if (!controller.countryList.contains(value)) {
+            return AppLocalization.of(context).translate('objects_screen.lbl_country_invalid');
+          }
+          return null;
+        },
+        onChanged: (value) {
+          controller.country.text = value;
+        },
+        readOnly: !canEdit,
+      );
+    },
+  ),
+),
                         ],
                       ),
                       const SizedBox(height: TSizes.spaceBtwInputFields),

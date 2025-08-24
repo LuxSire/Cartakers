@@ -80,17 +80,49 @@ class CreateObjectDialog extends StatelessWidget {
                   const SizedBox(height: TSizes.spaceBtwInputFields),
 
               // Country Text Field
-              TextFormField(
-                controller: controller.country,
-                validator: (value) => TValidator.validateEmptyText(
-                  AppLocalization.of(context).translate('objects_screen.lbl_country'),
-                  value,
-                ),
-                decoration: InputDecoration(
-                  labelText: AppLocalization.of(context).translate('objects_screen.lbl_country'),
-                  prefixIcon: Icon(Icons.location_city),
-                ),
-              ),
+              // ...inside your Column children...
+
+// Country Autocomplete Field
+Autocomplete<String>(
+  optionsBuilder: (TextEditingValue textEditingValue) {
+    if (textEditingValue.text == '') {
+      return const Iterable<String>.empty();
+    }
+    return controller.countryList.where((String option) {
+      return option.toLowerCase().contains(textEditingValue.text.toLowerCase());
+    });
+  },
+  onSelected: (String selection) {
+    controller.country.text = selection;
+  },
+  fieldViewBuilder: (context, textEditingController, focusNode, onFieldSubmitted) {
+    // Sync the controller's text with the Autocomplete's text controller
+    textEditingController.text = controller.country.text;
+    textEditingController.selection = TextSelection.fromPosition(
+      TextPosition(offset: textEditingController.text.length),
+    );
+    return TextFormField(
+      controller: textEditingController,
+      focusNode: focusNode,
+      decoration: InputDecoration(
+        labelText: AppLocalization.of(context).translate('objects_screen.lbl_country'),
+        prefixIcon: Icon(Icons.location_city),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return AppLocalization.of(context).translate('objects_screen.lbl_country');
+        }
+        if (!controller.countryList.contains(value)) {
+          return AppLocalization.of(context).translate('objects_screen.lbl_country_invalid');
+        }
+        return null;
+      },
+      onChanged: (value) {
+        controller.country.text = value;
+      },
+    );
+  },
+),
               const SizedBox(height: TSizes.spaceBtwInputFields),
 
               // Price Text Field
@@ -124,10 +156,20 @@ class CreateObjectDialog extends StatelessWidget {
               // Zip Code Text Field
               TextFormField(
                 controller: controller.zipCode,
-                validator: (value) => TValidator.validateEmptyText(
-                  AppLocalization.of(context).translate('objects_screen.lbl_zip_code'),
-                  value,
-                ),
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return AppLocalization.of(context).translate('objects_screen.lbl_zip_code');
+    }
+    if (!RegExp(r'^\d+$').hasMatch(value)) {
+      return AppLocalization.of(context).translate('objects_screen.lbl_zip_code');
+    }
+    if (value.length > 5) {
+      return AppLocalization.of(context).translate('objects_screen.lbl_zip_code');
+    }
+    return null;
+  },
+  maxLength: 5,
+  keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: AppLocalization.of(context).translate('objects_screen.lbl_zip_code'),
                   prefixIcon: Icon(Icons.location_on_outlined),

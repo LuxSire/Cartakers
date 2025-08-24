@@ -75,7 +75,7 @@ class PermissionController extends TBaseController<PermissionModel> {
   RxBool loadingUsers = true.obs;
   RxBool loadingPermissions = true.obs;
   // This will be used to filter users by name or email
-  var filteredUsers = <UserModel>[].obs;
+  final filteredUsers = <UserModel>[].obs;
   RxList<UnitModel> unitsList = <UnitModel>[].obs;
   RxList<ObjectModel> objectsList = <ObjectModel>[].obs;
 
@@ -117,7 +117,11 @@ class PermissionController extends TBaseController<PermissionModel> {
       selectedRows.value = List<bool>.filled(filteredPermissions.length, false);
     });
   }
-
+  @override
+  Future<void> refreshData() async {
+    final users = await loadPermissions();
+  }
+  
   Future<void> loadPermissions() async {
     loading.value = true;
     try {
@@ -127,8 +131,8 @@ class PermissionController extends TBaseController<PermissionModel> {
       debugPrint('Loaded Permissions: ${permissions.length}');
 
       allPermissions.assignAll(permissions);
-      userPermissions.assignAll(permissions);
-      selectedRows.value = List<bool>.filled(userPermissions.length, false);
+      //userPermissions.assignAll(permissions);
+      //selectedRows.value = List<bool>.filled(userPermissions.length, false);
       debugPrint('[PermissionController]: userPermissions.length: ${userPermissions.length}');
 
     } catch (e) {
@@ -190,8 +194,28 @@ class PermissionController extends TBaseController<PermissionModel> {
     }
   }
 
+
+
+  bool CheckObjectForUser(int userId, int objectId) {
+
+  final user = userController.allUsers.firstWhereOrNull((u) => u.id == userId.toString());
+
+  debugPrint('Checking permissions for user: ${user?.id} and role: ${user?.roleId}.');
+  if (user == null) return false;
+
+  if (user.roleId == 1) // Check if user has the specific role
+    return true;
+  else {
+    //return false;
+         filterPermissionsByUserId(userId);
+  // Check if any permission for this user has the given objectId
+        return userPermissions.any((perm) => perm.objectId == objectId);
+    }
+}
+
   void filterPermissionsByUserId(int userId) {
 
+  userPermissions.clear(); // Always start empty
   final results = allPermissions.where((perm) => perm.userId == userId).toList();
 
   debugPrint('Filtered Permissions for user ID $userId: ${results.length}');  
@@ -200,7 +224,12 @@ class PermissionController extends TBaseController<PermissionModel> {
 
   selectedRows.value = List<bool>.filled(userPermissions.length, false);
   }
+bool filterAndCheckObjectForUser(int userId, int objectId) {
+  filterPermissionsByUserId(userId);
 
+  // Check if any permission for this user has the given objectId
+  return userPermissions.any((perm) => perm.objectId == objectId);
+}
 
   void loadAllObjects() async {
     try {
@@ -735,9 +764,10 @@ class PermissionController extends TBaseController<PermissionModel> {
         loading.value = false;
         return false;
       }
-      bool isRemoved = false;
+      bool isCreated = false;
+      debugPrint('[Permission Controller] Creating permission with User ID: $userId, Object ID: $objectId, Role ID: $roleId');
 
-      isRemoved = await _permissionRepository.createPermission(
+      isCreated = await _permissionRepository.createPermission(
         userId,
         objectId,
         roleId
@@ -746,7 +776,7 @@ class PermissionController extends TBaseController<PermissionModel> {
       // Remove Loader
       loading.value = false;
 
-      if (isRemoved) {
+      if (isCreated) {
         TLoaders.successSnackBar(
           title: AppLocalization.of(
             Get.context!,
@@ -755,6 +785,7 @@ class PermissionController extends TBaseController<PermissionModel> {
             Get.context!,
           ).translate('general_msgs.msg_data_updated'),
         );
+        
       } else {
         TLoaders.errorSnackBar(
           title: AppLocalization.of(
@@ -764,12 +795,13 @@ class PermissionController extends TBaseController<PermissionModel> {
             Get.context!,
           ).translate('general_msgs.msg_data_failed'),
         );
-        return false;
+        
       }
+
 
       // Update UI Listeners
       update();
-      return true;
+     return isCreated;
     } catch (e) {
       debugPrint('Error from catch createPermission: $e');
       loading.value = false;

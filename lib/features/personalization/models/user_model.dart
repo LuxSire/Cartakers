@@ -111,7 +111,7 @@ class UserModel {
       'country_code': countryCode, // Added country code  
       'role_name': roleName,
       'lang': lang,
-      'company_id': companyId,
+      'company': companyId,
       'company_name': companyName,
       'created_at': createdAt?.toIso8601String(),
       'updated_at': updatedAt?.toIso8601String(),
@@ -150,7 +150,7 @@ class UserModel {
       roleId: json['role_id']?.toInt() ?? 0,
       roleName: json['role_name'] ?? '',
       lang: json['lang'] ?? '',
-      companyId: json['company_id']?.toInt() ?? 0,
+      companyId: json['company']?.toInt() ?? 0,
       companyName: json['company_name'] ?? '',
       createdAt:
           json['created_at'] != null

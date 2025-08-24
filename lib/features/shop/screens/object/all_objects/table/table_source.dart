@@ -4,26 +4,60 @@ import 'package:get/get.dart';
 import 'package:xm_frontend/features/shop/controllers/object/object_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
 import 'package:xm_frontend/routes/routes.dart';
-
+//import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 import '../../../../../../common/widgets/icons/table_action_icon_buttons.dart';
 import '../../../../../../common/widgets/images/t_rounded_image.dart';
 import '../../../../../../utils/constants/colors.dart';
 import '../../../../../../utils/constants/enums.dart';
 import '../../../../../../utils/constants/sizes.dart';
+import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
+import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
+import 'package:xm_frontend/features/shop/screens/communication/all_communications/dialogs/create_new_message.dart';
+import 'package:xm_frontend/features/shop/screens/contract/dialogs/assign_request_dialog.dart';
 
 class ObjectRows extends DataTableSource {
   final controller = ObjectController.instance;
-
+  final u_controller = UserController.instance;
+  final p_controller = PermissionController.instance;
+  final auth_controller = AuthenticationRepository.instance;
   @override
   DataRow? getRow(int index) {
     final object = controller.allObjects[index];
+    final user_id = int.tryParse(auth_controller.currentUser?.id ?? '');
     return DataRow2(
       onTap: () {
-        Get.toNamed(Routes.editObject, arguments: object)?.then((result) {
-          if (result == true) {
-            controller.refreshData(); // Force re-fetch on return
+        debugPrint('Tapped on object: ${object.name} for user: ${user_id ?? 0}');
+        if (p_controller.CheckObjectForUser(user_id ?? 0,object.id ?? 0))
+        {
+            Get.toNamed(Routes.editObject, arguments: object)?.then((result) 
+            {
+              if (result == true) {
+                controller.refreshData(); // Force re-fetch on return
+              }
+            });
           }
-        });
+          else
+          {
+            showDialog(
+              context: Get.context!,
+              builder: (context) => CreateMessageDialog(
+                object: object,
+                subject: 'Request Access to ${object.name}',
+                message: 'Please give me access to ${object.name}',
+              ),
+              //builder: (context) => AssignRequestDialog(object: object),
+            );
+
+              Get.snackbar(
+                'Access Denied',
+                'You do not have permission to access this object. Not yet. Make a request',
+                snackPosition: SnackPosition.BOTTOM,
+                backgroundColor: TColors.error.withOpacity(0.1),
+                colorText: TColors.error,
+              );
+            }
+            
       },
       selected: controller.selectedRows[index],
       onSelectChanged:
@@ -70,14 +104,30 @@ DataCell(Text(object.price.toString() ?? '')),
             view: true,
             edit: false,
             onViewPressed: () {
-              Get.toNamed(Routes.editObject, arguments: object)?.then((
-                result,
-              ) {
-                if (result == true) {
-                  controller.refreshData(); // Force re-fetch on return
-                }
-              });
-            },
+
+          if (p_controller.CheckObjectForUser(user_id ?? 0,object.id ?? 0))
+            Get.toNamed(Routes.editObject, arguments: object)?.then((result) {
+              if (result == true) {
+                controller.refreshData(); // Force re-fetch on return
+              }
+            });
+            else
+            {
+              showDialog(
+                context: Get.context!,
+                builder: (context) => CreateMessageDialog(object: object),
+                //builder: (context) => AssignRequestDialog(),
+              );
+
+              Get.snackbar(
+                'Access Denied',
+                'You do not have permission to access this object. Not yet. Make a request',
+                snackPosition: SnackPosition.BOTTOM,
+                backgroundColor: TColors.error.withOpacity(0.1),
+                colorText: TColors.error,
+              );
+            }            },
+
             onDeletePressed: () => controller.deleteItem(object),
           ),
         ),

@@ -40,7 +40,7 @@ class UsersPermissionsDesktopScreen extends StatelessWidget {
 
                 return TRoundedContainer(
                   child: DefaultTabController(
-                    length: 3,
+                    length: 2,
                     child: Column(
                       children: [
                         // TabBar with left alignment
@@ -65,12 +65,7 @@ class UsersPermissionsDesktopScreen extends StatelessWidget {
                               ).translate('users_screen.lbl_users'),
                               icon: const Icon(Iconsax.profile_2user),
                             ),                     
-                            Tab(
-                              text: AppLocalization.of(
-                                context,
-                              ).translate('permissions'),
-                              icon: const Icon(Iconsax.document),
-                            ),],
+                           ],
                         ),
                         const SizedBox(height: TSizes.defaultSpace),
                         // Tab content
@@ -80,7 +75,7 @@ class UsersPermissionsDesktopScreen extends StatelessWidget {
 
                               UsersPermissionsDetailTab(tabType: 'companies'),
                               UsersPermissionsDetailTab(tabType: 'users'),
-                              UsersPermissionsDetailTab(tabType: 'permissions'),
+                             // UsersPermissionsDetailTab(tabType: 'permissions'),
                           
                             ],
                           ),

@@ -40,6 +40,7 @@ class EditObjectController extends GetxController {
   RxList<String> occupancyList = <String>[].obs;
   RxList<String> zoningList = <String>[].obs;
   RxList<String> typeList = <String>[].obs;
+  RxList<String> countryList = <String>[].obs;
   /// Set occupancy options
    RxInt selectedCompanyId = 0.obs;
   static EditObjectController get instance => Get.find();
@@ -108,13 +109,16 @@ class EditObjectController extends GetxController {
   Future<void> _initLists() async {
     occupancyList.clear();
     zoningList.clear();
-
+    countryList .clear();
     typeList.clear();
     occupancyList.assignAll((await repository.getAllOccupancies()).toSet().toList());
     zoningList.assignAll((await repository.getAllZonings()).toSet().toList());
     typeList.assignAll((await repository.getAllTypes()).toSet().toList());
+    countryList.assignAll((await repository.getAllCountries()).toSet().toList());
+
     debugPrint('Occupancy list: $occupancyList');
     debugPrint('Zoning list: $zoningList');
+    debugPrint('Country list: $countryList');
   }
 
   /// Init Data

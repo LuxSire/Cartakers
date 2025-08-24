@@ -11,12 +11,19 @@ import 'package:xm_frontend/utils/constants/enums.dart';
 import 'package:xm_frontend/utils/constants/image_strings.dart';
 import 'package:xm_frontend/utils/constants/sizes.dart';
 import 'package:xm_frontend/utils/constants/text_strings.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
+import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
+import 'package:xm_frontend/features/shop/screens/communication/all_communications/dialogs/create_new_message.dart';
+
 class ObjectCard extends StatelessWidget {
   const ObjectCard({super.key});
  
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<ObjectController>();
+    final p_controller = PermissionController.instance;
+    final auth_controller = AuthenticationRepository.instance;
+    final user_id = int.tryParse(auth_controller.currentUser?.id ?? '');
    debugPrint('[ObjectCard] Constructor called');
   WidgetsBinding.instance.addPostFrameCallback((_) {
       if (controller.allObjects.isEmpty) {
@@ -67,13 +74,43 @@ class ObjectCard extends StatelessWidget {
 
               return InkWell(
                 onTap: () {
+
+           if (p_controller.CheckObjectForUser(user_id ?? 0,object.id ?? 0))
+           {
+            Get.toNamed(Routes.editObject, arguments: object)?.then((result) {
+              if (result == true) {
+                controller.refreshData(); // Force re-fetch on return
+              }
+            });
+          }
+          else
+          {
+            showDialog(
+              context: Get.context!,
+              builder: (context) => CreateMessageDialog(
+                object: object,
+                subject: 'Request Access to ${object.name}',
+                message: 'Please give me access to ${object.name}',
+                  ),
+                //builder: (context) => AssignRequestDialog(),
+              );
+
+              Get.snackbar(
+                'Access Denied',
+                'You do not have permission to access this object. Not yet. Make a request',
+                snackPosition: SnackPosition.BOTTOM,
+                backgroundColor: TColors.error.withOpacity(0.1),
+                colorText: TColors.error,
+              );
+            }       
+/*
                   Get.toNamed(Routes.editObject, arguments: object)?.then((
                     result,
                   ) {
                     if (result == true) {
                       controller.refreshData();
                     }
-                  });
+                  });*/
                 },
                 borderRadius: BorderRadius.circular(TSizes.borderRadiusLg),
                 child: Container(

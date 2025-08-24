@@ -535,6 +535,27 @@ Future<List<Map<String, dynamic>>> fetchObjectDocs(int objectId) async {
     }
   }
 
+    Future<List<Map<String, dynamic>>> getAllCountries(
+
+  ) async {
+    try {
+      final response = await post(ApiEndpoints.getAllCountries, {});
+
+        debugPrint('Raw response: $response');
+
+      if (response is Map<String, dynamic> && response.containsKey('success')) {
+        if (response['success'] == true && response['data'] is List) {
+          return List<Map<String, dynamic>>.from(response['data']);
+        } else {
+          return [];
+        }
+      } else {        return [];
+      }
+    } catch (error) {
+      
+      return [];
+    }
+  }
 
     Future<List<Map<String, dynamic>>> getAllTypes(
 
@@ -1033,6 +1054,8 @@ Future<List<Map<String, dynamic>>> fetchObjectDocs(int objectId) async {
     int roleId
   ) async {
     try {
+
+      debugPrint('[Permission Service] Creating Permission: $userId $objectId $roleId');
       final response = await post(ApiEndpoints.createPermission, {
      
         'user_id': userId,

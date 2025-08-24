@@ -73,6 +73,7 @@ class UserController extends TBaseController<UserModel> {
 
   final _userRepository = Get.put(UserRepository());
   final _objectRepository = Get.put(ObjectRepository());
+  //final _permissionController = Get.put(PermissionController());
 
   RxBool filtersApplied = false.obs; // Track if filters are applied
   RxBool invitationFiltersApplied =
@@ -703,4 +704,21 @@ class UserController extends TBaseController<UserModel> {
       int.parse(item.id!)
     );
   }
+
+
+  bool CheckObjectForUser(int userId, int objectId) {
+
+  final user = allUsers.firstWhereOrNull((u) => u.id == userId);
+   if (user == null) return false;
+
+    if (user.roleId == 1) // Check if user has the specific role
+        return true;
+        else {
+          return false;
+           // _permissionController.filterPermissionsByUserId(userId);
+        // Check if any permission for this user has the given objectId
+          //  return _permissionController.userPermissions.any((perm) => perm.objectId == objectId);
+      }
+    }
+
 }

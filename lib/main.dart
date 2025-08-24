@@ -49,6 +49,7 @@ Future<void> main() async {
 //  debugPrint('UserRepository instance created');
 
   Get.put(UserController()); // personalization version ONLY
+  Get.put(PermissionController());
   debugPrint('UserController instance created');
 //  Get.put(ObjectController());
  // debugPrint('ObjectController instance created');

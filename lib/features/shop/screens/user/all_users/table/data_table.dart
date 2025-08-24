@@ -45,7 +45,7 @@ class UsersTable extends StatelessWidget {
                   label: Text(
                     AppLocalization.of(
                       context,
-                    ).translate('objects_screen.lbl_object_name'),
+                    ).translate('users_screen.lbl_company'),
                   ),
                   onSort:
                       (columnIndex, ascending) =>
@@ -75,11 +75,8 @@ class UsersTable extends StatelessWidget {
                   label: Text(
                     AppLocalization.of(
                       context,
-                    ).translate('users_screen.lbl_date_created'),
+                    ).translate('users_screen.lbl_role'),
                   ),
-                  onSort:
-                      (columnIndex, ascending) =>
-                          controller.sortByCreatedAt(columnIndex, ascending),
                 ),
                 DataColumn2(
                   size: ColumnSize.S,

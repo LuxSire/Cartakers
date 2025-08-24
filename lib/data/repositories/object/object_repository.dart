@@ -176,6 +176,27 @@ class ObjectRepository extends GetxController {
       return [];
     }
   }
+   Future<List<String>> getAllCountries() async {
+    try {
+      // Assuming you already have access to the companyId from somewhere (e.g. logged-in user)
+      final response = await _objectService.getAllCountries();
+
+      if (response.isEmpty) {
+        debugPrint('No objects found.');
+        return [];
+      } else if (response is String) {
+        debugPrint('Error fetching countries: $response');
+        return [];
+      } else {
+        debugPrint('Fetched countries: ${response.length}');
+      }
+      return response.map((z) => z['description'].toString()).toList();
+   
+    } catch (e) {
+      debugPrint('Error fetching countries: $e');
+      return [];
+    }
+  }
     Future<List<String>> getAllTypes() async {
     try {
       // Assuming you already have access to the companyId from somewhere (e.g. logged-in user)

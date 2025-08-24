@@ -53,6 +53,8 @@ class UserController extends TBaseController<UserModel> {
 
   // Dependencies
   final userRepository = Get.put(UserRepository());
+  //final p_controller = Get.put(PermissionController());
+
   //final _objectRepository = Get.find<ObjectRepository>();
 
   RxList<ObjectModel> objectsList = <ObjectModel>[].obs;
@@ -89,7 +91,12 @@ class UserController extends TBaseController<UserModel> {
     });
     //  fetchUsersAndTranslateFields();
   }
-
+String getSelectedCompanyName() {
+  final company = companiesList.firstWhereOrNull(
+    (c) => c.id == selectedCompanyId.value,
+  );
+  return company?.name ?? '';
+}
   /// Fetches user details from the repository
   Future<UserModel> fetchUserDetails() async {
     try {
@@ -128,6 +135,11 @@ class UserController extends TBaseController<UserModel> {
       return UserModel.empty();
     }
   }
+
+
+
+
+
   void loadAllUserRoles() async {
     try {
       final result = await userRepository.getAllUserRoles();
@@ -182,6 +194,7 @@ class UserController extends TBaseController<UserModel> {
       hasImageChanged.value = true;
 
       userProfileUrl.value = file.name;
+      userModel.value.profilePicture=file.name;
     }
   }
 
@@ -450,7 +463,7 @@ class UserController extends TBaseController<UserModel> {
       }
       updateUserInfo(user.value);
   }
-  void updateUserInfo(UserModel u_user) async {
+  Future<bool> updateUserInfo(UserModel u_user) async {
     try {
       // user.update((val) {
       //   val = userRetrived.value;
@@ -459,14 +472,16 @@ class UserController extends TBaseController<UserModel> {
       // Form Validation
 if (!formKey.currentState!.validate()) {
   loading.value = false; // <-- Add this line
-  return;
+  return false;
 }
+    
       u_user.firstName = firstNameController.text.trim();
       u_user.lastName = lastNameController.text.trim();
       u_user.displayName = displayNameController.text.trim();
       u_user.profilePicture = userProfileUrl.value;
       u_user.phoneNumber = phoneController.text.trim();
-       
+      u_user.companyId = selectedCompanyId.value;
+      u_user.roleId = selectedRoleId.value;
       //user.roleExtId = selectedRoleId.value;
 
       // debugPrint('User Details: ${user.toJson()}');
@@ -485,7 +500,7 @@ if (!formKey.currentState!.validate()) {
 if (isUserUpdated) {
   SchedulerBinding.instance.addPostFrameCallback((_) {
     debugPrint('User Updated: ${user.value.toJson()}');
-    Get.back(result: user);
+ 
 
     // Show snackbar after navigation and context is available
     Future.delayed(const Duration(milliseconds: 200), () {
@@ -497,6 +512,8 @@ if (isUserUpdated) {
       }
     });
   });
+     return isUserUpdated;
+     
 }
  else {
         TLoaders.errorSnackBar(
@@ -518,6 +535,7 @@ if (isUserUpdated) {
         message: e.toString(),
       );
     }
+    return false;
   }
 
   Future<void> submitUser() async {
@@ -581,6 +599,7 @@ if (isUserUpdated) {
 
         debugPrint('Invitation Code: $invitationCode');
 
+        /*
         if (invitationCode.isNotEmpty) {
           // Send email invitation
           final fullName =
@@ -620,6 +639,7 @@ if (isUserUpdated) {
                 emailController.text.trim(),
               );
         }
+        */
 
         TLoaders.successSnackBar(
           title: AppLocalization.of(

@@ -613,6 +613,8 @@
         "lbl_objects": "Objets",
         "lbl_types": "Types",
         "lbl_information": "Information",
+        "lbl_noi": "Net Operating Income",
+        "lbl_caprate": "Capitalization Rate",
         "lbl_financials": "Finances",
         "lbl_price": "Prix",
         "lbl_search_objects": "Rechercher des objets",
@@ -718,6 +720,7 @@
     "users_screen": {
         "lbl_users": "Utilisateurs",
         "lbl_permissions": "Permissions",
+        "lbl_role": "Rôle",
         "lbl_company": "Société",
         "lbl_search_permissions": "Rechercher des permissions",
         "lbl_search_users": "Rechercher des utilisateurs",

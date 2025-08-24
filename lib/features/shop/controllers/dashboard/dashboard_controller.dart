@@ -69,7 +69,7 @@ class DashboardController extends GetxController {
   }
 
 Future<void> fetchTotalObjectUsers() async {
-  final result = await UserRepository.instance.getAllCompanyObjectUsers();
+  final result = await UserRepository.instance.getAllCompanyUsers();
 
   // Make sure user is loaded and not empty
   final user = userRetrived.value;

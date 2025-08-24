@@ -164,12 +164,14 @@ class CreateContractDialog extends StatelessWidget {
               Obx(() {
                 // Set user list to match object list using UserController
                 final userList = u_controller.allUsers;
-                return DropdownButtonFormField<UserModel>(
+                return DropdownButtonFormField<int>(
                   isExpanded: true,
-                  value: controller.selectedUsers.isNotEmpty ? controller.selectedUsers.first : null,
+                  value: controller.selectedUserId.value != 0
+                      ? controller.selectedUserId.value
+                      : null,
                   onChanged: (user) {
                     if (user != null) {
-                      controller.selectedUserId.value = int.parse(user.id!);
+                      controller.selectedUserId.value = user;
                     }
                   },
                   validator: (user) {
@@ -189,9 +191,9 @@ class CreateContractDialog extends StatelessWidget {
                     ),
                   ),
                   items: userList.map((user) {
-                    return DropdownMenuItem<UserModel>(
-                      value: user,
-                      child: Text('${user.displayName} (${user.email})'),
+                    return DropdownMenuItem<int>(
+                      value: int.tryParse(user.id!),
+                      child: Text('${user.displayName}'),
                     );
                   }).toList(),
                 );
@@ -257,25 +259,23 @@ class CreateContractDialog extends StatelessWidget {
                                   // Validate form
                                   if (controller.formKey.currentState?.validate() != true) return;
 
-                                  // Validate selected users
-                                  if (controller.selectedUsers.isEmpty) {
-                                    TLoaders.errorSnackBar(
-                                      title: AppLocalization.of(context).translate('general_msgs.msg_error'),
-                                      message: AppLocalization.of(context).translate('create_contract_screen.lbl_select_users'),
-                                    );
-                                    return;
-                                  }
-
                                   // Only use selectedObjectId if it is not 0
                                   if (controller.selectedObjectId.value != 0 && controller.selectedUserId.value != 0) {
                                     int selectedUserId = controller.selectedUserId.value;
                                     int selectedObjectId = controller.selectedObjectId.value;
                                     int selectedRoleId= u_controller.selectedRoleId.value;
+                                    debugPrint(wrapWidth: 80, 'Creating permission with User ID: $selectedUserId, Object ID: $selectedObjectId, Role ID: $selectedRoleId');
                                     controller.createPermission(
                                       selectedUserId,
                                       selectedObjectId,
                                       selectedRoleId,
-                                    );
+                                    ).then((success) {
+                                      debugPrint(wrapWidth: 80, 'Permission creation success: $success');
+                                      if (success == true) {
+                                        Get.back(result: true); // Close dialog and return true
+                                      }
+                                    });
+
                                   } else {
                                     TLoaders.errorSnackBar(
                                       title: AppLocalization.of(context).translate('general_msgs.msg_error'),

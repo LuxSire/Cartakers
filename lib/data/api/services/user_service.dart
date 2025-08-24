@@ -855,7 +855,9 @@ class UserService extends BaseService {
     String displayName,
     String phoneNumber,
     String countryCode,
-    String profilePic
+    String profilePic,
+    int companyId,
+    int? roleId
     
   ) async {
     try {
@@ -866,7 +868,9 @@ class UserService extends BaseService {
         'display_name': displayName,
         'phone_number': phoneNumber,
         'country_code': countryCode,
-        'profile_pic': profilePic
+        'profile_pic': profilePic,
+        'company_id': companyId,
+        'role_id': roleId,
       });
 
       debugPrint('Update personal details response: $response');

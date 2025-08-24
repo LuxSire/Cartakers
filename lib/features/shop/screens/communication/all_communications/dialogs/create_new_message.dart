@@ -5,16 +5,23 @@ import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/features/shop/controllers/communication/communication_controller.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
 import 'package:xm_frontend/utils/constants/sizes.dart';
+import 'package:xm_frontend/data/models/object_model.dart';
 
 class CreateMessageDialog extends StatelessWidget {
-  const CreateMessageDialog({Key? key}) : super(key: key);
+  final ObjectModel? object;
+  final String? subject;
+  final String? message;
+
+  const CreateMessageDialog({Key? key, this.object, this.subject, this.message}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final controller = CommunicationController.instance;
     controller.clearMessageForm();
-    controller.selectObject(-1);
+    controller.selectObject(object?.id ?? -1);
     controller.toggleChannel('push'); // Default to push notification
+    controller.titleController.text=subject ?? '';
+    controller.contentController.text=message ?? '';
 
     return Dialog(
       insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),

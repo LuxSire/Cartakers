@@ -20,6 +20,7 @@ class TSidebar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor  ,
       shape: const BeveledRectangleBorder(),
       child: Container(
        decoration: BoxDecoration(
@@ -190,7 +191,7 @@ class TSidebar extends StatelessWidget {
                 children: [
                   const SizedBox(height: 10),
                   Text(
-                    'v.1.0.4', //  App Version
+                    'v.1.0.5', //  App Version
                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: Theme.of(context).hintColor,
               ),

@@ -194,7 +194,7 @@ class PermissionRepository extends GetxController {
   Future<bool> createPermission(int userId,int objectId,int roleId) async {
     try {
 
-      debugPrint('Creating Permission: $userId $objectId $roleId');
+      debugPrint('[Permission Repository] Creating Permission: $userId $objectId $roleId');
       // first update the fields
       final result = await _objectService.createPermission(
         userId,

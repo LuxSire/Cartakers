@@ -40,7 +40,7 @@ class UsersRows extends DataTableSource {
     return DataRow2(
       onTap: () async {
 
-        debugPrint('User FULL Name: ${user.fullName}');
+        debugPrint('User FULL Name: ${user.profilePicture}');
         final result = await Get.toNamed(
           Routes.userDetails,
           arguments: user,
@@ -87,7 +87,7 @@ class UsersRows extends DataTableSource {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      user.fullName,
+                      user.displayName,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -114,8 +114,8 @@ class UsersRows extends DataTableSource {
         DataCell(Text(user.email)),
         // 4. Phone
         DataCell(Text(user.phoneNumber)),
-        // 5. Date Created
-        DataCell(Text(user.updatedAt == null ? '' : user.formattedDate)),
+        // 5. Role
+        DataCell(Text(user.roleName ?? '')),
         // 6. Actions
         DataCell(
           SingleChildScrollView(
@@ -159,6 +159,7 @@ class UsersRows extends DataTableSource {
                     if (result == true) {
                       controller.refreshData();
                       controller.userModel.refresh();
+                       
                     } else {
                       debugPrint('User update failed');
                     }

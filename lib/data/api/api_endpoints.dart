@@ -17,6 +17,7 @@ class ApiEndpoints {
   static const String getAllPermissions = 'api/objects/get-all-permissions';
   static const String getAllZonings = 'api/objects/get-all-zonings';
   static const String getAllOccupancies = 'api/objects/get-all-occupancies';
+  static const String getAllCountries = 'api/objects/get-all-countries';
   static const String removePermission = 'api/objects/remove-permission';
   static const String createPermission = 'api/objects/create-permission';
   static const String getAllBookingCategories = 'api/objects/get-all-booking-categories';

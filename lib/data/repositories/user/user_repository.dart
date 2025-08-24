@@ -447,6 +447,7 @@ class UserRepository extends GetxController {
             final userImageUrl = data['url'] as String;
             debugPrint("Image URL: $userImageUrl");
             updatedUser.profilePicture = userImageUrl;
+            controller.userModel.value.profilePicture = userImageUrl;
           }
         } catch (error) {
           debugPrint("Error uploading image: $error");
@@ -464,7 +465,10 @@ class UserRepository extends GetxController {
         updatedUser.displayName,
         updatedUser.phoneNumber,
         updatedUser.countryCode,
-        updatedUser.profilePicture
+        updatedUser.profilePicture,
+        updatedUser.companyId,
+        updatedUser.roleId, 
+
       );
 
       if (result['success'] == false) {
