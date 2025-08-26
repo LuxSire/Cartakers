@@ -615,6 +615,7 @@
   "objects_screen": {
     "lbl_objects": "Objekte",
     "lbl_types": "Typen",
+    "lbl_state": "Bundesland",
     "lbl_information": "Information",
     "lbl_noi": "Net Operating Income",
     "lbl_caprate": "Capitalization Rate",

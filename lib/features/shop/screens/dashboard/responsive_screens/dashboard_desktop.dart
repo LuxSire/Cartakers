@@ -15,7 +15,7 @@ import 'package:xm_frontend/features/shop/screens/dashboard/widgets/requests_car
 import 'package:xm_frontend/features/shop/screens/dashboard/widgets/vacant_card.dart';
 import 'package:xm_frontend/routes/routes.dart';
 import 'package:xm_frontend/utils/constants/colors.dart';
-
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../common/widgets/icons/t_circular_icon.dart';
 import '../../../../../utils/constants/sizes.dart';
@@ -27,16 +27,18 @@ class DashboardDesktopScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(DashboardController());
-
+    final p_controller = PermissionController.instance;
     // Trigger total calculations once when the screen is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
       controller
           .initDashboardTotals(); //  this replaces calling each one individually
     });
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,  
-      body: SingleChildScrollView(
+      return SingleChildScrollView(
+      child: Center(
+      child: ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 1400), // or your preferred max width
+      //  scrollDirection: Axis.horizontal,
         child: Padding(
           padding: const EdgeInsets.all(TSizes.defaultSpace),
           child: Column(
@@ -50,93 +52,74 @@ class DashboardDesktopScreen extends StatelessWidget {
               const SizedBox(height: TSizes.spaceBtwSections),
 
               // Card Stats
-              Row(
+             Wrap(
+                spacing: TSizes.spaceBtwItems,
+                runSpacing: TSizes.spaceBtwItems,
                 children: [
-                  Expanded(
+                  SizedBox(
+                    width: 320,
                     child: Obx(
                       () => ADashboardCard(
                         onTap: () => Get.toNamed(Routes.objectsUnits),
-
                         headingIcon: Iconsax.building,
                         headingIconColor: TColors.alterColor,
                         headingIconBgColor: TColors.alterColor.withOpacity(0.1),
                         stats: controller.totalObjects.value,
                         context: context,
-                        title: AppLocalization.of(
-                          context,
-                        ).translate('dashboard_screen.lbl_objects'),
-                        subTitle:
-                            controller.totalObjects.value.toString(),
+                        title: AppLocalization.of(context).translate('dashboard_screen.lbl_objects'),
+                        subTitle: controller.totalObjects.value.toString(),
                       ),
                     ),
                   ),
-                  const SizedBox(width: TSizes.spaceBtwItems),
-                                    Expanded(
+                  SizedBox(
+                    width: 320,
                     child: Obx(
                       () => ADashboardCard(
-                        onTap: () {
-                          Get.toNamed(Routes.communication);
-                        },
+                        onTap: () => Get.toNamed(Routes.communication),
                         headingIcon: Iconsax.direct,
                         headingIconColor: Colors.deepOrange,
                         headingIconBgColor: Colors.deepOrange.withOpacity(0.1),
                         context: context,
-                        title: AppLocalization.of(
-                          context,
-                        ).translate('sidebar.lbl_communication'),
-                        subTitle:
-                            controller.totalObjectsMessages.value.toString(),
+                        title: AppLocalization.of(context).translate('sidebar.lbl_communication'),
+                        subTitle: controller.totalObjectsMessages.value.toString(),
                         stats: controller.totalObjectsMessages.value,
                       ),
                     ),
                   ),
-
-                  const SizedBox(width: TSizes.spaceBtwItems),
-                  Expanded(
+                  SizedBox(
+                    width: 320,
                     child: Obx(
                       () => ADashboardCard(
-                        onTap: () {
-                          // set value in setings controller
-
-                          // Get.find<AppController>()
-                          //   .togglePendingRequestsNavigation();
-
-                          Get.toNamed(Routes.bookingsRequests);
-                        },
-
+                        onTap: () => Get.toNamed(Routes.bookingsRequests),
                         headingIcon: Iconsax.calendar_search,
                         headingIconColor: Colors.amber,
                         headingIconBgColor: Colors.amber.withOpacity(0.1),
                         stats: controller.totalObjectsPendingRequests.value,
                         context: context,
-                        title: AppLocalization.of(
-                          context,
-                        ).translate('sidebar.lbl_bookings_and_requests'),
-                        subTitle:
-                            ' ${controller.totalObjectsBookings.value.toString()}/${controller.totalObjectsRequests.value.toString()}',
+                        title: AppLocalization.of(context).translate('sidebar.lbl_bookings_and_requests'),
+                        subTitle: ' ${controller.totalObjectsBookings.value.toString()}/${controller.totalObjectsRequests.value.toString()}',
                       ),
                     ),
                   ),
-                  const SizedBox(width: TSizes.spaceBtwItems),
-                                    Expanded(
+                  SizedBox(
+                    width: 320,
                     child: Obx(
                       () => ADashboardCard(
-                        onTap: () => Get.toNamed(Routes.usersPermissions),
-
+                        onTap: () {
+                          if (p_controller.isUserAdmin()) {
+                            Get.toNamed(Routes.usersPermissions);
+                          }
+                        },
                         headingIcon: Iconsax.profile_2user,
                         headingIconColor: Colors.green,
                         headingIconBgColor: Colors.green.withOpacity(0.1),
                         stats: controller.totalUsers.value,
                         context: context,
-                        title: AppLocalization.of(
-                          context,
-                        ).translate('sidebar.lbl_administration'),
-                        subTitle:
-                            ' ${controller.totalUsers.value.toString()}/${controller.totalUsers.value.toString()}',
+                        title: AppLocalization.of(context).translate('sidebar.lbl_administration'),
+                        subTitle: ' ${controller.totalUsers.value.toString()}/${controller.totalUsers.value.toString()}',
                       ),
                     ),
                   ),
-
                 ],
               ),
               const SizedBox(height: TSizes.spaceBtwSections),
@@ -291,9 +274,10 @@ class DashboardDesktopScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                
+               /* 
                   const SizedBox(width: TSizes.spaceBtwSections),
-                  Expanded(
+                  Expanded
+                  (
                     child: TRoundedContainer(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -352,14 +336,20 @@ class DashboardDesktopScreen extends StatelessWidget {
                           const RequestsCard(),
                         ],
                       ),
+
+
                     ),
                   ),
+*/
+
                 ],
               ),
             ],
           ),
+          
         ),
+    ),  
       ),
-    );
+    );  
   }
 }

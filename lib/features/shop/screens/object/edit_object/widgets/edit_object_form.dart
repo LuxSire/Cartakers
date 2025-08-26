@@ -69,7 +69,8 @@ class EditObjectForm extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.all(TSizes.defaultSpace),
         child: LayoutBuilder(
-          builder: (context, constraints) => Column(
+          builder: (context, constraints) =>  SingleChildScrollView(
+      child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 Row(
@@ -134,9 +135,8 @@ Row(
               const SizedBox(height: TSizes.spaceBtwSections),
 
               // The rest of the form is scrollable
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
+                //SingleChildScrollView(
+                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: TSizes.spaceBtwSections * 2),
@@ -337,6 +337,22 @@ Row(
                             ),
                           ),
                           const SizedBox(width: TSizes.spaceBtwInputFields),
+                                                    Expanded(
+                            flex: 1,
+                            child: TextFormField(
+                              controller: controller.state,
+                              validator: (value) => TValidator.validateEmptyText(
+                                AppLocalization.of(context).translate('objects_screen.lbl_state'),
+                                value,
+                              ),
+                              decoration: InputDecoration(
+                                labelText: AppLocalization.of(context).translate('objects_screen.lbl_state'),
+                                prefixIcon: Icon(Icons.location_city),
+                              ),
+                              readOnly: !canEdit,
+                            ),
+                          ),
+                          const SizedBox(width: TSizes.spaceBtwInputFields),
                           Expanded(
   flex: 1,
   child: Autocomplete<String>(
@@ -453,16 +469,51 @@ Row(
                             ),
                           ),
                           const SizedBox(width: TSizes.spaceBtwInputFields),
-                          Expanded(
-                            child: TextFormField(
-                              initialValue: object.currency ?? '',
-                              readOnly: true,
-                              decoration: InputDecoration(
-                                labelText: AppLocalization.of(context).translate('objects_screen.lbl_currency'),
-                                prefixIcon: Icon(Icons.attach_money),
-                              ),
-                            ),
-                          ),
+                            Expanded(
+  flex: 1,
+  child: Autocomplete<String>(
+    optionsBuilder: (TextEditingValue textEditingValue) {
+      if (textEditingValue.text == '') {
+        return const Iterable<String>.empty();
+      }
+      return controller.currencyList.where((String option) {
+        return option.toLowerCase().contains(textEditingValue.text.toLowerCase());
+      });
+    },
+    onSelected: (String selection) {
+      controller.currency.text = selection;
+    },
+    fieldViewBuilder: (context, textEditingController, focusNode, onFieldSubmitted) {
+      // Sync the controller's text with the Autocomplete's text controller
+      textEditingController.text = controller.currency.text;
+      textEditingController.selection = TextSelection.fromPosition(
+        TextPosition(offset: textEditingController.text.length),
+      );
+      return TextFormField(
+        controller: textEditingController,
+        focusNode: focusNode,
+        decoration: InputDecoration(
+          labelText: AppLocalization.of(context).translate('objects_screen.lbl_currency'),
+          prefixIcon: Icon(Icons.location_city),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return AppLocalization.of(context).translate('objects_screen.lbl_currency');
+          }
+          if (!controller.currencyList.contains(value)) {
+            return AppLocalization.of(context).translate('objects_screen.lbl_currency_invalid');
+          }
+          return null;
+        },
+        onChanged: (value) {
+          controller.currency.text = value;
+        },
+        readOnly: !canEdit,
+      );
+    },
+  ),
+),
+
                           Expanded(
                             child: TextFormField(
                               controller: controller.yieldNet,
@@ -580,10 +631,10 @@ Row(
                       const SizedBox(height: TSizes.spaceBtwInputFields * 2),
                     ],
                   ),
-                ),
-              ),
+            
             ],
           ),
+        ),
         ),
       );
     });

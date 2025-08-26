@@ -197,6 +197,30 @@ class ObjectRepository extends GetxController {
       return [];
     }
   }
+
+
+     Future<List<String>> getAllCurrencies() async {
+    try {
+      // Assuming you already have access to the companyId from somewhere (e.g. logged-in user)
+      final response = await _objectService.getAllCurrencies();
+
+      if (response.isEmpty) {
+        debugPrint('No currencies found.');
+        return [];
+      } else if (response is String) {
+        debugPrint('Error fetching currencies: $response');
+        return [];
+      } else {
+        debugPrint('Fetched currencies: ${response.length}');
+      }
+      return response.map((z) => z['name'].toString()).toList();
+
+    } catch (e) {
+      debugPrint('Error fetching currencies: $e');
+      return [];
+    }
+  }
+
     Future<List<String>> getAllTypes() async {
     try {
       // Assuming you already have access to the companyId from somewhere (e.g. logged-in user)
@@ -314,12 +338,10 @@ class ObjectRepository extends GetxController {
   /// Function to update user data in mysql.
   Future<bool> updateObjectDetails(ObjectModel updatedObject) async {
     // display debugPrint of the updated object
-    debugPrint('Updated Object: ${updatedObject.toJson()}');
 
     // get editcontroller instance
     final controller = Get.put(EditObjectController());
 
-    debugPrint(controller.hasImageChanged.value.toString());
 
     try {
       if (updatedObject.id == null  ) {
@@ -441,12 +463,10 @@ class ObjectRepository extends GetxController {
   /// Function to update user data in mysql.
   Future<bool> updateObject(ObjectModel updatedObject) async {
     // display debugPrint of the updated object
-    debugPrint('Updated Object: ${updatedObject.toJson()}');
 
     // get editcontroller instance
     final controller = Get.put(EditObjectController());
 
-    debugPrint(controller.hasImageChanged.value.toString());
 
     try {
       if (updatedObject.id == null  ) {

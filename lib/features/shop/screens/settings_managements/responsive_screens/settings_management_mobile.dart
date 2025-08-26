@@ -72,12 +72,6 @@ class SettingsManagementMobileScreen extends StatelessWidget {
                                   ),
                                   icon: const Icon(Iconsax.setting_2),
                                 ),
-                                Tab(
-                                  text: AppLocalization.of(context).translate(
-                                    'tab_management_screen.lbl_management',
-                                  ),
-                                  icon: const Icon(Iconsax.setting),
-                                ),
                               ],
                             ),
                             const SizedBox(height: TSizes.defaultSpace),
@@ -87,9 +81,6 @@ class SettingsManagementMobileScreen extends StatelessWidget {
                                 children: [
                                   SettingsManagementDetailsTab(
                                     tabType: 'settings',
-                                  ),
-                                  SettingsManagementDetailsTab(
-                                    tabType: 'management',
                                   ),
                                 ],
                               ),

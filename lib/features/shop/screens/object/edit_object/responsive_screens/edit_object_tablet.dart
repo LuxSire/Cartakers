@@ -5,9 +5,11 @@ import 'package:xm_frontend/data/models/object_model.dart';
 import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
 import 'package:xm_frontend/features/shop/screens/object/edit_object/widgets/object_units.dart';
 import 'package:xm_frontend/features/shop/screens/object/edit_object/widgets/edit_object_form.dart';
-
+import '../widgets/object_docs.dart';
+import '../widgets/object_pics.dart';
+import 'package:xm_frontend/features/shop/screens/communication/all_communications/communications.dart';
+import 'package:xm_frontend/features/shop/screens/communication/all_communications/widgets/communication_detail_tab.dart';
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
-import '../../../../../../routes/routes.dart';
 import '../../../../../../utils/constants/sizes.dart';
 
 class EditObjectTabletScreen extends StatelessWidget {
@@ -18,39 +20,57 @@ class EditObjectTabletScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<EditObjectController>();
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(TSizes.defaultSpace),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TBreadcrumbsWithHeading(
-                onreturnUpdated: () => controller.isDataUpdated.value,
-                returnToPreviousScreen: true,
-                heading: AppLocalization.of(
-                  context,
-                ).translate('edit_object_screen.lbl_object_details'),
-                breadcrumbItems: [
-                  // Routes.buildingsUnits,
-                  // AppLocalization.of(
-                  //   context,
-                  // ).translate('edit_building_screen.lbl_building_details'),
+    return DefaultTabController(
+      length: 5,
+      child: Scaffold(
+        body:   Padding(
+            padding: const EdgeInsets.all(TSizes.defaultSpace),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Breadcrumbs
+                TBreadcrumbsWithHeading(
+                  onreturnUpdated: () => controller.isDataUpdated.value,
+                  returnToPreviousScreen: true,
+                  heading: AppLocalization.of(
+                    context,
+                  ).translate('edit_object_screen.lbl_object_details'),
+                  breadcrumbItems: [],
+                ),
+                const SizedBox(height: TSizes.spaceBtwSections),
+      // TabBar with 3 tabs
+              TabBar(
+                labelColor: Theme.of(context).colorScheme.primary,
+                unselectedLabelColor: Colors.grey,
+                tabs: const [
+                  Tab(text: 'Details'),
+                  Tab(text: 'Documents'),
+                  Tab(text: 'Images'),
+                  Tab(text: 'Units'),
+                  Tab(text: 'Communications'),
                 ],
               ),
-              const SizedBox(height: TSizes.spaceBtwSections),
+            const SizedBox(height: TSizes.spaceBtwSections*2),
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    // Tab 1: EditObjectForm
+                    EditObjectForm(object: object),
+                    ObjectDocsWidget(objectId: object.id!), // Tab 2: Documents
+                    ObjectPicsWidget(objectId: object.id!), // Tab 3: Images
+                    ObjectUnits(object: object), // Tab 4: Units
+                    CommunicationDetailsTab(tabType: 'messages',object: object), // Tab 5: Communications
+                  ],
+                ),
+              ),
 
-              // Form
-              EditObjectForm(object: object),
-
-              const SizedBox(height: TSizes.spaceBtwSections),
-
-              // Left Side units
-              ObjectUnits(object: object),
-            ],
+                //CommunicationScreen(object: object),
+                // Units at the bottom, full width
+                //ObjectUnits(object: object),
+              ],
+            ),
           ),
         ),
-      ),
     );
   }
 }

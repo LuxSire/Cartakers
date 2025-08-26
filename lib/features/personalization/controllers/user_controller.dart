@@ -248,12 +248,12 @@ String getSelectedCompanyName() {
 
       // get list of user assigned objects
       final assignedObjects = await userRepository.getUserAssignedObjects(
-        int.parse(userRetrived.value.id?.toString() ?? '0'),
+        int.parse(userRetrived.value.id ?? '0'),
       );
 
       selectedObjectIds.clear(); // Clear previous selections
       selectedObjectIds.addAll(
-        assignedObjects.map((b) => int.parse(b.id.toString())),
+        assignedObjects.map((b) => b.id).whereType<int>(),
       );
       debugPrint('Selected Object IDs: $selectedObjectIds');
       userModel.value=userRetrived.value;

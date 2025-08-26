@@ -187,35 +187,7 @@ class DashboardMobileScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: TSizes.spaceBtwSections),
 
-              // Vacant Units
-              TRoundedContainer(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        TCircularIcon(
-                          icon: Iconsax.building,
-                          backgroundColor: TColors.alterColor.withOpacity(0.1),
-                          color: TColors.alterColor,
-                          size: TSizes.md,
-                        ),
-                        const SizedBox(width: TSizes.spaceBtwItems),
-                        Obx(
-                          () => Text(
-                            "${AppLocalization.of(context).translate('dashboard_screen.lbl_vacant_units')} (${controller.totalObjectsVacantUnits})",
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: TSizes.spaceBtwSections),
-                    const VacantCard(),
-                  ],
-                ),
-              ),
               const SizedBox(height: TSizes.spaceBtwSections),
               TRoundedContainer(
                 child: Column(

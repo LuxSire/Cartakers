@@ -45,7 +45,7 @@ class SettingsManagementTabletScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       DefaultTabController(
-                        length: 2,
+                        length: 1,
                         child: Column(
                           children: [
                             TabBar(
@@ -64,12 +64,6 @@ class SettingsManagementTabletScreen extends StatelessWidget {
                                   ),
                                   icon: const Icon(Iconsax.setting_2),
                                 ),
-                                Tab(
-                                  text: AppLocalization.of(context).translate(
-                                    'tab_management_screen.lbl_management',
-                                  ),
-                                  icon: const Icon(Iconsax.setting),
-                                ),
                               ],
                             ),
                             const SizedBox(height: TSizes.defaultSpace),
@@ -80,9 +74,7 @@ class SettingsManagementTabletScreen extends StatelessWidget {
                                   SettingsManagementDetailsTab(
                                     tabType: 'settings',
                                   ),
-                                  SettingsManagementDetailsTab(
-                                    tabType: 'management',
-                                  ),
+                                
                                 ],
                               ),
                             ),

@@ -30,24 +30,27 @@ class App extends StatelessWidget {
     // find your controller once
     final appCtrl = Get.find<AppController>();
     final themeService = Get.find<ThemeService>();
-    debugPrint('App started with themes: ${themeService.lightTheme}, ${themeService.darkTheme}');
     // wrap your GetMaterialApp in Obx to react to changes
-    return Obx(() {
+    return Obx(() 
+    {
       // keep Intl in sync
       Intl.defaultLocale = appCtrl.locale.value.toString();
     
+      // Debug prints
+  debugPrint('App: isDarkMode = ${themeService.isDarkMode.value}');
+  debugPrint('App: themeMode = ${themeService.isDarkMode.value ? "dark" : "light"}');
+  debugPrint('App: scaffoldBackgroundColor = ${themeService.isDarkMode.value ? themeService.darkTheme.scaffoldBackgroundColor : themeService.lightTheme.scaffoldBackgroundColor}');
+  debugPrint('App context: ${context.hashCode}');
+ 
+  debugPrint('App scaffoldBackgroundColor: ${Theme.of(context).scaffoldBackgroundColor}');
+
       return GetMaterialApp(
         title: TTexts.appName,
         debugShowCheckedModeBanner: false,
-
-    
-
-
         // ─── THEMES ─────────────────────────────────────────
-theme: themeService.lightTheme,
-darkTheme: themeService.darkTheme,
-  themeMode: themeService.isDarkMode.value ? ThemeMode.dark : ThemeMode.light,
-
+        theme: themeService.lightTheme,
+        darkTheme: themeService.darkTheme,
+        themeMode: themeService.isDarkMode.value ? ThemeMode.dark : ThemeMode.light,
         // ─── LOCALIZATION ────────────────────────────────────
         locale: appCtrl.locale.value,
         fallbackLocale: const Locale('en', 'US'),
@@ -82,13 +85,17 @@ darkTheme: themeService.darkTheme,
         ),
 
         // ─── SPLASH/HOME ────────────────────────────────────
-        home: Scaffold(
+        /*home: Scaffold(
           backgroundColor: TColors.primary,
           body: const Center(
             child: CircularProgressIndicator(color: Colors.white),
           ),
-        ),
+        ),*/  
       );
-    });
+
+
+    }
+    
+    );
   }
 }

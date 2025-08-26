@@ -27,7 +27,7 @@ class ObjectController extends TBaseController<ObjectModel> {
     // also get user object restrictions
     final updatedUser = await userController.fetchUserDetails();
 
-    debugPrint('Updated objecs in controller: ${result }');
+    //debugPrint('Updated objecs in controller: ${result }');
 
     final userObjectRestrictions = updatedUser.objectPermissionIds ?? [];
     
@@ -37,10 +37,11 @@ class ObjectController extends TBaseController<ObjectModel> {
     
 
     // Debug print each object's imgUrl 
+    /*
     for (var object in result) {
       debugPrint('Object: ${object.name}, imgUrl: ${object.imgUrl}');
     }
-
+    */
     final filteredObjects = result.where((object) {
       final objectIdStr = object.id.toString();
       return restrictionIds.contains(objectIdStr);

@@ -3,11 +3,19 @@ import 'package:xm_frontend/features/shop/screens/communication/all_communicatio
 import 'package:xm_frontend/features/shop/screens/communication/all_communications/table/message/table_header.dart';
 import 'package:xm_frontend/data/models/object_model.dart';
 import 'package:xm_frontend/utils/constants/sizes.dart';
+import 'package:xm_frontend/features/shop/screens/communication/all_communications/table/message/wa_table_source.dart';
 
-class MessagesTab extends StatelessWidget {
-  const MessagesTab({super.key,this.object});
+class MessagesTab extends StatefulWidget {
+  const MessagesTab({super.key, this.object});
 
   final ObjectModel? object;
+
+  @override
+  State<MessagesTab> createState() => _MessagesTabState();
+}
+
+class _MessagesTabState extends State<MessagesTab> {
+  bool showCloudStyle = false;
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +28,24 @@ class MessagesTab extends StatelessWidget {
           MessageTableHeader(),
           SizedBox(height: TSizes.spaceBtwItems),
 
-          // Table
+          // Toggle Switch
+          Row(
+            children: [
+              const Text('Table'),
+              Switch(
+                value: showCloudStyle,
+                onChanged: (val) => setState(() => showCloudStyle = val),
+              ),
+              const Text('Clouds'),
+            ],
+          ),
+          SizedBox(height: TSizes.spaceBtwItems),
+
+          // Table or Cloud List
           Expanded(
-            child: MessageTable(object: object),
+            child: showCloudStyle
+                ? WhatsAppMessageList(object: widget.object)
+                : MessageTable(object: widget.object),
           ),
         ],
       ),

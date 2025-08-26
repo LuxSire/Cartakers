@@ -34,9 +34,7 @@ class EditObjectDesktopScreen extends StatelessWidget {
                 TBreadcrumbsWithHeading(
                   onreturnUpdated: () => controller.isDataUpdated.value,
                   returnToPreviousScreen: true,
-                  heading: AppLocalization.of(
-                    context,
-                  ).translate('edit_object_screen.lbl_object_details'),
+                  heading: object.name  ?? '',
                   breadcrumbItems: [],
                 ),
                 const SizedBox(height: TSizes.spaceBtwSections),

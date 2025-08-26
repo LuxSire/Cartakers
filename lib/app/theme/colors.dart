@@ -14,9 +14,7 @@ class AppColors {
 
   // Background colors
   static const backgroundLight = Colors.white;
-  static const backgroundDark = Color(
-    0xFF121212,
-  ); // Darker shade for better contrast
+  static const backgroundDark = Color(0xFF121212); // Darker shade for better contrast
   static const backgroundPrimary = Color(0xFF2563EB);
 
   // Text colors

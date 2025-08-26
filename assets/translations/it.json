@@ -612,6 +612,7 @@
     },
     "objects_screen": {
         "lbl_objects": "Oggetti",
+        "lbl_state": "Regione",
         "lbl_noi": "Net Operating Income",
         "lbl_caprate": "Capitalization Rate",
         "lbl_types": "Tipologie",

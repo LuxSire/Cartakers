@@ -88,16 +88,17 @@ Future<void> fetchTotalObjectUsers() async {
     final result = await ObjectRepository.instance.fetchAllMessages();
 
     // Get allowed object IDs for the user
-    final user = userRetrived.value;
+    //final user = userRetrived.value;
 
-    final userObjectRestrictions = user.objectPermissionIds ?? [];
+    //final userObjectRestrictions = user.objectPermissionIds ?? [];
 
-    final filteredMessages =
-        result.where((message) {
+    final filteredMessages =result.toList( );
+
+/*        result.where((message) {
           final objectIds = message.objectIds ?? [];
           return objectIds.any((id) => userObjectRestrictions.contains(id));
         }).toList();
-
+*/
     // debugPrint('User Building Restrictions: $userBuildingRestrictions');
     // filteredMessages.forEach(
     //   (msg) =>

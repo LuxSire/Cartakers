@@ -14,6 +14,7 @@ import 'package:xm_frontend/utils/constants/text_strings.dart';
 import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
 import 'package:xm_frontend/features/shop/screens/communication/all_communications/dialogs/create_new_message.dart';
+import 'package:intl/intl.dart';
 
 class ObjectCard extends StatelessWidget {
   const ObjectCard({super.key});
@@ -22,8 +23,8 @@ class ObjectCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<ObjectController>();
     final p_controller = PermissionController.instance;
-    final auth_controller = AuthenticationRepository.instance;
-    final user_id = int.tryParse(auth_controller.currentUser?.id ?? '');
+    //final auth_controller = AuthenticationRepository.instance;
+    
    debugPrint('[ObjectCard] Constructor called');
   WidgetsBinding.instance.addPostFrameCallback((_) {
       if (controller.allObjects.isEmpty) {
@@ -75,7 +76,7 @@ class ObjectCard extends StatelessWidget {
               return InkWell(
                 onTap: () {
 
-           if (p_controller.CheckObjectForUser(user_id ?? 0,object.id ?? 0))
+           if (p_controller.CheckObjectForCurrentUser(object.id ?? 0))
            {
             Get.toNamed(Routes.editObject, arguments: object)?.then((result) {
               if (result == true) {
@@ -173,10 +174,10 @@ class ObjectCard extends StatelessWidget {
                                 ),
                                 _StatIcon(
                                   icon: Iconsax.money,
-                                  label:
-                                      '${object.price ?? 0}' '${object.currency ?? ''}',
+                                  label: object.price != null
+      ? '${object.currency ?? ''} ${NumberFormat('#,##0', 'en_US').format(object.price)}'
+      : '',
                                 ),
-                                
                               ],
                             ),
                                const SizedBox(height: 8),

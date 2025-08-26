@@ -37,6 +37,7 @@ class _EditUserDialogState extends State<EditUserDialog> {
     company_controller=Get.find<CompanyController>();
     user = controller.userModel.value;
     controller.firstNameController.text = user.firstName;
+    controller.phoneController.text = user.phoneNumber ?? '';
     controller.lastNameController.text = user.lastName;
     controller.displayNameController.text = user.displayName;
     controller.emailController.text = user.email;

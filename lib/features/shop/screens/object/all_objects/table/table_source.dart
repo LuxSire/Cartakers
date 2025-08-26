@@ -15,6 +15,7 @@ import 'package:xm_frontend/features/shop/controllers/contract/permission_contro
 import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
 import 'package:xm_frontend/features/shop/screens/communication/all_communications/dialogs/create_new_message.dart';
 import 'package:xm_frontend/features/shop/screens/contract/dialogs/assign_request_dialog.dart';
+import 'package:intl/intl.dart';
 
 class ObjectRows extends DataTableSource {
   final controller = ObjectController.instance;
@@ -92,13 +93,20 @@ class ObjectRows extends DataTableSource {
             ],
           ),
         ),
-        DataCell(Text(object.street ?? '')),
-DataCell(Text(object.city?.toString() ?? '')),
-DataCell(Text(object.zipCode ?? '')),
+//        DataCell(Text(object.street ?? '')),
+DataCell(Text(object.state?.toString() ?? object.city?.toString() ?? '')),
+//DataCell(Text(object.zipCode ?? '')),
 DataCell(Text(object.country ?? '')),
 DataCell(Text(object.type_?.toString() ?? '')),
 DataCell(Text(object.zoning?.toString() ?? '')),
-DataCell(Text(object.price.toString() ?? '')),
+DataCell(
+  Text(
+    object.price != null
+      ? '${object.currency ?? ''} ${NumberFormat('#,##0', 'en_US').format(object.price)}'
+
+      : '',
+  ),
+),
         DataCell(
           TTableActionButtons(
             view: true,

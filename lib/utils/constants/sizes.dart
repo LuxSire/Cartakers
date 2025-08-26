@@ -13,9 +13,9 @@ class TSizes {
   static const double iconLg = 32.0;
 
   // Font sizes
-  static const double fontSizeSm = 14.0;
-  static const double fontSizeMd = 16.0;
-  static const double fontSizeLg = 18.0;
+  static const double fontSizeSm = 12.0;
+  static const double fontSizeMd = 14.0;
+  static const double fontSizeLg = 16.0;
 
   // Button sizes
   static const double buttonHeight = 18.0;
@@ -69,8 +69,8 @@ class TSizes {
   static const double gridViewSpacing = 16.0;
 
   // Responsive Screen Sizes
-  static const int desktopScreenSize = 1366;
+  static const int desktopScreenSize = 1466;
   static const int tabletScreenSize = 768;
   static const int mobileScreenSize = 360;
-  static const int customScreenSize = 1100;
+  static const int customScreenSize = 1200;
 }

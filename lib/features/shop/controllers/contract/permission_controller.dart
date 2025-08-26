@@ -47,7 +47,7 @@ class PermissionController extends TBaseController<PermissionModel> {
   final _permissionRepository = Get.put(PermissionRepository());
   final _unitRepository = Get.put(UnitRepository());
   final _objectRepository = Get.put(ObjectRepository());
-
+  final auth_controller = AuthenticationRepository.instance;
   final formKey = GlobalKey<FormState>();
 
   RxBool isDataUpdated = false.obs;
@@ -195,8 +195,31 @@ class PermissionController extends TBaseController<PermissionModel> {
   }
 
 
+  bool isUserAdmin()
+  {
+    final userId = int.tryParse(auth_controller.currentUser?.id ?? '');
+      final user = userController.allUsers.firstWhereOrNull((u) => u.id == userId.toString());
+      if (user != null) {
+        if (user.roleId == 1) // Check if user has the specific role
+            return true;
+        else
+              return false;
+      }
+      else
+        return false; 
+  }
+  
+  bool CheckObjectForCurrentUser( int objectId) 
+  {
+    final userId = int.tryParse(auth_controller.currentUser?.id ?? '');
+    if (userId != null) {
+      return CheckObjectForUser(userId, objectId);
+    }
+    return false;
+  }
 
-  bool CheckObjectForUser(int userId, int objectId) {
+  bool CheckObjectForUser(int userId, int objectId) 
+  {
 
   final user = userController.allUsers.firstWhereOrNull((u) => u.id == userId.toString());
 

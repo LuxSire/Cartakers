@@ -15,7 +15,7 @@ class MessageTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<CommunicationController>();
-    controller.selectedObjectId.value = object?.id ?? -1;
+    controller.selectedObject.value = object;
 
     return Obx(() {
       // Buildings & Selected Rows are Hidden => Just to update the UI => Obx => [ProductRows]
@@ -27,6 +27,26 @@ class MessageTable extends StatelessWidget {
         visible: false,
         child: Text(controller.selectedRows.length.toString()),
       );
+
+DropdownButton<int>(
+  value: controller.selectedObjectId.value == -1 ? null : controller.selectedObjectId.value,
+  items: [
+    DropdownMenuItem<int>(
+      value: -1,
+      child: Text('All objects'),
+    ),
+    ...controller.objectsList.map((obj) {
+      return DropdownMenuItem<int>(
+        value: obj.id,
+        child: Text(obj.description ?? ''),
+      );
+    }).toList(),
+  ],
+  onChanged: (id) {
+    controller.selectedObjectId.value = id ?? -1;
+    controller.filterMessagesBySelectedObject();
+  },
+);
 
       // Table
       return TPaginatedDataTable(
@@ -88,7 +108,7 @@ class MessageTable extends StatelessWidget {
           ),
         ],
 
-        source: MessageRows(),
+        source: MessageRows(controller.filteredItems),
       );
     });
   }

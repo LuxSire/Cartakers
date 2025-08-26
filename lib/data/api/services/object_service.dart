@@ -374,7 +374,6 @@ Future<List<Map<String, dynamic>>> fetchObjectDocs(int objectId) async {
       });
 
       // Debugging log
-      debugPrint('Raw response: $response');
 
       if (response is Map<String, dynamic> && response.containsKey('success')) {
         if (response['success'] == true &&
@@ -430,7 +429,6 @@ Future<List<Map<String, dynamic>>> fetchObjectDocs(int objectId) async {
     try {
       final response = await post(ApiEndpoints.getAllObjects, {});
 
-        debugPrint('Raw response: $response');
 
       if (response is Map<String, dynamic> && response.containsKey('success')) {
         if (response['success'] == true && response['data'] is List) {
@@ -556,6 +554,31 @@ Future<List<Map<String, dynamic>>> fetchObjectDocs(int objectId) async {
       return [];
     }
   }
+
+    Future<List<Map<String, dynamic>>> getAllCurrencies(
+
+  ) async {
+    try {
+      final response = await post(ApiEndpoints.getAllCurrencies, {});
+
+        debugPrint('Raw response: $response');
+
+      if (response is Map<String, dynamic> && response.containsKey('success')) {
+        if (response['success'] == true && response['data'] is List) {
+          return List<Map<String, dynamic>>.from(response['data']);
+        } else {
+          return [];
+        }
+      } else {
+        return [];
+      }
+    } catch (error) {
+      
+      return [];
+    }
+  }
+
+
 
     Future<List<Map<String, dynamic>>> getAllTypes(
 

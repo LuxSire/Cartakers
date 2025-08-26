@@ -25,12 +25,12 @@ class ThemeService extends GetxService {
     fontFamily: 'Lato', // Default font for light theme
     brightness: Brightness.light,
     primaryColor: AppColors.primaryColor,
-    scaffoldBackgroundColor: AppColors.backgroundLight,
+    scaffoldBackgroundColor:  Colors.white,
     bottomAppBarTheme: const BottomAppBarThemeData(
       color: AppColors.whiteA700, // Light theme bottom bar color
     ),
     appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.blue,
+      backgroundColor: AppColors.orange925,
       foregroundColor: Colors.white,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent, // Transparent background
@@ -154,7 +154,7 @@ class ThemeService extends GetxService {
 
   Future<void> _loadThemePreference() async {
     final prefs = await SharedPreferences.getInstance();
-    isDarkMode.value = prefs.getBool(_themePreferenceKey) ?? false;
+    isDarkMode.value = prefs.getBool(_themePreferenceKey) ?? true;
   }
 
   Future<void> _saveThemePreference() async {

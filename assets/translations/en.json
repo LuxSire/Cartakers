@@ -612,6 +612,7 @@
         "lbl_financials": "Financials",
         "lbl_types": "Types",
         "lbl_price": "Price",
+        "lbl_state": "Region",
         "lbl_search_objects": "Search Objects",
         "lbl_create_new_object": "Create New Object",
         "lbl_object_name": "Object Name",

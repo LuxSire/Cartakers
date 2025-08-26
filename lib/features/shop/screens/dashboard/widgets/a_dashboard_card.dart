@@ -47,7 +47,7 @@ class ADashboardCard extends StatelessWidget {
               children: [
                 Text(
                   subTitle,
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 const SizedBox(height: TSizes.spaceBtwItems),
 

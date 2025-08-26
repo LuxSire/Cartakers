@@ -41,6 +41,8 @@ class EditObjectController extends GetxController {
   RxList<String> zoningList = <String>[].obs;
   RxList<String> typeList = <String>[].obs;
   RxList<String> countryList = <String>[].obs;
+  RxList<String> currencyList = <String>[].obs;
+
   /// Set occupancy options
    RxInt selectedCompanyId = 0.obs;
   static EditObjectController get instance => Get.find();
@@ -52,6 +54,7 @@ class EditObjectController extends GetxController {
   final occupancy = TextEditingController();
   final zoning = TextEditingController();
   final city = TextEditingController();
+  final state = TextEditingController();
   final description = TextEditingController();
   final owner = TextEditingController();
   final companyId = TextEditingController();
@@ -115,10 +118,12 @@ class EditObjectController extends GetxController {
     zoningList.assignAll((await repository.getAllZonings()).toSet().toList());
     typeList.assignAll((await repository.getAllTypes()).toSet().toList());
     countryList.assignAll((await repository.getAllCountries()).toSet().toList());
+    currencyList.assignAll((await repository.getAllCurrencies()).toSet().toList());
 
     debugPrint('Occupancy list: $occupancyList');
     debugPrint('Zoning list: $zoningList');
     debugPrint('Country list: $countryList');
+    debugPrint('Currency list: $currencyList');
   }
 
   /// Init Data
@@ -127,6 +132,7 @@ class EditObjectController extends GetxController {
     occupancy.text = object.occupancy ?? 'Full';
     zoning.text = object.zoning ?? 'Agriculture';
     city.text = object.city ?? 'Milan';
+    state.text = object.state ?? '';
     description.text = object.description ?? '';
     owner.text = object.owner?.toString() ?? '';
     status.text = object.status?.toString() ?? '';
@@ -155,6 +161,7 @@ class EditObjectController extends GetxController {
     occupancy.clear();
     zoning.clear();
     city.clear();
+    state.clear();
     description.clear();
     owner.clear();
     currency.clear();
@@ -533,7 +540,7 @@ Future<void> loadAllUnits() async {
       bool isObjectUpdatedSuccessfully = false;
       final rawPrice = price.text.replaceAll(RegExp(r'[^\d]'), '').trim();
       // Map Data
-      object.companyId=int.tryParse(companyId.text.trim());
+      object.companyId= selectedCompanyId.value;
       object.name = name.text.trim();
       object.occupancy = occupancy.text.trim();
       object.zoning = zoning.text.trim();

@@ -9,6 +9,7 @@ class MessageModel {
   final int? senderId;
   final int? companyId;
   final int? objectId;  
+  final int? uniqueId;
   final DateTime? createdAt;
   final DateTime? scheduledAt;
   final List<MessageRecipient> recipients;
@@ -23,6 +24,7 @@ class MessageModel {
     this.title,
     this.content,
     this.senderId,
+    this.uniqueId,
     this.companyId,
     this.objectId,
     this.createdAt,
@@ -38,15 +40,17 @@ class MessageModel {
   factory MessageModel.fromJson(Map<String, dynamic> json) {
     return MessageModel(
       id: json['id'] != null ? json['id'].toString() : '',
+      uniqueId: json['unique_id'] != null ? json['unique_id'] : 0,
       title: json['title'] ?? '',
       content: json['content'] ?? '',
       senderId: int.tryParse(json['created_by'] ?? '0') ?? 0,
       companyId: int.tryParse(json['company_id'] ?? '0') ?? 0,
       objectId: int.tryParse(json['object_id'] ?? '0') ?? 0,
-      createdAt:
-          json['created_at'] != null
-              ? DateTime.parse(json['timestamp']).toLocal()
-              : DateTime.now(),
+      createdAt: json['timestamp'] != null
+        ? DateTime.fromMillisecondsSinceEpoch(
+        int.tryParse(json['timestamp'].toString()) ?? 0,
+      ).toLocal()
+      : DateTime.now(),
       scheduledAt:
           json['scheduled_at'] != null
               ? DateTime.parse(json['scheduled_at']).toLocal()
@@ -92,6 +96,7 @@ class MessageModel {
     'object_ids': objectIds,
     'status_id': statusId,
     'status_name': statusName,
+    'unique_id': uniqueId,
   };
 
   String get formattedDate => TFormatter.formatDate(createdAt);

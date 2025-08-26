@@ -125,8 +125,6 @@ class UserRepository extends GetxController {
       return int.tryParse(id.toString()) ?? 0;
     }).where((id) => id != 0).toList();
 
-    debugPrint('Response from fetchUserDetails API : $response');
-    debugPrint('Fetched object_permission: $assignedObjects');
     final id = int.tryParse(response['id'].toString()) ?? 0;
 
     if (id > 0) {
@@ -143,7 +141,7 @@ class UserRepository extends GetxController {
   Future<UserModel> fetchUserDetailsById(int userId) async {
     //debugPrint('User ID from  UserRepository: $userId');
     final response = await _userService.getUserById(
-      int.parse(userId.toString()),
+      userId,
     );
 
     //  debugPrint('Response from fetchUserDetailsById 2: $response');

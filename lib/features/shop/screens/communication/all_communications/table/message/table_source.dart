@@ -23,10 +23,13 @@ class MessageRows extends DataTableSource {
   final companyController = Get.find<CompanyController>();
   final objectController = Get.find<ObjectController>(); // or use objectsList from CommunicationController
 
+  final List<MessageModel> items;
+  MessageRows(this.items);
+
   @override
   DataRow? getRow(int index) {
-    final message = controller.filteredItems[index];
-    
+    final message = items[index];
+
     String displayDate;
     if (message.scheduledAt != null) {
       // Message is scheduled but not yet sent
@@ -204,15 +207,11 @@ String getCompanyNameFromMessage(MessageModel message) {
 String getObjectNameFromMessage(MessageModel message) {
   // If you have a list of objects (e.g., from CommunicationController)
   debugPrint('Fetching object names for message: ${message.id}');
-  debugPrint('available objects: ${objectController.allItems.map((o) => o.id).toList()}');
+  debugPrint('available objects: ${objectController.allObjects.map((o) => o.id).toList()}');
 
-  if (message.objectIds.isEmpty) return '—';
   // If multiple objectIds, you can join their names
-  final names = message.objectIds.map((oid) {
-    final obj = objectController.allItems.firstWhereOrNull((o) => o.id == oid);
-    return obj?.name;
-  }).whereType<String>().toList();
-  return names.isNotEmpty ? names.join(', ') : '—';
+  final obj = objectController.allObjects.firstWhereOrNull((o) => o.id == message.objectId);
+  return obj?.name ?? '—';
 }
 
 }

@@ -137,6 +137,7 @@ class MessageTableHeader extends StatelessWidget {
                   }).toList(),
             );
           }),
+          
         ],
       ),
     );

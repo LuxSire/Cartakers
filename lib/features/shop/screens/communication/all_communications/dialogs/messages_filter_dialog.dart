@@ -17,7 +17,7 @@ class MessagesFilterDialog extends StatelessWidget {
     final theme = Theme.of(context);
 
     final RxInt tempStatusId = controller.selectedStatusId.value.obs;
-    final RxInt tempBuildingFilterId =
+    final RxInt tempObjectFilterId =
         controller.selectedObjectFilterId.value.obs;
     final Rx<DateTime?> tempStartDate = controller.startDate.value.obs;
     final Rx<DateTime?> tempEndDate = controller.endDate.value.obs;
@@ -98,8 +98,8 @@ class MessagesFilterDialog extends StatelessWidget {
             // Building
             Obx(() {
               return DropdownButtonFormField<int>(
-                value: tempBuildingFilterId.value,
-                onChanged: (value) => tempBuildingFilterId.value = value!,
+                value: tempObjectFilterId.value,
+                onChanged: (value) => tempObjectFilterId.value = value!,
                 isExpanded: true,
                 decoration: InputDecoration(
                   labelText: AppLocalization.of(
@@ -171,7 +171,7 @@ class MessagesFilterDialog extends StatelessWidget {
                       // Apply the filters
                       controller.applyFilters(
                         tempStatusId.value,
-                        tempBuildingFilterId.value,
+                        tempObjectFilterId.value,
                         tempStartDate.value,
                         tempEndDate.value,
                       );

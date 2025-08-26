@@ -28,7 +28,7 @@ Future<void> main() async {
   await runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
-      Get.put(ThemeService());
+
       // Initialize GetX Storage
       await GetStorage.init();
 
@@ -41,6 +41,7 @@ Future<void> main() async {
   }
 
   // Register Dependencies
+  Get.put(ThemeService());
   Get.put(AppController());
   Get.put(AuthenticationRepository());
   debugPrint('AuthenticationRepository instance created');
@@ -49,7 +50,6 @@ Future<void> main() async {
 //  debugPrint('UserRepository instance created');
 
   Get.put(UserController()); // personalization version ONLY
-  Get.put(PermissionController());
   debugPrint('UserController instance created');
 //  Get.put(ObjectController());
  // debugPrint('ObjectController instance created');

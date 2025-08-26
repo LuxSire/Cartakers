@@ -42,7 +42,7 @@ class ObjectTableHeader extends StatelessWidget {
                 label: Text(
                   AppLocalization.of(
                     context,
-                  ).translate('objects_screen.lbl_create_new_building'),
+                  ).translate('objects_screen.lbl_create_new_object'),
                   style: const TextStyle(color: TColors.alterColor),
                 ),
               ),

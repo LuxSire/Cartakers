@@ -17,13 +17,14 @@ import 'package:xm_frontend/utils/popups/loaders.dart';
 
 class CommunicationController extends TBaseController<MessageModel> {
 
-  final ObjectModel? object;
+  final Rx<ObjectModel?> selectedObject = Rx<ObjectModel?>(null);
 
   static CommunicationController get instance => Get.find();
   
   CommunicationController({ObjectModel? initialObject})
-      : object = initialObject {
+ {
     if (initialObject != null) {
+      selectedObject.value = initialObject;
       selectedObjectId.value = initialObject.id!;
     }
   }
@@ -34,10 +35,11 @@ class CommunicationController extends TBaseController<MessageModel> {
   /// Messages
   RxList<MessageModel> allMessages = <MessageModel>[].obs;
   RxList<MessageModel> filteredMessages = <MessageModel>[].obs;
-
+ 
   /// Filters & Selections
   /// -1 = All Objects
   RxInt selectedObjectId = RxInt(-1);
+
   RxList<ObjectModel> objectsList = <ObjectModel>[].obs;
   RxList<PermissionModel> contractsByObject = <PermissionModel>[].obs;
   RxList<int> selectedContractIds = <int>[].obs;
@@ -90,14 +92,16 @@ class CommunicationController extends TBaseController<MessageModel> {
   void onInit() {
     super.onInit();
     loadAllObjects();
-   
-    if (object != null) {
-      selectedObjectId.value = object?.id ?? -1;
+
+    if (selectedObject.value != null) {
+      selectedObjectId.value = selectedObject.value!.id!;
     }
     debugPrint("Communication Initiated: ${selectedObjectId.value}");
+
+    filteredItems.clear();
     filterMessagesBySelectedObject();
-    ever(selectedObjectId, (id) {
-      debugPrint("Selected Object ID changed: $id");
+    ever(selectedObject, (object) {
+      debugPrint("Selected Object ID changed: ${object?.id}");
       filterMessagesBySelectedObject();
     });
   }
@@ -228,18 +232,26 @@ class CommunicationController extends TBaseController<MessageModel> {
   Future<void> filterMessagesBySelectedObject() async
   {
     await loadMessages();
-    debugPrint("Messages retrieved and Filtered: ${selectedObjectId.value}");
-    if (selectedObjectId.value == -1) {
+    debugPrint("Messages retrieved and Filtered: ${selectedObject.value?.id}");
+    if (selectedObject.value == null) {
       filteredItems.assignAll(allMessages);
     }  else {
+          final ownerCompanyId = selectedObject.value!.owner!;
+          final objectCompanyId = selectedObject.value!.companyId!;
+          final currentUserId = userController.user.value.id;
+
     filteredItems.assignAll(
-      allMessages.where((msg) => msg.objectId == selectedObjectId.value).toList(),
+      allMessages.where((msg) => msg.objectId == selectedObject.value!.id!
+      &&
+        (msg.companyId == ownerCompanyId || msg.senderId.toString() == currentUserId)
+      ).toList(),
     );
     }
       selectedRows.value = List<bool>.filled(filteredItems.length, false);
       debugPrint("Messages retrieved and Filtered: ${filteredItems.value}");
     }
     
+  
   Future<void> submitNewMessage() async {
     if (!formKey.currentState!.validate()) return;
 
@@ -258,7 +270,7 @@ class CommunicationController extends TBaseController<MessageModel> {
 
     // Derive createdBy from your auth repo:
     final createdBy = AuthenticationRepository.instance.currentUser!.id;
-
+    final createdByCompany = AuthenticationRepository.instance.currentUser!.companyId;
     // status‐ID: 3 == sent immediately, 2 == scheduled
     final statusId = scheduleNow.value ? 2 : 3;
 
@@ -267,10 +279,13 @@ class CommunicationController extends TBaseController<MessageModel> {
       'content': contentController.text.trim(),
       'channels': selectedChannels.toList(),
       'scheduleAt': getScheduledDateTime()?.toIso8601String(), // or null
+      'createdAt': DateTime.now().toIso8601String(),
       'created_by': createdBy,
       'status_id': statusId,
       'targets': targets,
-      'id':selectedObjectId.value
+      'id':selectedObjectId.value,
+      'unique_id': DateTime.now().millisecondsSinceEpoch,
+      'company_Id': createdByCompany
     };
 
     isLoading.value = true;
