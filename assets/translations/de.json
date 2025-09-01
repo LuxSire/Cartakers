@@ -589,6 +589,7 @@
   },
   "dashboard_screen": {
     "lbl_dashboard": "Dashboard",
+    "lbl_objects_neg": "Verhandlungen",
     "lbl_objects": "Objekte",
     "lbl_users": "Benutzer",
     "lbl_pending_requests": "Ausstehende Anfragen",
@@ -664,6 +665,7 @@
   },
   "edit_object_screen": {
     "lbl_object_details": "Objektdetails",
+    "lbl_sqm": "Quadratmeter",
     "lbl_noi": "Net Operating Income",
     "lbl_caprate": "Capitalization Rate",
     "btn_create_unit": "Einheit erstellen",
@@ -954,6 +956,7 @@
 
 "tab_users_screen": {
   "lbl_users": "Benutzer",
+  "lbl_search_companies": "Unternehmen suchen",
    "lbl_permissions": "Berechtigungen",
   "lbl_search_users": "Benutzer suchen",
   "lbl_create_new_user": "Neuen Benutzer erstellen",

@@ -13,12 +13,12 @@ class AppColors {
   static const gradientEnd = Color(0xFF4A90E2);
 
   // Background colors
-  static const backgroundLight = Colors.white;
-  static const backgroundDark = Color(0xFF121212); // Darker shade for better contrast
+  static const backgroundLight = Colors.white10;
+  static const backgroundDark = Color(0xFF282F3E); // Darker shade for better contrast
   static const backgroundPrimary = Color(0xFF2563EB);
 
   // Text colors
-  static const textPrimaryLight = Colors.black;
+  static const textPrimaryLight = Color(0xFF282F3E);
   static const textPrimaryDark = Colors.white;
 
   // Button background

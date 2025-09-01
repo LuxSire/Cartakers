@@ -41,16 +41,17 @@ class ObjectController extends TBaseController<ObjectModel> {
     for (var object in result) {
       debugPrint('Object: ${object.name}, imgUrl: ${object.imgUrl}');
     }
-    */
-    final filteredObjects = result.where((object) {
+    *//*
+    final filteredItems = result.where((object) {
       final objectIdStr = object.id.toString();
       return restrictionIds.contains(objectIdStr);
     }).toList();
-
+*/
+    allItems.assignAll(result);
     allObjects.assignAll(result);
     filteredObjects.assignAll(result);
     filteredItems.assignAll(result);
-    selectedRows.value = List<bool>.filled(allObjects.length, false);
+    selectedRows.value = List<bool>.filled(filteredItems.length, false);
     // debugPrint('Filtered buildings: ${filteredItems.length}');
   }
 
@@ -74,7 +75,7 @@ class ObjectController extends TBaseController<ObjectModel> {
 
     //  debugPrint('User building restrictions: $userBuildingRestrictions');
 
-    final filteredObjects =
+    final filteredItems =
         result
             .where(
               (object) => userObjectRestrictions.contains(
@@ -83,11 +84,34 @@ class ObjectController extends TBaseController<ObjectModel> {
             )
             .toList();
 
-    debugPrint('Filtered objects: ${filteredObjects.length}');
+    debugPrint('Filtered objects: ${filteredItems.length}');
 
-    return filteredObjects;
+    return filteredItems;
   }
+  void filterItemsWithSearch([String query = '']) {
+    // print(
+    //   "Filtering users with selectedRoleFilterId.value = ${selectedRoleFilterId.value}",
+    // );
+    // allItems.forEach((item) {
+    //   print("User: ${item.firstName} ${item.lastName}, roleId: ${item.roleId}");
+    // });
 
+    final results =
+        allItems.where((item) {
+          // 1. Search query: allow empty (show all)
+          final matchesSearch =
+              query.isEmpty || containsSearchQuery(item, query);
+
+
+          return matchesSearch;
+        }).toList();
+
+    filteredItems.assignAll(results);
+    debugPrint('Filtering objects: found ${results.length} results for "$query"');
+
+
+  selectedRows.value = List<bool>.filled(filteredItems.length, false); // <-- Add 
+  }
   void sortByName(int sortColumnIndex, bool ascending) {
     sortByProperty(
       sortColumnIndex,

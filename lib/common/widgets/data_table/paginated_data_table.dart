@@ -42,16 +42,21 @@ class TPaginatedDataTable extends StatelessWidget {
       height: tableHeight,
       child: Theme(
         data: Theme.of(context).copyWith(
-          cardTheme: const CardThemeData(color: Colors.white, elevation: 0),
+          cardTheme:  CardThemeData(
+            color: Theme.of(context).colorScheme.surface,
+            elevation: 0,
+          ),
           checkboxTheme: CheckboxThemeData(
             fillColor: MaterialStateProperty.all(TColors.primary),
             checkColor: MaterialStateProperty.all(Colors.white),
           ),
-          colorScheme: Theme.of(context).colorScheme.copyWith(
-            primary: TColors.primary,
-            secondary: TColors.primary,
-            secondaryContainer: TColors.primary,
-          ),
+    colorScheme: Theme.of(context).colorScheme.copyWith(
+      primary: TColors.primary,
+      secondary: TColors.primary,
+      secondaryContainer: TColors.primary,
+      // Add surface color from theme
+      surface: Theme.of(context).colorScheme.surface,
+    ),
         ),
         child: PaginatedDataTable2(
           source: source,
@@ -90,9 +95,9 @@ class TPaginatedDataTable extends StatelessWidget {
             }
           },
           headingTextStyle: Theme.of(context).textTheme.titleMedium,
-          headingRowColor: WidgetStateProperty.resolveWith(
-            (states) => TColors.secondaryBackground,
-          ),
+headingRowColor: MaterialStateProperty.resolveWith<Color>(
+  (Set<MaterialState> states) => Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+),
           headingRowDecoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(TSizes.borderRadiusMd),

@@ -26,9 +26,9 @@ class SettingsManagementDetailsTab extends StatelessWidget {
           child: Column(
             children: [
               TabBar(
-                indicatorColor: TColors.alterColor,
-                labelColor: TColors.alterColor,
-                unselectedLabelColor: Colors.black54,
+                indicatorColor: Theme.of(context).colorScheme.secondary,
+                labelColor: Theme.of(context).colorScheme.secondary,
+                unselectedLabelColor: Theme.of(context).colorScheme.primary,
                 tabs: [
                   Tab(
                     text: AppLocalization.of(

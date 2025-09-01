@@ -118,7 +118,7 @@ class UserInvitationController extends TBaseController<UserModel> {
   Future<void> loadUsers() async {
     loading.value = true;
     try {
-      final users = await _userRepository.getAllCompanyObjectUsers();
+      final users = await _userRepository.getAllUsers();
 
       debugPrint('Loaded users: ${users.length}');
 
@@ -440,7 +440,7 @@ class UserInvitationController extends TBaseController<UserModel> {
   Future<List<UserModel>> fetchItems() async {
     //  return await _userRepository.getAllBuildingTenants();asdasd
 
-    final result = await _userRepository.getAllCompanyObjectUsers();
+    final result = await _userRepository.getAllUsers();
 
     final updatedUser = await userController.fetchUserDetails();
 

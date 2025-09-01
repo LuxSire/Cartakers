@@ -86,8 +86,8 @@ class UserController extends TBaseController<UserModel> {
     // Get users
     loadUsers();
     loadAllUserRoles();
-    ever(filteredUsers, (_) {
-      selectedRows.value = List<bool>.filled(filteredUsers.length, false);
+    ever(filteredItems, (_) {
+      selectedRows.value = List<bool>.filled(filteredItems.length, false);
     });
     //  fetchUsersAndTranslateFields();
   }
@@ -830,8 +830,8 @@ if (isUserUpdated) {
         );
 
       }
-      allUsers.assignAll(users);
-      filteredUsers.assignAll(users);
+      allItems.assignAll(users);
+      filteredItems.assignAll(users);
     } catch (e) {
       TLoaders.errorSnackBar(title: "Error", message: "Failed to load users.");
     } finally {

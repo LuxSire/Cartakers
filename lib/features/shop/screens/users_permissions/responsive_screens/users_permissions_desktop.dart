@@ -47,10 +47,10 @@ class UsersPermissionsDesktopScreen extends StatelessWidget {
                         TabBar(
                           tabAlignment: TabAlignment.start,
                           isScrollable: true,
-                          indicatorColor: TColors.alterColor,
-                          labelColor: TColors.alterColor,
+                          indicatorColor: Theme.of(context).colorScheme.secondary,
+                          labelColor: Theme.of(context).colorScheme.secondary,
                           indicatorWeight: 1,
-                          unselectedLabelColor: Colors.black.withOpacity(0.6),
+                          unselectedLabelColor: Theme.of(context).colorScheme.primary,
                           tabs: [
                                                         Tab(
                               text: AppLocalization.of(

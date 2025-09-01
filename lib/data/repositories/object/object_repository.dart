@@ -160,19 +160,22 @@ class ObjectRepository extends GetxController {
       // Assuming you already have access to the companyId from somewhere (e.g. logged-in user)
       final response = await _objectService.getAllOccupancies();
 
-      if (response.isEmpty) {
-        debugPrint('No objects found.');
-        return [];
-      } else if (response is String) {
-        debugPrint('Error fetching occupancies: $response');
-        return [];
-      } else {
-        debugPrint('Fetched occupancies: ${response.length}');
-      }
       return response.map((z) => z['name'].toString()).toList();
    
     } catch (e) {
-      debugPrint('Error fetching occupancie§: $e');
+      debugPrint('Error fetching occupancies: $e');
+      return [];
+    }
+  }
+  Future<List<String>> getAllStatuses() async {
+    try {
+
+      final response = await _objectService.getAllStatus();
+
+      return response.map((z) => z['description'].toString()).toList();
+   
+    } catch (e) {
+      debugPrint('Error fetching statuses: $e');
       return [];
     }
   }
@@ -560,7 +563,8 @@ class ObjectRepository extends GetxController {
       // Update the building details
 
       debugPrint('User Image URL before updating: $imageUrl');
-
+      debugPrint('Updated Object before updating: $updatedObject');
+      
       final result = await _objectService.updateObject(
         updatedObject.id!,
         updatedObject.companyId!,
@@ -580,7 +584,7 @@ class ObjectRepository extends GetxController {
         updatedObject.state ?? '',
         updatedObject.address ?? '',
         updatedObject.owner ?? 0,
-        updatedObject.status ?? 0,
+        updatedObject.status ?? 'Started',
         updatedObject.type_ ?? '',
         updatedObject.imgUrl ?? '',
         updatedObject.yieldGross ?? 0.0,
@@ -846,6 +850,7 @@ class ObjectRepository extends GetxController {
     String zipCode,
     String description,
     String? city,
+    String? state,
     String? currency,
     double? price,    
     int companyId,
@@ -857,7 +862,7 @@ class ObjectRepository extends GetxController {
     String type,
     String imageUrl,
     int? ownerId,
-    int? statusId
+    String? status
   ) async {
     //final companyId = AuthenticationRepository.instance.currentUser!.companyId;
     try {
@@ -871,6 +876,7 @@ class ObjectRepository extends GetxController {
         zipCode,
         description,
         city,
+        state,
         currency,
         price,
         totalUnits,
@@ -881,7 +887,7 @@ class ObjectRepository extends GetxController {
         type,
         imageUrl,
         ownerId,
-        statusId
+        status
       );
 
       debugPrint('Create Object Response: $response');

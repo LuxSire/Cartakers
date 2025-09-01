@@ -31,11 +31,13 @@ class UserRows extends DataTableSource {
       );
       return null;
     }
-
-    var user = controller.filteredUsers[index];
-    return DataRow2(
-      onTap: () async {
-        final userId = user.id.toString();
+    if (index >= controller.filteredItems.length) {
+      return null;
+    }
+    var user=controller.filteredItems[index];
+      return DataRow2(
+        onTap: () async {
+          final userId = user.id.toString();
         final controller = Get.find<UserController>();
         final objectController = Get.find<ObjectController>();
         // reset the values before fetching
@@ -63,12 +65,12 @@ class UserRows extends DataTableSource {
         if (updatedUser != null) {
           // Update the user in the filteredItems list
 
-          final index = controller.filteredUsers.indexWhere(
+          final index = controller.filteredItems.indexWhere(
             (u) => u.id == updatedUser.id,
           );
           if (index != -1) {
-            controller.filteredUsers[index] = updatedUser;
-            controller.filteredUsers.refresh();
+            controller.filteredItems[index] = updatedUser;
+            controller.filteredItems.refresh();
 
             controller.refreshData();
           }
@@ -193,8 +195,8 @@ class UserRows extends DataTableSource {
                 // Update the user in the filteredItems list
 
                 if (index != -1) {
-                  controller.filteredUsers[index] = updatedUser;
-                  controller.filteredUsers.refresh();
+                  controller.filteredItems[index] = updatedUser;
+                  controller.filteredItems.refresh();
 
                   controller.refreshData();
                 }
@@ -212,7 +214,7 @@ class UserRows extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => controller.filteredUsers.length;
+  int get rowCount => controller.filteredItems.length;
 
   @override
   int get selectedRowCount =>

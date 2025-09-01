@@ -306,7 +306,7 @@ class DashboardTabletScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: TSizes.spaceBtwSections),
-                    const RequestsCard(),
+                    //const RequestsCard(),
                   ],
                 ),
               ),

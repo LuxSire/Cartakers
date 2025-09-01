@@ -586,6 +586,8 @@
     },
     "dashboard_screen": {
         "lbl_dashboard": "Tableau de bord",
+
+        "lbl_objects_neg": "Négociations",
         "lbl_objects": "Objets",
         "lbl_users": "Utilisateurs",
         "lbl_pending_requests": "Demandes en attente",
@@ -661,6 +663,7 @@
     "edit_object_screen": {
         "lbl_object_details": "Détails de l'objet",
         "lbl_noi": "Net Operating Income",
+        "lbl_sqm": "Metres carrés",
         "lbl_caprate": "Capitalization Rate",
         "btn_create_unit": "Créer une unité",
         "lbl_update_object": "Mettre à jour l'objet",
@@ -723,6 +726,7 @@
         "lbl_permissions": "Permissions",
         "lbl_role": "Rôle",
         "lbl_company": "Société",
+        "lbl_search_companies": "Rechercher des entreprises",
         "lbl_search_permissions": "Rechercher des permissions",
         "lbl_search_users": "Rechercher des utilisateurs",
         "lbl_create_new_user": "Créer un nouvel utilisateur",

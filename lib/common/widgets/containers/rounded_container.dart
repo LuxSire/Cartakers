@@ -22,6 +22,7 @@ class TRoundedContainer extends StatelessWidget {
     this.width,
     this.height,
     this.margin,
+    
     this.showShadow = true,
     this.showBorder = false,
     this.padding = const EdgeInsets.all(TSizes.md),
@@ -47,19 +48,21 @@ class TRoundedContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
+      
       child: Container(
         width: width,
         height: height,
         padding: padding,
         margin: margin,
+      
         decoration: BoxDecoration(
-          color: backgroundColor,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(radius),
           border: showBorder ? Border.all(color: borderColor) : null,
           boxShadow: [
             if (showShadow)
               BoxShadow(
-                color: TColors.grey.withOpacity(0.1),
+                color: Theme.of(context).colorScheme.secondary,
                 spreadRadius: 5,
                 blurRadius: 8,
                 offset: const Offset(0, 3),

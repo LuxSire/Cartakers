@@ -233,7 +233,7 @@ class DashboardMobileScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: TSizes.spaceBtwSections),
-                    const RequestsCard(),
+                    //const RequestsCard(),
                   ],
                 ),
               ),

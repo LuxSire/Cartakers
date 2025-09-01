@@ -30,10 +30,9 @@ class UsersRows extends DataTableSource {
 
   @override
   DataRow? getRow(int index) {
-//    if (index >= controller.filteredUsers.length)
- //     return null; // prevent overflow
 
-    final user = controller.filteredUsers[index];
+
+    final user = controller.filteredItems[index];
     debugPrint("UsersRows initialized" 
         " for user: ${user.fullName} with index: $index");
 
@@ -48,12 +47,12 @@ class UsersRows extends DataTableSource {
 
         if (result == true) {
           final updatedUser = controller.user.value;
-          final index = controller.filteredUsers.indexWhere(
+          final index = controller.filteredItems.indexWhere(
             (t) => t.id == updatedUser.id,
           );
           if (index != -1) {
-            controller.filteredUsers[index] = updatedUser;
-            controller.filteredUsers.refresh();
+            controller.filteredItems[index] = updatedUser;
+            controller.filteredItems.refresh();
           }
         }
       },
@@ -138,12 +137,12 @@ class UsersRows extends DataTableSource {
                     );
                     if (result == true) {
                       final updatedUser = controller.userModel.value;
-                      final index = controller.filteredUsers.indexWhere(
+                      final index = controller.filteredItems.indexWhere(
                         (t) => t.id == updatedUser.id,
                       );
                       if (index != -1) {
-                        controller.filteredUsers[index] = updatedUser;
-                        controller.filteredUsers.refresh();
+                        controller.filteredItems[index] = updatedUser;
+                        controller.filteredItems.refresh();
                       }
                     }
                   },
@@ -181,7 +180,7 @@ class UsersRows extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => controller.filteredUsers.length;
+  int get rowCount => controller.filteredItems.length;
 
   @override
   int get selectedRowCount =>

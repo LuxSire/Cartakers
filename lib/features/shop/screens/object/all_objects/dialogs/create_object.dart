@@ -78,6 +78,20 @@ class CreateObjectDialog extends StatelessWidget {
                 ),
               ),
                   const SizedBox(height: TSizes.spaceBtwInputFields),
+              // Region Text Field
+              TextFormField(
+                controller: controller.state,
+                validator: (value) => TValidator.validateEmptyText(
+                  AppLocalization.of(context).translate('objects_screen.lbl_state'),
+                  value,
+                ),
+                decoration: InputDecoration(
+                  labelText: AppLocalization.of(context).translate('objects_screen.lbl_state'),
+                  prefixIcon: Icon(Icons.location_city),
+                ),  
+                ),
+
+                  const SizedBox(height: TSizes.spaceBtwInputFields),
 
               // Country Text Field
               // ...inside your Column children...

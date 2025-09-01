@@ -55,6 +55,7 @@ class _EditUserDialogState extends State<EditUserDialog> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: TRoundedContainer(
         width: 500,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         padding: const EdgeInsets.all(TSizes.defaultSpace),
         child: Form(
           key: controller.formKey,

@@ -5,7 +5,7 @@ import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
 import 'package:xm_frontend/features/personalization/controllers/settings_controller.dart';
 import 'package:xm_frontend/utils/constants/enums.dart';
-
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 import '../../../../routes/routes.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/image_strings.dart';
@@ -21,8 +21,8 @@ class TSidebar extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-        return Obx(() {
-
+    return Obx(() {
+      final permissionController = Get.find<PermissionController>();
       return Container(
         width: 280,
         decoration: BoxDecoration(
@@ -133,6 +133,7 @@ class TSidebar extends StatelessWidget
                             context,
                           ).translate('sidebar.lbl_communication'),
                         ),
+                        /*
                         TMenuItem(
                           route: Routes.bookingsRequests,
                           icon: Iconsax.calendar_search,
@@ -140,13 +141,22 @@ class TSidebar extends StatelessWidget
                             context,
                           ).translate('sidebar.lbl_bookings_and_requests'),
                         ),
+                        */
+                        //if(permissionController.isUserAdmin())
+
                         TMenuItem(
+                          
                           route: Routes.usersPermissions,
                           icon: Iconsax.profile_2user,
                           itemName: AppLocalization.of(
                             context,
                           ).translate('sidebar.lbl_administration'),
+                          enabled: permissionController.isUserAdmin(),
+                          onTap: permissionController.isUserAdmin()
+                                ? null // Let TMenuItem handle default navigation
+                                : () {}, // Empty callback to prevent navigation
                         ),
+                        
                         TMenuItem(
                           route: Routes.settingsManagement,
                           icon: Iconsax.setting,

@@ -29,6 +29,7 @@ class DashboardController extends GetxController {
 
   var totalCompanyObjects = 0.obs;
   var totalObjects=0.obs;
+  var totalObjectsInNegotiation = 0.obs;
   var totalUsers = 0.obs;
   var totalObjectUsers=0.obs;
   var totalObjectsContracts = 0.obs;
@@ -60,12 +61,13 @@ class DashboardController extends GetxController {
 
     await fetchTotalObjects();
     await fetchTotalUsers();
-    await fetchTotalPendingRequests();
+    await fetchTotalObjectsInNegotiation();
+    //await fetchTotalPendingRequests();
     //await fetchTotalVacantUnits();
     //await fetchTotalContracts();
-    await fetchTotalBookings();
+    //await fetchTotalBookings();
     await fetchTotalObjectsMessages();
-    await fetchTotalObjectUsers();
+    //await fetchTotalObjectUsers();
   }
 
 Future<void> fetchTotalObjectUsers() async {
@@ -123,6 +125,22 @@ Future<void> fetchTotalObjectUsers() async {
 
     totalObjects.value = _totalObjects.length;
   }
+
+  Future<void> fetchTotalObjectsInNegotiation() async {
+ 
+    final result = await ObjectRepository.instance.getAllObjects();
+    // Make sure user is loaded and not empty
+    final _totalObjects =
+        result.toList();
+
+    //debugPrint('User Object Restrictions: $objectPermissionIds');
+
+    final _totalObjectsInNegotiation =
+        _totalObjects.where((object) => object.status == 'In Negotiation').toList();
+
+    totalObjectsInNegotiation.value = _totalObjectsInNegotiation.length;
+  }
+
 
   Future<void> fetchTotalUsers() async {
     final result = await UserRepository.instance.getAllUsers();

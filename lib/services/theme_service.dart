@@ -6,9 +6,11 @@ import 'package:xm_frontend/app/theme/typography.dart';
 import 'package:get/get.dart';
 
 class ThemeService extends GetxService {
+  static ThemeService get instance => Get.find();
+  final isDarkMode = false.obs;
   static const String _themePreferenceKey = 'isDarkMode';
   //bool _isDarkMode = false;
-  final RxBool isDarkMode = false.obs;
+   
   //bool get isDarkMode => _isDarkMode;
 
   ThemeData get lightTheme =>  ThemeData(
@@ -83,7 +85,7 @@ class ThemeService extends GetxService {
       indicator: BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: Colors.transparent, // Removes underline globally
+            color: AppColors.primaryColor, // Removes underline globally
           ),
         ),
       ),
@@ -96,7 +98,7 @@ class ThemeService extends GetxService {
       color: AppColors.blueGray90001, // Dark theme bottom bar color
     ),
     appBarTheme: AppBarTheme(
-      backgroundColor: Colors.blueGrey[900],
+      backgroundColor: AppColors.primaryColor,
       foregroundColor: Colors.white,
       systemOverlayStyle: const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -106,7 +108,7 @@ class ThemeService extends GetxService {
     ),
     colorScheme: const ColorScheme.dark(
       primary: AppColors.primaryColor,
-      secondary: AppColors.secondaryColor,
+      secondary: AppColors.gradientEnd,
     ),
     iconTheme: const IconThemeData(
       color: AppColors.whiteA700, // Default icon color for dark theme
@@ -148,6 +150,7 @@ class ThemeService extends GetxService {
   debugPrint('Theme toggled before: ${isDarkMode.value}');   
    isDarkMode.value = !isDarkMode.value;
   debugPrint('Theme toggled after: ${isDarkMode.value}');
+    
     _saveThemePreference();
   }
 

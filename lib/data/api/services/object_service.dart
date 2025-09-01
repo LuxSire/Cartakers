@@ -532,7 +532,27 @@ Future<List<Map<String, dynamic>>> fetchObjectDocs(int objectId) async {
       return [];
     }
   }
+    Future<List<Map<String, dynamic>>> getAllStatus(
 
+  ) async {
+    try {
+      final response = await post(ApiEndpoints.getAllStatus, {});
+
+        debugPrint('Raw response: $response');
+
+      if (response is Map<String, dynamic> && response.containsKey('success')) {
+        if (response['success'] == true && response['data'] is List) {
+          return List<Map<String, dynamic>>.from(response['data']);
+        } else {
+          return [];
+        }
+      } else {        return [];
+      }
+    } catch (error) {
+      
+      return [];
+    }
+  }
     Future<List<Map<String, dynamic>>> getAllCountries(
 
   ) async {
@@ -1592,6 +1612,7 @@ Future<List<Map<String, dynamic>>> fetchObjectDocs(int objectId) async {
     String zipCode,
     String? description,
     String? city,
+    String? state,
     String? currency,
     double? price,
     int totalUnits,
@@ -1602,7 +1623,7 @@ Future<List<Map<String, dynamic>>> fetchObjectDocs(int objectId) async {
     String? type,
     String? imageUrl,
     int? ownerId,
-    int? statusId
+    String? status
   ) async {
     try {
 
@@ -1620,6 +1641,7 @@ Future<List<Map<String, dynamic>>> fetchObjectDocs(int objectId) async {
         'zip_code': zipCode,
         'description': description,
         'city': city,
+        'state': state,
         'price': price,
         'currency': currency,
         'total_units': totalUnits,
@@ -1630,7 +1652,7 @@ Future<List<Map<String, dynamic>>> fetchObjectDocs(int objectId) async {
         'type': type,
         'img_url': imageUrl,
         'owner_id': ownerId,
-        'status_id': statusId,
+        'status': status,
       });
 
       return response;
@@ -1657,7 +1679,7 @@ Future<List<Map<String, dynamic>>> fetchObjectDocs(int objectId) async {
     String? state,
     String? address,
     int owner,
-    int status,
+    String status,
     String type,
     String imgUrl,
     double yield_gross,

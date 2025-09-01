@@ -132,8 +132,10 @@ class UserController extends TBaseController<UserModel> {
   Future<void> loadUsers() async {
     loading.value = true;
     try {
-      final users = await _userRepository.getAllCompanyObjectUsers();
-
+      //
+      //final users = await _userRepository.getAllCompanyObjectUsers();
+      final users = await _userRepository.getAllUsers();
+      
       debugPrint('Loaded users: ${users.length}');
 
       final updatedUser = userModel.value;

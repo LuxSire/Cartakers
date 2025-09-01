@@ -28,6 +28,13 @@ class EditObjectController extends GetxController {
     }
     return null;
   }
+  String? getValidStatusValue(String? value) {
+    final uniqueList = statusList.toSet().toList();
+    if (value != null && uniqueList.contains(value)) {
+      return value;
+    }
+    return null;
+  }
 
   /// Returns a valid dropdown value for zoning
   String? getValidZoningValue(String? value) {
@@ -42,9 +49,10 @@ class EditObjectController extends GetxController {
   RxList<String> typeList = <String>[].obs;
   RxList<String> countryList = <String>[].obs;
   RxList<String> currencyList = <String>[].obs;
+  RxList<String> statusList = <String>[].obs;
 
   /// Set occupancy options
-   RxInt selectedCompanyId = 0.obs;
+  RxInt selectedCompanyId = 0.obs;
   static EditObjectController get instance => Get.find();
 
   final loading = false.obs;
@@ -75,6 +83,7 @@ class EditObjectController extends GetxController {
   final unitsqm=TextEditingController();
   final noi=TextEditingController();
   final caprate=TextEditingController();
+  final sqm=TextEditingController();
 
   RxInt sortColumnIndex = 1.obs;
   RxBool sortAscending = true.obs;
@@ -113,8 +122,12 @@ class EditObjectController extends GetxController {
     occupancyList.clear();
     zoningList.clear();
     countryList .clear();
+    statusList.clear(); 
     typeList.clear();
     occupancyList.assignAll((await repository.getAllOccupancies()).toSet().toList());
+
+    statusList.assignAll((await repository.getAllStatuses()).toSet().toList());
+
     zoningList.assignAll((await repository.getAllZonings()).toSet().toList());
     typeList.assignAll((await repository.getAllTypes()).toSet().toList());
     countryList.assignAll((await repository.getAllCountries()).toSet().toList());
@@ -124,6 +137,7 @@ class EditObjectController extends GetxController {
     debugPrint('Zoning list: $zoningList');
     debugPrint('Country list: $countryList');
     debugPrint('Currency list: $currencyList');
+    debugPrint('statusList: $statusList');
   }
 
   /// Init Data
@@ -147,10 +161,12 @@ class EditObjectController extends GetxController {
     yieldNet.text = object.yieldNet?.toString() ?? '';
     imageURL.value = object.imgUrl ?? '';
     currency.text = object.currency ?? 'EUR';
-    companyId.text=object.companyId.toString() ?? '';
+    selectedCompanyId.value=object.companyId ?? 1;
     country.text = object.country ?? '';
     noi.text=object.noi.toString() ??'';
     caprate.text=object.caprate.toString() ?? '';
+    yieldNet.text = object.yieldNet?.toString() ?? '';
+    sqm.text = object.sqm?.toString() ?? '';
     // Fetch object images
     getObjectImages(object);
   } 
@@ -181,6 +197,7 @@ class EditObjectController extends GetxController {
     loading(false);
     noi.clear();
     caprate.clear();
+    sqm.clear();
   }
 
 
@@ -342,8 +359,9 @@ class EditObjectController extends GetxController {
       memoryBytes.value = file.bytes;
       hasImageChanged.value = true;
 
-      imageURL.value = file.name;
+      //imageURL.value = file.name;
       _objectRepository.updateObjectDetails(object);
+      imageURL.value = object.imgUrl ?? '';
     }
   }
 
@@ -434,7 +452,7 @@ class EditObjectController extends GetxController {
     if (!formKey.currentState!.validate()) return;
 
     loading.value = true;
-    debugPrint('Submitting object ${name.text.trim()}');
+    debugPrint('Submitting object ${name.text.trim()} for company ${selectedCompanyId.value}');
     // AuthenticationRepository.instance.currentUser.agencyId
 
     var isCreated = false;
@@ -446,18 +464,19 @@ class EditObjectController extends GetxController {
       zipCode.text.trim(),
       description.text.trim(),
       city.text.trim(),
+      state.text.trim(),
       currency.text.trim(),
-      double.tryParse(price.text.trim()),
-      selectedCompanyId.value ,
-      int.parse(units.text.trim()),
-      int.parse(floors.text.trim()),
+      double.tryParse(price.text.trim()) ?? 0,
+      selectedCompanyId.value ?? 1,
+      int.tryParse(units.text.trim()) ?? 0,
+      int.tryParse(floors.text.trim()) ?? 0,
       occupancy.text.trim(),
       zoning.text.trim(),
       country.text.trim(),
       type_.text.trim(),
       imageURL.value,
       int.tryParse(owner.text.trim()),
-      int.tryParse(status.text.trim())
+      status.text.trim()
     );
 
     loading.value = false;
@@ -540,8 +559,9 @@ Future<void> loadAllUnits() async {
       bool isObjectUpdatedSuccessfully = false;
       final rawPrice = price.text.replaceAll(RegExp(r'[^\d]'), '').trim();
       // Map Data
-      object.companyId= selectedCompanyId.value;
+      object.companyId = selectedCompanyId.value;
       object.name = name.text.trim();
+      object.state=state.text.trim(); 
       object.occupancy = occupancy.text.trim();
       object.zoning = zoning.text.trim();
       object.city = city.text.trim();
@@ -549,7 +569,7 @@ Future<void> loadAllUnits() async {
       object.currency=currency.text.trim();
       object.description = description.text.trim();
       object.owner = int.tryParse(owner.text.trim());
-      object.status = int.tryParse(status.text.trim());
+      object.status =  status.text.trim();
       object.type_ = type_.text.trim();
       object.price = double.tryParse(rawPrice);
       object.street = street.text.trim();
@@ -561,6 +581,22 @@ Future<void> loadAllUnits() async {
       object.yieldGross = double.tryParse(yieldGross.text.trim());
       object.yieldNet = double.tryParse(yieldNet.text.trim());
       // Call Repository to Update
+
+      debugPrint('name: ${name.text}');
+debugPrint('city: ${city.text}');
+debugPrint('state: ${state.text}');
+debugPrint('country: ${country.text}');
+debugPrint('price: ${price.text}');
+debugPrint('street: ${street.text}');
+debugPrint('zipCode: ${zipCode.text}');
+debugPrint('description: ${description.text}');
+debugPrint('units: ${units.text}');
+debugPrint('floors: ${floors.text}');
+debugPrint('selectedCompanyId: ${selectedCompanyId.value}');
+debugPrint('imageURL: ${imageURL.value}');
+debugPrint('owner: ${owner.text}');
+debugPrint('status: ${status.text}');
+
       isObjectUpdatedSuccessfully = await repository.updateObject(
         object,
       );

@@ -1,0 +1,1 @@
+build-prod:flutter build web --release --dart-define=ENV=$(ENV)  --no-tree-shake-icons

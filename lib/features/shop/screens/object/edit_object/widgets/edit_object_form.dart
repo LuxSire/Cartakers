@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:xm_frontend/app/localization/app_localization.dart';
 import 'package:xm_frontend/data/models/object_model.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
 import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 import 'package:xm_frontend/features/personalization/controllers/company_controller.dart';
@@ -43,26 +44,12 @@ class EditObjectForm extends StatelessWidget {
   Widget build(BuildContext context) 
   {
     final controller = Get.find<EditObjectController>();
+    final p_controller = Get.find<PermissionController>();
     controller.init(object);
 
     return Obx(() {
       final currentUser = UserController.instance.user.value;
-      final canEdit = currentUser != null
-          ? currentUser.objectPermissions.any((obj) {
-              final objId = obj['id'].toString();
-              final objectId = object.id.toString();
-              dynamic roleValue = obj['role_'];
-              int roleInt;
-              if (roleValue is int) {
-                roleInt = roleValue;
-              } else if (roleValue is String) {
-                roleInt = int.tryParse(roleValue) ?? 99;
-              } else {
-                roleInt = 99;
-              }
-              return objId == objectId && roleInt < 3;
-            })
-          : false;
+      final canEdit = p_controller.CheckEditForCurrentUser(object.id ?? 0);
 
       return TRoundedContainer
       (
@@ -97,35 +84,64 @@ Row(
       child: Obx(() {
         final companyController = Get.find<CompanyController>();
         final companyItems = companyController.allItems;
-        return DropdownButtonFormField<int>(
-          value: controller.selectedCompanyId.value != 0
-              ? controller.selectedCompanyId.value
-              : object.companyId,
+        final companyNames = companyItems.map((c) => c.name).toList();
+         // Find the initial company name based on selectedCompanyId or object.companyId
+    final initialCompanyName = companyItems
+        .firstWhereOrNull((c) =>
+            c.id == (controller.selectedCompanyId.value != 0
+                ? controller.selectedCompanyId.value
+                : object.companyId))
+        ?.name ?? '';
+
+    return Autocomplete<String>(
+      initialValue: TextEditingValue(text: initialCompanyName),
+      optionsBuilder: (TextEditingValue textEditingValue) {
+        if (textEditingValue.text == '') {
+          return const Iterable<String>.empty();
+        }
+        return companyNames.where((String option) {
+          return option.toLowerCase().contains(textEditingValue.text.toLowerCase());
+        });
+      },
+      onSelected: (String selection) {
+        final selectedCompany =
+            companyItems.firstWhereOrNull((c) => c.name == selection);
+        controller.selectedCompanyId.value = selectedCompany?.id ?? 0;
+      },
+      fieldViewBuilder: (context, textEditingController, focusNode, onFieldSubmitted) {
+        // Sync the controller's text with the Autocomplete's text controller
+        textEditingController.text = initialCompanyName;
+        textEditingController.selection = TextSelection.fromPosition(
+          TextPosition(offset: textEditingController.text.length),
+        );
+        return TextFormField(
+          controller: textEditingController,
+          focusNode: focusNode,
           decoration: InputDecoration(
             labelText: AppLocalization.of(context).translate('objects_screen.lbl_owner'),
             prefixIcon: Icon(Icons.person_outline),
             border: const OutlineInputBorder(),
           ),
-          items: companyItems
-              .map((company) => DropdownMenuItem<int>(
-                    value: company.id,
-                    child: Text(company.name),
-                  ))
-              .toList(),
-          onChanged: canEdit
-              ? (value) {
-                  controller.selectedCompanyId.value = value ?? 0;
-                }
-              : null,
           validator: (value) {
-            if (value == null || value == 0) {
+            if (value == null || value.isEmpty) {
+              return AppLocalization.of(context).translate('objects_screen.lbl_select_company');
+            }
+            if (!companyNames.contains(value)) {
               return AppLocalization.of(context).translate('objects_screen.lbl_select_company');
             }
             return null;
           },
+          readOnly: !canEdit,
+          onChanged: (value) {
+            final selectedCompany =
+                companyItems.firstWhereOrNull((c) => c.name == value);
+            controller.selectedCompanyId.value = selectedCompany?.id ?? 0;
+          },
         );
-      }),
-    ),
+      },
+    );
+  }),
+),
   ],
 ),
 
@@ -186,7 +202,7 @@ Row(
 
                       const SizedBox(height: TSizes.spaceBtwInputFields*3),
 
-                      // Occupancy, Zoning, Type dropdowns
+                      // Occupancy, Zoning, Type dropdowns Plus Status
                       Row(
                         children: [
                           Expanded(
@@ -238,7 +254,7 @@ Row(
                                   value: object.type_?.toString().isNotEmpty == true ? object.type_?.toString() : null,
                                   decoration: InputDecoration(
                                     labelText: AppLocalization.of(context).translate('objects_screen.lbl_type'),
-                                    prefixIcon: Icon(Icons.map_outlined),
+                                    prefixIcon: Icon(Icons.category_outlined),
                                     border: const OutlineInputBorder(),
                                   ),
                                   items: controller.typeList
@@ -254,12 +270,34 @@ Row(
                                       : null,
                                 )),
                           ),
+                                                    const SizedBox(width: TSizes.spaceBtwInputFields),
+                          Expanded(
+                            child: Obx(() => DropdownButtonFormField<String>(
+                                  value: object.status?.toString().isNotEmpty == true ? object.status?.toString() : null,
+                                  decoration: InputDecoration(
+                                    labelText: AppLocalization.of(context).translate('edit_object_screen.lbl_status'),
+                                    prefixIcon: Icon(Icons.circle_rounded),
+                                    border: const OutlineInputBorder(),
+                                  ),
+                                  items: controller.statusList
+                                      .map((option) => DropdownMenuItem(
+                                            value: option,
+                                            child: Text(option),
+                                          ))
+                                      .toList(),
+                                  onChanged: canEdit
+                                      ? (value) {
+                                          controller.status.text = value ?? '';
+                                        }
+                                      : null,
+                                )),
+                          ),
                         ],
                       ),
 
 
 
-                      const SizedBox(height: TSizes.spaceBtwInputFields * 2),
+                      const SizedBox(height: TSizes.spaceBtwInputFields * 3),
 
                       // Information section
                       Text(
@@ -406,6 +444,22 @@ Row(
                       // Floors and Units
                       Row(
                         children: [
+                            Expanded(
+                            child: TextFormField(
+                              controller: controller.sqm,
+                              validator: (value) => TValidator.validateEmptyText(
+                                AppLocalization.of(context).translate('edit_object_screen.lbl_sqm'),
+                                value,
+                              ),
+                              decoration: InputDecoration(
+                                labelText: AppLocalization.of(context).translate('edit_object_screen.lbl_sqm'),
+                                prefixIcon: Icon(Icons.location_on_outlined),
+                              ),
+                              readOnly: !canEdit,
+                            ),
+                          ),
+                          const SizedBox(width: TSizes.spaceBtwInputFields),
+
                           Expanded(
                             child: TextFormField(
                               controller: controller.floors,
@@ -438,7 +492,7 @@ Row(
                         ],
                       ),
 
-                      const SizedBox(height: TSizes.spaceBtwInputFields * 2),
+                      const SizedBox(height: TSizes.spaceBtwInputFields * 3),
 
                       // Financials section
                       Text(
@@ -453,13 +507,14 @@ Row(
                           Expanded(
                             child: TextFormField(
                               controller: controller.price,
+                              textAlign: TextAlign.right,
                               validator: (value) => TValidator.validateEmptyText(
                                 AppLocalization.of(context).translate('objects_screen.lbl_price'),
                                 value,
                               ),
                               decoration: InputDecoration(
                                 labelText: AppLocalization.of(context).translate('objects_screen.lbl_price'),
-                                prefixIcon: Icon(Icons.money),
+                                prefixIcon: Icon(Icons.money_rounded),
                               ),
                               readOnly: !canEdit,
                                   keyboardType: TextInputType.number,
@@ -494,7 +549,7 @@ Row(
         focusNode: focusNode,
         decoration: InputDecoration(
           labelText: AppLocalization.of(context).translate('objects_screen.lbl_currency'),
-          prefixIcon: Icon(Icons.location_city),
+          prefixIcon: Icon(Icons.money_rounded),
         ),
         validator: (value) {
           if (value == null || value.isEmpty) {
@@ -517,6 +572,7 @@ Row(
                           Expanded(
                             child: TextFormField(
                               controller: controller.yieldNet,
+                              textAlign: TextAlign.right,
                               validator: (value) => TValidator.validateEmptyText(
                                 AppLocalization.of(context).translate('objects_screen.lbl_yieldnet'),
                                 value,
@@ -524,7 +580,7 @@ Row(
                               keyboardType: const TextInputType.numberWithOptions(decimal: true),
                               decoration: InputDecoration(
                                 labelText: AppLocalization.of(context).translate('objects_screen.lbl_yieldnet'),
-                                prefixIcon:Icon(Icons.money),
+                                prefixIcon:Icon(Icons.calculate_outlined),
                                 suffixText: '%',
                               ),
                               readOnly: !canEdit,
@@ -533,6 +589,7 @@ Row(
                           Expanded(
                             child: TextFormField(
                               controller: controller.yieldGross,
+                              textAlign: TextAlign.right,
                               validator: (value) => TValidator.validateEmptyText(
                                 AppLocalization.of(context).translate('objects_screen.lbl_yieldgross'),
                                 value,
@@ -540,7 +597,7 @@ Row(
                               keyboardType: const TextInputType.numberWithOptions(decimal: true),
                               decoration: InputDecoration(
                                 labelText: AppLocalization.of(context).translate('objects_screen.lbl_yieldgross'),
-                                prefixIcon: Icon(Icons.money),
+                                prefixIcon: Icon(Icons.calculate_outlined),
                                 suffixText: '%',
                               ),
                               readOnly: !canEdit,
@@ -549,6 +606,7 @@ Row(
                               Expanded(
                             child: TextFormField(
                               controller: controller.noi,
+                              textAlign: TextAlign.right,
                               validator: (value) => TValidator.validateEmptyText(
                                 AppLocalization.of(context).translate('objects_screen.lbl_noi'),
                                 value,
@@ -556,7 +614,7 @@ Row(
                               keyboardType: const TextInputType.numberWithOptions(decimal: true),
                               decoration: InputDecoration(
                                 labelText: AppLocalization.of(context).translate('objects_screen.lbl_noi'),
-                                prefixIcon: Icon(Icons.money),
+                                prefixIcon: Icon(Icons.calculate_outlined),
                                 suffixText: '%',
                               ),
                               readOnly: !canEdit,
@@ -565,6 +623,7 @@ Row(
                               Expanded(
                             child: TextFormField(
                               controller: controller.caprate,
+                              textAlign: TextAlign.right,
                               validator: (value) => TValidator.validateEmptyText(
                                 AppLocalization.of(context).translate('objects_screen.lbl_caprate'),
                                 value,
@@ -572,7 +631,7 @@ Row(
                               keyboardType: const TextInputType.numberWithOptions(decimal: true),
                               decoration: InputDecoration(
                                 labelText: AppLocalization.of(context).translate('objects_screen.lbl_caprate'),
-                                prefixIcon: Icon(Icons.money),
+                                prefixIcon: Icon(Icons.calculate_outlined),
                                 suffixText: '%',
                               ),
                               readOnly: !canEdit,

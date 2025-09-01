@@ -24,7 +24,7 @@ class UsersTable extends StatelessWidget {
     // });
 
     return Obx(() {
-      // Force Obx update when tenant list or selection changes
+      // Force Obx update when user list or selection changes
       Visibility(
         visible: false,
         child: Text(controller.filteredItems.length.toString()),

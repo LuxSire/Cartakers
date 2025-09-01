@@ -27,13 +27,13 @@ class ObjectCard extends StatelessWidget {
     
    debugPrint('[ObjectCard] Constructor called');
   WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (controller.allObjects.isEmpty) {
+      if (controller.allItems.isEmpty) {
         controller.loadAllObjects();
         //  controller.refreshData();
       }
     });
     //WidgetsBinding.instance.addPostFrameCallback((_) {
-    debugPrint('[ObjectCard] All Objects: ${controller.allObjects.length}');
+    debugPrint('[ObjectCard] All Objects: ${controller.allItems.length}');
     //  controller.refreshData();
     //   });
 
@@ -43,7 +43,7 @@ class ObjectCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Obx(() {
-           final objects = controller.allObjects;
+           final objects = controller.allItems;
 
           if (objects.isEmpty) {
             return Center(
@@ -118,11 +118,11 @@ class ObjectCard extends StatelessWidget {
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(TSizes.borderRadiusLg),
-                    color: TColors.grey.withOpacity(0.1),
+                    //color: TColors.grey.withOpacity(0.1),
                     boxShadow: [
                       BoxShadow(
-                        color: TColors.grey.withOpacity(0.1),
-                        blurRadius: 10,
+                        color: Theme.of(context).colorScheme.surfaceTint.withOpacity(0.2),
+                        blurRadius: Theme.of(context).brightness == Brightness.dark ? 5 : 1,
                         offset: const Offset(0, 4),
                       ),
                     ],
@@ -131,7 +131,7 @@ class ObjectCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       TRoundedImage(
-                        width: 75,
+                        width: 100,
                         height: 75,
                         fit: BoxFit.cover,
                         padding: 2,
@@ -149,20 +149,25 @@ class ObjectCard extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
                             Text(
                               object.name ?? '',
                               style: Theme.of(context).textTheme.titleMedium!
-                                  .copyWith(fontWeight: FontWeight.w700),
+                                  .copyWith(color: TColors.txt666666),
                               overflow: TextOverflow.ellipsis,
                             ),
                             Text(
-                              object.address ?? '',
+                              object.state ?? '',
                               style: Theme.of(context).textTheme.bodySmall!
                                   .copyWith(color: TColors.txt666666),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
-                            const SizedBox(height: 8),
+                              ],
+                        ),
+                            const SizedBox(height: 16),
                             Wrap(
                               spacing: 12,
                               runSpacing: 4,
@@ -170,10 +175,11 @@ class ObjectCard extends StatelessWidget {
                                 _StatIcon(
                                   icon: Iconsax.building,
                                   label:
-                                      '${object.zoning ?? 0} ${AppLocalization.of(context).translate('objects_screen.lbl_zoning').toLowerCase()}',
+                                      '${object.zoning ?? ''}',
                                 ),
                                 _StatIcon(
                                   icon: Iconsax.money,
+
                                   label: object.price != null
       ? '${object.currency ?? ''} ${NumberFormat('#,##0', 'en_US').format(object.price)}'
       : '',
@@ -186,14 +192,33 @@ class ObjectCard extends StatelessWidget {
                               runSpacing: 4,
                               children: [
                                 _StatIcon(
-                                  icon: Iconsax.cards,
+                                  icon: Iconsax.location,
                                   label:
-                                      '${object.city ?? 0} ${AppLocalization.of(context).translate('objects_screen.lbl_city').toLowerCase()}',
+                                      '${object.city ?? ''}',
                                 ),
                                 _StatIcon(
                                   icon: Iconsax.map,
                                   label:
                                       '${object.country}',
+                                ),
+                                
+                              ],
+                            ),
+                               const SizedBox(height: 8),
+                              Wrap(
+                              spacing: 12,
+                              runSpacing: 4,
+                              children: [
+                                _StatIcon(
+                                  icon: Iconsax.activity,
+                                  
+                                  label:
+                                      '${object.status ?? ''}',
+                                ),
+                                _StatIcon(
+                                  icon: Iconsax.bucket,
+                                  label:
+                                      '${object.occupancy}',
                                 ),
                                 
                               ],
@@ -224,14 +249,16 @@ class _StatIcon extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, size: 16, color: TColors.black.withOpacity(0.6)),
+        Icon(icon, size: 16, color: Theme.of(context).colorScheme.secondary),
         const SizedBox(width: 4),
         Flexible(
           child: Text(
             label,
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
-            style: Theme.of(context).textTheme.labelSmall,
+            style: Theme.of(context).textTheme.labelSmall!.copyWith(
+            color: Theme.of(context).colorScheme.secondary,
+            ), 
           ),
         ),
       ],

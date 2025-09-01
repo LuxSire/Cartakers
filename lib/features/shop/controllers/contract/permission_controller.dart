@@ -197,8 +197,7 @@ class PermissionController extends TBaseController<PermissionModel> {
 
   bool isUserAdmin()
   {
-    final userId = int.tryParse(auth_controller.currentUser?.id ?? '');
-      final user = userController.allUsers.firstWhereOrNull((u) => u.id == userId.toString());
+      final user=auth_controller.currentUser;
       if (user != null) {
         if (user.roleId == 1) // Check if user has the specific role
             return true;
@@ -211,19 +210,59 @@ class PermissionController extends TBaseController<PermissionModel> {
   
   bool CheckObjectForCurrentUser( int objectId) 
   {
+
     final userId = int.tryParse(auth_controller.currentUser?.id ?? '');
     if (userId != null) {
       return CheckObjectForUser(userId, objectId);
     }
     return false;
   }
+  bool CheckEditForCurrentUser( int objectId) 
+  {
+
+    final userId = int.tryParse(auth_controller.currentUser?.id ?? '');
+    if (userId != null) {
+      return CheckEditForUser(userId, objectId);
+    }
+    return false;
+  }
+    bool CheckEditForUser(int userId, int objectId) 
+  {
+
+final user = userController.allItems.firstWhereOrNull((u) => u.id == userId.toString());
+
+  debugPrint('Checking permissions for object $objectId and  user: ${user?.id} and role: ${user?.roleId}.');
+  if (user == null) return false;
+
+  if (user.roleId == 1) // Check if user has the specific role
+    return true;
+  else {
+    filterPermissionsByUserId(userId);
+
+    debugPrint('userPermissions for userId $userId:');
+    for (final perm in userPermissions) {
+      debugPrint('  perm.objectId: ${perm.objectId}, perm.roleId: ${perm.roleId}');
+    }
+
+    final matching = userPermissions.where((perm) =>
+      perm.objectId == objectId && (perm.roleId == 1 || perm.roleId == 2)
+    ).toList();
+
+    debugPrint('Matching permissions for objectId $objectId: ${matching.length}');
+    for (final perm in matching) {
+      debugPrint('  MATCH: perm.objectId: ${perm.objectId}, perm.roleId: ${perm.roleId}');
+    }
+
+    return matching.isNotEmpty; // <-- Add this line to return a bool
+  }
+}
 
   bool CheckObjectForUser(int userId, int objectId) 
   {
 
-  final user = userController.allUsers.firstWhereOrNull((u) => u.id == userId.toString());
+  final user = userController.allItems.firstWhereOrNull((u) => u.id == userId.toString());
 
-  debugPrint('Checking permissions for user: ${user?.id} and role: ${user?.roleId}.');
+  debugPrint('Checking permissions for object $objectId and  user: ${user?.id} and role: ${user?.roleId}.');
   if (user == null) return false;
 
   if (user.roleId == 1) // Check if user has the specific role
@@ -235,7 +274,22 @@ class PermissionController extends TBaseController<PermissionModel> {
         return userPermissions.any((perm) => perm.objectId == objectId);
     }
 }
+  bool CheckObjectForUserModel(UserModel user, int objectId) 
+  {
 
+
+  debugPrint('Checking permissions for object $objectId and  user: ${user?.id} and role: ${user?.roleId}.');
+  if (user == null) return false;
+
+  if (user.roleId == 1) // Check if user has the specific role
+    return true;
+  else {
+    //return false;
+         filterPermissionsByUserId(user.id != null ? int.parse( user.id!) : 0);
+  // Check if any permission for this user has the given objectId
+        return userPermissions.any((perm) => perm.objectId == objectId);
+    }
+  }
   void filterPermissionsByUserId(int userId) {
 
   userPermissions.clear(); // Always start empty

@@ -17,6 +17,7 @@ class ApiEndpoints {
   static const String getAllPermissions = 'api/objects/get-all-permissions';
   static const String getAllZonings = 'api/objects/get-all-zonings';
   static const String getAllOccupancies = 'api/objects/get-all-occupancies';
+  static const String getAllStatus = 'api/objects/get-all-status';
   static const String getAllCountries = 'api/objects/get-all-countries';
    static const String getAllCurrencies = 'api/objects/get-all-currencies';
   static const String removePermission = 'api/objects/remove-permission';
@@ -262,16 +263,16 @@ class ApiEndpoints {
   static const String createChatCompanyMessage =
       '/api/chatcompany/send-message';
   static const String deleteCompanyMessage =
-      'api/companies/delete-company-message';
+      'api/users/delete-company-message';
   static const String deleteCompanyById =
-      'api/companies/delete-company-by-id';
+      'api/users/delete-company-by-id';
   static const String getObjectUnitRoomList =
       'api/objects/get-object-unit-room-list';
   static const String updateObjectUnitRoom =
       'api/objects/update-object-unit-room';
 
   static const String getAllCompanyAmenityCategories =
-      'api/companies/get-all-company-amenity-categories';
+      'api/users/get-all-company-amenity-categories';
 
   static const String getUserAvailableObjectAmenityUnitsV2 =
       'api/users/get-user-object-available-amenity-units-v2';
@@ -299,7 +300,7 @@ class ApiEndpoints {
   static const String createUserInvitationCode =
       'api/users/get-user-invitation-code';
   static const String sendUserInvitationEmail =
-      'api/mailing/send-user-invitation-email';
+      'api/mailing/send-smtp-invitation-email';
   static const String updateUserInvitationStatus =
       'api/users/update-user-invitation-status';
   static const String updateUserStatus = 'api/users/update-user-status';

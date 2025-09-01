@@ -117,7 +117,7 @@ class CompanyTableHeader extends StatelessWidget {
                   decoration: InputDecoration(
                     hintText: AppLocalization.of(
                       context,
-                    ).translate('users_screen.lbl_search_users'),
+                    ).translate('users_screen.lbl_search_companies'),
                     prefixIcon: const Icon(Iconsax.search_normal),
                     border: const OutlineInputBorder(),
                     isDense: true,

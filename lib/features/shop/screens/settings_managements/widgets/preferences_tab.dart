@@ -70,7 +70,7 @@ class _PreferencesTabState extends State<PreferencesTab> {
           ).translate('tab_preferences_screen.lbl_notifications'),
         ),
         Card(
-          color: TColors.softGrey,
+          color: Theme.of(context).colorScheme.surface,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           elevation: 0.5,
           margin: EdgeInsets.zero,

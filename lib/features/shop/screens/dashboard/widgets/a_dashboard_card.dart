@@ -38,6 +38,7 @@ class ADashboardCard extends StatelessWidget {
       child: TRoundedContainer(
         onTap: onTap,
         padding: const EdgeInsets.all(TSizes.lg),
+        backgroundColor: Theme.of(context).colorScheme.surface, // Add this line
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

@@ -71,12 +71,16 @@ class TMenuItem extends StatelessWidget {
     required this.route,
     required this.itemName,
     required this.icon,
+    this.enabled = true,  // Add this line
+    this.onTap,  
   });
 
   final String route;
   final IconData icon;
   final String itemName;
-
+  final bool enabled;    // Add this line
+  final VoidCallback? onTap;  // Add this line$
+  
   @override
   Widget build(BuildContext context) {
     final menuController = Get.put(SidebarController());

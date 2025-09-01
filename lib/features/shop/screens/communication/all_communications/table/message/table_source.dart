@@ -207,7 +207,7 @@ String getCompanyNameFromMessage(MessageModel message) {
 String getObjectNameFromMessage(MessageModel message) {
   // If you have a list of objects (e.g., from CommunicationController)
   debugPrint('Fetching object names for message: ${message.id}');
-  debugPrint('available objects: ${objectController.allObjects.map((o) => o.id).toList()}');
+  debugPrint('available objects: ${objectController.allItems.map((o) => o.id).toList()}');
 
   // If multiple objectIds, you can join their names
   final obj = objectController.allObjects.firstWhereOrNull((o) => o.id == message.objectId);

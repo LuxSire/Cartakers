@@ -71,6 +71,21 @@ class DashboardDesktopScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+                                    SizedBox(
+                    width: 320,
+                    child: Obx(
+                      () => ADashboardCard(
+                        onTap: () => Get.toNamed(Routes.objectsUnits),
+                        headingIcon: Iconsax.building,
+                        headingIconColor: TColors.alterColor,
+                        headingIconBgColor: TColors.alterColor.withOpacity(0.1),
+                        stats: controller.totalObjectsInNegotiation.value,
+                        context: context,
+                        title: AppLocalization.of(context).translate('dashboard_screen.lbl_objects_neg'),
+                        subTitle: controller.totalObjectsInNegotiation.value.toString(),
+                      ),
+                    ),
+                  ),
                   SizedBox(
                     width: 320,
                     child: Obx(
@@ -86,6 +101,7 @@ class DashboardDesktopScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+                  /*
                   SizedBox(
                     width: 320,
                     child: Obx(
@@ -101,6 +117,7 @@ class DashboardDesktopScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+                  */
                   SizedBox(
                     width: 320,
                     child: Obx(
@@ -126,47 +143,13 @@ class DashboardDesktopScreen extends StatelessWidget {
 
               //  cards below
               Row(
+                
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
                     flex: 2,
                     child: Column(
                       children: [
-                        // Weekly Sales Graph
-                        //  const TWeeklySalesGraph(),
-                        // const SizedBox(height: TSizes.spaceBtwSections),
-
-                        // Bookings
-                        // TRoundedContainer(
-                        //   child: Column(
-                        //     crossAxisAlignment: CrossAxisAlignment.start,
-                        //     children: [
-                        //       Row(
-                        //         children: [
-                        //           TCircularIcon(
-                        //             icon: Iconsax.calendar,
-                        //             backgroundColor: Colors.deepPurple
-                        //                 .withOpacity(0.1),
-                        //             color: Colors.deepPurple,
-                        //             size: TSizes.md,
-                        //           ),
-                        //           const SizedBox(width: TSizes.spaceBtwItems),
-                        //           Text(
-                        //             AppLocalization.of(context).translate(
-                        //               'dashboard_screen.lbl_recent_bookings',
-                        //             ),
-                        //             style:
-                        //                 Theme.of(
-                        //                   context,
-                        //                 ).textTheme.headlineSmall,
-                        //           ),
-                        //         ],
-                        //       ),
-                        //       const SizedBox(height: TSizes.spaceBtwSections),
-                        //       const BookingCard(),
-                        //     ],
-                        //   ),
-                        // ),
                         TRoundedContainer(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,8 +162,8 @@ class DashboardDesktopScreen extends StatelessWidget {
                                     children: [
                                       TCircularIcon(
                                         icon: Iconsax.building,
-                                       // backgroundColor: TColors.alterColor
-                                       //     .withOpacity(0.1),
+                                        backgroundColor: TColors.alterColor
+                                            .withOpacity(0.1),
                                         color: TColors.alterColor,
                                         size: TSizes.md,
                                       ),

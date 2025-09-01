@@ -67,7 +67,9 @@ class UserTabPanel extends StatelessWidget {
                       ),
                       Text(
                         user.email,
-                        style: const TextStyle(color: Colors.grey),
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Colors.grey,
+                            ),
                       ),
                       if ((user.contractReference ?? '').isNotEmpty)
                         Wrap(
@@ -113,7 +115,7 @@ class UserTabPanel extends StatelessWidget {
                           AppLocalization.of(
                             context,
                           ).translate('users_screen.lbl_primary_user'),
-                          style: const TextStyle(color: TColors.alterColor),
+                          //style: const TextStyle(color: TColors.alterColor),
                         ),
                     ],
                   ),
@@ -132,13 +134,10 @@ class UserTabPanel extends StatelessWidget {
                 TabBar(
                   tabAlignment: TabAlignment.start,
                   isScrollable: true,
-                  indicatorColor:
-                      TColors.alterColor, // Accent color for active tab
-                  labelColor: TColors.alterColor, // Color for active tab text
-                  indicatorWeight: 1,
-                  unselectedLabelColor: Colors.black.withOpacity(
-                    0.6,
-                  ), // Color for inactive tabs
+  indicatorColor: Theme.of(context).colorScheme.primary,
+  labelColor: Theme.of(context).colorScheme.primary,
+  indicatorWeight: 1,
+  unselectedLabelColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
 
                   tabs: [
                     Tab(

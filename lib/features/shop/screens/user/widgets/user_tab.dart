@@ -83,7 +83,7 @@ class UserTab extends StatelessWidget {
       'Refresh Token',
       style: TextStyle(
         fontWeight: FontWeight.w500,
-        color: Colors.black54,
+        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
       ),
     ),
     IconButton(
@@ -129,7 +129,7 @@ class UserTab extends StatelessWidget {
               label,
               style: const TextStyle(
                 fontWeight: FontWeight.w500,
-                color: Colors.black54,
+                //color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
               ),
             ),
           ),
@@ -149,7 +149,7 @@ class UserTab extends StatelessWidget {
                           padding: const EdgeInsets.only(left: 8.0),
                           child: const Icon(
                             Iconsax.language_circle5,
-                            color: TColors.primary,
+                         //   color: TColors.primary,
                           ),
                         ),
                       ],
@@ -158,7 +158,7 @@ class UserTab extends StatelessWidget {
                       value,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+                       // color: Colors.black87,
                       ),
                     ),
           ),

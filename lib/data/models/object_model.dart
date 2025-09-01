@@ -16,7 +16,7 @@ class ObjectModel {
   String? description;
   String? currency;
   int? owner;
-  int? status;
+  String? status;
   String? type_;
   double? price;
   double? noi;
@@ -32,6 +32,7 @@ class ObjectModel {
   List<UnitModel>? units;
   final int? totalUsers;
   final int? totalContracts;
+  int? sqm;
 
   ObjectModel({
     this.id,
@@ -63,6 +64,7 @@ class ObjectModel {
     this.location,
     this.totalUsers,
     this.totalContracts,
+    this.sqm, 
   });
 
   String get formattedDate => TFormatter.formatDate(createdAt);
@@ -82,7 +84,7 @@ class ObjectModel {
       country: json['country'] ?? '',
       description: json['description'] ?? '',
       owner: json['owner'] ?? 1,
-      status: json['status'] ?? 1,
+      status: json['status'] ?? 'Started',
       type_: json['type_'] ?? '',
       price: double.tryParse(json['price']?.toString() ?? '') ?? 0.0,
       currency: json['currency'] ?? '',
@@ -110,6 +112,7 @@ class ObjectModel {
       yieldNet: json['yield_net'] ?? 0.0,
       noi: json['noi'] != null ? double.tryParse(json['noi'].toString()) : 0.0,
       caprate: json['caprate'] != null ? double.tryParse(json['caprate'].toString()) : 0.0,
+      sqm: json['sqm'] ?? 0,
     );
   }
 
@@ -145,6 +148,7 @@ class ObjectModel {
       'yield_net': yieldNet,
       'noi': noi,
       'caprate': caprate,
+      'sqm': sqm,
     };
   }
 }

@@ -145,6 +145,7 @@ class CompanyRows extends DataTableSource {
               child: TTableActionButtons(
             view: false,
             edit: true,
+            delete:true,
             sendUserInvitation: true,
             
 
@@ -192,7 +193,7 @@ class CompanyRows extends DataTableSource {
                 }
               }
             },
-            //onDeletePressed: () => controller.confirmAndDeleteItem(company.id),
+            onDeletePressed: () => controller.deleteItem(company),
           ),
         ),
         ),

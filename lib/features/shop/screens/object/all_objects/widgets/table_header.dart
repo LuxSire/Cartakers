@@ -71,7 +71,7 @@ class ObjectTableHeader extends StatelessWidget {
               const SizedBox(height: 12),
               TextFormField(
                 controller: controller.searchTextController,
-                onChanged: (query) => controller.searchQuery(query),
+                onChanged: (query) => controller.filterItemsWithSearch(query),
                 decoration: InputDecoration(
                   hintText: AppLocalization.of(
                     context,

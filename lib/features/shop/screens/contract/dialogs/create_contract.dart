@@ -163,7 +163,7 @@ class CreateContractDialog extends StatelessWidget {
               /// Single-select User (Dropdown)
               Obx(() {
                 // Set user list to match object list using UserController
-                final userList = u_controller.allUsers;
+                final userList = u_controller.allItems;
                 return DropdownButtonFormField<int>(
                   isExpanded: true,
                   value: controller.selectedUserId.value != 0
@@ -272,7 +272,7 @@ class CreateContractDialog extends StatelessWidget {
                                     ).then((success) {
                                       debugPrint(wrapWidth: 80, 'Permission creation success: $success');
                                       if (success == true) {
-                                        Get.back(result: true); // Close dialog and return true
+                                        Navigator.of(context).pop(true); // Close dialog and return true
                                       }
                                     });
 

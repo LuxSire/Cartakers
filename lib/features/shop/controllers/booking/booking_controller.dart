@@ -114,7 +114,7 @@ class BookingController extends TBaseController<BookingModel> {
 
       // debugPrint('User building restrictions: $userBuildingRestrictions');
 
-      final filteredObjects =
+      final filteredItems =
           result
               .where(
                 (object) => userObjectRestrictions.contains(
@@ -124,7 +124,7 @@ class BookingController extends TBaseController<BookingModel> {
               .toList();
       debugPrint('User object restrictions: $userObjectRestrictions');
       debugPrint('All object IDs: ${result.map((o) => o.id).toList()}');
-      objectsList.assignAll(filteredObjects);
+      objectsList.assignAll(filteredItems);
     } catch (e) {
       //   Get.snackbar('Error', 'Failed to load buildings: $e');
     } finally {

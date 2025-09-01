@@ -24,41 +24,49 @@ class ObjectRows extends DataTableSource {
   final auth_controller = AuthenticationRepository.instance;
   @override
   DataRow? getRow(int index) {
-    final object = controller.allObjects[index];
-    final user_id = int.tryParse(auth_controller.currentUser?.id ?? '');
+    final object = controller.filteredItems[index];
+    final usermodel = auth_controller.currentUser;
+    final user_id = int.tryParse(usermodel?.id ?? '');
+    bool allowed=true;
     return DataRow2(
       onTap: () {
         debugPrint('Tapped on object: ${object.name} for user: ${user_id ?? 0}');
-        if (p_controller.CheckObjectForUser(user_id ?? 0,object.id ?? 0))
-        {
-            Get.toNamed(Routes.editObject, arguments: object)?.then((result) 
-            {
-              if (result == true) {
-                controller.refreshData(); // Force re-fetch on return
-              }
-            });
-          }
-          else
-          {
-            showDialog(
-              context: Get.context!,
-              builder: (context) => CreateMessageDialog(
-                object: object,
-                subject: 'Request Access to ${object.name}',
-                message: 'Please give me access to ${object.name}',
-              ),
-              //builder: (context) => AssignRequestDialog(object: object),
-            );
-
-              Get.snackbar(
-                'Access Denied',
-                'You do not have permission to access this object. Not yet. Make a request',
-                snackPosition: SnackPosition.BOTTOM,
-                backgroundColor: TColors.error.withOpacity(0.1),
-                colorText: TColors.error,
-              );
+        if (usermodel == null) {
+          allowed = false;
+          Get.snackbar(
+            'Access Denied',
+            'You do not have permission to access this object. Not yet. Make a request',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: TColors.error.withOpacity(0.1),
+            colorText: TColors.error,
+          );
+          return;
+        }
+        if (p_controller.CheckObjectForUserModel(usermodel, object.id ?? 0)) {
+          Get.toNamed(Routes.editObject, arguments: object)?.then((result) {
+            if (result == true) {
+              controller.refreshData(); // Force re-fetch on return
             }
-            
+          });
+        } else {
+          showDialog(
+            context: Get.context!,
+            builder: (context) => CreateMessageDialog(
+              object: object,
+              subject: 'Request Access to ${object.name}',
+              message: 'Please give me access to ${object.name}',
+            ),
+            //builder: (context) => AssignRequestDialog(object: object),
+          );
+
+          Get.snackbar(
+            'Access Denied',
+            'You do not have permission to access this object. Not yet. Make a request',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: TColors.error.withOpacity(0.1),
+            colorText: TColors.error,
+          );
+        }
       },
       selected: controller.selectedRows[index],
       onSelectChanged:
@@ -77,7 +85,7 @@ class ObjectRows extends DataTableSource {
               : ImageType.asset,
 
                 borderRadius: TSizes.borderRadiusMd,
-                backgroundColor: TColors.primaryBackground,
+               // backgroundColor: TColors.primaryBackground,
               ),
               const SizedBox(width: TSizes.spaceBtwItems),
               Expanded(
@@ -147,7 +155,7 @@ DataCell(
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => controller.allObjects.length;
+  int get rowCount => controller.filteredItems.length;
 
   @override
   int get selectedRowCount =>

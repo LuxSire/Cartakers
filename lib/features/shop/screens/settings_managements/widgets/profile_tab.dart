@@ -41,7 +41,7 @@ class ProfileTab extends StatelessWidget {
           children: [
             // ── Header Card ───────────────────────────────
             Card(
-              color: TColors.softGrey.withOpacity(1),
+              color: Theme.of(context).colorScheme.surface,
               elevation: 0.5,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -155,7 +155,7 @@ class ProfileTab extends StatelessWidget {
 
             // ── Details Card ──────────────
             Card(
-              color: TColors.softGrey.withOpacity(1),
+              color:  Theme.of(context).colorScheme.surface,
               elevation: 0.5,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
