@@ -1,5 +1,10 @@
 import 'package:xm_frontend/data/models/unit_model.dart';
 import 'package:xm_frontend/utils/formatters/formatter.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ObjectModel {
   int? id;
@@ -33,6 +38,8 @@ class ObjectModel {
   final int? totalUsers;
   final int? totalContracts;
   int? sqm;
+  double? longitude;
+  double? latitude;
 
   ObjectModel({
     this.id,
@@ -65,7 +72,43 @@ class ObjectModel {
     this.totalUsers,
     this.totalContracts,
     this.sqm, 
+    this.longitude,
+    this.latitude
   });
+
+  final APIkey = dotenv.env['GOOGLE_MAP'] ?? '';
+  Future<void> getCoordinatesFromAddress() async
+  {
+
+    // Use the geocoding package to convert the address to coordinates
+    try {
+      String my_address = [
+          street,
+          zipCode,
+          city,
+          state,
+        country,
+      ].where((part) => part != null && part.isNotEmpty).join(' ');
+
+      final url = Uri.parse(
+    'https://maps.googleapis.com/maps/api/geocode/json?address=${Uri.encodeComponent(my_address)}&key=$APIkey',
+      );
+      final response = await http.get(url);
+      final data = json.decode(response.body);
+      debugPrint('URL used: $url');
+      debugPrint('Response data: $data'); 
+      debugPrint('Let s see the coordinates of : $my_address');
+
+      if (data['status'] == 'OK') {
+          final location = data['results'][0]['geometry']['location'];
+          latitude = location['lat'];
+          longitude = location['lng'];
+      }
+    } catch (e) {
+      print('Error getting coordinates: $e');
+    }
+  }
+
 
   String get formattedDate => TFormatter.formatDate(createdAt);
 

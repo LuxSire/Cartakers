@@ -37,8 +37,8 @@ class WhatsAppMessageList extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               color: isMe
-                  ? Theme.of(context).secondaryHeaderColor
-                  : const Color(0xFF0A2342), // dark blue for others
+                  ? Theme.of(context).primaryColorLight
+                  : Color.fromARGB(255, 186, 191, 198), // dark blue for others
               borderRadius: BorderRadius.only(
                 topLeft: const Radius.circular(16),
                 topRight: const Radius.circular(16),
@@ -57,14 +57,14 @@ class WhatsAppMessageList extends StatelessWidget {
                       message.title ?? '',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: isMe ? Colors.black : Colors.white,
+                            color: isMe ? Colors.black : Colors.lightGreen,
                           ),
                     ),
                   ),
                 Text(
                   message.content ?? '',
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: isMe ? Colors.black : Colors.white,
+                        color: isMe ? Colors.black : Colors.lightGreen,
                       ),
                 ),
                 const SizedBox(height: 8),
@@ -74,7 +74,7 @@ class WhatsAppMessageList extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .labelSmall
-                      ?.copyWith(color: isMe ? Colors.grey : Colors.white70),
+                      ?.copyWith(color: isMe ? Colors.black : Colors.lightGreen),
                 ),
               ],
             ),

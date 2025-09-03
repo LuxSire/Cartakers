@@ -610,6 +610,7 @@
     "objects_screen": {
         "lbl_objects": "Objects",
         "lbl_information": "Information",
+        "lbl_yield": "Yield",
         "lbl_financials": "Financials",
         "lbl_types": "Types",
         "lbl_price": "Price",

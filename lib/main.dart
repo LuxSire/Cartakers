@@ -9,7 +9,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:xm_frontend/app/app_controller.dart';
 import 'package:xm_frontend/data/repositories/company/company_repository.dart';
-
+import 'dart:html' as html;
 import 'package:xm_frontend/features/personalization/controllers/settings_controller.dart';
 import 'package:xm_frontend/utils/helpers/network_manager.dart';
 import 'package:xm_frontend/data/repositories/media/media_repository.dart';
@@ -23,6 +23,8 @@ import 'package:xm_frontend/data/repositories/user/user_repository.dart';
 import 'features/shop/controllers/document/document_controller.dart';
 import 'features/shop/controllers/contract/permission_controller.dart';
 import 'features/shop/controllers/communication/communication_controller.dart';
+import 'package:google_maps_flutter_web/google_maps_flutter_web.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 Future<void> main() async {
   await runZonedGuarded(
@@ -36,10 +38,26 @@ Future<void> main() async {
   const String envFile = String.fromEnvironment('ENV', defaultValue: 'dev');
   await dotenv.load(fileName: '.env.$envFile');
 
+ GoogleMapsPlugin.registerWith(webPluginRegistrar);
+
+  late final String googleApiKey;
+  googleApiKey = dotenv.env['GOOGLE_MAP'] ?? '';
   if (kDebugMode) {
     print('API URL: ${dotenv.env['API_URL']}');
   }
+    if (kIsWeb) {
 
+                void injectGoogleMapsScript(String apiKey) 
+                {
+                  final script = html.ScriptElement()
+                    ..type = 'text/javascript'
+                    ..src = 'https://maps.googleapis.com/maps/api/js?key=$apiKey';
+                  html.document.head!.append(script);
+                }
+
+                injectGoogleMapsScript(googleApiKey!);
+
+                }
   // Register Dependencies
   Get.put(ThemeService());
   Get.put(AppController());

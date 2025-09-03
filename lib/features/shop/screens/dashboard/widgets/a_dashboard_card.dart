@@ -54,14 +54,14 @@ class ADashboardCard extends StatelessWidget {
 
                 TSectionHeading(
                   title: title,
-                  textColor: TColors.textSecondary.withOpacity(0.5),
+                  textColor: Theme.of(context).colorScheme.secondaryFixedDim,
                 ),
               ],
             ),
             TCircularIcon(
               icon: headingIcon,
-              backgroundColor: headingIconBgColor,
-              color: headingIconColor,
+              backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
+              color: Theme.of(context).colorScheme.secondaryFixedDim,
               size: TSizes.md,
             ),
           ],

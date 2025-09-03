@@ -26,7 +26,7 @@ class TSidebar extends StatelessWidget
       return Container(
         width: 280,
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
+          color: Theme.of(context).appBarTheme.backgroundColor  ,
           border: Border(
           right: BorderSide(
             width: 1,
@@ -52,7 +52,7 @@ class TSidebar extends StatelessWidget
                           height: 50,
                           padding: 0,
                           margin: TSizes.sm,
-                          backgroundColor: Colors.transparent,
+                          //backgroundColor: Colors.transparent,
                           imageType: SettingsController
                                   .instance
                                   .settings
@@ -188,7 +188,7 @@ class TSidebar extends StatelessWidget
               children: [
                 const SizedBox(height: 10),
                 Text(
-                  'v.1.1.1', //  App Version
+                  'v.1.1.3', //  App Version
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).hintColor,
                   ),

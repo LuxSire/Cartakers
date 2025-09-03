@@ -33,7 +33,7 @@ class TLoginHeader extends StatelessWidget {
                         context,
                       ).textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.w900,
-                        color: TColors.alterColor,
+                       // color: TColors.alterColor,
                       ),
                     ),
                     TextSpan(
@@ -41,7 +41,7 @@ class TLoginHeader extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.w600,
                         fontStyle: FontStyle.italic,
-                        color: TColors.alterColor.withOpacity(0.8),
+                        //color: TColors.alterColor.withOpacity(0.8),
                       ),
                     ),
                   ],

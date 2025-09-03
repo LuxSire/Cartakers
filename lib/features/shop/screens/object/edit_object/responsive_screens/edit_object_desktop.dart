@@ -11,6 +11,7 @@ import 'package:xm_frontend/features/shop/screens/communication/all_communicatio
 import 'package:xm_frontend/features/shop/screens/communication/all_communications/widgets/communication_detail_tab.dart';
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../utils/constants/sizes.dart';
+import '../../../../../../utils/map/map.dart';
 
 class EditObjectDesktopScreen extends StatelessWidget {
   const EditObjectDesktopScreen({super.key, required this.object});
@@ -23,7 +24,7 @@ class EditObjectDesktopScreen extends StatelessWidget {
     final controller = Get.find<EditObjectController>();
 
     return DefaultTabController(
-      length: 5,
+      length: 6,
       child: Scaffold(
         body:   Padding(
             padding: const EdgeInsets.all(TSizes.defaultSpace),
@@ -48,6 +49,7 @@ class EditObjectDesktopScreen extends StatelessWidget {
                   Tab(text: 'Images'),
                   Tab(text: 'Units'),
                   Tab(text: 'Communications'),
+                  Tab(text: 'Map'),
                 ],
               ),
             const SizedBox(height: TSizes.spaceBtwSections*2),
@@ -60,6 +62,7 @@ class EditObjectDesktopScreen extends StatelessWidget {
                     ObjectPicsWidget(objectId: object.id!), // Tab 3: Images
                     ObjectUnits(object: object), // Tab 4: Units
                     CommunicationDetailsTab(tabType: 'messages',object: object), // Tab 5: Communications
+                    MapScreen(object:object), // Tab 6: Map  
                   ],
                 ),
               ),

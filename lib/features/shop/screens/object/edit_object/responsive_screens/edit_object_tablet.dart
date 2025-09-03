@@ -11,6 +11,7 @@ import 'package:xm_frontend/features/shop/screens/communication/all_communicatio
 import 'package:xm_frontend/features/shop/screens/communication/all_communications/widgets/communication_detail_tab.dart';
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../utils/constants/sizes.dart';
+import '../../../../../../utils/map/map.dart';
 
 class EditObjectTabletScreen extends StatelessWidget {
   const EditObjectTabletScreen({super.key, required this.object});
@@ -48,6 +49,7 @@ class EditObjectTabletScreen extends StatelessWidget {
                   Tab(text: 'Images'),
                   Tab(text: 'Units'),
                   Tab(text: 'Communications'),
+                  Tab(text: 'Map'),
                 ],
               ),
             const SizedBox(height: TSizes.spaceBtwSections*2),
@@ -59,7 +61,8 @@ class EditObjectTabletScreen extends StatelessWidget {
                     ObjectDocsWidget(objectId: object.id!), // Tab 2: Documents
                     ObjectPicsWidget(objectId: object.id!), // Tab 3: Images
                     ObjectUnits(object: object), // Tab 4: Units
-                    CommunicationDetailsTab(tabType: 'messages',object: object), // Tab 5: Communications
+                    CommunicationDetailsTab(tabType: 'messages', object: object), // Tab 5: Communications
+                    MapScreen(object: object), // Tab 6: Map
                   ],
                 ),
               ),

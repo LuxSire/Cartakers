@@ -45,7 +45,7 @@ class TInvitationForm extends StatelessWidget {
                           context,
                         ).translate('language_selection.lbl_de'),
                         style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onSurface,
+                          //color: theme.colorScheme.onSurface,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -60,7 +60,7 @@ class TInvitationForm extends StatelessWidget {
                           context,
                         ).translate('language_selection.lbl_fr'),
                         style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onSurface,
+                          //color: theme.colorScheme.onSurface,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -75,7 +75,7 @@ class TInvitationForm extends StatelessWidget {
                           context,
                         ).translate('language_selection.lbl_it'),
                         style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onSurface,
+                          //color: theme.colorScheme.onSurface,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -90,7 +90,7 @@ class TInvitationForm extends StatelessWidget {
                           context,
                         ).translate('language_selection.lbl_en'),
                         style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onSurface,
+                         // color: theme.colorScheme.onSurface,
                           fontWeight: FontWeight.w600,
                         ),
                       ),

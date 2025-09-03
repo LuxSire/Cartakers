@@ -27,12 +27,14 @@ class ObjectRows extends DataTableSource {
     final object = controller.filteredItems[index];
     final usermodel = auth_controller.currentUser;
     final user_id = int.tryParse(usermodel?.id ?? '');
-    bool allowed=true;
+    bool allowed = false;   
+    if (usermodel != null) {
+      allowed = (p_controller.CheckObjectForUserModel(usermodel, object.id ?? 0));
+    }
     return DataRow2(
       onTap: () {
         debugPrint('Tapped on object: ${object.name} for user: ${user_id ?? 0}');
-        if (usermodel == null) {
-          allowed = false;
+        if (!allowed) {
           Get.snackbar(
             'Access Denied',
             'You do not have permission to access this object. Not yet. Make a request',
@@ -40,9 +42,8 @@ class ObjectRows extends DataTableSource {
             backgroundColor: TColors.error.withOpacity(0.1),
             colorText: TColors.error,
           );
-          return;
         }
-        if (p_controller.CheckObjectForUserModel(usermodel, object.id ?? 0)) {
+        if (allowed)  {
           Get.toNamed(Routes.editObject, arguments: object)?.then((result) {
             if (result == true) {
               controller.refreshData(); // Force re-fetch on return
@@ -89,6 +90,10 @@ class ObjectRows extends DataTableSource {
               ),
               const SizedBox(width: TSizes.spaceBtwItems),
               Expanded(
+                        flex: 5, // Increase flex factor (default is 1)
+                child: Container(
+                    constraints: const BoxConstraints(minWidth: 400), // Add minimum width
+
                 child: Text(
                   object.name!,
                   style: Theme.of(
@@ -97,6 +102,7 @@ class ObjectRows extends DataTableSource {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
+              ),
               ),
             ],
           ),
@@ -107,26 +113,43 @@ DataCell(Text(object.state?.toString() ?? object.city?.toString() ?? '')),
 DataCell(Text(object.country ?? '')),
 DataCell(Text(object.type_?.toString() ?? '')),
 DataCell(Text(object.zoning?.toString() ?? '')),
-DataCell(
-  Text(
-    object.price != null
-      ? '${object.currency ?? ''} ${NumberFormat('#,##0', 'en_US').format(object.price)}'
-
+DataCell(    
+  Container(
+    alignment: Alignment.centerRight,
+    child: Text(
+      object.price != null
+          ? '${object.currency ?? ''} ${NumberFormat('#,##0', 'en_US').format(object.price)}'
       : '',
   ),
+  ),
 ),
+DataCell(    
+  Container(
+    alignment: Alignment.centerRight,
+    child: Text(
+      object.yieldGross != null
+                    ? '${object.yieldGross?.toStringAsFixed(2)}%'
+          : '',
+  ),
+  ),
+),
+
         DataCell(
           TTableActionButtons(
             view: true,
             edit: false,
-            onViewPressed: () {
+            delete: allowed,
 
-          if (p_controller.CheckObjectForUser(user_id ?? 0,object.id ?? 0))
-            Get.toNamed(Routes.editObject, arguments: object)?.then((result) {
-              if (result == true) {
-                controller.refreshData(); // Force re-fetch on return
-              }
+            onViewPressed: () 
+            {
+
+                if (allowed) {
+                 Get.toNamed(Routes.editObject, arguments: object)?.then((result) {
+                   if (result == true) {
+                 controller.refreshData(); // Force re-fetch on return
+                  }
             });
+          }
             else
             {
               showDialog(
@@ -142,9 +165,32 @@ DataCell(
                 backgroundColor: TColors.error.withOpacity(0.1),
                 colorText: TColors.error,
               );
-            }            },
-
-            onDeletePressed: () => controller.deleteItem(object),
+            }            
+            },
+              onDeletePressed: () async {
+  if (allowed) {
+    final confirmed = await showDialog<bool>(
+      context: Get.context!,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirm Delete'),
+        content: const Text('Are you sure you want to delete this object?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+    if (confirmed == true) {
+      controller.deleteItem(object);
+    }
+  }
+},
           ),
         ),
       ],

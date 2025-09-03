@@ -40,7 +40,7 @@ class ObjectTable extends StatelessWidget {
         sortColumnIndex: controller.sortColumnIndex.value,
         columns: [
           DataColumn2(
-            fixedWidth: 200,
+            fixedWidth: 400,
             label: Text(
               AppLocalization.of(
                 context,
@@ -108,6 +108,14 @@ class ObjectTable extends StatelessWidget {
               AppLocalization.of(
                 context,
               ).translate('objects_screen.lbl_price'),
+            ),
+          ),
+                    DataColumn2(
+            size: ColumnSize.M,
+            label: Text(
+              AppLocalization.of(
+                context,
+              ).translate('objects_screen.lbl_yield'),
             ),
           ),
           DataColumn2(

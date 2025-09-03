@@ -614,8 +614,9 @@
     "objects_screen": {
         "lbl_objects": "Oggetti",
         "lbl_state": "Regione",
-        "lbl_noi": "Net Operating Income",
-        "lbl_caprate": "Capitalization Rate",
+        "lbl_yield": "Rendimento",
+        "lbl_noi": "Reddito Operativo Netto",
+        "lbl_caprate": "Tasso di Capitalizzazione",
         "lbl_types": "Tipologie",
         "lbl_information": "Informazioni",
         "lbl_financials": "Finanze",

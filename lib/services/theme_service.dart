@@ -27,12 +27,12 @@ class ThemeService extends GetxService {
     fontFamily: 'Lato', // Default font for light theme
     brightness: Brightness.light,
     primaryColor: AppColors.primaryColor,
-    scaffoldBackgroundColor:  Colors.white,
+    scaffoldBackgroundColor:  AppColors.blue5001,
     bottomAppBarTheme: const BottomAppBarThemeData(
-      color: AppColors.whiteA700, // Light theme bottom bar color
+      color: AppColors.gray50, // Light theme bottom bar color
     ),
     appBarTheme: const AppBarTheme(
-      backgroundColor: AppColors.orange925,
+      backgroundColor: AppColors.blue50,
       foregroundColor: Colors.white,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent, // Transparent background
@@ -40,7 +40,7 @@ class ThemeService extends GetxService {
         statusBarBrightness: Brightness.light, // iOS support
       ),
     ),
-    cardColor: Colors.white,
+    cardColor: AppColors.blueGray100,
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.primaryColor,
@@ -53,6 +53,7 @@ class ThemeService extends GetxService {
     colorScheme: const ColorScheme.light(
       primary: AppColors.primaryColor,
       secondary: AppColors.secondaryColor,
+      tertiary: AppColors.gray700 ,
     ),
     iconTheme: const IconThemeData(color: AppColors.blueGray90001),
     textTheme: TextTheme(
@@ -93,9 +94,10 @@ class ThemeService extends GetxService {
     fontFamily: 'Lato', // Default font for dark theme
     brightness: Brightness.dark,
     primaryColor: AppColors.primaryColor,
-    scaffoldBackgroundColor: AppColors.backgroundDark,
+    cardColor: AppColors.backgroundPrimary,
+    scaffoldBackgroundColor: AppColors.indigo900,
     bottomAppBarTheme: const BottomAppBarThemeData(
-      color: AppColors.blueGray90001, // Dark theme bottom bar color
+      color: AppColors.textPrimaryLight, // Dark theme bottom bar color
     ),
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.primaryColor,
@@ -107,8 +109,9 @@ class ThemeService extends GetxService {
       ),
     ),
     colorScheme: const ColorScheme.dark(
-      primary: AppColors.primaryColor,
-      secondary: AppColors.gradientEnd,
+      primary: AppColors.gray100,
+      secondary: AppColors.secondaryColor,
+      tertiary: AppColors.actionColor,
     ),
     iconTheme: const IconThemeData(
       color: AppColors.whiteA700, // Default icon color for dark theme
