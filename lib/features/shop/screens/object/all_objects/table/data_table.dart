@@ -33,12 +33,30 @@ class ObjectTable extends StatelessWidget {
         child: Text(controller.selectedRows.length.toString()),
       );
 
-      // Table
-      return TPaginatedDataTable(
-        minWidth: 1100,
-        sortAscending: controller.sortAscending.value,
-        sortColumnIndex: controller.sortColumnIndex.value,
-        columns: [
+    return Center(
+      child: Card(
+        elevation: 18, // Higher elevation for more "3D" effect
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+        margin: const EdgeInsets.all(32),
+        clipBehavior: Clip.antiAlias,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Theme.of(context).colorScheme.primary,
+                Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.8),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          child: TPaginatedDataTable(
+            minWidth: 1100,
+            sortAscending: controller.sortAscending.value,
+            sortColumnIndex: controller.sortColumnIndex.value,
+            columns: [
           DataColumn2(
             fixedWidth: 400,
             label: Text(
@@ -115,7 +133,7 @@ class ObjectTable extends StatelessWidget {
             label: Text(
               AppLocalization.of(
                 context,
-              ).translate('objects_screen.lbl_yield'),
+              ).translate('objects_screen.lbl_grossyield'),
             ),
           ),
           DataColumn2(
@@ -129,7 +147,10 @@ class ObjectTable extends StatelessWidget {
         ],
 
         source: ObjectRows(),
-      );
-    });
-  }
+         ),
+        ),
+      ),
+    );
+  });
+}
 }

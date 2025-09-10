@@ -38,12 +38,12 @@ class ObjectTableHeader extends StatelessWidget {
                     controller.refreshData();
                   }
                 },
-                icon: const Icon(Iconsax.add_circle, color: TColors.alterColor),
+                icon: const Icon(Iconsax.add_circle, color: TColors.buttonPrimary),
                 label: Text(
                   AppLocalization.of(
                     context,
                   ).translate('objects_screen.lbl_create_new_object'),
-                  style: const TextStyle(color: TColors.alterColor),
+                  style: const TextStyle(color: TColors.buttonPrimary),
                 ),
               ),
               const SizedBox(height: 12),
@@ -60,12 +60,12 @@ class ObjectTableHeader extends StatelessWidget {
                     ).translate('general_msgs.msg_data_refreshed'),
                   );
                 },
-                icon: const Icon(Iconsax.refresh, color: TColors.alterColor),
+                icon: const Icon(Iconsax.refresh, color: TColors.buttonPrimary),
                 label: Text(
                   AppLocalization.of(
                     context,
                   ).translate('general_msgs.msg_refresh'),
-                  style: const TextStyle(color: TColors.alterColor),
+                  style: const TextStyle(color: TColors.buttonPrimary),
                 ),
               ),
               const SizedBox(height: 12),
@@ -96,12 +96,12 @@ class ObjectTableHeader extends StatelessWidget {
                     controller.loadAllObjects();
                   }
                 },
-                icon: const Icon(Iconsax.add_circle, color: TColors.alterColor),
+                icon: const Icon(Iconsax.add_circle, color: TColors.buttonPrimary),
                 label: Text(
                   AppLocalization.of(
                     context,
                   ).translate('objects_screen.lbl_create_new_object'),
-                  style: const TextStyle(color: TColors.alterColor),
+                  style: const TextStyle(color: TColors.buttonPrimary),
                 ),
               ),
               const SizedBox(width: 16),
@@ -118,12 +118,12 @@ class ObjectTableHeader extends StatelessWidget {
                     ).translate('general_msgs.msg_data_refreshed'),
                   );
                 },
-                icon: const Icon(Iconsax.refresh, color: TColors.alterColor),
+                icon: const Icon(Iconsax.refresh, color: TColors.buttonPrimary),
                 label: Text(
                   AppLocalization.of(
                     context,
                   ).translate('general_msgs.msg_refresh'),
-                  style: const TextStyle(color: TColors.alterColor),
+                  style: const TextStyle(color: TColors.buttonPrimary),
                 ),
               ),
               const SizedBox(width: 16),

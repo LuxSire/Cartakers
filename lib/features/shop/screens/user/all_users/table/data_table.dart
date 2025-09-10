@@ -21,8 +21,25 @@ class UsersTable extends StatelessWidget {
           final _ =
               controller.filteredUsers.length + controller.selectedRows.length;
           debugPrint("UsersTable rebuilt with ${controller.filteredUsers.length} users");
-          return SizedBox(
-            width: constraints.maxWidth,
+            return Center(
+            child: Card(
+              elevation: 18,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24),
+              ),
+              margin: const EdgeInsets.all(32),
+              clipBehavior: Clip.antiAlias,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Theme.of(context).colorScheme.primary,
+                      Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.8),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
             child: TPaginatedDataTable(
               minWidth: 900, // optional: use constraints.maxWidth if you want
               sortAscending: controller.sortAscending.value,
@@ -85,10 +102,12 @@ class UsersTable extends StatelessWidget {
                     AppLocalization.of(
                       context,
                     ).translate('users_screen.lbl_actions'),
-                  ),
+                   ),
+                    ),
+                  ],
+                  source: UsersRows(),
                 ),
-              ],
-              source: UsersRows(),
+              ),
             ),
           );
         });

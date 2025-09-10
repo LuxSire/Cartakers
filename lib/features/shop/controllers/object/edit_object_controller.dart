@@ -583,15 +583,6 @@ Future<void> loadAllUnits() async {
       // Call Repository to Update
 
       debugPrint('name: ${name.text}');
-debugPrint('city: ${city.text}');
-debugPrint('state: ${state.text}');
-debugPrint('country: ${country.text}');
-debugPrint('price: ${price.text}');
-debugPrint('street: ${street.text}');
-debugPrint('zipCode: ${zipCode.text}');
-debugPrint('description: ${description.text}');
-debugPrint('units: ${units.text}');
-debugPrint('floors: ${floors.text}');
 debugPrint('selectedCompanyId: ${selectedCompanyId.value}');
 debugPrint('imageURL: ${imageURL.value}');
 debugPrint('owner: ${owner.text}');

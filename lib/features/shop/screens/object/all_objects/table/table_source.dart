@@ -77,7 +77,7 @@ class ObjectRows extends DataTableSource {
           Row(
             children: [
               TRoundedImage(
-                width: 50,
+                width: 40,
                 height: 50,
                 padding: TSizes.sm,
                 image: object.imgUrl ??  'assets/images/app_icon.png',
@@ -98,7 +98,7 @@ class ObjectRows extends DataTableSource {
                   object.name!,
                   style: Theme.of(
                     Get.context!,
-                  ).textTheme.bodyLarge!.apply(color: TColors.primary),
+                  ).textTheme.bodySmall!.apply(color: TColors.primary),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -111,7 +111,8 @@ class ObjectRows extends DataTableSource {
 DataCell(Text(object.state?.toString() ?? object.city?.toString() ?? '')),
 //DataCell(Text(object.zipCode ?? '')),
 DataCell(Text(object.country ?? '')),
-DataCell(Text(object.type_?.toString() ?? '')),
+DataCell(Text(object.type_?.toString() ?? ''
+)),
 DataCell(Text(object.zoning?.toString() ?? '')),
 DataCell(    
   Container(

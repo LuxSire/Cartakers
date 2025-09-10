@@ -35,36 +35,28 @@ class TLoginForm extends StatelessWidget {
             const SizedBox(height: TSizes.spaceBtwInputFields),
 
             /// Password
-            Obx(
-              () => TextFormField(
-                obscureText: controller.hidePassword.value,
-                controller: controller.password,
-                validator:
-                    (value) => TValidator.validateEmptyText(
-                      AppLocalization.of(
-                        context,
-                      ).translate('login_screen.lbl_password'),
-                      value,
-                    ),
-                decoration: InputDecoration(
-                  labelText: AppLocalization.of(
-                    context,
-                  ).translate('login_screen.lbl_password'),
-                  prefixIcon: const Icon(Iconsax.password_check),
-                  suffixIcon: IconButton(
-                    onPressed:
-                        () =>
-                            controller.hidePassword.value =
-                                !controller.hidePassword.value,
-                    icon: Icon(
-                      controller.hidePassword.value
-                          ? Iconsax.eye_slash
-                          : Iconsax.eye,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+Obx(
+  () => TextFormField(
+    obscureText: controller.hidePassword.value,
+    controller: controller.password,
+    validator: (value) => TValidator.validateEmptyText(
+      AppLocalization.of(context).translate('login_screen.lbl_password'),
+      value,
+    ),
+    decoration: InputDecoration(
+      labelText: AppLocalization.of(context).translate('login_screen.lbl_password'),
+      prefixIcon: const Icon(Iconsax.password_check),
+      suffixIcon: IconButton(
+        onPressed: () => controller.hidePassword.value = !controller.hidePassword.value,
+        icon: Icon(
+          controller.hidePassword.value ? Iconsax.eye_slash : Iconsax.eye,
+        ),
+      ),
+    ),
+    textInputAction: TextInputAction.done, // <-- add this
+    onFieldSubmitted: (_) => controller.emailAndPasswordSignIn(), // <-- add this
+  ),
+),
             const SizedBox(height: TSizes.spaceBtwInputFields / 2),
 
             /// Remember Me & Forget Password

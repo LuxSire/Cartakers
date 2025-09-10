@@ -5,6 +5,7 @@ import 'package:xm_frontend/utils/constants/colors.dart';
 import '../../../../../../utils/constants/image_strings.dart';
 import '../../../../../../utils/constants/sizes.dart';
 import '../../../../../../utils/constants/text_strings.dart';
+import '../../../../../../features/shop/screens/settings_managements/dialogs/token_request.dart';
 
 class TInvitationHeader extends StatelessWidget {
   const TInvitationHeader({super.key});
@@ -58,10 +59,40 @@ class TInvitationHeader extends StatelessWidget {
           ),
           const SizedBox(height: TSizes.sm),
           Text(
-            AppLocalization.of(
-              context,
-            ).translate('invitation_screen.lbl_welcome_content'),
+            AppLocalization.of(context).translate('invitation_screen.lbl_welcome_content'),
             style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          const SizedBox(height: TSizes.sm),
+
+          // Add this line for the token request link
+          Row(
+            children: [
+              Text(
+                AppLocalization.of(context).translate('invitation_screen.lbl_no_token'),
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              const SizedBox(width: 8),
+    MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (context) => const TokenRequestDialog(),
+          );
+        },
+
+                child: Text(
+                  AppLocalization.of(context).translate('invitation_screen.lbl_request_token'),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

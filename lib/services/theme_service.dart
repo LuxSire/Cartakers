@@ -14,6 +14,7 @@ class ThemeService extends GetxService {
   //bool get isDarkMode => _isDarkMode;
 
   ThemeData get lightTheme =>  ThemeData(
+    useMaterial3: true,
     tabBarTheme: const TabBarThemeData(
       indicator: BoxDecoration(
         border: Border(
@@ -24,7 +25,7 @@ class ThemeService extends GetxService {
       ),
     ),
 
-    fontFamily: 'Lato', // Default font for light theme
+    fontFamily: 'Inter', // Default font for light theme
     brightness: Brightness.light,
     primaryColor: AppColors.primaryColor,
     scaffoldBackgroundColor:  AppColors.blue5001,
@@ -53,7 +54,7 @@ class ThemeService extends GetxService {
     colorScheme: const ColorScheme.light(
       primary: AppColors.primaryColor,
       secondary: AppColors.secondaryColor,
-      tertiary: AppColors.gray700 ,
+      tertiary: AppColors.blue5001 ,
     ),
     iconTheme: const IconThemeData(color: AppColors.blueGray90001),
     textTheme: TextTheme(
@@ -91,7 +92,7 @@ class ThemeService extends GetxService {
         ),
       ),
     ),
-    fontFamily: 'Lato', // Default font for dark theme
+    fontFamily: 'Inter', // Default font for dark theme
     brightness: Brightness.dark,
     primaryColor: AppColors.primaryColor,
     cardColor: AppColors.backgroundPrimary,

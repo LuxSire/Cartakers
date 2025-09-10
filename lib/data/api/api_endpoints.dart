@@ -98,7 +98,7 @@ class ApiEndpoints {
   static const String getUserObjectHelpGuides =
       'api/users/get-user-object-help-guides';
   static const String sendUserPasswordResetEmail =
-      'api/mailing/email-user-reset-password';
+      'api/mailing/send-smtp-user-reset-password';
 
   static const String updateUserResetPasswordCode =
       'api/users/update-user-reset-password-code';

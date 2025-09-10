@@ -7,6 +7,8 @@ import 'package:xm_frontend/features/shop/screens/users_permissions/widgets/comp
 import 'package:xm_frontend/features/shop/screens/users_permissions/widgets/app_invitation_tab.dart';
 import 'package:xm_frontend/features/shop/screens/users_permissions/widgets/permissions_tab.dart';
 import 'package:xm_frontend/features/shop/screens/users_permissions/widgets/users_tab.dart';
+import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
+import 'package:get/get.dart';
 
 class UsersPermissionsDetailTab extends StatelessWidget {
   final String tabType;
@@ -20,6 +22,10 @@ class UsersPermissionsDetailTab extends StatelessWidget {
       case 'companies':
         return CompaniesTab();
       case 'users':
+        return UsersTab();
+      case 'pendingusers':
+        final userController = Get.find<UserController>();
+        userController.selectedRoleId.value = 4;
         return UsersTab();
       case 'permissions':
         return PermissionsTab();

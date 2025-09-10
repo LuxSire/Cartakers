@@ -56,7 +56,7 @@ class CompanyTableHeader extends StatelessWidget {
                       AppLocalization.of(
                         context,  
                       ).translate('companies_screen.lbl_new_company'),
-                      style: const TextStyle(color: TColors.alterColor),
+                      style: const TextStyle(color: TColors.buttonPrimary),
                     ),
                   ),
 
@@ -102,7 +102,7 @@ class CompanyTableHeader extends StatelessWidget {
                       AppLocalization.of(
                         context,
                       ).translate('general_msgs.msg_refresh'),
-                      style: const TextStyle(color: TColors.alterColor),
+                      style: const TextStyle(color: TColors.buttonPrimary),
                     ),
                   ),
                 ],

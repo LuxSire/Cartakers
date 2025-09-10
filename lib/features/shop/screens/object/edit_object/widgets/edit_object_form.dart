@@ -51,7 +51,26 @@ class EditObjectForm extends StatelessWidget {
       final currentUser = UserController.instance.user.value;
       final canEdit = p_controller.CheckEditForCurrentUser(object.id ?? 0);
 
-      return TRoundedContainer
+            return Center(
+        child: Card(
+          elevation: 18,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+          margin: const EdgeInsets.all(32),
+          clipBehavior: Clip.antiAlias,
+           child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Theme.of(context).colorScheme.primary,
+                Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.8),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          child: TRoundedContainer
       (
         width: double.infinity,
         padding: const EdgeInsets.all(TSizes.defaultSpace),
@@ -689,10 +708,12 @@ Row(
                       }),
                       const SizedBox(height: TSizes.spaceBtwInputFields * 2),
                     ],
-                  ),
-            
+                ),
             ],
+              ),
+            ),
           ),
+        ),
         ),
         ),
       );

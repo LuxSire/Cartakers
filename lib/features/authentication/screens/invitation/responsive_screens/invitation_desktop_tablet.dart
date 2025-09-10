@@ -17,8 +17,8 @@ class InvitationScreenDesktopTablet extends StatelessWidget {
           TInvitationHeader(),
           TInvitationForm(),
           SizedBox(height: 32),
-          TLoginHeader(),
-          TLoginForm(),
+         // TLoginHeader(),
+         // TLoginForm(),
         ],
       ),
     );

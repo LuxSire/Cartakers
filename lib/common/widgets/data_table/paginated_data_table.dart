@@ -60,23 +60,27 @@ class TPaginatedDataTable extends StatelessWidget {
         ),
         child: PaginatedDataTable2(
           source: source,
-          border: TableBorder(
+          border: null,
+          /*
+          border: TableBorder
+          (
             borderRadius: BorderRadius.all(
               Radius.circular(TSizes.borderRadiusMd),
             ),
             horizontalInside: BorderSide(
               color: TColors.grey.withOpacity(0.3),
-              width: 1,
+              width: 0,
             ),
             verticalInside: BorderSide(
               color: TColors.grey.withOpacity(0.3),
-              width: 1,
+              width: 0,
             ),
-            bottom: BorderSide(color: TColors.grey.withOpacity(0.3), width: 1),
-            top: BorderSide(color: TColors.grey.withOpacity(0.3), width: 1),
-            right: BorderSide(color: TColors.grey.withOpacity(0.3), width: 1),
-            left: BorderSide(color: TColors.grey.withOpacity(0.3), width: 1),
+            bottom: BorderSide(color: TColors.grey.withOpacity(0.3), width: 0),
+            top: BorderSide(color: TColors.grey.withOpacity(0.3), width: 0),
+            right: BorderSide(color: TColors.grey.withOpacity(0.3), width: 0),
+            left: BorderSide(color: TColors.grey.withOpacity(0.3), width: 0),
           ),
+          */
           columns: columns,
           columnSpacing: 12,
           minWidth: minWidth,

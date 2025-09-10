@@ -143,20 +143,20 @@ class TSidebar extends StatelessWidget
                         ),
                         */
                         //if(permissionController.isUserAdmin())
-
+                        if (permissionController.isUserAdmin())
                         TMenuItem(
-                          
-                          route: Routes.usersPermissions,
+                          route: permissionController.isUserAdmin() ? Routes.usersPermissions : '',
                           icon: Iconsax.profile_2user,
                           itemName: AppLocalization.of(
                             context,
                           ).translate('sidebar.lbl_administration'),
                           enabled: permissionController.isUserAdmin(),
-                          onTap: permissionController.isUserAdmin()
-                                ? null // Let TMenuItem handle default navigation
-                                : () {}, // Empty callback to prevent navigation
+                          onTap: () {
+                            if (permissionController.isUserAdmin()) {
+                              Get.toNamed(Routes.usersPermissions);
+                            }
+                          },
                         ),
-                        
                         TMenuItem(
                           route: Routes.settingsManagement,
                           icon: Iconsax.setting,

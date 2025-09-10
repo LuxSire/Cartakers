@@ -55,7 +55,7 @@ DropdownButton<int>(
         sortColumnIndex: controller.sortColumnIndex.value,
         columns: [
           DataColumn2(
-            fixedWidth: 200,
+            fixedWidth: 250,
             label: Text(
               AppLocalization.of(
                 context,

@@ -191,8 +191,9 @@ class LoginController extends GetxController {
 
       final resetCode = Helpers.generateRandomNumber();
 
+      debugPrint('Login Controller : resetCode: $resetCode');
       // first check if email exists
-      final responseUser = await userService.getCompanyByEmail(email);
+      final responseUser = await userService.getUserByEmail(email);
       debugPrint('responseUser: $responseUser');
       if ((responseUser['id'] ?? 0) > 0) {
       } else {
@@ -206,6 +207,9 @@ class LoginController extends GetxController {
         );
         return;
       }
+      debugPrint('Login Controller : User Exists');
+      debugPrint('Login Controller : resetCode: $resetCode');
+      debugPrint('Login Controller : email: $email');
 
       final responseUpdateResetCode = await userService
           .updateUserResetPasswordCode(email, resetCode.toString());

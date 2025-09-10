@@ -40,7 +40,26 @@ class CompaniesTable extends StatelessWidget {
         print('Lengths do not match, showing spinner');
     return const Center(child: CircularProgressIndicator());
   }
-      return TPaginatedDataTable(
+          return Center(
+      child: Card(
+        elevation: 18, // Higher elevation for more "3D" effect
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+        margin: const EdgeInsets.all(32),
+        clipBehavior: Clip.antiAlias,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Theme.of(context).colorScheme.primary,
+                Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.8),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          child: TPaginatedDataTable(
         minWidth: 1100, // Match with BuildingTable or use 700 if more compact
         sortAscending: controller.sortAscending.value,
         sortColumnIndex: controller.sortColumnIndex.value,
@@ -116,7 +135,10 @@ DataColumn2(
           ),
         ],
         source: CompanyRows(),
-      );
-    });
-  }
+       ),
+        ),
+      ),
+    );
+  });
+}
 }

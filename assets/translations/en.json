@@ -301,6 +301,8 @@
         "msg_you_can_only_select_up_to_4_images": "You can only select up to 4 images.",
         "msg_required_fields_title": "Required Fields",
         "msg_ok": "Ok",
+        "msg_accept_nda": "Please accept the NDA to proceed.",
+        "msg_request": "Request",
         "msg_cancel": "Cancel",
         "msg_yes": "Yes",
         "msg_no": "No",
@@ -333,7 +335,7 @@
         "msg_no_data_found": "No data found",
         "msg_for_admins_login": "Login",
         "msg_login_description": "The power of a platform that puts in contact sellers and buyers",
-        "msg_invitation_description": "With your invitation code, you gain access to a powerful platform designed for a community of real estate professionals, and operational efficiency.",
+        "msg_invitation_description": "You’ve been invited to join our private network of trusted brokers. Your invitation token gives you access to publish exclusive listings for a curated group of qualified investors. With your invitation code, you gain access to a powerful platform designed for a community of real estate professionals, and operational efficiency.",
         "msg_for_admins_invitation": "Invitation",
         "msg_for_admins_register": "Register",
         "msg_register_description": "The simplest way to manage properties.",
@@ -547,6 +549,8 @@
     },
     "invitation_screen": {
         "lbl_invitation": "Invitation",
+        "lbl_no_token": "No token?",
+        "lbl_request_token": "Request Token",
         "lbl_invitation_code": "Invitation Code",
         "lbl_enter_invitation_code": "Enter invitation code",
         "lbl_validate": "Validate",
@@ -610,6 +614,7 @@
     "objects_screen": {
         "lbl_objects": "Objects",
         "lbl_information": "Information",
+        "lbl_grossyield": "Gross Yield",
         "lbl_yield": "Yield",
         "lbl_financials": "Financials",
         "lbl_types": "Types",
@@ -725,6 +730,10 @@
     "users_screen": {
         "lbl_users": "Users",
         "lbl_role": "Role",
+        "lbl_pending_users": "Pending Users",
+        "lbl_active_users": "Active Users",
+        "lbl_inactive_users": "Inactive Users",
+
         "lbl_companies": "Companies",   
         "lbl_company": "Company",  
         "lbl_search_users": "Search Users",

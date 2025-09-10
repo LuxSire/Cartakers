@@ -27,6 +27,7 @@ class UserController extends TBaseController<UserModel> {
 
   // Observable variables
   RxBool loading = false.obs;
+  final ndaAccepted = false.obs;
   Rx<UserModel> user = UserModel.empty().obs;
   Rx<UserModel> userRetrived = UserModel.empty().obs;
 
@@ -91,6 +92,15 @@ class UserController extends TBaseController<UserModel> {
     });
     //  fetchUsersAndTranslateFields();
   }
+@override
+RxList<UserModel> get filteredItems {
+  if (selectedRoleId.value != 0) {
+    return RxList<UserModel>(
+      filteredUsers.where((user) => user.roleId == selectedRoleId.value).toList(),
+    );
+  }
+  return filteredUsers;
+}
 String getSelectedCompanyName() {
   final company = companiesList.firstWhereOrNull(
     (c) => c.id == selectedCompanyId.value,
@@ -556,9 +566,9 @@ if (isUserUpdated) {
         return;
       }
 
-      var statusCode = 0; // 0 means exists, 1 created new tenant , 2 failed
+      var statusCode = 0; 
 
-      var roleId = 2; // default for company users
+      var roleId = 4; // default for company users
 
       final companyId = AuthenticationRepository.instance.currentUser!.companyId;
       final response = await UserRepository.instance.createNewUser(
@@ -566,7 +576,7 @@ if (isUserUpdated) {
         lastNameController.text,
         emailController.text,
         phoneController.text,
-        roleId,
+        selectedRoleId.value,
         int.tryParse(companyId.toString()) ?? 2
       );
 

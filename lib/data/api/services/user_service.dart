@@ -1242,7 +1242,7 @@ class UserService extends BaseService {
       debugPrint("Error in updateUserResetPasswordCode: $error");
       return {
         "success": false,
-        "message": "Failed to update tenant reset password code",
+        "message": "Failed to update user reset password code",
       };
     }
   }
@@ -1326,7 +1326,7 @@ class UserService extends BaseService {
   ) async {
     try {
       final response = await post(ApiEndpoints.updateUserPassword, {
-        'tenant_id': userId,
+        'user_id': userId,
         'password': password,
       });
 
