@@ -42,15 +42,14 @@ class _ObjectUnitsState extends State<ObjectUnits> {
       padding: const EdgeInsets.all(TSizes.defaultSpace),
       child: Obx(() {
         if (controller.unitsLoading.value) return const TLoaderAnimation();
-        if (controller.allObjectUnits.isEmpty) {
-          return TAnimationLoaderWidget(
-            text: AppLocalization.of(
-              context,
-            ).translate('general_msgs.msg_no_data_found'),
-            animation: TImages.tableIllustration,
-          );
-        }
-
+//        if (controller.allObjectUnits.isEmpty) {
+  //        return TAnimationLoaderWidget(
+    //        text: AppLocalization.of(
+      //        context,
+        //    ).translate('general_msgs.msg_no_data_found'),
+          //  animation: TImages.tableIllustration,
+         // );
+ 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

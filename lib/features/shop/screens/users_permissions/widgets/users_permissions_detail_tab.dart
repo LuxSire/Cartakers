@@ -18,13 +18,16 @@ class UsersPermissionsDetailTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userController = Get.find<UserController>();
     switch (tabType) {
+      
       case 'companies':
         return CompaniesTab();
       case 'users':
+         userController.selectedRoleId.value = 0;
         return UsersTab();
       case 'pendingusers':
-        final userController = Get.find<UserController>();
+      
         userController.selectedRoleId.value = 4;
         return UsersTab();
       case 'permissions':

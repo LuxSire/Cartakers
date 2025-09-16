@@ -10,6 +10,7 @@ class UserModel {
   String displayName;
   String userName;
   String email;
+  String category;
   String phoneNumber;
   String profilePicture;
   int? roleId;
@@ -62,6 +63,7 @@ class UserModel {
     this.lang = '',
     this.companyId = 1,
     this.companyName = '',
+    this.category = '', 
     this.createdAt,
     this.updatedAt,
     this.isPrimaryUser,
@@ -128,6 +130,7 @@ class UserModel {
       'is_email_notifications_enabled': isEmailNotificationsEnabled,
       'role_name_ext': roleNameExt,
       'status': status,
+      'category': category,
       'objectpermissions': objectPermissions,
       'status_id': statusId,
       'role_ext_id': roleExtId,
@@ -173,6 +176,7 @@ class UserModel {
       isEmailNotificationsEnabled: json['is_email_notifications_enabled'] ?? 0,
       roleNameExt: json['role_name_ext'] ?? '',
       status: json['status'] ?? '',
+      category: json['category'] ?? '',
       objectPermissions: json['objectpermissions'] ?? [],
       statusId: json['status_id'] ?? 0,
       roleExtId: json['role_ext_id'] ?? 0,

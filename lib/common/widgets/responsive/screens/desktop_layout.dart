@@ -26,7 +26,8 @@ class DesktopLayout extends StatelessWidget {
     debugPrint(' Sidebar Current scaffoldBackgroundColor: $bgColor');
     
     debugPrint('Sidebar context: ${context.hashCode}');
- return Row(
+  return Scaffold(
+    body: Row(
         children: [
               Builder(
               builder: (context) => const TSidebar(),
@@ -41,6 +42,7 @@ class DesktopLayout extends StatelessWidget {
             ),
           ),
         ],
+    )
       );
   }
 }

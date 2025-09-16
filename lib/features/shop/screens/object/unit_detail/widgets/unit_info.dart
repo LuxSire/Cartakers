@@ -112,6 +112,7 @@ class UnitInfo extends StatelessWidget {
                     ],
                   ),
                 ),
+                const SizedBox(width: 24), // <--- separation
                 Expanded(
                   flex: TDeviceUtils.isMobileScreen(context) ? 2 : 1,
                   child: Column(
@@ -125,26 +126,35 @@ class UnitInfo extends StatelessWidget {
                           color: TColors.black.withOpacity(0.5),
                         ),
                       ),
-                      TRoundedContainer(
-                        radius: TSizes.cardRadiusSm,
-                        padding: const EdgeInsets.symmetric(
-                          vertical: TSizes.sm,
-                          horizontal: TSizes.md,
-                        ),
-                        backgroundColor: THelperFunctions.getUnitStatusColor(
-                          unit.statusId ?? 0,
-                        ).withOpacity(0.1),
-                        child: Text(
-                          THelperFunctions.getUnitStatusText(
-                            unit.statusId ?? 0,
-                          ),
-                          style: TextStyle(
-                            color: THelperFunctions.getUnitStatusColor(
-                              unit.statusId ?? 0,
-                            ),
-                          ),
-                        ),
-                      ),
+GestureDetector(
+  onTap: () {
+    // Toggle between 1 and 2
+    final newStatus = (unit.statusId == 1) ? 2 : 1;
+    unit.statusId = newStatus;
+    // Optionally, trigger a UI update if needed
+    controller.unit.refresh();
+  },
+  child: TRoundedContainer(
+    radius: TSizes.cardRadiusSm,
+    padding: const EdgeInsets.symmetric(
+      vertical: TSizes.sm,
+      horizontal: TSizes.md,
+    ),
+    backgroundColor: THelperFunctions.getUnitStatusColor(
+      unit.statusId ?? 0,
+    ).withOpacity(0.1),
+    child: Text(
+      THelperFunctions.getUnitStatusText(
+        unit.statusId ?? 0,
+      ),
+      style: TextStyle(
+        color: THelperFunctions.getUnitStatusColor(
+          unit.statusId ?? 0,
+        ),
+      ),
+    ),
+  ),
+),
                     ],
                   ),
                 ),

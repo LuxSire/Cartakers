@@ -70,39 +70,65 @@ class ProfileTab extends StatelessWidget {
                     const SizedBox(width: TSizes.defaultSpace),
 
                     // Name & Role
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${user.firstName ?? ''} ${user.lastName ?? ''}',
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          ),
-                          const SizedBox(height: 4),
+Expanded(
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        '${user.firstName ?? ''} ${user.lastName ?? ''}',
+        style: Theme.of(context).textTheme.headlineSmall,
+      ),
+      const SizedBox(height: 4),
+      FutureBuilder<String?>(
+        future: TranslationApi.smartTranslate(
+          user.roleNameExt ?? '',
+        ),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            return Text(
+              snapshot.data ?? '',
+              style: Theme.of(context).textTheme.labelMedium,
+            );
+          }
+        },
+      ),
+      // Insert the badge here:
+      Builder(
+        builder: (context) {
+          final category = user.category;
+          String? badgeAsset;
+          String? tooltip;
+          if (category == 'Premium') {
+            badgeAsset = 'assets/images/img_premium.jpeg';
+            tooltip = 'Premium Account';
+          } else if (category == 'Trial') {
+            badgeAsset = 'assets/images/img_trial.jpeg';
+            tooltip = 'Trial Account';
+          } else {
+            return const SizedBox.shrink();
+          }
+          return Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Tooltip(
+              message: tooltip!,
+              child: Image.asset(
+                badgeAsset,
+                width: 32,
+                height: 32,
+                fit: BoxFit.contain,
+              ),
+            ),
+          );
+        },
+      ),
+    ],
+  ),
+),
 
-                          // change the text to futurebuilder
-                          FutureBuilder<String?>(
-                            future: TranslationApi.smartTranslate(
-                              user.roleNameExt ?? '',
-                            ),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const CircularProgressIndicator();
-                              } else if (snapshot.hasError) {
-                                return Text('Error: ${snapshot.error}');
-                              } else {
-                                return Text(
-                                  snapshot.data ?? '',
-                                  style:
-                                      Theme.of(context).textTheme.labelMedium,
-                                );
-                              }
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
 
                     // Edit button
                     TextButton.icon(

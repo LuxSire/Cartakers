@@ -18,6 +18,8 @@ import '../../../../../common/widgets/icons/t_circular_icon.dart';
 import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../controllers/dashboard/dashboard_controller.dart';
+import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
+
 //import '../table/data_table.dart';
 //import '../widgets/dashboard_card.dart';
 
@@ -27,6 +29,7 @@ class DashboardTabletScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(DashboardController());
+    final p_controller = PermissionController.instance;
 
     // Trigger total calculations once when the screen is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -71,18 +74,19 @@ class DashboardTabletScreen extends StatelessWidget {
                   Expanded(
                     child: Obx(
                       () => ADashboardCard(
-                        onTap: () => Get.toNamed(Routes.usersPermissions),
+                        onTap: () {
+                          if (p_controller.isUserAdmin()) {
+                            Get.toNamed(Routes.usersPermissions);
+                          }
+                        },
 
                         headingIcon: Iconsax.profile_2user,
                         headingIconColor: Colors.green,
                         headingIconBgColor: Colors.green.withOpacity(0.1),
-                        stats: controller.totalObjectUsers.value,
+                        stats: controller.totalUsers.value,
                         context: context,
-                        title: AppLocalization.of(
-                          context,
-                        ).translate('sidebar.lbl_users_and_contracts'),
-                        subTitle:
-                            ' ${controller.totalUsers.value.toString()}/${controller.totalObjectsContracts.value.toString()}',
+                        title: AppLocalization.of(context).translate('sidebar.lbl_administration'),
+                        subTitle: ' ${controller.totalUsers.value.toString()}/${controller.totalUsers.value.toString()}',
                       ),
                     ),
                   ),
@@ -100,19 +104,16 @@ class DashboardTabletScreen extends StatelessWidget {
                           Get.find<AppController>()
                               .togglePendingRequestsNavigation();
 
-                          Get.toNamed(Routes.bookingsRequests);
+                          Get.toNamed(Routes.objectsUnits);
                         },
                         headingIcon: Iconsax.document,
                         headingIconColor: Colors.amber,
                         headingIconBgColor: Colors.amber.withOpacity(0.1),
-                        stats: controller.totalObjectsPendingRequests.value,
+                        stats: controller.totalObjectsInNegotiation.value,
                         context: context,
-                        title: AppLocalization.of(
-                          context,
-                        ).translate('dashboard_screen.lbl_pending_requests'),
-                        subTitle:
-                            controller.totalObjectsPendingRequests.value
-                                .toString(),
+                        title: AppLocalization.of(context).translate('dashboard_screen.lbl_objects_neg'),
+                        subTitle: controller.totalObjectsInNegotiation.value.toString(),
+
                       ),
                     ),
                   ),

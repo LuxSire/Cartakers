@@ -21,7 +21,8 @@ import 'package:xm_frontend/features/shop/screens/settings_managements/settings_
 import 'package:xm_frontend/features/shop/screens/user/user_detail.dart';
 import 'package:xm_frontend/features/shop/screens/users_permissions/users_permissions.dart';
 import 'package:xm_frontend/presentation/screens/splash_screen/splash_screen.dart';
-
+import 'package:xm_frontend/features/authentication/screens/plans/plans.dart';
+import 'package:xm_frontend/common/widgets/responsive/screens/desktop_layout.dart';
 import 'package:xm_frontend/routes/routes.dart';
 import 'package:xm_frontend/routes/routes_middleware.dart';
 
@@ -64,6 +65,10 @@ class AppRoute {
       middlewares: [RouteMiddleware()],
     ),
 
+GetPage(
+  name: Routes.plans,
+  page: () => DesktopLayout(body: const PlansScreen()),
+),
     GetPage(
       name: Routes.unitDetails,
       page: () => UnitDetailScreen(),

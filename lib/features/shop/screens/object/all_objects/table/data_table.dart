@@ -59,6 +59,7 @@ class ObjectTable extends StatelessWidget {
             columns: [
           DataColumn2(
             fixedWidth: 400,
+            headingRowAlignment: MainAxisAlignment.center,
             label: Text(
               AppLocalization.of(
                 context,
@@ -79,6 +80,7 @@ class ObjectTable extends StatelessWidget {
 
           DataColumn2(
             size: ColumnSize.M,
+            headingRowAlignment: MainAxisAlignment.start,
             label: Text(
               AppLocalization.of(
                 context,
@@ -98,6 +100,7 @@ class ObjectTable extends StatelessWidget {
 
           DataColumn2(
             size: ColumnSize.M,
+            headingRowAlignment: MainAxisAlignment.start,
             label: Text(
               AppLocalization.of(
                 context,
@@ -106,6 +109,7 @@ class ObjectTable extends StatelessWidget {
           ),
           DataColumn2(
             size: ColumnSize.S,
+            headingRowAlignment: MainAxisAlignment.start,
             label: Text(
               AppLocalization.of(
                 context,
@@ -114,6 +118,7 @@ class ObjectTable extends StatelessWidget {
           ),
           DataColumn2(
             size: ColumnSize.S,
+            headingRowAlignment: MainAxisAlignment.start,
             label: Text(
               AppLocalization.of(
                 context,
@@ -122,6 +127,7 @@ class ObjectTable extends StatelessWidget {
           ),
           DataColumn2(
             size: ColumnSize.M,
+            headingRowAlignment: MainAxisAlignment.center,
             label: Text(
               AppLocalization.of(
                 context,
@@ -130,6 +136,7 @@ class ObjectTable extends StatelessWidget {
           ),
                     DataColumn2(
             size: ColumnSize.M,
+            headingRowAlignment: MainAxisAlignment.center,
             label: Text(
               AppLocalization.of(
                 context,
@@ -138,6 +145,7 @@ class ObjectTable extends StatelessWidget {
           ),
           DataColumn2(
             fixedWidth: 100,
+            headingRowAlignment: MainAxisAlignment.center,
             label: Text(
               AppLocalization.of(
                 context,

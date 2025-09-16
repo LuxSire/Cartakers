@@ -7,6 +7,7 @@ class Routes {
   static const resetPassword = '/resetPassword';
   static const dashboard = '/dashboard';
   static const media = '/media';
+  static const plans = '/plans';
 
   static const banners = '/banners';
   static const createBanner = '/createBanner';

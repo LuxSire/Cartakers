@@ -6,6 +6,7 @@ import 'package:xm_frontend/app/app_controller.dart';
 import 'package:xm_frontend/data/api/translation_api.dart';
 import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
 import 'package:xm_frontend/utils/constants/enums.dart';
+import '../../../../routes/routes.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/sizes.dart';
@@ -139,6 +140,48 @@ Obx(() => IconButton(
                 ),
               ),
 
+
+const SizedBox(width: 8),
+Obx(() {
+  final category = controller.user.value.category;
+  String badgeAsset;
+  String tooltip;
+  if (category == 'Premium') {
+    badgeAsset = 'assets/images/img_premium.jpeg';
+    tooltip = 'Premium Account';
+    return Tooltip(
+      message: tooltip,
+      child: Image.asset(
+        badgeAsset,
+        width: 32,
+        height: 32,
+        fit: BoxFit.contain,
+      ),
+    );
+  } else if (category == 'Trial') {
+    badgeAsset = 'assets/images/img_trial.jpeg';
+    tooltip = 'Trial Account';
+    return Tooltip(
+      message: tooltip,
+      child: GestureDetector(
+        onTap: () {
+          print('Current route: ${Get.currentRoute}');
+          print('Context hash: ${context.hashCode}');
+
+          Get.toNamed(Routes.plans);
+        },
+        child: Image.asset(
+          badgeAsset,
+          width: 32,
+          height: 32,
+          fit: BoxFit.contain,
+        ),
+      ),
+    );
+  } else {
+    return const SizedBox.shrink();
+  }
+}),
               const SizedBox(width: TSizes.sm),
 
               /// User Profile Data [Hide on Mobile]
@@ -160,25 +203,6 @@ Obx(() => IconButton(
                             controller.user.value.email,
                             style: Theme.of(context).textTheme.labelMedium,
                           ),
-                      // FutureBuilder<String?>(
-                      //   future: TranslationApi.smartTranslate(
-                      //     controller.user.value.roleNameExt!,
-                      //   ),
-                      //   builder: (context, snapshot) {
-                      //     if (snapshot.connectionState ==
-                      //         ConnectionState.waiting) {
-                      //       return const CircularProgressIndicator();
-                      //     } else if (snapshot.hasError) {
-                      //       return Text('Error: ${snapshot.error}');
-                      //     } else {
-                      //       return Text(
-                      //         snapshot.data ?? '',
-                      //         style:
-                      //             Theme.of(context).textTheme.labelMedium,
-                      //       );
-                      //     }
-                      //   },
-                      // ),
                     ],
                   ),
                 ),

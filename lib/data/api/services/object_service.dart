@@ -1130,13 +1130,14 @@ Future<List<Map<String, dynamic>>> fetchObjectDocs(int objectId) async {
     }
   }
   Future<Map<String, dynamic>> updateUnitDetails(
-   int? unit_Id, String? description,int? sqm
+   int? unit_Id, String? description,int? sqm,int? status_id
   ) async {
     try {
       final response = await post(ApiEndpoints.updateUnitDetails, {
         'unit_id': unit_Id,
         'description': description,
-        'sqm': sqm
+        'sqm': sqm,
+        'status_id': status_id,
       });
 
       return response;
@@ -1683,8 +1684,9 @@ Future<List<Map<String, dynamic>>> fetchObjectDocs(int objectId) async {
     String type,
     String imgUrl,
     double yield_gross,
-    double yield_net
-
+    double yield_net,
+    double noi,
+    double cap_rate,
   ) async {
     try {
 
@@ -1719,6 +1721,8 @@ Future<List<Map<String, dynamic>>> fetchObjectDocs(int objectId) async {
         'type': type,
         'yield_gross': yield_gross,
         'yield_net': yield_net,
+        'noi': noi,
+        'cap_rate': cap_rate,
       });
 
       return response;

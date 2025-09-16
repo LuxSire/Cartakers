@@ -589,6 +589,9 @@ class ObjectRepository extends GetxController {
         updatedObject.imgUrl ?? '',
         updatedObject.yieldGross ?? 0.0,
         updatedObject.yieldNet ?? 0.0,
+        updatedObject.noi ?? 0,
+        updatedObject.caprate ?? 0.0,
+        
 
       );
 
@@ -968,7 +971,7 @@ class ObjectRepository extends GetxController {
   Future<bool> updateUnitDetails(UnitModel unit) async {
     try {
       final result = await _objectService.updateUnitDetails(
-        unit.id,unit.description,unit.sqm // pieceId is the room ID
+        unit.id,unit.description,unit.sqm,unit.statusId // pieceId is the room ID
       );
 
       if (result['success'] == false) {

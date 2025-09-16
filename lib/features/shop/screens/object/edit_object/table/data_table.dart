@@ -90,15 +90,16 @@ class _ObjectUnitTableState extends State<ObjectUnitTable> {
                 ),
               ),
               DataColumn2(
-                fixedWidth: isWideScreen ? 80 : 60,
+                fixedWidth: isWideScreen ? 150 : 120,
                 label: Text(
                   AppLocalization.of(
                     context,
-                  ).translate('edit_object_screen.lbl_room'),
+                  ).translate('edit_object_screen.lbl_sqm'),
                 ),
               ),
               DataColumn2(
-                fixedWidth: isWideScreen ? 500 : 400,
+                fixedWidth: isWideScreen ? 450 : 350,
+                headingRowAlignment: MainAxisAlignment.center,
                 label: Text(
                   AppLocalization.of(
                     context,
