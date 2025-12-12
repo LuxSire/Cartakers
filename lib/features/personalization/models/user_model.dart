@@ -9,6 +9,7 @@ class UserModel {
   String lastName;
   String displayName;
   String userName;
+  String message;
   String email;
   String category;
   String phoneNumber;
@@ -56,6 +57,7 @@ class UserModel {
     this.lastName = '',
     this.userName = '',
     this.phoneNumber = '',
+    this.message = '',
     this.profilePicture = '',
     this.displayName = '',
     this.roleId = 1,
@@ -108,6 +110,7 @@ class UserModel {
       'display_name': displayName,
       'user_name': userName,
       'phone_number': phoneNumber,
+      'message': message,
       'profile_pic': profilePicture,
       'role_id': roleId,
       'country_code': countryCode, // Added country code  
@@ -145,6 +148,7 @@ class UserModel {
       token: json['token'] ?? '',
       email: json['email'] ?? '',
       firstName: json['first_name'] ?? '',
+      message: json['message'] ?? '',
       lastName: json['last_name'] ?? '',
       displayName: json['display_name'] ?? '',
       userName: json['user_name'] ?? '',

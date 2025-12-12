@@ -550,6 +550,7 @@
     },
     "invitation_screen": {
         "lbl_invitation": "Invito",
+        "lbl_no_token": "Nessun token?",
         "lbl_invitation_code": "Codice di invito",
         "lbl_enter_invitation_code": "Inserisci il codice di invito",
         "lbl_validate": "Convalida",

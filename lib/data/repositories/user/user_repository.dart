@@ -584,6 +584,7 @@ class UserRepository extends GetxController {
     String phoneNumber, 
     int roleId,
     int companyId,
+    String _message, 
     {String token = ''}
   ) async {
     try {
@@ -594,6 +595,7 @@ class UserRepository extends GetxController {
         phoneNumber,  
         roleId,
         companyId,
+        message: _message,
         token: token,
       );
 

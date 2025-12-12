@@ -141,7 +141,19 @@ class TokenRequestDialog extends StatelessWidget {
                   ).translate('tab_users_screen.lbl_email'),
                 ),
               ),
+              const SizedBox(height: TSizes.spaceBtwInputFields),
+                /// Message
+              TextFormField(
+                controller: controller.messageController,
 
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Iconsax.direct_right),
+                  labelText: AppLocalization.of(
+                    context,
+                  ).translate('tab_users_screen.lbl_message'),
+                ),
+              ),
+/*
 Row(
   children: [
     Obx(() => Checkbox(
@@ -176,7 +188,7 @@ Row(
     ),
   ],
 ),  
-
+*/
 
 const SizedBox(height: TSizes.spaceBtwInputFields),
 

@@ -115,6 +115,9 @@ class UsersRows extends DataTableSource {
         DataCell(Text(user.phoneNumber)),
         // 5. Role
         DataCell(Text(user.roleName ?? '')),
+        // 6. Message
+        DataCell(Text(user.message ?? '')),
+
         // 6. Actions
         DataCell(
           SingleChildScrollView(

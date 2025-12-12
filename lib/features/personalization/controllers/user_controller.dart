@@ -39,6 +39,7 @@ class UserController extends TBaseController<UserModel> {
   final lastNameController = TextEditingController();
   final phoneController = TextEditingController();
   final emailController = TextEditingController();
+  final messageController = TextEditingController();
 
   final tokenController = TextEditingController();
   final searchController = TextEditingController();
@@ -577,7 +578,8 @@ if (isUserUpdated) {
         emailController.text,
         phoneController.text,
         selectedRoleId.value,
-        int.tryParse(companyId.toString()) ?? 2
+        int.tryParse(companyId.toString()) ?? 2,
+        messageController.text
       );
 
       statusCode = response['status'];

@@ -1784,9 +1784,10 @@ class UserService extends BaseService {
     String email,
     String phone_number,
     int roleId,
-    int companyId,
-    {String token = ''}
-  ) async {
+    int companyId, {
+    String message = '',
+    String token = '',
+  }) async {
     try {
       final response = await post(ApiEndpoints.createQuickNewUser, {
         'first_name': firstName,
@@ -1795,6 +1796,7 @@ class UserService extends BaseService {
         'phone_number': phone_number,
         'role_id': roleId ?? 2,
         'company_id': companyId ?? 1,
+        'message': message,
         'token': token,
       });
 
