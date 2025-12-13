@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:xm_frontend/app/theme/colors.dart';
+import 'package:cartakers/app/theme/colors.dart';
 
 /// A collection of pre-defined text styles for customizing text appearance.
 /// Includes static (context-independent) and dynamic (theme-dependent) styles.

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:xm_frontend/app/theme/colors.dart';
-import 'package:xm_frontend/app/utils/image_constants.dart';
-import 'package:xm_frontend/presentation/widgets/custom_image_view.dart';
+import 'package:cartakers/app/theme/colors.dart';
+import 'package:cartakers/app/utils/image_constants.dart';
+import 'package:cartakers/presentation/widgets/custom_image_view.dart';
 
 class SidebarWidget extends StatefulWidget {
   final Function(String) onMenuSelected;

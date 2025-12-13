@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:xm_frontend/app/theme/colors.dart';
-import 'package:xm_frontend/app/theme/typography.dart';
+import 'package:cartakers/app/theme/colors.dart';
+import 'package:cartakers/app/theme/typography.dart';
 import 'package:get/get.dart';
 
 class ThemeService extends GetxService {

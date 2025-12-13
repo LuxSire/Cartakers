@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/routes/route_middleware.dart';
-import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
-import 'package:xm_frontend/routes/routes.dart';
+import 'package:cartakers/data/repositories/authentication/authentication_repository.dart';
+import 'package:cartakers/routes/routes.dart';
 
 class RouteMiddleware extends GetMiddleware {
   @override

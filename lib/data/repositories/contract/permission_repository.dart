@@ -4,19 +4,19 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/data/api/services/object_service.dart';
-import 'package:xm_frontend/data/api/services/user_service.dart';
-import 'package:xm_frontend/data/models/object_model.dart';
-import 'package:xm_frontend/data/models/permission_model.dart';
-import 'package:xm_frontend/data/models/docs_model.dart';
-import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
-import 'package:xm_frontend/features/personalization/controllers/settings_controller.dart';
-import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
-import 'package:xm_frontend/features/personalization/models/user_model.dart';
-import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/data/api/services/object_service.dart';
+import 'package:cartakers/data/api/services/user_service.dart';
+import 'package:cartakers/data/models/object_model.dart';
+import 'package:cartakers/data/models/permission_model.dart';
+import 'package:cartakers/data/models/docs_model.dart';
+import 'package:cartakers/data/repositories/authentication/authentication_repository.dart';
+import 'package:cartakers/features/personalization/controllers/settings_controller.dart';
+import 'package:cartakers/features/personalization/controllers/user_controller.dart';
+import 'package:cartakers/features/personalization/models/user_model.dart';
+import 'package:cartakers/features/shop/controllers/object/edit_object_controller.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:xm_frontend/utils/popups/loaders.dart';
+import 'package:cartakers/utils/popups/loaders.dart';
 
 /// Repository class for user-related operations.
 class PermissionRepository extends GetxController {

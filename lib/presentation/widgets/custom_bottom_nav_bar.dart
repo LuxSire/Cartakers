@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   final int currentIndex;

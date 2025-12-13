@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:xm_frontend/app/utils/size_utils.dart';
-import 'package:xm_frontend/presentation/widgets/custom_image_view.dart';
+import 'package:cartakers/app/utils/size_utils.dart';
+import 'package:cartakers/presentation/widgets/custom_image_view.dart';
 
 import '../custom_icon_button.dart';
 

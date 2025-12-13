@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
 
 class TFormatter {
   static String formatDateAndTime(DateTime? date) {

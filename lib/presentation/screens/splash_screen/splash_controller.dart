@@ -2,10 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:xm_frontend/app/utils/user_preferences.dart';
-import 'package:xm_frontend/data/models/user_pref_model.dart';
-import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
-import 'package:xm_frontend/routes/routes.dart';
+import 'package:cartakers/app/utils/user_preferences.dart';
+import 'package:cartakers/data/models/user_pref_model.dart';
+import 'package:cartakers/data/repositories/authentication/authentication_repository.dart';
+import 'package:cartakers/routes/routes.dart';
 
 import 'splash_design.dart';
 

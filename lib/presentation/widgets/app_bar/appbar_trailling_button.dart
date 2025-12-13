@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/app/utils/image_constants.dart';
-import 'package:xm_frontend/presentation/widgets/custom_button_style.dart';
-import 'package:xm_frontend/presentation/widgets/custom_elevated_button_two.dart';
-import 'package:xm_frontend/presentation/widgets/custom_image_view.dart';
-import 'package:xm_frontend/presentation/widgets/custom_text_style.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/app/utils/image_constants.dart';
+import 'package:cartakers/presentation/widgets/custom_button_style.dart';
+import 'package:cartakers/presentation/widgets/custom_elevated_button_two.dart';
+import 'package:cartakers/presentation/widgets/custom_image_view.dart';
+import 'package:cartakers/presentation/widgets/custom_text_style.dart';
 
 class AppbarTrailingButton extends StatelessWidget {
   const AppbarTrailingButton({super.key, this.onTap, this.margin});

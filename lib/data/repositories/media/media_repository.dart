@@ -1,4 +1,4 @@
-import 'package:xm_frontend/utils/constants/enums.dart';
+import 'package:cartakers/utils/constants/enums.dart';
 import 'package:universal_html/html.dart' as html;
 import 'dart:convert';
 import 'dart:io';
@@ -6,9 +6,9 @@ import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
-import 'package:xm_frontend/data/api/services/object_service.dart';
-import 'package:xm_frontend/data/api/services/user_service.dart';
+import 'package:cartakers/data/repositories/authentication/authentication_repository.dart';
+import 'package:cartakers/data/api/services/object_service.dart';
+import 'package:cartakers/data/api/services/user_service.dart';
 import '../../../features/media/models/image_model.dart';
 
 

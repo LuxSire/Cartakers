@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:xm_frontend/app/theme/colors.dart';
-import 'package:xm_frontend/app/theme/typography.dart';
-import 'package:xm_frontend/data/models/selection_popup_model.dart';
+import 'package:cartakers/app/theme/colors.dart';
+import 'package:cartakers/app/theme/typography.dart';
+import 'package:cartakers/data/models/selection_popup_model.dart';
 
 extension DropDownStyleHelper on CustomDropDown {
   static OutlineInputBorder get outlineBlueGray1 => const OutlineInputBorder(

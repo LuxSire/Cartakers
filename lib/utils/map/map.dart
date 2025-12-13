@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:xm_frontend/data/models/object_model.dart';
+import 'package:cartakers/data/models/object_model.dart';
 
 class MapScreen extends StatefulWidget {
   final ObjectModel object;

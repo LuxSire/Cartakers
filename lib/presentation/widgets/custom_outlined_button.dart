@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:xm_frontend/presentation/widgets/custom_text_style.dart';
+import 'package:cartakers/presentation/widgets/custom_text_style.dart';
 import 'base_button.dart';
 
 class CustomOutlinedButton extends BaseButton {

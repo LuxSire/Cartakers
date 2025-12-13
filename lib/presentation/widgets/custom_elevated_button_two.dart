@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:xm_frontend/app/theme/typography.dart';
+import 'package:cartakers/app/theme/typography.dart';
 import 'base_button.dart';
 
 class CustomElevatedButtonTwo extends BaseButton {

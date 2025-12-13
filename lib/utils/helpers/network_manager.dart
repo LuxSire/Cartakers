@@ -3,7 +3,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:flutter/services.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
 
 import '../popups/loaders.dart';
 

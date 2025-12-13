@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/phone_number.dart';
-import 'package:xm_frontend/app/theme/colors.dart';
-import 'package:xm_frontend/app/theme/typography.dart';
+import 'package:cartakers/app/theme/colors.dart';
+import 'package:cartakers/app/theme/typography.dart';
 
 class CustomPhoneTextFormField extends StatelessWidget {
   final TextEditingController controller;

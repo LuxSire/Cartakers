@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:xm_frontend/presentation/widgets/custom_image_view.dart';
+import 'package:cartakers/presentation/widgets/custom_image_view.dart';
 
 class AppbarLeadingImageOne extends StatelessWidget {
   const AppbarLeadingImageOne({

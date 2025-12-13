@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/app/utils/image_constants.dart';
-import 'package:xm_frontend/app/utils/user_provider.dart';
-import 'package:xm_frontend/presentation/widgets/custom_image_view.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/app/utils/image_constants.dart';
+import 'package:cartakers/app/utils/user_provider.dart';
+import 'package:cartakers/presentation/widgets/custom_image_view.dart';
 
 enum BottomBarEnum { Home, MyBookings, MyRequests, Community, Profile }
 

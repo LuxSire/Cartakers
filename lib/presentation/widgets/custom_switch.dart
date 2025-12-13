@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:xm_frontend/app/theme/colors.dart';
-import 'package:xm_frontend/app/utils/size_utils.dart';
+import 'package:cartakers/app/theme/colors.dart';
+import 'package:cartakers/app/utils/size_utils.dart';
 
 class CustomSwitch extends StatelessWidget {
   const CustomSwitch({

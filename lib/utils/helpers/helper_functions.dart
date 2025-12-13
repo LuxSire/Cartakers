@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/utils/constants/colors.dart';
-import 'package:xm_frontend/utils/constants/enums.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/utils/constants/colors.dart';
+import 'package:cartakers/utils/constants/enums.dart';
 
 class THelperFunctions {
   static DateTime getStartOfWeek(DateTime date) {

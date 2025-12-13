@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:xm_frontend/data/models/action_item.dart';
+import 'package:cartakers/data/models/action_item.dart';
 
 class ActionCard extends StatelessWidget {
   final ActionItem item;

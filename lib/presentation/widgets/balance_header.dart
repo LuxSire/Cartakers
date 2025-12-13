@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/app/theme/colors.dart';
-import 'package:xm_frontend/services/global_notifiers.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/app/theme/colors.dart';
+import 'package:cartakers/services/global_notifiers.dart';
 
 class BalanceHeader extends StatelessWidget {
   const BalanceHeader({super.key});

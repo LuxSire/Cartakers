@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/routes/routes.dart';
+import 'package:cartakers/routes/routes.dart';
 
 import '../common/widgets/layouts/sidebars/sidebar_controller.dart';
 

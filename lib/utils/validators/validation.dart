@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
 
 /// VALIDATION CLASS
 class TValidator {

@@ -1,30 +1,30 @@
 import 'package:get/get.dart';
-import 'package:xm_frontend/features/authentication/screens/forgot_password/forgot_password.dart';
+import 'package:cartakers/features/authentication/screens/forgot_password/forgot_password.dart';
 
-import 'package:xm_frontend/features/authentication/screens/invitation/invitation.dart';
-import 'package:xm_frontend/features/authentication/screens/login/login.dart';
-import 'package:xm_frontend/features/authentication/screens/register/register.dart';
-import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/object/object_unit_detail_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/object/object_unit_detail_controller.dart';
-//import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
-import 'package:xm_frontend/features/shop/screens/bookings_requests/bookings_requests.dart';
-import 'package:xm_frontend/features/shop/screens/object/all_objects/objects.dart';
-import 'package:xm_frontend/features/shop/screens/object/edit_object/edit_object.dart';
-import 'package:xm_frontend/features/shop/screens/object/unit_detail/unit_detail.dart';
-import 'package:xm_frontend/features/shop/screens/communication/all_communications/communications.dart';
-import 'package:xm_frontend/features/shop/screens/contract/permission_detail.dart';
-import 'package:xm_frontend/features/shop/screens/dashboard/dashboard.dart';
-import 'package:xm_frontend/features/shop/screens/settings_managements/settings_management.dart';
-import 'package:xm_frontend/features/shop/screens/user/user_detail.dart';
-import 'package:xm_frontend/features/shop/screens/users_permissions/users_permissions.dart';
-import 'package:xm_frontend/presentation/screens/splash_screen/splash_screen.dart';
-import 'package:xm_frontend/features/authentication/screens/plans/plans.dart';
-import 'package:xm_frontend/common/widgets/responsive/screens/desktop_layout.dart';
-import 'package:xm_frontend/routes/routes.dart';
-import 'package:xm_frontend/routes/routes_middleware.dart';
+import 'package:cartakers/features/authentication/screens/invitation/invitation.dart';
+import 'package:cartakers/features/authentication/screens/login/login.dart';
+import 'package:cartakers/features/authentication/screens/register/register.dart';
+import 'package:cartakers/features/personalization/controllers/user_controller.dart';
+import 'package:cartakers/features/shop/controllers/object/object_unit_detail_controller.dart';
+import 'package:cartakers/features/shop/controllers/object/edit_object_controller.dart';
+import 'package:cartakers/features/shop/controllers/contract/permission_controller.dart';
+import 'package:cartakers/features/shop/controllers/object/object_unit_detail_controller.dart';
+//import 'package:cartakers/features/shop/controllers/user/user_controller.dart';
+import 'package:cartakers/features/shop/screens/bookings_requests/bookings_requests.dart';
+import 'package:cartakers/features/shop/screens/object/all_objects/objects.dart';
+import 'package:cartakers/features/shop/screens/object/edit_object/edit_object.dart';
+import 'package:cartakers/features/shop/screens/object/unit_detail/unit_detail.dart';
+import 'package:cartakers/features/shop/screens/communication/all_communications/communications.dart';
+import 'package:cartakers/features/shop/screens/contract/permission_detail.dart';
+import 'package:cartakers/features/shop/screens/dashboard/dashboard.dart';
+import 'package:cartakers/features/shop/screens/settings_managements/settings_management.dart';
+import 'package:cartakers/features/shop/screens/user/user_detail.dart';
+import 'package:cartakers/features/shop/screens/users_permissions/users_permissions.dart';
+import 'package:cartakers/presentation/screens/splash_screen/splash_screen.dart';
+import 'package:cartakers/features/authentication/screens/plans/plans.dart';
+import 'package:cartakers/common/widgets/responsive/screens/desktop_layout.dart';
+import 'package:cartakers/routes/routes.dart';
+import 'package:cartakers/routes/routes_middleware.dart';
 
 class AppRoute {
   static final List<GetPage> pages = [

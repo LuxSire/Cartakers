@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:xm_frontend/app/theme/colors.dart';
-import 'package:xm_frontend/utils/constants/colors.dart';
+import 'package:cartakers/app/theme/colors.dart';
+import 'package:cartakers/utils/constants/colors.dart';
 
 class CustomPinCodeTextField extends StatelessWidget {
   CustomPinCodeTextField({

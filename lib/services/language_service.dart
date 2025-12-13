@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:xm_frontend/app/utils/user_preferences.dart';
-import 'package:xm_frontend/data/api/services/user_service.dart';
-import 'package:xm_frontend/data/models/user_pref_model.dart';
+import 'package:cartakers/app/utils/user_preferences.dart';
+import 'package:cartakers/data/api/services/user_service.dart';
+import 'package:cartakers/data/models/user_pref_model.dart';
 
 class LanguageService {
   static const String _languageKey = 'selected_language';
