@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:xm_frontend/common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
+import 'package:cartakers/common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 
 import '../../../../../../utils/constants/sizes.dart';
 import '../../../controllers/media_controller.dart';

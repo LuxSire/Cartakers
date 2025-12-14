@@ -5,13 +5,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mime/mime.dart';
-import 'package:xm_frontend/data/models/object_model.dart';
+import 'package:cartakers/data/models/object_model.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http_parser/http_parser.dart'; // Import MediaType
-import 'package:xm_frontend/data/models/permission_model.dart';
+import 'package:cartakers/data/models/permission_model.dart';
 import 'package:get/get.dart'; // Import for RxList
-import 'package:xm_frontend/data/repositories/media/media_repository.dart';
+import 'package:cartakers/data/repositories/media/media_repository.dart';
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:http/http.dart' as http;

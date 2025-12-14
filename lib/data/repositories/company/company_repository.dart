@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/data/api/services/company_service.dart';
+import 'package:cartakers/data/api/services/company_service.dart';
 
-import 'package:xm_frontend/data/models/message_model.dart';
+import 'package:cartakers/data/models/message_model.dart';
 
-import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
-import 'package:xm_frontend/features/personalization/models/company_model.dart';
+import 'package:cartakers/data/repositories/authentication/authentication_repository.dart';
+import 'package:cartakers/features/personalization/models/company_model.dart';
 
 /// Repository class for user-related operations.
 class CompanyRepository extends GetxController {

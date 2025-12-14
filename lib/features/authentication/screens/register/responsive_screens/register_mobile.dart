@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:xm_frontend/data/models/company_invitation_model.dart';
-import 'package:xm_frontend/features/authentication/screens/register/widgets/register_form.dart';
-import 'package:xm_frontend/features/authentication/screens/register/widgets/register_header.dart';
+import 'package:cartakers/data/models/company_invitation_model.dart';
+import 'package:cartakers/features/authentication/screens/register/widgets/register_form.dart';
+import 'package:cartakers/features/authentication/screens/register/widgets/register_header.dart';
 
 import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';

@@ -1,11 +1,10 @@
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/data/abstract/base_data_table_controller.dart';
-import 'package:xm_frontend/data/models/object_model.dart';
-import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
-import 'package:xm_frontend/data/repositories/object/object_repository.dart';
-import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
-
+import 'package:cartakers/data/abstract/base_data_table_controller.dart';
+import 'package:cartakers/data/models/object_model.dart';
+import 'package:cartakers/data/repositories/authentication/authentication_repository.dart';
+import 'package:cartakers/data/repositories/object/object_repository.dart';
+import 'package:cartakers/features/personalization/controllers/user_controller.dart';
 class ObjectController extends TBaseController<ObjectModel> {
   RxList<ObjectModel> allObjects = <ObjectModel>[].obs;
   RxList<ObjectModel> filteredObjects = <ObjectModel>[].obs;

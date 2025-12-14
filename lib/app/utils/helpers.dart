@@ -1,5 +1,5 @@
 import 'package:bcrypt/bcrypt.dart';
-import 'package:xm_frontend/data/api/translation_api.dart';
+import 'package:cartakers/data/api/translation_api.dart';
 
 class Helpers {
   // Function to hash a password using bcrypt

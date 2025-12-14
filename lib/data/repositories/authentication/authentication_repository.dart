@@ -3,14 +3,14 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:xm_frontend/app/utils/helpers.dart';
-import 'package:xm_frontend/app/utils/user_preferences.dart';
-import 'package:xm_frontend/data/api/services/user_service.dart';
+import 'package:cartakers/app/utils/helpers.dart';
+import 'package:cartakers/app/utils/user_preferences.dart';
+import 'package:cartakers/data/api/services/user_service.dart';
 
-import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
-import 'package:xm_frontend/features/personalization/models/user_model.dart';
-import 'package:xm_frontend/routes/routes.dart';
-import 'package:xm_frontend/data/repositories/user/user_repository.dart';
+import 'package:cartakers/features/personalization/controllers/user_controller.dart';
+import 'package:cartakers/features/personalization/models/user_model.dart';
+import 'package:cartakers/routes/routes.dart';
+import 'package:cartakers/data/repositories/user/user_repository.dart';
 
 class AuthenticationRepository extends GetxController { 
   static AuthenticationRepository get instance => Get.find();

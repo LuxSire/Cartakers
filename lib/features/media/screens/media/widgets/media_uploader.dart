@@ -3,8 +3,8 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/features/media/models/image_model.dart';
-import 'package:xm_frontend/utils/device/device_utility.dart';
+import 'package:cartakers/features/media/models/image_model.dart';
+import 'package:cartakers/utils/device/device_utility.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '../../../../../common/widgets/containers/rounded_container.dart';

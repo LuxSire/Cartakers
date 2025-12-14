@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/data/models/amenity_zone_model.dart';
-import 'package:xm_frontend/data/models/unit_model.dart';
-import 'package:xm_frontend/data/repositories/object/object_repository.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/data/models/amenity_zone_model.dart';
+import 'package:cartakers/data/models/unit_model.dart';
+import 'package:cartakers/data/repositories/object/object_repository.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/data/models/amenity_zone_model.dart';
-import 'package:xm_frontend/data/models/unit_model.dart';
-import 'package:xm_frontend/data/repositories/object/object_repository.dart';
-import 'package:xm_frontend/utils/popups/loaders.dart';
+import 'package:cartakers/data/models/amenity_zone_model.dart';
+import 'package:cartakers/data/models/unit_model.dart';
+import 'package:cartakers/data/repositories/object/object_repository.dart';
+import 'package:cartakers/utils/popups/loaders.dart';
 
 class AmenityAssignmentController extends GetxController {
   static AmenityAssignmentController get instance => Get.find();

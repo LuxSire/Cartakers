@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/utils/popups/loaders.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/utils/popups/loaders.dart';
 import 'package:url_launcher/link.dart';
 
 import '../../../../../utils/constants/colors.dart';

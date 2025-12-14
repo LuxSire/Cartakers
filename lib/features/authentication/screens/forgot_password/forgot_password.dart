@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:xm_frontend/features/authentication/screens/forgot_password/responsive_screens/forgot_password_desktop_tablet.dart';
-import 'package:xm_frontend/features/authentication/screens/forgot_password/responsive_screens/forgot_password_mobile.dart';
-import 'package:xm_frontend/features/authentication/screens/invitation/responsive_screens/invitation_desktop_tablet.dart';
-import 'package:xm_frontend/features/authentication/screens/invitation/responsive_screens/invitation_mobile.dart';
+import 'package:cartakers/features/authentication/screens/forgot_password/responsive_screens/forgot_password_desktop_tablet.dart';
+import 'package:cartakers/features/authentication/screens/forgot_password/responsive_screens/forgot_password_mobile.dart';
+import 'package:cartakers/features/authentication/screens/invitation/responsive_screens/invitation_desktop_tablet.dart';
+import 'package:cartakers/features/authentication/screens/invitation/responsive_screens/invitation_mobile.dart';
 
 import '../../../../common/widgets/layouts/templates/site_layout.dart';
 

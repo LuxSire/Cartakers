@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/features/media/controllers/media_controller.dart';
+import 'package:cartakers/features/media/controllers/media_controller.dart';
 
 import '../../../../../utils/constants/enums.dart';
 

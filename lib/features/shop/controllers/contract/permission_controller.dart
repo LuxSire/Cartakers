@@ -5,27 +5,26 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/data/abstract/base_data_table_controller.dart';
-import 'package:xm_frontend/data/models/object_model.dart';
-import 'package:xm_frontend/data/models/permission_model.dart';
-import 'package:xm_frontend/data/models/unit_model.dart';
-import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
-import 'package:xm_frontend/data/repositories/object/object_repository.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/data/abstract/base_data_table_controller.dart';
+import 'package:cartakers/data/models/object_model.dart';
+import 'package:cartakers/data/models/permission_model.dart';
+import 'package:cartakers/data/models/unit_model.dart';
+import 'package:cartakers/data/repositories/authentication/authentication_repository.dart';
+import 'package:cartakers/data/repositories/object/object_repository.dart';
 
-import 'package:xm_frontend/data/repositories/contract/permission_repository.dart';
-import 'package:xm_frontend/data/repositories/unit/unit_repository.dart';
-import 'package:xm_frontend/data/repositories/user/user_repository.dart';
-import 'package:xm_frontend/features/personalization/controllers/settings_controller.dart';
-import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
-import 'package:xm_frontend/features/personalization/models/user_model.dart';
-import 'package:xm_frontend/features/shop/controllers/object/object_unit_detail_controller.dart';
-import 'package:xm_frontend/utils/constants/colors.dart';
-import 'package:xm_frontend/utils/helpers/helper_functions.dart';
-import 'package:xm_frontend/utils/helpers/network_manager.dart';
-import 'package:xm_frontend/utils/popups/full_screen_loader.dart';
-import 'package:xm_frontend/utils/popups/loaders.dart';
-
+import 'package:cartakers/data/repositories/contract/permission_repository.dart';
+import 'package:cartakers/data/repositories/unit/unit_repository.dart';
+import 'package:cartakers/data/repositories/user/user_repository.dart';
+import 'package:cartakers/features/personalization/controllers/settings_controller.dart';
+import 'package:cartakers/features/personalization/controllers/user_controller.dart';
+import 'package:cartakers/features/personalization/models/user_model.dart';
+import 'package:cartakers/features/shop/controllers/object/object_unit_detail_controller.dart';
+import 'package:cartakers/utils/constants/colors.dart';
+import 'package:cartakers/utils/helpers/helper_functions.dart';
+import 'package:cartakers/utils/helpers/network_manager.dart';
+import 'package:cartakers/utils/popups/full_screen_loader.dart';
+import 'package:cartakers/utils/popups/loaders.dart';
 class PermissionController extends TBaseController<PermissionModel> {
   static PermissionController get instance => Get.find();
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../layouts/headers/header.dart';
 import 'package:get/get.dart';
 import '../../layouts/sidebars/sidebar.dart';
-import 'package:xm_frontend/services/theme_service.dart';
+import 'package:cartakers/services/theme_service.dart';
 
 /// Widget for the desktop layout
 class DesktopLayout extends StatelessWidget {

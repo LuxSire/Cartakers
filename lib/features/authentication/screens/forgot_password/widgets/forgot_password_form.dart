@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:xm_frontend/app/app_controller.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/features/authentication/controllers/invitation_controller.dart';
-import 'package:xm_frontend/presentation/widgets/custom_pin_code_text_field.dart';
-import 'package:xm_frontend/routes/routes.dart';
-import 'package:xm_frontend/utils/constants/colors.dart';
+import 'package:cartakers/app/app_controller.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/features/authentication/controllers/invitation_controller.dart';
+import 'package:cartakers/presentation/widgets/custom_pin_code_text_field.dart';
+import 'package:cartakers/routes/routes.dart';
+import 'package:cartakers/utils/constants/colors.dart';
 
 import '../../../../../../utils/constants/sizes.dart';
 import '../../../../../../utils/validators/validation.dart';

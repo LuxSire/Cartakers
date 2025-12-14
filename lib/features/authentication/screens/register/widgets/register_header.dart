@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/data/models/company_invitation_model.dart';
-import 'package:xm_frontend/features/authentication/controllers/register_controller.dart';
-import 'package:xm_frontend/utils/constants/colors.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/data/models/company_invitation_model.dart';
+import 'package:cartakers/features/authentication/controllers/register_controller.dart';
+import 'package:cartakers/utils/constants/colors.dart';
 
 import '../../../../../../utils/constants/image_strings.dart';
 import '../../../../../../utils/constants/sizes.dart';

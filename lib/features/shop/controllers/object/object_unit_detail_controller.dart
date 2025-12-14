@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:xm_frontend/data/models/permission_model.dart';
-import 'package:xm_frontend/data/models/unit_model.dart';
-import 'package:xm_frontend/data/repositories/object/object_repository.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
+import 'package:cartakers/data/models/permission_model.dart';
+import 'package:cartakers/data/models/unit_model.dart';
+import 'package:cartakers/data/repositories/object/object_repository.dart';
+import 'package:cartakers/features/shop/controllers/contract/permission_controller.dart';
 
 import '../../../../data/repositories/user/user_repository.dart';
 import '../../../../utils/popups/loaders.dart';

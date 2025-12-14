@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:xm_frontend/app/theme/colors.dart';
+import 'package:cartakers/app/theme/colors.dart';
 
 class AppTypography {
   static const TextStyle headingLarge = TextStyle(

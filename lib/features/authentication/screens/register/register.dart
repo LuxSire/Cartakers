@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/features/authentication/screens/register/responsive_screens/register_desktop_tablet.dart';
-import 'package:xm_frontend/features/authentication/screens/register/responsive_screens/register_mobile.dart';
+import 'package:cartakers/features/authentication/screens/register/responsive_screens/register_desktop_tablet.dart';
+import 'package:cartakers/features/authentication/screens/register/responsive_screens/register_mobile.dart';
 
 import '../../../../common/widgets/layouts/templates/site_layout.dart';
 

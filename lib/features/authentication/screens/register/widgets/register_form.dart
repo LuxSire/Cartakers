@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/data/models/company_invitation_model.dart';
-import 'package:xm_frontend/features/authentication/controllers/register_controller.dart';
-import 'package:xm_frontend/routes/routes.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/data/models/company_invitation_model.dart';
+import 'package:cartakers/features/authentication/controllers/register_controller.dart';
+import 'package:cartakers/routes/routes.dart';
 
 import '../../../../../../utils/constants/sizes.dart';
 import '../../../../../../utils/validators/validation.dart';

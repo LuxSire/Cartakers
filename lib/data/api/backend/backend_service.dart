@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:xm_frontend/data/api/api_endpoints.dart';
+import 'package:cartakers/data/api/api_endpoints.dart';
 
 class BackendService {
   // Replace with your backend URL and check ifconfig and look for en0

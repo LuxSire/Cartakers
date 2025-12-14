@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:xm_frontend/common/widgets/loaders/loader_animation.dart';
+import 'package:cartakers/common/widgets/loaders/loader_animation.dart';
 
 import '../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../common/widgets/images/t_rounded_image.dart';

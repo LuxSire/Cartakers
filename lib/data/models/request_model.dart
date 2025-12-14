@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/data/api/translation_api.dart';
-import 'package:xm_frontend/utils/formatters/formatter.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/data/api/translation_api.dart';
+import 'package:cartakers/utils/formatters/formatter.dart';
 
 class RequestModel {
   final String? id;

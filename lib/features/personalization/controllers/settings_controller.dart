@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/data/repositories/settings/settings_repository.dart';
-import 'package:xm_frontend/features/personalization/models/setting_model.dart';
+import 'package:cartakers/data/repositories/settings/settings_repository.dart';
+import 'package:cartakers/features/personalization/models/setting_model.dart';
 
 import '../../../utils/helpers/network_manager.dart';
 import '../../../utils/popups/full_screen_loader.dart';

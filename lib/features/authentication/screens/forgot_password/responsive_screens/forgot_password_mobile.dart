@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:xm_frontend/features/authentication/screens/forgot_password/widgets/forgot_password_form.dart';
-import 'package:xm_frontend/features/authentication/screens/forgot_password/widgets/forgot_password_header.dart';
-//import 'package:xm_frontend/features/authentication/screens/invitation/widgets/invitation_form.dart';
-//import 'package:xm_frontend/features/authentication/screens/invitation/widgets/invitation_header.dart';
+import 'package:cartakers/features/authentication/screens/forgot_password/widgets/forgot_password_form.dart';
+import 'package:cartakers/features/authentication/screens/forgot_password/widgets/forgot_password_header.dart';
+//import 'package:cartakers/features/authentication/screens/invitation/widgets/invitation_form.dart';
+//import 'package:cartakers/features/authentication/screens/invitation/widgets/invitation_header.dart';
 
 import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';

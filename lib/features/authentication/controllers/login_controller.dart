@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/app/utils/helpers.dart';
-import 'package:xm_frontend/data/api/services/user_service.dart';
-import 'package:xm_frontend/data/repositories/user/user_repository.dart';
-import 'package:xm_frontend/routes/routes.dart';
-
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/app/utils/helpers.dart';
+import 'package:cartakers/data/api/services/user_service.dart';
+import 'package:cartakers/data/repositories/user/user_repository.dart';
+import 'package:cartakers/routes/routes.dart';
 import '../../../../data/repositories/authentication/authentication_repository.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/helpers/network_manager.dart';

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/common/widgets/chips/rounded_choice_chips.dart';
-import 'package:xm_frontend/common/widgets/containers/rounded_container.dart';
-import 'package:xm_frontend/features/shop/controllers/amenity/amenity_controller.dart';
-import 'package:xm_frontend/features/shop/screens/amenity/dialogs/create_amenity_zone.dart';
-import 'package:xm_frontend/utils/constants/colors.dart';
-import 'package:xm_frontend/utils/constants/sizes.dart';
-import 'package:xm_frontend/utils/device/device_utility.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/common/widgets/chips/rounded_choice_chips.dart';
+import 'package:cartakers/common/widgets/containers/rounded_container.dart';
+import 'package:cartakers/features/shop/controllers/amenity/amenity_controller.dart';
+import 'package:cartakers/features/shop/screens/amenity/dialogs/create_amenity_zone.dart';
+import 'package:cartakers/utils/constants/colors.dart';
+import 'package:cartakers/utils/constants/sizes.dart';
+import 'package:cartakers/utils/device/device_utility.dart';
 
 class AssignAmenityZoneDialog extends StatelessWidget {
   final int objectId;

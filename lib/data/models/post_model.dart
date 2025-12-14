@@ -1,4 +1,4 @@
-import 'package:xm_frontend/data/models/comment_model.dart';
+import 'package:cartakers/data/models/comment_model.dart';
 
 class PostModel {
   final int id;

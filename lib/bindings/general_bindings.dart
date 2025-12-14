@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:xm_frontend/features/personalization/controllers/settings_controller.dart';
+import 'package:cartakers/features/personalization/controllers/settings_controller.dart';
 import '../features/personalization/controllers/user_controller.dart';
 import '../utils/helpers/network_manager.dart';
 

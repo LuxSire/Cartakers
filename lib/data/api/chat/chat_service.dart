@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:xm_frontend/data/models/message_model.dart';
+import 'package:cartakers/data/models/message_model.dart';
 
 class ChatService {
   /// Sends a message to the specified chatId.

@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:xm_frontend/data/abstract/base_data_table_controller.dart';
+import 'package:cartakers/data/abstract/base_data_table_controller.dart';
 
 import '../../../../data/repositories/user/user_repository.dart';
 import '../../../personalization/models/user_model.dart';

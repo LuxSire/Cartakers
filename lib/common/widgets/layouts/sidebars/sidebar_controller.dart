@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:xm_frontend/features/shop/controllers/object/object_unit_detail_controller.dart';
+import 'package:cartakers/features/shop/controllers/object/object_unit_detail_controller.dart';
 import '../../../../data/repositories/authentication/authentication_repository.dart';
 import '../../../../routes/routes.dart';
 import '../../../../utils/device/device_utility.dart';

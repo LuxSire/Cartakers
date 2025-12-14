@@ -155,6 +155,7 @@ class PermissionRepository extends GetxController {
       final result = await _objectService.createPermission(
         permission.userId!,
         permission.objectId!,
+        permission.roleId! 
       );
 
       final permissionId = result['data'][0]['permission_id'];

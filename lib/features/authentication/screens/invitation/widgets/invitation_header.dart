@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/utils/constants/colors.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/utils/constants/colors.dart';
 
 import '../../../../../../utils/constants/image_strings.dart';
 import '../../../../../../utils/constants/sizes.dart';

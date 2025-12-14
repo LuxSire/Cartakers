@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
-import 'package:xm_frontend/data/api/translation_api.dart';
-import 'package:xm_frontend/features/personalization/models/user_model.dart';
-import 'package:xm_frontend/utils/formatters/formatter.dart';
+import 'package:cartakers/data/api/translation_api.dart';
+import 'package:cartakers/features/personalization/models/user_model.dart';
+import 'package:cartakers/utils/formatters/formatter.dart';
 
 class PermissionModel {
   final String? id;

@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:xm_frontend/utils/formatters/formatter.dart';
+import 'package:cartakers/utils/formatters/formatter.dart';
 import 'package:universal_html/html.dart';
 
 /// Model class representing user data.

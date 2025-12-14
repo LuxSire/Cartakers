@@ -1,6 +1,6 @@
-import 'package:xm_frontend/data/models/message_read_model.dart';
-import 'package:xm_frontend/data/models/message_recipient_model.dart';
-import 'package:xm_frontend/utils/formatters/formatter.dart';
+import 'package:cartakers/data/models/message_read_model.dart';
+import 'package:cartakers/data/models/message_recipient_model.dart';
+import 'package:cartakers/utils/formatters/formatter.dart';
 
 class MessageModel {
   final String id;

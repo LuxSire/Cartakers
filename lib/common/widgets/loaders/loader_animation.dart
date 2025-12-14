@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/utils/constants/image_strings.dart';
-import 'package:xm_frontend/utils/constants/sizes.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/utils/constants/image_strings.dart';
+import 'package:cartakers/utils/constants/sizes.dart';
 
 /// A circular loader widget with customizable foreground and background colors.
 class TLoaderAnimation extends StatelessWidget {

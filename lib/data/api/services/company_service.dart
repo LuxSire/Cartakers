@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:xm_frontend/features/personalization/models/company_model.dart';
+import 'package:cartakers/features/personalization/models/company_model.dart';
 
 import 'base_service.dart';
 import '../api_endpoints.dart';

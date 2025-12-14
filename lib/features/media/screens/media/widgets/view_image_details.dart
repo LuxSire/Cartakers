@@ -3,12 +3,12 @@ import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:xm_frontend/common/widgets/images/t_rounded_image.dart';
-import 'package:xm_frontend/features/media/controllers/media_controller.dart';
-import 'package:xm_frontend/utils/constants/enums.dart';
-import 'package:xm_frontend/utils/constants/sizes.dart';
-import 'package:xm_frontend/utils/device/device_utility.dart';
-import 'package:xm_frontend/utils/popups/loaders.dart';
+import 'package:cartakers/common/widgets/images/t_rounded_image.dart';
+import 'package:cartakers/features/media/controllers/media_controller.dart';
+import 'package:cartakers/utils/constants/enums.dart';
+import 'package:cartakers/utils/constants/sizes.dart';
+import 'package:cartakers/utils/device/device_utility.dart';
+import 'package:cartakers/utils/popups/loaders.dart';
 
 import '../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../utils/constants/colors.dart';

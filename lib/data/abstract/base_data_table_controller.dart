@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/data/models/object_model.dart';
-import 'package:xm_frontend/data/models/permission_model.dart';
-import 'package:xm_frontend/data/models/message_model.dart';
-import 'package:xm_frontend/features/personalization/models/user_model.dart';
-
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/data/models/object_model.dart';
+import 'package:cartakers/data/models/permission_model.dart';
+import 'package:cartakers/data/models/message_model.dart';
+import 'package:cartakers/features/personalization/models/user_model.dart';
 import '../../utils/constants/sizes.dart';
 import '../../utils/popups/full_screen_loader.dart';
 import '../../utils/popups/loaders.dart';

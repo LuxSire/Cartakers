@@ -1,5 +1,5 @@
-import 'package:xm_frontend/data/models/unit_model.dart';
-import 'package:xm_frontend/utils/formatters/formatter.dart';
+import 'package:cartakers/data/models/unit_model.dart';
+import 'package:cartakers/utils/formatters/formatter.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;

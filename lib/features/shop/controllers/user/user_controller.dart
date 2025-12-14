@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/data/abstract/base_data_table_controller.dart';
-import 'package:xm_frontend/data/models/object_model.dart';
-import 'package:xm_frontend/data/repositories/object/object_repository.dart';
-import 'package:xm_frontend/data/repositories/user/user_repository.dart';
-import 'package:xm_frontend/features/personalization/controllers/settings_controller.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/data/abstract/base_data_table_controller.dart';
+import 'package:cartakers/data/models/object_model.dart';
+import 'package:cartakers/data/repositories/object/object_repository.dart';
+import 'package:cartakers/data/repositories/user/user_repository.dart';
+import 'package:cartakers/features/personalization/controllers/settings_controller.dart';
 // Removed ambiguous import of personalization UserController
-import 'package:xm_frontend/features/personalization/models/user_model.dart';
-import 'package:xm_frontend/features/shop/controllers/object/object_unit_detail_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
-import 'package:xm_frontend/utils/helpers/helper_functions.dart';
+import 'package:cartakers/features/personalization/models/user_model.dart';
+import 'package:cartakers/features/shop/controllers/object/object_unit_detail_controller.dart';
+import 'package:cartakers/features/shop/controllers/contract/permission_controller.dart';
+import 'package:cartakers/utils/helpers/helper_functions.dart';
 
 import '../../../../data/repositories/authentication/authentication_repository.dart';
 import '../../../../utils/popups/loaders.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/data/api/services/object_service.dart';
-import 'package:xm_frontend/data/models/object_model.dart';
-import 'package:xm_frontend/data/models/unit_model.dart';
+import 'package:cartakers/data/api/services/object_service.dart';
+import 'package:cartakers/data/models/object_model.dart';
+import 'package:cartakers/data/models/unit_model.dart';
 
 /// Repository class for user-related operations.
 class UnitRepository extends GetxController {

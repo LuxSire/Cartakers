@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/services/theme_service.dart';
+import 'package:cartakers/services/theme_service.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:xm_frontend/app/app_controller.dart';
-import 'package:xm_frontend/data/api/translation_api.dart';
-import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
-import 'package:xm_frontend/utils/constants/enums.dart';
+import 'package:cartakers/app/app_controller.dart';
+import 'package:cartakers/data/api/translation_api.dart';
+import 'package:cartakers/features/personalization/controllers/user_controller.dart';
+import 'package:cartakers/utils/constants/enums.dart';
 import '../../../../routes/routes.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/image_strings.dart';

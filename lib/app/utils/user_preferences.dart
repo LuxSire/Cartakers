@@ -81,7 +81,7 @@ import 'package:flutter/rendering.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
-import 'package:xm_frontend/data/models/user_pref_model.dart';
+import 'package:cartakers/data/models/user_pref_model.dart';
 
 class UserPreferences {
   static const String _userKey = "user_data";
