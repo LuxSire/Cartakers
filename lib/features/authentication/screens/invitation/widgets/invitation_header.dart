@@ -29,7 +29,7 @@ class TInvitationHeader extends StatelessWidget {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: 'XM',
+                      text: 'Cartakers',
                       style: Theme.of(
                         context,
                       ).textTheme.headlineSmall?.copyWith(

@@ -15,7 +15,7 @@ class _SplashDesignState extends State<SplashDesign> {
   void initState() {
     super.initState();
     _controller = VideoPlayerController.asset(
-        'assets/videos/buildings_loop.mp4',
+        'assets/videos/video.mp4',
       )
       ..initialize().then((_) {
         _controller.setLooping(true);
@@ -62,15 +62,6 @@ class _SplashDesignState extends State<SplashDesign> {
                   height: 100,
                 ),
                 const SizedBox(height: 20),
-                const Text(
-                  "XM",
-                  style: TextStyle(
-                    fontSize: 32,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1.2,
-                  ),
-                ),
               ],
             ),
           ),

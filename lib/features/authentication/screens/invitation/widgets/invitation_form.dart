@@ -8,7 +8,9 @@ import 'package:cartakers/routes/routes.dart';
 import 'package:cartakers/utils/constants/colors.dart';
 import '../../../../../../utils/constants/sizes.dart';
 import '../../../../../../utils/validators/validation.dart';
+
 import '../../../controllers/login_controller.dart';
+import 'google_sign_in_button.dart';
 
 class TInvitationForm extends StatelessWidget {
   const TInvitationForm({super.key});
@@ -125,6 +127,15 @@ class TInvitationForm extends StatelessWidget {
                   context,
                 ).translate('invitation_screen.lbl_already_have_an_account'),
               ),
+            ),
+            const SizedBox(height: TSizes.spaceBtwSections),
+
+            /// Google Sign-In Button
+            GoogleSignInButton(
+              onPressed: () {
+                // TODO: Implement Google sign-in logic here
+                debugPrint('Google sign-in pressed');
+              },
             ),
             const SizedBox(height: TSizes.spaceBtwSections),
 
