@@ -1,19 +1,19 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/common/widgets/containers/rounded_container.dart';
-import 'package:xm_frontend/common/widgets/icons/table_action_icon_buttons.dart';
-//import 'package:xm_frontend/features/personalization/models/user_model.dart';
-//import 'package:xm_frontend/features/shop/controllers/contract/contract_controller.dart';
-//import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/common/widgets/containers/rounded_container.dart';
+import 'package:cartakers/common/widgets/icons/table_action_icon_buttons.dart';
+//import 'package:cartakers/features/personalization/models/user_model.dart';
+//import 'package:cartakers/features/shop/controllers/contract/contract_controller.dart';
+//import 'package:cartakers/features/shop/controllers/user/user_controller.dart';
 
-import 'package:xm_frontend/features/shop/controllers/user/user_invitation_controller.dart';
-//import 'package:xm_frontend/features/shop/screens/user/dialogs/edit_user.dart';
-//import 'package:xm_frontend/routes/routes.dart';
-import 'package:xm_frontend/utils/constants/colors.dart';
-import 'package:xm_frontend/utils/constants/sizes.dart';
-import 'package:xm_frontend/utils/helpers/helper_functions.dart';
+import 'package:cartakers/features/shop/controllers/user/user_invitation_controller.dart';
+//import 'package:cartakers/features/shop/screens/user/dialogs/edit_user.dart';
+//import 'package:cartakers/routes/routes.dart';
+import 'package:cartakers/utils/constants/colors.dart';
+import 'package:cartakers/utils/constants/sizes.dart';
+import 'package:cartakers/utils/helpers/helper_functions.dart';
 
 class UsersInvitationRows extends DataTableSource {
   final controller = UserInvitationController.instance;

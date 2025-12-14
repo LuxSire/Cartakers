@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/common/widgets/images/t_circular_image.dart';
-//import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
-import 'package:xm_frontend/features/shop/screens/user/widgets/user_detail_tab.dart';
-import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
-import 'package:xm_frontend/utils/constants/colors.dart';
-import 'package:xm_frontend/utils/constants/enums.dart';
-import 'package:xm_frontend/utils/constants/image_strings.dart';
-import 'package:xm_frontend/utils/helpers/helper_functions.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/common/widgets/images/t_circular_image.dart';
+//import 'package:cartakers/features/shop/controllers/user/user_controller.dart';
+import 'package:cartakers/features/shop/screens/user/widgets/user_detail_tab.dart';
+import 'package:cartakers/features/personalization/controllers/user_controller.dart';
+import 'package:cartakers/utils/constants/colors.dart';
+import 'package:cartakers/utils/constants/enums.dart';
+import 'package:cartakers/utils/constants/image_strings.dart';
+import 'package:cartakers/utils/helpers/helper_functions.dart';
 
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../utils/constants/sizes.dart';

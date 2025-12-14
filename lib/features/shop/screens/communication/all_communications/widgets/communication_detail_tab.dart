@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:xm_frontend/features/shop/screens/communication/all_communications/widgets/messages_tab.dart';
-import 'package:xm_frontend/features/shop/screens/user/widgets/bookings_tab.dart';
-import 'package:xm_frontend/features/shop/screens/user/widgets/user_documents_tab.dart';
-import 'package:xm_frontend/features/shop/screens/user/widgets/user_requests_tab.dart';
-import 'package:xm_frontend/features/shop/screens/user/widgets/user_tab.dart';
-import 'package:xm_frontend/features/shop/screens/users_permissions/widgets/permissions_tab.dart';
-import 'package:xm_frontend/features/shop/screens/users_permissions/widgets/users_tab.dart';
-import 'package:xm_frontend/data/models/object_model.dart';
+import 'package:cartakers/features/shop/screens/communication/all_communications/widgets/messages_tab.dart';
+import 'package:cartakers/features/shop/screens/user/widgets/bookings_tab.dart';
+import 'package:cartakers/features/shop/screens/user/widgets/user_documents_tab.dart';
+import 'package:cartakers/features/shop/screens/user/widgets/user_requests_tab.dart';
+import 'package:cartakers/features/shop/screens/user/widgets/user_tab.dart';
+import 'package:cartakers/features/shop/screens/users_permissions/widgets/permissions_tab.dart';
+import 'package:cartakers/features/shop/screens/users_permissions/widgets/users_tab.dart';
+import 'package:cartakers/data/models/object_model.dart';
 
 class CommunicationDetailsTab extends StatelessWidget {
   final String tabType;

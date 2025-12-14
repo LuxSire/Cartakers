@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:xm_frontend/app.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/data/models/category_model.dart';
-import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
-import 'package:xm_frontend/features/shop/controllers/booking/booking_controller.dart';
-import 'package:xm_frontend/features/shop/screens/booking/dialogs/bookings_filter_dialog.dart';
-import 'package:xm_frontend/features/shop/screens/booking/dialogs/create_booking.dart';
-import 'package:xm_frontend/features/shop/screens/booking/dialogs/view_toggle_widget.dart';
-import 'package:xm_frontend/utils/constants/colors.dart';
-import 'package:xm_frontend/utils/device/device_utility.dart';
-import 'package:xm_frontend/utils/popups/loaders.dart';
+import 'package:cartakers/app.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/data/models/category_model.dart';
+import 'package:cartakers/data/repositories/authentication/authentication_repository.dart';
+import 'package:cartakers/features/shop/controllers/booking/booking_controller.dart';
+import 'package:cartakers/features/shop/screens/booking/dialogs/bookings_filter_dialog.dart';
+import 'package:cartakers/features/shop/screens/booking/dialogs/create_booking.dart';
+import 'package:cartakers/features/shop/screens/booking/dialogs/view_toggle_widget.dart';
+import 'package:cartakers/utils/constants/colors.dart';
+import 'package:cartakers/utils/device/device_utility.dart';
+import 'package:cartakers/utils/popups/loaders.dart';
 
 class BookingTableHeader extends StatelessWidget {
   const BookingTableHeader({Key? key}) : super(key: key);

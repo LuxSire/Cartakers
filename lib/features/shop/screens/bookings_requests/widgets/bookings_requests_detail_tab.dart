@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:xm_frontend/features/shop/screens/bookings_requests/widgets/bookings_tab.dart';
-import 'package:xm_frontend/features/shop/screens/bookings_requests/widgets/requests_tab.dart';
+import 'package:cartakers/features/shop/screens/bookings_requests/widgets/bookings_tab.dart';
+import 'package:cartakers/features/shop/screens/bookings_requests/widgets/requests_tab.dart';
 
 class BookingsRequestsDetailsTab extends StatelessWidget {
   final String tabType;

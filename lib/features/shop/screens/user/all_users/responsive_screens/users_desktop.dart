@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
-import 'package:xm_frontend/common/widgets/loaders/loader_animation.dart';
-import 'package:xm_frontend/features/shop/controllers/object/object_controller.dart';
-import 'package:xm_frontend/features/shop/screens/user/all_users/widgets/table_header.dart';
-
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
+import 'package:cartakers/common/widgets/loaders/loader_animation.dart';
+import 'package:cartakers/features/shop/controllers/object/object_controller.dart';
+import 'package:cartakers/features/shop/screens/user/all_users/widgets/table_header.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../utils/constants/sizes.dart';
 import '../table/data_table.dart';

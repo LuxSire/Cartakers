@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:xm_frontend/features/shop/screens/communication/all_communications/table/message/data_table.dart';
-import 'package:xm_frontend/features/shop/screens/communication/all_communications/table/message/table_header.dart';
-import 'package:xm_frontend/data/models/object_model.dart';
-import 'package:xm_frontend/utils/constants/sizes.dart';
-import 'package:xm_frontend/features/shop/screens/communication/all_communications/table/message/wa_table_source.dart';
-
+import 'package:cartakers/features/shop/screens/communication/all_communications/table/message/data_table.dart';
+import 'package:cartakers/features/shop/screens/communication/all_communications/table/message/table_header.dart';
+import 'package:cartakers/data/models/object_model.dart';
+import 'package:cartakers/utils/constants/sizes.dart';
+import 'package:cartakers/features/shop/screens/communication/all_communications/table/message/wa_table_source.dart';
 class MessagesTab extends StatefulWidget {
   const MessagesTab({super.key, this.object});
 

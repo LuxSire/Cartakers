@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:xm_frontend/features/shop/screens/user/widgets/bookings_tab.dart';
-import 'package:xm_frontend/features/shop/screens/user/widgets/user_documents_tab.dart';
-import 'package:xm_frontend/features/shop/screens/user/widgets/user_requests_tab.dart';
-import 'package:xm_frontend/features/shop/screens/user/widgets/user_tab.dart';
-import 'package:xm_frontend/features/shop/screens/users_permissions/widgets/companies_tab.dart';
-import 'package:xm_frontend/features/shop/screens/users_permissions/widgets/app_invitation_tab.dart';
-import 'package:xm_frontend/features/shop/screens/users_permissions/widgets/permissions_tab.dart';
-import 'package:xm_frontend/features/shop/screens/users_permissions/widgets/users_tab.dart';
-import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
+import 'package:cartakers/features/shop/screens/user/widgets/bookings_tab.dart';
+import 'package:cartakers/features/shop/screens/user/widgets/user_documents_tab.dart';
+import 'package:cartakers/features/shop/screens/user/widgets/user_requests_tab.dart';
+import 'package:cartakers/features/shop/screens/user/widgets/user_tab.dart';
+import 'package:cartakers/features/shop/screens/users_permissions/widgets/companies_tab.dart';
+import 'package:cartakers/features/shop/screens/users_permissions/widgets/app_invitation_tab.dart';
+import 'package:cartakers/features/shop/screens/users_permissions/widgets/permissions_tab.dart';
+import 'package:cartakers/features/shop/screens/users_permissions/widgets/users_tab.dart';
+import 'package:cartakers/features/personalization/controllers/user_controller.dart';
 import 'package:get/get.dart';
 
 class UsersPermissionsDetailTab extends StatelessWidget {

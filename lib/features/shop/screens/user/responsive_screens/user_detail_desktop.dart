@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/features/personalization/models/user_model.dart';
-import 'package:xm_frontend/features/shop/controllers/booking/booking_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/request/request_controller.dart';
-//import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
-import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
-import 'package:xm_frontend/features/shop/screens/user/widgets/user_tab_panel.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/features/personalization/models/user_model.dart';
+import 'package:cartakers/features/shop/controllers/booking/booking_controller.dart';
+import 'package:cartakers/features/shop/controllers/request/request_controller.dart';
+//import 'package:cartakers/features/shop/controllers/user/user_controller.dart';
+import 'package:cartakers/features/personalization/controllers/user_controller.dart';
+import 'package:cartakers/features/shop/screens/user/widgets/user_tab_panel.dart';
 
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../routes/routes.dart';

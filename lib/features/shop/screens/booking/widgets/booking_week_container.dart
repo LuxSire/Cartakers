@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/features/shop/screens/booking/widgets/booking_calendar_week_view.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/features/shop/screens/booking/widgets/booking_calendar_week_view.dart';
 
 class BookingWeekContainer extends StatefulWidget {
   const BookingWeekContainer({super.key});

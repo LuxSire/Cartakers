@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:xm_frontend/data/models/booking_model.dart';
-import 'package:xm_frontend/features/shop/controllers/booking/booking_controller.dart';
+import 'package:cartakers/data/models/booking_model.dart';
+import 'package:cartakers/features/shop/controllers/booking/booking_controller.dart';
 
 import 'package:table_calendar/table_calendar.dart';
-import 'package:xm_frontend/features/shop/screens/booking/dialogs/view_bookings_dialog.dart';
-
+import 'package:cartakers/features/shop/screens/booking/dialogs/view_bookings_dialog.dart';
 class BookingCalendarView extends StatefulWidget {
   const BookingCalendarView({super.key});
 

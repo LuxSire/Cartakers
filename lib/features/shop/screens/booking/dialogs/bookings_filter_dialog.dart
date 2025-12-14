@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
-import 'package:xm_frontend/features/shop/controllers/booking/booking_controller.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/utils/constants/colors.dart';
+import 'package:cartakers/features/shop/controllers/booking/booking_controller.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/utils/constants/colors.dart';
 
 class BookingsFilterDialog extends StatelessWidget {
   const BookingsFilterDialog({super.key});
