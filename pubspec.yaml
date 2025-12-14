@@ -87,7 +87,7 @@ dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/Icon-xm.png"
+  image_path: "assets/images/Icon-car.png"
   remove_alpha_ios: true
 
 dev_dependencies:

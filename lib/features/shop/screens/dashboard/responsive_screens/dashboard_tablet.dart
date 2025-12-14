@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:xm_frontend/app/app_controller.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/common/widgets/texts/page_heading.dart';
-import 'package:xm_frontend/features/shop/controllers/object/object_controller.dart';
-import 'package:xm_frontend/features/shop/screens/object/all_objects/dialogs/create_object.dart';
-import 'package:xm_frontend/features/shop/screens/dashboard/widgets/a_dashboard_card.dart';
-//import 'package:xm_frontend/features/shop/screens/dashboard/widgets/booking_card.dart';
-import 'package:xm_frontend/features/shop/screens/dashboard/widgets/object_card.dart';
-import 'package:xm_frontend/features/shop/screens/dashboard/widgets/requests_card.dart';
-import 'package:xm_frontend/features/shop/screens/dashboard/widgets/vacant_card.dart';
-import 'package:xm_frontend/routes/routes.dart';
+import 'package:cartakers/app/app_controller.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/common/widgets/texts/page_heading.dart';
+import 'package:cartakers/features/shop/controllers/object/object_controller.dart';
+import 'package:cartakers/features/shop/screens/object/all_objects/dialogs/create_object.dart';
+import 'package:cartakers/features/shop/screens/dashboard/widgets/a_dashboard_card.dart';
+//import 'package:cartakers/features/shop/screens/dashboard/widgets/booking_card.dart';
+import 'package:cartakers/features/shop/screens/dashboard/widgets/object_card.dart';
+import 'package:cartakers/features/shop/screens/dashboard/widgets/requests_card.dart';
+import 'package:cartakers/features/shop/screens/dashboard/widgets/vacant_card.dart';
+import 'package:cartakers/routes/routes.dart';
 
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../common/widgets/icons/t_circular_icon.dart';
 import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../controllers/dashboard/dashboard_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
+import 'package:cartakers/features/shop/controllers/contract/permission_controller.dart';
 
 //import '../table/data_table.dart';
 //import '../widgets/dashboard_card.dart';

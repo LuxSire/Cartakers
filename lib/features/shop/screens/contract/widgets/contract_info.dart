@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/data/models/permission_model.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
-import 'package:xm_frontend/features/shop/screens/contract/dialogs/edit_contract.dart';
-import 'package:xm_frontend/features/shop/screens/user/dialogs/create_user.dart';
-
-import 'package:xm_frontend/utils/constants/colors.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/data/models/permission_model.dart';
+import 'package:cartakers/features/shop/controllers/contract/permission_controller.dart';
+import 'package:cartakers/features/shop/screens/contract/dialogs/edit_contract.dart';
+import 'package:cartakers/features/shop/screens/user/dialogs/create_user.dart';
+import 'package:cartakers/utils/constants/colors.dart';
 
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../utils/constants/sizes.dart';

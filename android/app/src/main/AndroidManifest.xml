@@ -16,7 +16,7 @@
    
    
     <application
-        android:label="XM"
+        android:label="Cartakers"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

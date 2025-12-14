@@ -1,32 +1,32 @@
 {
-    "name": "xm_frontend",
-    "short_name": "xm_frontend",
+    "name": "cartakers",
+    "short_name": "cartakers",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "XM Project",
+    "description": "Cartakers Project",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
         {
-            "src": "icons/Icon-xm.png",
+            "src": "icons/Icon-car.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "icons/Icon-xm.png",
+            "src": "icons/Icon-car.png",
             "sizes": "512x512",
             "type": "image/png"
         },
         {
-            "src": "icons/Icon-xm.png",
+            "src": "icons/Icon-car.png",
             "sizes": "192x192",
             "type": "image/png",
             "purpose": "maskable"
         },
         {
-            "src": "icons/Icon-xm.png",
+            "src": "icons/Icon-car.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "maskable"
