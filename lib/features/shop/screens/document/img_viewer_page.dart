@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-import 'package:xm_frontend/app/utils/size_utils.dart';
+import 'package:cartakers/app/utils/size_utils.dart';
 
 class ImageDialogViewer extends StatelessWidget {
   final String imageUrl;

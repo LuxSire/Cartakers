@@ -1,13 +1,13 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/common/widgets/icons/table_action_icon_buttons.dart';
-import 'package:xm_frontend/data/models/unit_room_model.dart';
-import 'package:xm_frontend/features/shop/controllers/object/object_unit_detail_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
-import 'package:xm_frontend/routes/routes.dart';
-import 'package:xm_frontend/utils/constants/sizes.dart';
-import 'package:xm_frontend/utils/helpers/helper_functions.dart';
+import 'package:cartakers/common/widgets/icons/table_action_icon_buttons.dart';
+import 'package:cartakers/data/models/unit_room_model.dart';
+import 'package:cartakers/features/shop/controllers/object/object_unit_detail_controller.dart';
+import 'package:cartakers/features/shop/controllers/object/edit_object_controller.dart';
+import 'package:cartakers/routes/routes.dart';
+import 'package:cartakers/utils/constants/sizes.dart';
+import 'package:cartakers/utils/helpers/helper_functions.dart';
 
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../utils/constants/colors.dart';

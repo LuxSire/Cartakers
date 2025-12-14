@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/common/widgets/loaders/animation_loader.dart';
-import 'package:xm_frontend/data/models/object_model.dart';
-import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
-import 'package:xm_frontend/features/shop/screens/object/edit_object/table/data_table.dart';
-import 'package:xm_frontend/features/shop/screens/object/edit_object/table/table_header.dart';
-import 'package:xm_frontend/utils/constants/image_strings.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/common/widgets/loaders/animation_loader.dart';
+import 'package:cartakers/data/models/object_model.dart';
+import 'package:cartakers/features/shop/controllers/object/edit_object_controller.dart';
+import 'package:cartakers/features/shop/screens/object/edit_object/table/data_table.dart';
+import 'package:cartakers/features/shop/screens/object/edit_object/table/table_header.dart';
+import 'package:cartakers/utils/constants/image_strings.dart';
 
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../common/widgets/loaders/loader_animation.dart';

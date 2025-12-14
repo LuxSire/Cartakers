@@ -1,5 +1,5 @@
 name: cartakers
-description: "Cartakers Frontend "
+description: "Cartakers Frontend"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -118,8 +118,7 @@ flutter:
     - assets/translations/it.json
     - assets/translations/de.json
     - assets/translations/en.json
-    - .env.dev
-    - .env.prod
+    - .env
     - assets/images/app_icon.png
     - assets/docs/NDA.pdf
 
