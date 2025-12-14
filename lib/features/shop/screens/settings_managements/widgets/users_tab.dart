@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
-import 'package:xm_frontend/features/shop/screens/settings_managements/table/users/data_table.dart';
-import 'package:xm_frontend/features/shop/screens/settings_managements/table/users/table_header.dart';
+import 'package:cartakers/features/personalization/controllers/user_controller.dart';
+import 'package:cartakers/features/shop/screens/settings_managements/table/users/data_table.dart';
+import 'package:cartakers/features/shop/screens/settings_managements/table/users/table_header.dart';
 
-import 'package:xm_frontend/utils/constants/sizes.dart';
+import 'package:cartakers/utils/constants/sizes.dart';
 
 class UsersTab extends StatelessWidget {
   const UsersTab({super.key});

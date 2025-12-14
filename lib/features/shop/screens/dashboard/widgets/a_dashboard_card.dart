@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:xm_frontend/common/widgets/icons/t_circular_icon.dart';
+import 'package:cartakers/common/widgets/icons/t_circular_icon.dart';
 
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../common/widgets/texts/section_heading.dart';

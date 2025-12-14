@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/common/widgets/images/t_circular_image.dart';
-import 'package:xm_frontend/common/widgets/loaders/animation_loader.dart';
-import 'package:xm_frontend/common/widgets/loaders/loader_animation.dart';
-import 'package:xm_frontend/data/models/booking_model.dart';
-import 'package:xm_frontend/features/shop/controllers/booking/booking_controller.dart';
-import 'package:xm_frontend/utils/constants/colors.dart';
-import 'package:xm_frontend/utils/constants/enums.dart';
-import 'package:xm_frontend/utils/constants/image_strings.dart';
-import 'package:xm_frontend/utils/constants/sizes.dart';
-import 'package:xm_frontend/utils/helpers/helper_functions.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/common/widgets/images/t_circular_image.dart';
+import 'package:cartakers/common/widgets/loaders/animation_loader.dart';
+import 'package:cartakers/common/widgets/loaders/loader_animation.dart';
+import 'package:cartakers/data/models/booking_model.dart';
+import 'package:cartakers/features/shop/controllers/booking/booking_controller.dart';
+import 'package:cartakers/utils/constants/colors.dart';
+import 'package:cartakers/utils/constants/enums.dart';
+import 'package:cartakers/utils/constants/image_strings.dart';
+import 'package:cartakers/utils/constants/sizes.dart';
+import 'package:cartakers/utils/helpers/helper_functions.dart';
 
 class ViewBookingsDialog extends StatelessWidget {
   final DateTime date;

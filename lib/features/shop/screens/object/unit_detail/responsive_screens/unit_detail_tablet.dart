@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/data/models/unit_model.dart';
-import 'package:xm_frontend/features/shop/controllers/object/object_unit_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/object/object_unit_detail_controller.dart';
-import 'package:xm_frontend/features/shop/screens/object/unit_detail/widgets/unit_contracts.dart';
+import 'package:cartakers/data/models/unit_model.dart';
+import 'package:cartakers/features/shop/controllers/object/object_unit_controller.dart';
+import 'package:cartakers/features/shop/controllers/object/object_unit_detail_controller.dart';
+import 'package:cartakers/features/shop/screens/object/unit_detail/widgets/unit_contracts.dart';
 
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../routes/routes.dart';

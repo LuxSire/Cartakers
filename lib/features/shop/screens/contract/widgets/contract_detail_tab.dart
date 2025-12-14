@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:xm_frontend/features/shop/screens/contract/widgets/bookings_tab.dart';
-import 'package:xm_frontend/features/shop/screens/contract/widgets/documents_tab.dart';
-import 'package:xm_frontend/features/shop/screens/contract/widgets/requests_tab.dart';
-import 'package:xm_frontend/features/shop/screens/contract/widgets/users_tab.dart';
-import 'package:xm_frontend/utils/constants/colors.dart';
-
+import 'package:cartakers/features/shop/screens/contract/widgets/bookings_tab.dart';
+import 'package:cartakers/features/shop/screens/contract/widgets/documents_tab.dart';
+import 'package:cartakers/features/shop/screens/contract/widgets/requests_tab.dart';
+import 'package:cartakers/features/shop/screens/contract/widgets/users_tab.dart';
+import 'package:cartakers/utils/constants/colors.dart';
 class ContractDetailsTab extends StatelessWidget {
   final String tabType;
 

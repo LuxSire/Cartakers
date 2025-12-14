@@ -2,17 +2,16 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/common/widgets/icons/table_action_icon_buttons.dart';
-import 'package:xm_frontend/data/models/permission_model.dart';
-import 'package:xm_frontend/features/shop/controllers/object/object_unit_detail_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
-import 'package:xm_frontend/features/shop/screens/contract/dialogs/edit_contract.dart';
-import 'package:xm_frontend/routes/routes.dart';
-import 'package:xm_frontend/utils/constants/sizes.dart';
-import 'package:xm_frontend/utils/helpers/helper_functions.dart';
-
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/common/widgets/icons/table_action_icon_buttons.dart';
+import 'package:cartakers/data/models/permission_model.dart';
+import 'package:cartakers/features/shop/controllers/object/object_unit_detail_controller.dart';
+import 'package:cartakers/features/shop/controllers/object/edit_object_controller.dart';
+import 'package:cartakers/features/shop/controllers/contract/permission_controller.dart';
+import 'package:cartakers/features/shop/screens/contract/dialogs/edit_contract.dart';
+import 'package:cartakers/routes/routes.dart';
+import 'package:cartakers/utils/constants/sizes.dart';
+import 'package:cartakers/utils/helpers/helper_functions.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../utils/constants/colors.dart';
 

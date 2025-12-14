@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:xm_frontend/features/shop/screens/user/all_users/widgets/table_header.dart';
+import 'package:cartakers/features/shop/screens/user/all_users/widgets/table_header.dart';
 
-import 'package:xm_frontend/utils/constants/sizes.dart';
+import 'package:cartakers/utils/constants/sizes.dart';
 
 class AmenitiesTab extends StatelessWidget {
   const AmenitiesTab({super.key});

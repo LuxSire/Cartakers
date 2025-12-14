@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/common/widgets/loaders/loader_animation.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/common/widgets/loaders/loader_animation.dart';
 //import 'package:xm_frontend/features/personalization/controllers/settings_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/object/object_unit_controller.dart';
-import 'package:xm_frontend/features/shop/screens/dashboard/dialogs/assign_contract.dart';
-import 'package:xm_frontend/utils/constants/colors.dart';
-import 'package:xm_frontend/utils/constants/sizes.dart';
+import 'package:cartakers/features/shop/controllers/object/object_unit_controller.dart';
+import 'package:cartakers/features/shop/screens/dashboard/dialogs/assign_contract.dart';
+import 'package:cartakers/utils/constants/colors.dart';
+import 'package:cartakers/utils/constants/sizes.dart';
 
 class VacantCard extends StatelessWidget {
   const VacantCard({super.key});

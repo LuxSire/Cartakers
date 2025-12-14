@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:xm_frontend/app/app_controller.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/app/utils/user_preferences.dart';
-import 'package:xm_frontend/utils/constants/colors.dart';
-import 'package:xm_frontend/utils/constants/sizes.dart';
-
+import 'package:cartakers/app/app_controller.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/app/utils/user_preferences.dart';
+import 'package:cartakers/utils/constants/colors.dart';
+import 'package:cartakers/utils/constants/sizes.dart';
 const _flagEmojis = {'de': '🇩🇪', 'fr': '🇫🇷', 'it': '🇮🇹', 'en': '🇬🇧'};
 
 class PreferencesTab extends StatefulWidget {

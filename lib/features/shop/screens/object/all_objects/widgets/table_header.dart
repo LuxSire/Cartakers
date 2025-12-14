@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:xm_frontend/app.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/features/shop/controllers/object/object_controller.dart';
-import 'package:xm_frontend/features/shop/screens/object/all_objects/dialogs/create_object.dart';
-import 'package:xm_frontend/routes/routes.dart';
-import 'package:xm_frontend/utils/constants/colors.dart';
-import 'package:xm_frontend/utils/popups/loaders.dart';
+import 'package:cartakers/app.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/features/shop/controllers/object/object_controller.dart';
+import 'package:cartakers/features/shop/screens/object/all_objects/dialogs/create_object.dart';
+import 'package:cartakers/routes/routes.dart';
+import 'package:cartakers/utils/constants/colors.dart';
+import 'package:cartakers/utils/popups/loaders.dart';
 
 import '../../../../../../utils/device/device_utility.dart';
 

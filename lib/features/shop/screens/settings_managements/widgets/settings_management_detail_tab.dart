@@ -3,14 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
-import 'package:xm_frontend/features/shop/screens/settings_managements/widgets/amenities_tab.dart';
-import 'package:xm_frontend/features/shop/screens/settings_managements/widgets/preferences_tab.dart';
-import 'package:xm_frontend/features/shop/screens/settings_managements/widgets/profile_tab.dart';
-import 'package:xm_frontend/features/shop/screens/settings_managements/widgets/users_tab.dart';
-import 'package:xm_frontend/utils/constants/colors.dart';
-import 'package:xm_frontend/utils/constants/sizes.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/features/personalization/controllers/user_controller.dart';
+import 'package:cartakers/features/shop/screens/settings_managements/widgets/amenities_tab.dart';
+import 'package:cartakers/features/shop/screens/settings_managements/widgets/preferences_tab.dart';
+import 'package:cartakers/features/shop/screens/settings_managements/widgets/profile_tab.dart';
+import 'package:cartakers/features/shop/screens/settings_managements/widgets/users_tab.dart';
+import 'package:cartakers/utils/constants/colors.dart';
+import 'package:cartakers/utils/constants/sizes.dart';
 
 class SettingsManagementDetailsTab extends StatelessWidget {
   final String tabType;

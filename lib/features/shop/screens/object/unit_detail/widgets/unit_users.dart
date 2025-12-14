@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/features/shop/controllers/object/object_unit_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/object/object_unit_detail_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
-import 'package:xm_frontend/features/shop/screens/user/dialogs/view_user.dart';
-import 'package:xm_frontend/utils/popups/loaders.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/features/shop/controllers/object/object_unit_controller.dart';
+import 'package:cartakers/features/shop/controllers/object/object_unit_detail_controller.dart';
+import 'package:cartakers/features/shop/controllers/contract/permission_controller.dart';
+import 'package:cartakers/features/shop/screens/user/dialogs/view_user.dart';
+import 'package:cartakers/utils/popups/loaders.dart';
 
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../common/widgets/images/t_rounded_image.dart';

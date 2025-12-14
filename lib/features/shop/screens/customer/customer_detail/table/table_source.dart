@@ -1,12 +1,11 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/features/shop/controllers/customer/customer_detail_controller.dart';
-import 'package:xm_frontend/routes/routes.dart';
-import 'package:xm_frontend/utils/constants/enums.dart';
-import 'package:xm_frontend/utils/constants/sizes.dart';
-import 'package:xm_frontend/utils/helpers/helper_functions.dart';
-
+import 'package:cartakers/features/shop/controllers/customer/customer_detail_controller.dart';
+import 'package:cartakers/routes/routes.dart';
+import 'package:cartakers/utils/constants/enums.dart';
+import 'package:cartakers/utils/constants/sizes.dart';
+import 'package:cartakers/utils/helpers/helper_functions.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../utils/constants/colors.dart';
 

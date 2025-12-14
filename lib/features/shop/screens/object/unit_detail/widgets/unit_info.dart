@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/object/object_unit_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/object/object_unit_detail_controller.dart';
-import 'package:xm_frontend/utils/constants/colors.dart';
-import 'package:xm_frontend/data/models/unit_model.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/features/shop/controllers/object/edit_object_controller.dart';
+import 'package:cartakers/features/shop/controllers/object/object_unit_controller.dart';
+import 'package:cartakers/features/shop/controllers/object/object_unit_detail_controller.dart';
+import 'package:cartakers/utils/constants/colors.dart';
+import 'package:cartakers/data/models/unit_model.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../utils/constants/enums.dart';
 import '../../../../../../utils/constants/sizes.dart';

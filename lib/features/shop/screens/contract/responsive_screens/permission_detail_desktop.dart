@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/data/models/permission_model.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/request/request_controller.dart';
-import 'package:xm_frontend/features/shop/screens/contract/widgets/contract_detail_tab.dart';
-import 'package:xm_frontend/features/shop/screens/contract/widgets/contract_tab_panel.dart';
-
+import 'package:cartakers/data/models/permission_model.dart';
+import 'package:cartakers/features/shop/controllers/contract/permission_controller.dart';
+import 'package:cartakers/features/shop/controllers/request/request_controller.dart';
+import 'package:cartakers/features/shop/screens/contract/widgets/contract_detail_tab.dart';
+import 'package:cartakers/features/shop/screens/contract/widgets/contract_tab_panel.dart';
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../routes/routes.dart';
 import '../../../../../../utils/constants/sizes.dart';

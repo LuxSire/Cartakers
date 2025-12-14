@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/communication/communication_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/request/request_controller.dart';
-//import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
-import 'package:xm_frontend/utils/constants/colors.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/features/personalization/controllers/user_controller.dart';
+import 'package:cartakers/features/shop/controllers/communication/communication_controller.dart';
+import 'package:cartakers/features/shop/controllers/request/request_controller.dart';
+//import 'package:cartakers/features/shop/controllers/user/user_controller.dart';
+import 'package:cartakers/utils/constants/colors.dart';
 
 class UsersFilterDialog extends StatelessWidget {
   const UsersFilterDialog({super.key});

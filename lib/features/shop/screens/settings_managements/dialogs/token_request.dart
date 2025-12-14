@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/common/widgets/chips/rounded_choice_chips.dart';
-import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
-import 'package:xm_frontend/features/personalization/controllers/company_controller.dart';
-import 'package:xm_frontend/features/personalization/models/user_model.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/common/widgets/chips/rounded_choice_chips.dart';
+import 'package:cartakers/features/personalization/controllers/user_controller.dart';
+import 'package:cartakers/features/personalization/controllers/company_controller.dart';
+import 'package:cartakers/features/personalization/models/user_model.dart';
+import 'package:cartakers/features/shop/controllers/contract/permission_controller.dart';
 //import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
-import 'package:xm_frontend/utils/constants/colors.dart';
+import 'package:cartakers/utils/constants/colors.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../utils/constants/sizes.dart';
 import '../../../../../../utils/validators/validation.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
-import 'package:xm_frontend/utils/popups/pdf_viewer.dart';
+import 'package:cartakers/utils/popups/pdf_viewer.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:html' as html; // Only for web
 

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/data/models/permission_model.dart';
-import 'package:xm_frontend/features/shop/controllers/object/object_unit_detail_controller.dart';
-import 'package:xm_frontend/features/shop/screens/contract/dialogs/create_contract.dart';
-import 'package:xm_frontend/utils/constants/colors.dart';
-
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/data/models/permission_model.dart';
+import 'package:cartakers/features/shop/controllers/object/object_unit_detail_controller.dart';
+import 'package:cartakers/features/shop/screens/contract/dialogs/create_contract.dart';
+import 'package:cartakers/utils/constants/colors.dart';
 class ObjectUnitContractTableHeader extends StatelessWidget {
   const ObjectUnitContractTableHeader({super.key});
 

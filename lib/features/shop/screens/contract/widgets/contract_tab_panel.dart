@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
 
-import 'package:xm_frontend/features/shop/screens/contract/widgets/contract_detail_tab.dart';
+import 'package:cartakers/features/shop/screens/contract/widgets/contract_detail_tab.dart';
 
-import 'package:xm_frontend/utils/constants/colors.dart';
-
+import 'package:cartakers/utils/constants/colors.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../utils/constants/sizes.dart';
 

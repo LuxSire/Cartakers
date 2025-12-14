@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/features/shop/controllers/object/edit_object_controller.dart';
 
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../utils/constants/sizes.dart';
 import '../../../../../../utils/validators/validation.dart';
-import 'package:xm_frontend/features/personalization/controllers/company_controller.dart';
+import 'package:cartakers/features/personalization/controllers/company_controller.dart';
 
 class CreateObjectDialog extends StatelessWidget {
   const CreateObjectDialog({super.key});

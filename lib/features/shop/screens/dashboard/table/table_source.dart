@@ -1,8 +1,8 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/routes/routes.dart';
-import 'package:xm_frontend/utils/constants/enums.dart';
+import 'package:cartakers/routes/routes.dart';
+import 'package:cartakers/utils/constants/enums.dart';
 
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../utils/constants/colors.dart';

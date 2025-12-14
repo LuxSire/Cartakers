@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
-import 'package:xm_frontend/common/widgets/images/t_circular_image.dart';
-import 'package:xm_frontend/data/api/translation_api.dart';
-import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
-import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
-import 'package:xm_frontend/features/shop/screens/settings_managements/dialogs/edit_user.dart';
-import 'package:xm_frontend/utils/constants/colors.dart';
-import 'package:xm_frontend/features/shop/controllers/object/object_controller.dart';import 'package:xm_frontend/utils/constants/enums.dart';
-import 'package:xm_frontend/utils/constants/image_strings.dart';
-import 'package:xm_frontend/utils/constants/sizes.dart';
-
+import 'package:cartakers/app/localization/app_localization.dart';
+import 'package:cartakers/common/widgets/images/t_circular_image.dart';
+import 'package:cartakers/data/api/translation_api.dart';
+import 'package:cartakers/data/repositories/authentication/authentication_repository.dart';
+import 'package:cartakers/features/personalization/controllers/user_controller.dart';
+import 'package:cartakers/features/shop/screens/settings_managements/dialogs/edit_user.dart';
+import 'package:cartakers/utils/constants/colors.dart';
+import 'package:cartakers/features/shop/controllers/object/object_controller.dart';import 'package:cartakers/utils/constants/enums.dart';
+import 'package:cartakers/utils/constants/image_strings.dart';
+import 'package:cartakers/utils/constants/sizes.dart';
 class ProfileTab extends StatelessWidget {
   const ProfileTab({super.key});
 

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:xm_frontend/common/widgets/loaders/animation_loader.dart';
-import 'package:xm_frontend/features/shop/controllers/customer/customer_detail_controller.dart';
-import 'package:xm_frontend/features/shop/screens/customer/customer_detail/table/data_table.dart';
-import 'package:xm_frontend/utils/constants/colors.dart';
-import 'package:xm_frontend/utils/constants/image_strings.dart';
-
+import 'package:cartakers/common/widgets/loaders/animation_loader.dart';
+import 'package:cartakers/features/shop/controllers/customer/customer_detail_controller.dart';
+import 'package:cartakers/features/shop/screens/customer/customer_detail/table/data_table.dart';
+import 'package:cartakers/utils/constants/colors.dart';
+import 'package:cartakers/utils/constants/image_strings.dart';
 import '../../../../../../common/widgets/containers/rounded_container.dart';
 import '../../../../../../common/widgets/loaders/loader_animation.dart';
 import '../../../../../../utils/constants/sizes.dart';

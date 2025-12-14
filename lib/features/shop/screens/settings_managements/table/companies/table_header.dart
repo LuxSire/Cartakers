@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:xm_frontend/app/localization/app_localization.dart';
+import 'package:cartakers/app/localization/app_localization.dart';
 //import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
-import 'package:xm_frontend/features/personalization/controllers/company_controller.dart';
+import 'package:cartakers/features/personalization/controllers/company_controller.dart';
 //import 'package:xm_frontend/features/shop/screens/user/dialogs/create_user.dart';
-import 'package:xm_frontend/features/shop/screens/settings_managements/dialogs/create_company.dart';
-import 'package:xm_frontend/features/shop/screens/user/dialogs/users_filter_dialog.dart';
-import 'package:xm_frontend/utils/constants/colors.dart';
-import 'package:xm_frontend/utils/device/device_utility.dart';
-import 'package:xm_frontend/utils/popups/loaders.dart';
+import 'package:cartakers/features/shop/screens/settings_managements/dialogs/create_company.dart';
+import 'package:cartakers/features/shop/screens/user/dialogs/users_filter_dialog.dart';
+import 'package:cartakers/utils/constants/colors.dart';
+import 'package:cartakers/utils/device/device_utility.dart';
+import 'package:cartakers/utils/popups/loaders.dart';
 
 class CompanyTableHeader extends StatelessWidget {
   const CompanyTableHeader({super.key});

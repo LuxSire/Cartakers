@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/features/personalization/models/user_model.dart';
-import 'package:xm_frontend/features/shop/controllers/customer/customer_detail_controller.dart';
+import 'package:cartakers/features/personalization/models/user_model.dart';
+import 'package:cartakers/features/shop/controllers/customer/customer_detail_controller.dart';
 
 import '../../../../../../common/widgets/breadcrumbs/breadcrumb_with_heading.dart';
 import '../../../../../../routes/routes.dart';

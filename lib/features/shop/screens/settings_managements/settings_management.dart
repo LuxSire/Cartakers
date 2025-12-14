@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
-import 'package:xm_frontend/features/shop/screens/settings_managements/responsive_screens/settings_management_desktop.dart';
-import 'package:xm_frontend/features/shop/screens/settings_managements/responsive_screens/settings_management_mobile.dart';
-import 'package:xm_frontend/features/shop/screens/settings_managements/responsive_screens/settings_management_tablet.dart';
+import 'package:cartakers/features/personalization/controllers/user_controller.dart';
+import 'package:cartakers/features/shop/screens/settings_managements/responsive_screens/settings_management_desktop.dart';
+import 'package:cartakers/features/shop/screens/settings_managements/responsive_screens/settings_management_mobile.dart';
+import 'package:cartakers/features/shop/screens/settings_managements/responsive_screens/settings_management_tablet.dart';
 
 import '../../../../../common/widgets/layouts/templates/site_layout.dart';
 

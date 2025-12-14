@@ -1,8 +1,8 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/features/shop/controllers/customer/customer_detail_controller.dart';
-import 'package:xm_frontend/utils/device/device_utility.dart';
+import 'package:cartakers/features/shop/controllers/customer/customer_detail_controller.dart';
+import 'package:cartakers/utils/device/device_utility.dart';
 
 import '../../../../../../common/widgets/data_table/paginated_data_table.dart';
 import 'table_source.dart';

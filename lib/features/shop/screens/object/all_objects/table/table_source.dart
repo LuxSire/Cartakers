@@ -1,20 +1,20 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/features/shop/controllers/object/object_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/object/edit_object_controller.dart';
-import 'package:xm_frontend/routes/routes.dart';
+import 'package:cartakers/features/shop/controllers/object/object_controller.dart';
+import 'package:cartakers/features/shop/controllers/object/edit_object_controller.dart';
+import 'package:cartakers/routes/routes.dart';
 //import 'package:xm_frontend/features/shop/controllers/user/user_controller.dart';
 import '../../../../../../common/widgets/icons/table_action_icon_buttons.dart';
 import '../../../../../../common/widgets/images/t_rounded_image.dart';
 import '../../../../../../utils/constants/colors.dart';
 import '../../../../../../utils/constants/enums.dart';
 import '../../../../../../utils/constants/sizes.dart';
-import 'package:xm_frontend/features/personalization/controllers/user_controller.dart';
-import 'package:xm_frontend/features/shop/controllers/contract/permission_controller.dart';
-import 'package:xm_frontend/data/repositories/authentication/authentication_repository.dart';
-import 'package:xm_frontend/features/shop/screens/communication/all_communications/dialogs/create_new_message.dart';
-import 'package:xm_frontend/features/shop/screens/contract/dialogs/assign_request_dialog.dart';
+import 'package:cartakers/features/personalization/controllers/user_controller.dart';
+import 'package:cartakers/features/shop/controllers/contract/permission_controller.dart';
+import 'package:cartakers/data/repositories/authentication/authentication_repository.dart';
+import 'package:cartakers/features/shop/screens/communication/all_communications/dialogs/create_new_message.dart';
+import 'package:cartakers/features/shop/screens/contract/dialogs/assign_request_dialog.dart';
 import 'package:intl/intl.dart';
 
 class ObjectRows extends DataTableSource {

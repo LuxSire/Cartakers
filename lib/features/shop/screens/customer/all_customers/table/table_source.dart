@@ -1,7 +1,7 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:xm_frontend/routes/routes.dart';
+import 'package:cartakers/routes/routes.dart';
 
 import '../../../../../../common/widgets/icons/table_action_icon_buttons.dart';
 import '../../../../../../common/widgets/images/t_rounded_image.dart';
