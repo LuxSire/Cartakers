@@ -74,7 +74,7 @@ dependencies:
   html: ^0.15.0
   permission_handler: ^11.1.0 # for android
   open_file: ^3.5.10
-  webview_flutter: ^4.11.0
+  webview_flutter: ^4.0.7
   flutter_webview_plugin: ^0.4.0  # For Desktop & Web support
   photo_view: ^0.15.0
   crypto: ^3.0.6
