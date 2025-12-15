@@ -118,7 +118,6 @@ flutter:
     - assets/translations/it.json
     - assets/translations/de.json
     - assets/translations/en.json
-    - .env
     - assets/images/app_icon.png
     - assets/docs/NDA.pdf
 
