@@ -47,3 +47,5 @@ app.*.map.json
 # Ignore environment files
 .env.prod
 .env.dev
+env
+env.dev
