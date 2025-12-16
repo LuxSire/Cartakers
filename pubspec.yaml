@@ -120,6 +120,8 @@ flutter:
     - assets/translations/en.json
     - assets/images/app_icon.png
     - assets/docs/NDA.pdf
+    - assets/.env.dev
+    - assets/.env
 
   fonts: 
     - family: Lato
