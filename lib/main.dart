@@ -36,7 +36,7 @@ Future<void> main() async {
 
   // Load environment variables
   const String envFile = String.fromEnvironment('ENV', defaultValue: 'dev');
-  await dotenv.load(fileName: '.env.$envFile');
+  await dotenv.load(fileName: 'env.$envFile');
 
  GoogleMapsPlugin.registerWith(webPluginRegistrar);
 
